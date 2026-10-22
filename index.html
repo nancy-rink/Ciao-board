@@ -174,6 +174,9 @@ body.lite .t,body.lite .h.u,body.lite .h.d,body.lite .g{box-shadow:none!importan
 body.lite .board::after,body.lite .t::before,body.lite .f::before,body.lite .g::before,body.lite .f::after,body.lite .g::after{display:none}
 body.lite .t span{text-shadow:none}
 body.lite .t{contain:layout paint style}
+/* Glyph atlas: each face shows its letter as a slice of one pre-drawn strip */
+.grid.atlas .t span{color:transparent;text-shadow:none;background-image:var(--atlas);background-repeat:no-repeat;background-size:calc(var(--atlas-n) * 100%) 100%}
+.grid.atlas .t.lo span{background-image:var(--atlas-lo,var(--atlas))}
 body.lite .f.a,body.lite .f.b{animation-timing-function:ease-in}
 body.lite .g.a,body.lite .g.a.land{animation:gA var(--dur) ease-out var(--dur) both}
 body.lite .g.b,body.lite .g.b.land{animation:gB var(--dur) ease-out var(--dur) both}
@@ -1266,16 +1269,65 @@ for(let i=0;i<COLS*ROWS;i++){
   u.addEventListener('animationend',()=>t.classList.remove('twitch'));
   grid.appendChild(t); tiles.push(tile);
 }
+// In Smooth mode the letters come from a glyph atlas drawn once ahead of time (see buildAtlas), so a flap only
+// moves a background image instead of laying out new text; otherwise each face holds real text
+let atlasOn=false;
+const ATLAS_POS=CHARS.map((c,i)=>(i/(CHARS.length-1)*100).toFixed(4)+'%');
+// Draw every character once, in the current style's font, ink and tile size, onto one strip image.
+// Rebuilt (debounced) when the style, the size or Smooth mode changes; Double Arrow's dark lower rows get their own strip.
+let atlasT=null, atlasUrls=[], atlasGen=0;
+function scheduleAtlas(){clearTimeout(atlasT);atlasT=setTimeout(buildAtlas,150)}
+async function atlasStrip(tile,w,h,dpr){
+  // Font from the letter itself; ink from the tile, because once the atlas is on the letters' own text is transparent
+  const cs=getComputedStyle(tile.u.firstChild), ink=getComputedStyle(tile.el).color, size=parseFloat(cs.fontSize)*dpr;
+  const c=document.createElement('canvas'); c.width=w*CHARS.length; c.height=h;
+  const x=c.getContext('2d'); if(!x)return null;
+  const font=cs.fontStyle+' '+cs.fontWeight+' '+size+'px '+cs.fontFamily;
+  try{await document.fonts.load(font,'ABCÁ')}catch(e){}
+  x.font=font;
+  const st=parseFloat(cs.fontStretch)||100;
+  if('fontStretch' in x)x.fontStretch=st<56?'ultra-condensed':st<69?'extra-condensed':st<81?'condensed':st<94?'semi-condensed':st<106?'normal':st<119?'semi-expanded':'expanded';
+  x.fillStyle=ink; x.textAlign='center'; x.textBaseline='alphabetic';
+  // Center the line box the way the tiles' flexbox does: baseline sits (ascent - descent) / 2 below the middle
+  const m=x.measureText('H'), asc=m.fontBoundingBoxAscent??size*.8, desc=m.fontBoundingBoxDescent??size*.2, y=h/2+(asc-desc)/2;
+  CHARS.forEach((ch,i)=>{if(ch.length===1&&ch!==' ')x.fillText(ch,i*w+w/2,y)});
+  const blob=await new Promise(r=>c.toBlob(r));
+  return blob?URL.createObjectURL(blob):null;
+}
+async function buildAtlas(){
+  const gen=++atlasGen;
+  if(!liteNow||reduce){if(atlasOn){atlasOn=false;grid.classList.remove('atlas');tiles.forEach(t=>{paint(t.u,t.cur);paint(t.d,t.cur)})}return}
+  const r=tiles[0].el.getBoundingClientRect(); if(r.width<4)return;
+  const dpr=Math.min(2,window.devicePixelRatio||1), w=Math.ceil(r.width*dpr), h=Math.ceil(r.height*dpr);
+  const top=tiles[0], low=tiles[tiles.length-1];
+  const urls=[await atlasStrip(top,w,h,dpr)];
+  if(getComputedStyle(low.el).color!==getComputedStyle(top.el).color)urls.push(await atlasStrip(low,w,h,dpr));
+  if(gen!==atlasGen||!urls[0]){urls.forEach(u=>u&&URL.revokeObjectURL(u));return}
+  grid.style.setProperty('--atlas','url('+urls[0]+')'); grid.style.setProperty('--atlas-n',CHARS.length);
+  if(urls[1])grid.style.setProperty('--atlas-lo','url('+urls[1]+')'); else grid.style.removeProperty('--atlas-lo');
+  atlasUrls.forEach(u=>URL.revokeObjectURL(u)); atlasUrls=urls.filter(Boolean);
+  const was=atlasOn; atlasOn=true; grid.classList.add('atlas');
+  if(!was)tiles.forEach(t=>{paint(t.u,t.cur);paint(t.d,t.cur)});
+}
+addEventListener('resize',scheduleAtlas);
+if(document.fonts)document.fonts.addEventListener('loadingdone',scheduleAtlas);
 function paint(face,idx){
-  const c=CHARS[idx]; const span=face.firstChild;
-  if(c.length===3){face.style.background='var('+COLORS[c[1]]+')';span.textContent=''}
-  else{face.style.background='';span.textContent=c}
+  const c=CHARS[idx], span=face.firstChild;
+  face.style.background=c.length===3?'var('+COLORS[c[1]]+')':'';
+  if(atlasOn){if(span.firstChild)span.textContent='';span.style.backgroundPositionX=ATLAS_POS[idx]}
+  else{span.style.backgroundPositionX='';span.textContent=c.length===3?'':c}
+}
+// Every flap a tile will make is worked out when the message arrives (planPath), so the animation only steps through a list.
+// Direct tiles (art animations) go straight to their target in one flap; everything else steps through the alphabet like a real board.
+// In Smooth mode a long run skips ahead, so no tile takes more than about 8 flaps to arrive.
+function planPath(t){
+  const L=CHARS.length; t.path=[]; t.pi=0;
+  if(t.cur===t.target)return;
+  if(t.direct){t.path.push(t.target);return}
+  for(let c=t.cur;c!==t.target;){const left=(t.target-c+L)%L;c=(c+(liteNow&&left>8?Math.ceil(left/8):1))%L;t.path.push(c)}
 }
 function step(tile){
-  // Direct tiles (art animations) go straight to their target in one flap; everything else steps through the alphabet like a real board
-  // In Smooth mode a long run skips ahead, so no tile takes more than about 8 flaps to arrive
-  const old=tile.cur, left=(tile.target-tile.cur+CHARS.length)%CHARS.length;
-  tile.cur=tile.direct?tile.target:(tile.cur+(liteNow&&left>8?Math.ceil(left/8):1))%CHARS.length;
+  const old=tile.cur; tile.cur=tile.path[tile.pi++];
   paint(tile.u,tile.cur);
   if(reduce){paint(tile.d,tile.cur);return}
   paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);
@@ -1350,7 +1402,7 @@ const lite=()=>anim.perf==='smooth'||(anim.perf==='auto'&&(tvParam||perfSlow));
 let liteNow=false; // cached for the flip loop
 function applyAnim(){
   const b=document.body.classList;
-  b.toggle('real',anim.motion==='real'); b.toggle('depth',anim.finish!=='flat'); b.toggle('glare',anim.finish==='glare'); liteNow=lite(); b.toggle('lite',liteNow);
+  b.toggle('real',anim.motion==='real'); b.toggle('depth',anim.finish!=='flat'); b.toggle('glare',anim.finish==='glare'); liteNow=lite(); b.toggle('lite',liteNow); scheduleAtlas();
   if(anim.frame==='style')delete document.body.dataset.frame; else document.body.dataset.frame=anim.frame;
   ['pattern','motion','finish','frame','restyle','perf'].forEach(k=>{const el=$('anim-'+k);if(el)el.value=anim[k]});
   const pn=$('perfNote'); if(pn)pn.textContent=anim.perf!=='auto'?'':lite()?(tvParam?'Smooth mode is on, because this is TV mode.':'Smooth mode is on, because flips were running slowly on this screen.'):'Best quality is on. The board switches to Smooth by itself if flips run slowly.';
@@ -1390,7 +1442,7 @@ function replay(){
   tiles.forEach(t=>{t.cur=(t.target-3+CHARS.length)%CHARS.length;paint(t.u,t.cur);paint(t.d,t.cur)});
   send(lastSent);
 }
-let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null, boardLabel=null, booted=false;
+let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null, boardLabel=null, booted=false, active=[];
 // opts.cells sends an exact grid (art) instead of laying out text; opts.direct flips each tile straight to its target; opts.label is read to screen readers
 function send(str,opts){
   opts=opts||{}; lastSent=str; boardLabel=opts.label||null;
@@ -1404,8 +1456,11 @@ function send(str,opts){
     const p=opts.pattern||PATTERNS[anim.pattern]||PATTERNS.wave;
     t.delay=p(i%COLS,Math.floor(i/COLS))+(anim.motion==='real'&&!opts.direct&&Math.random()<.25?1:0)|0;
   });
+  if(!reduce){tiles.forEach(planPath);active=tiles.filter(t=>t.path.length)}
   setStatus('Flipping');
-  if(!busy){busy=true;requestAnimationFrame(loop)}
+  // All the planning above is done before the first frame of movement
+  if(!busy&&active.length){busy=true;last=0;acc=0;requestAnimationFrame(()=>requestAnimationFrame(loop))}
+  else if(!busy){setStatus('Showing');speakBoard()}
 }
 // Frame timing while flipping: if most frames come in late on two runs in a row, Automatic switches to Smooth mode
 let perfFrames=0, perfLate=0, perfStrikes=0;
@@ -1421,19 +1476,17 @@ function perfCheck(){
 function loop(ts){
   if(last){perfFrames++;if(ts-last>45)perfLate++}
   if(!last)last=ts; acc+=ts-last; last=ts;
-  let moving=false, flipped=0; const cols=[];
-  while(acc>=TICK){
-    acc-=TICK; moving=false;
-    for(const t of tiles){
-      if(t.cur===t.target)continue;
-      moving=true;
+  let flipped=0; const cols=[];
+  while(acc>=TICK&&active.length){
+    acc-=TICK;
+    for(const t of active){
       if(t.delay>0){t.delay--;continue}
       step(t); flipped++; if(cols.length<24)cols.push(t.col);
     }
-    if(!moving)break;
+    active=active.filter(t=>t.pi<t.path.length);
   }
   if(flipped){click(flipped,cols);movedThisRun=true}
-  if(tiles.some(t=>t.cur!==t.target)){requestAnimationFrame(loop)}
+  if(active.length){requestAnimationFrame(loop)}
   else{busy=false;last=0;acc=0;perfCheck();setStatus('Showing');if(movedThisRun)landed();movedThisRun=false;speakBoard()}
 }
 const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar',news:'news',art:'art'};
@@ -2994,10 +3047,10 @@ function styleScope(){
   $('board').dataset.style=styleId; $('pv').dataset.style=styleId; document.querySelectorAll('.art-pv').forEach(e=>e.dataset.style=styleId); $('styleOpen').querySelector('.sw').dataset.style=styleId;
   if(document.body.classList.contains('fs'))document.body.dataset.style=styleId; else delete document.body.dataset.style;
 }
-new MutationObserver(styleScope).observe(document.body,{attributes:true,attributeFilter:['class']});
+new MutationObserver(()=>{styleScope();scheduleAtlas()}).observe(document.body,{attributes:true,attributeFilter:['class']});
 function applyStyle(id){
   const wasLeft=alignLeft(), shown=$('board').dataset.style;
-  styleId=id; store.set('fb.style',id); styleScope();
+  styleId=id; store.set('fb.style',id); styleScope(); scheduleAtlas();
   if(shown!==id)restyleCascade(shown);
   if(alignLeft()!==wasLeft){if(lastSent!=null)send(lastSent);try{updateCount()}catch(e){}}
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
@@ -3028,7 +3081,7 @@ function miniTile(c){
   });
 })();
 // Hovering or focusing a swatch previews it on the board only; tapping keeps it
-function previewStyle(id){$('board').dataset.style=id||styleId;requestAnimationFrame(fitFill)}
+function previewStyle(id){$('board').dataset.style=id||styleId;requestAnimationFrame(fitFill);scheduleAtlas()}
 function noteFor(id,chosen){const s=BOARD_STYLES.find(x=>x.id===id);$('styleNote').textContent=s?(chosen||id===styleId?'Showing '+s.name+'. ':'Previewing '+s.name+'. ')+s.note:''}
 function openTray(){const t=$('styleTray');openSheet('style');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');noteFor(styleId,true);const cur=t.querySelector('.swatch[aria-pressed="true"]');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
 function closeTray(keepSheet){const t=$('styleTray');if(t.hidden)return;t.hidden=true;previewStyle(null);$('styleOpen').setAttribute('aria-expanded','false');if(!keepSheet&&sheetIs('style'))closeSheet()}

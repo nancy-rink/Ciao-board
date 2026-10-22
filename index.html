@@ -610,6 +610,23 @@ body.fs .sheet,body.fs .scrim,body.kiosk .sheet,body.kiosk .scrim{display:none}
 #tvGo{font-size:clamp(18px,2.6vw,38px);padding:.6em 1.5em;border-radius:14px;background:#e8a33d;border-color:#e8a33d;color:#1a1307}
 #tvGo:focus{outline:5px solid #f1ece2;outline-offset:5px}
 body.tvmode #fsExit{display:none}
+#tvPair{font-size:clamp(15px,1.7vw,26px);padding:.5em 1.2em;border-radius:12px;background:transparent;color:#f1ece2;border-color:#4a4238}
+#tvPair:focus{outline:5px solid #f1ece2;outline-offset:5px}
+/* Pairing a phone: the code flips up on the board; this card in the corner has the QR code */
+#rmPairCard{position:fixed;right:max(16px,3vw);bottom:max(16px,5vh);z-index:50;width:min(340px,80vw);display:flex;flex-direction:column;align-items:center;gap:12px;padding:18px;border-radius:16px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;text-align:center;font-size:clamp(14px,1.3vw,20px);box-shadow:0 20px 60px -20px #000}
+#rmPairCard[hidden]{display:none}
+/* While pairing, the board makes room for the card so the code stays readable */
+body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
+@media (min-width:900px){body.pairing:not(.fs) .wrap{padding-right:calc(min(340px,80vw) + 24px)}}
+#rmPairCard p{margin:0;color:#c9bfae}
+#rmPairCard b{color:#f1ece2;letter-spacing:.06em}
+#rmQr{background:#fff;border-radius:10px;padding:8px;line-height:0}
+#rmQr[hidden]{display:none}
+#rmQr svg{width:min(220px,26vh);height:auto}
+#rmPairCancel:focus{outline:4px solid #f1ece2;outline-offset:3px}
+.rm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.rm-state{margin:0;color:var(--muted);font-size:14px}
+.rm-state:empty{display:none}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim{animation:none}.wrap{transition:none}}
 @media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land,.t.restyle,.t.twitch .h.u{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
 </style>
@@ -644,8 +661,14 @@ body.tvmode #fsExit{display:none}
   <div class="tvcard">
     <h1>Ciao Board</h1>
     <button class="primary" id="tvGo" type="button">Press OK to start</button>
+    <button id="tvPair" type="button">Pair a phone as a remote</button>
     <p>Goes full screen and keeps the TV awake. Press OK again any time to show or hide the controls.</p>
   </div>
+</div>
+<div id="rmPairCard" hidden>
+  <div id="rmQr" aria-hidden="true"></div>
+  <p>Scan with your phone's camera, or open Ciao Board on your phone, go to <b>Remote</b> and type <b id="rmPairCode"></b></p>
+  <button id="rmPairCancel" type="button">Cancel</button>
 </div>
 <div class="scrim" id="scrim" hidden></div>
 <aside class="sheet" id="sheet" data-view="show" aria-labelledby="sheetTitle" hidden>
@@ -676,6 +699,7 @@ body.tvmode #fsExit{display:none}
         <button class="card" hidden role="tab" data-tab="calendar" id="tab-calendar" aria-controls="pane-calendar" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">Calendar</span><span class="sub" data-sub="calendar">Google Calendar</span><span class="onb">On board</span></button>
         <button class="card" role="tab" data-tab="news" id="tab-news" aria-controls="pane-news" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">News</span><span class="sub" data-sub="news">BBC headlines</span><span class="onb">On board</span></button>
         <button class="card" role="tab" data-tab="art" id="tab-art" aria-controls="pane-art" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Art</span><span class="sub" data-sub="art">Color-tile pictures</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="remote" id="tab-remote" aria-controls="pane-remote" type="button"><i class="flap" style="--fc:var(--c-o)"></i><span class="nm">Remote</span><span class="sub" data-sub="remote">Control your TV</span><span class="onb">On board</span></button>
         <button class="card" role="tab" data-tab="friends" id="tab-friends" aria-controls="pane-friends" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Friends</span><span class="sub" data-sub="friends">Message a friend's board</span><span class="onb">On board</span></button>
         <button class="card" role="tab" data-tab="schedule" id="tab-schedule" aria-controls="pane-schedule" type="button"><i class="flap" style="--fc:var(--c-v)"></i><span class="nm">Day plan</span><span class="sub" data-sub="schedule">Tap to run</span><span class="onb">Running</span></button>
       </div>
@@ -914,6 +938,50 @@ body.tvmode #fsExit{display:none}
         <div class="artgrid" id="artPics"></div>
         <h3 class="fr-h">Animated</h3>
         <div class="artgrid" id="artAnims"></div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-remote" aria-labelledby="tab-remote" hidden>
+        <div class="pane-head">
+          <div><h2>Remote</h2><p class="sub" id="rmStatus">Use this phone as a remote for a Ciao Board on your TV.</p></div>
+        </div>
+        <div id="rmControls" hidden>
+          <div class="fields">
+            <label class="field" for="rmTv" id="rmTvField"><span>TV</span><select id="rmTv"></select></label>
+            <p class="field wide rm-state" id="rmState" aria-live="polite"></p>
+            <div class="field wide">
+              <textarea id="rmMsg" spellcheck="false" rows="3" aria-label="Message for the TV" placeholder="A message for the TV"></textarea>
+              <div class="chips" aria-label="Add a color tile">
+                <button class="chip" style="background:var(--c-r)" data-c="r" type="button" aria-label="Add a red tile"></button>
+                <button class="chip" style="background:var(--c-o)" data-c="o" type="button" aria-label="Add an orange tile"></button>
+                <button class="chip" style="background:var(--c-y)" data-c="y" type="button" aria-label="Add a yellow tile"></button>
+                <button class="chip" style="background:var(--c-g)" data-c="g" type="button" aria-label="Add a green tile"></button>
+                <button class="chip" style="background:var(--c-b)" data-c="b" type="button" aria-label="Add a blue tile"></button>
+                <button class="chip" style="background:var(--c-v)" data-c="v" type="button" aria-label="Add a violet tile"></button>
+                <button class="chip" style="background:var(--c-w)" data-c="w" type="button" aria-label="Add a white tile"></button>
+              </div>
+              <div class="row"><button class="primary" id="rmSend" type="button">Show on TV</button><button id="rmClear" type="button">Clear TV</button><span class="hint" id="rmCount"></span></div>
+            </div>
+          </div>
+          <div class="rm-grid">
+            <button id="rmClock" type="button">Clock</button>
+            <button id="rmSaved" type="button">TV's saved messages</button>
+            <button id="rmPlanOn" type="button">Run day plan</button>
+            <button id="rmPlanOff" type="button">Stop day plan</button>
+          </div>
+          <div class="fields">
+            <div class="field"><span>News</span><div class="row" style="flex-wrap:nowrap"><select id="rmNewsSec" aria-label="News section"></select><button id="rmNews" type="button">Show</button></div></div>
+            <div class="field"><span>Art</span><div class="row" style="flex-wrap:nowrap"><select id="rmArt" aria-label="Picture"></select><button id="rmArtGo" type="button">Show</button></div></div>
+            <label class="field" for="rmStyle"><span>TV style</span><select id="rmStyle"><option value="">Choose a style</option></select></label>
+          </div>
+        </div>
+        <h3 class="fr-h">Pair with a TV</h3>
+        <p class="hint">On the TV, open Ciao Board and choose <b>Pair a phone</b> (on the start screen, or in Remote). Scan the QR code with this phone's camera, or type the code here.</p>
+        <div class="row" style="flex-wrap:nowrap"><input type="text" id="rmCodeIn" placeholder="Pairing code" aria-label="Pairing code from the TV" autocomplete="off" maxlength="12"><button id="rmLook" type="button">Connect</button></div>
+        <div class="fr-ask" id="rmAsk" hidden><span id="rmAskMsg"></span><button class="primary" id="rmAccept" type="button">Connect</button><button id="rmDecline" type="button">Cancel</button></div>
+        <h3 class="fr-h">Paired</h3>
+        <ul class="list" id="rmList"></ul>
+        <h3 class="fr-h">Is this the TV?</h3>
+        <div class="row"><button id="rmPairBtn" type="button">Pair a phone</button><span class="hint">Shows a code on this board for a phone to scan or type.</span></div>
       </section>
 
       <section class="pane" role="tabpanel" id="pane-friends" aria-labelledby="tab-friends" hidden>
@@ -2113,7 +2181,7 @@ $('newsSection').value=news.section; $('newsEvery').value=String(news.every); $(
 // Each board listens on its own unguessable inbox topic. The invite (found with its code) carries the inviter's topic and a one-time key
 // for the handshake; on accepting, the two boards run an ECDH key exchange, so only those two boards hold the key their messages are sealed
 // with, even if someone else saw the code. The relay only ever carries sealed messages; ntfy.sh keeps them 12 hours.
-const NTFY='https://ntfy.sh/';
+const NTFY=window.__ciaoNtfy||'https://ntfy.sh/'; // a test can point the board at a local relay
 function frRand(n){const A='abcdefghijkmnopqrstuvwxyz23456789',r=crypto.getRandomValues(new Uint32Array(n));return [...r].map(x=>A[x%A.length]).join('')}
 const fr=Object.assign({name:'',allow:true,hold:5,inbox:'',links:[],invites:[],waiting:[],seen:[],since:''},store.get('fb.friends',{}));
 if(!fr.inbox)fr.inbox='cb'+frRand(30);
@@ -2165,21 +2233,27 @@ async function frReceive(m){
     fr.invites=fr.invites.filter(i=>i.id!==id); saveFr();
     const name=String(o.name||'A friend').slice(0,40), kp=await frEcdh();
     const key=await frShared(kp.privateKey,o.pub);
-    fr.links.push({id,name,topic:o.topic,key}); saveFr();
+    const link={id,name,topic:o.topic,key}; if(inv.kind==='tv')link.kind='remote';
+    fr.links.push(link); saveFr();
     await frPostSealed(o.topic,id,inv.key,{type:'welcome',pub:await frPub(kp)}).catch(()=>{});
-    if($('frInviteOut').dataset.id===id)$('frInviteOut').hidden=true;
-    toast('Connected with '+name); frSay('Connected with '+name+'.');
+    if(link.kind==='remote')rmPaired(link);
+    else{if($('frInviteOut').dataset.id===id)$('frInviteOut').hidden=true;toast('Connected with '+name);frSay('Connected with '+name+'.')}
   }else if(o.type==='welcome'&&link&&link.pending&&!link.busy&&typeof o.pub==='string'){
     link.busy=true; // the first welcome wins
     const priv=await crypto.subtle.importKey('jwk',link.priv,ECDH,false,['deriveBits']);
     link.key=await frShared(priv,o.pub); delete link.pending; delete link.priv; delete link.ikey; delete link.busy;
-    toast('Connected with '+link.name); frSay('Connected with '+link.name+'.');
-  }else if(o.type==='msg'&&link&&!link.pending&&typeof o.text==='string'){
+    if(link.kind==='tv'){toast('Connected to '+link.name);rmSay('Connected to '+link.name+'.');frSend(link,{type:'cmd',action:'ping'}).catch(()=>{})}
+    else{toast('Connected with '+link.name);frSay('Connected with '+link.name+'.')}
+  }else if(o.type==='cmd'&&link&&!link.pending&&link.kind==='remote'){
+    rmRun(link,o);
+  }else if(o.type==='state'&&link&&!link.pending&&link.kind==='tv'){
+    link.state={showing:String(o.showing||'').slice(0,80),style:String(o.style||''),plan:!!o.plan,at:Date.now()};
+  }else if(o.type==='msg'&&link&&!link.pending&&!link.kind&&typeof o.text==='string'){
     fr.waiting.push({key:m.id,id,text:o.text.slice(0,300),sent:(m.time||0)*1000}); fresh=true;
   }else if(o.type==='bye'&&link&&!link.pending){
     fr.links=fr.links.filter(l=>l.id!==id); fr.waiting=fr.waiting.filter(w=>w.id!==id);
   }else return;
-  saveFr(); frRender(); frNotify(fresh);
+  saveFr(); frRender(); rmRender(); frNotify(fresh);
 }
 const frName=id=>(frLink(id)||{}).name||'A friend';
 function frQueue(){return fr.waiting.filter(m=>frLive(m.id)).sort((a,b)=>a.sent-b.sent)}
@@ -2211,9 +2285,9 @@ function frResume(p){
   if(go)go(); else send(p.text||'');
 }
 function frRender(){
-  const fl=$('frList'); fl.innerHTML='';
-  if(!fr.links.length)fl.innerHTML='<li class="hint">No connected boards yet. Create an invite below, or type a friend\'s code.</li>';
-  fr.links.forEach(l=>{
+  const fl=$('frList'), friends=fr.links.filter(l=>!l.kind); fl.innerHTML='';
+  if(!friends.length)fl.innerHTML='<li class="hint">No connected boards yet. Create an invite below, or type a friend\'s code.</li>';
+  friends.forEach(l=>{
     const li=document.createElement('li');
     const t=document.createElement('span'); t.className='txt'; t.textContent=l.name+(l.pending?' (waiting for their board to confirm)':'');
     const w=document.createElement('button'); w.type='button'; w.className='show'; w.textContent='Message'; w.hidden=!!l.pending;
@@ -2237,7 +2311,7 @@ function frRender(){
     li.append(t,sh,x); ib.appendChild(li);
   });
   const to=$('frTo'), keep=to.value; to.innerHTML='';
-  const live=fr.links.filter(l=>!l.pending);
+  const live=fr.links.filter(l=>!l.pending&&!l.kind);
   live.forEach(l=>{const o=document.createElement('option');o.value=l.id;o.textContent=l.name;to.appendChild(o)});
   if(frLive(keep))to.value=keep;
   $('frSendBox').hidden=!live.length;
@@ -2263,13 +2337,35 @@ function frNeedName(){if(fr.name.trim())return false;frSay('Give your board a na
 $('frName').value=fr.name; $('frName').onchange=()=>{fr.name=$('frName').value.trim().slice(0,40);saveFr();frSay('Saved. Friends you connect from now on will see this name.')};
 $('frAllow').checked=fr.allow; $('frAllow').onchange=()=>{fr.allow=$('frAllow').checked;saveFr();frNotify()};
 $('frHold').value=String(fr.hold); $('frHold').onchange=()=>{fr.hold=+$('frHold').value;saveFr()};
+// Invites, shared by Friends and Remote. kind 'tv' marks a TV asking for a phone remote.
+async function frMakeInvite(kind,name){
+  const code=frNewCode(), id=frRand(12), key=b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
+  await frPost(await frInviteTopic(code),await frSeal(await frInviteKey(code),{v:1,id,name,topic:fr.inbox,key,kind}));
+  fr.invites=[...fr.invites.filter(i=>Date.now()-i.made<432e5).slice(-9),{id,key,kind,made:Date.now()}]; saveFr(); frListen();
+  return {code,id};
+}
+async function frFetchInvite(code){
+  const r=await fetch(NTFY+await frInviteTopic(code)+'/json?poll=1&since=12h'); if(!r.ok)throw new Error('HTTP '+r.status);
+  const posts=(await r.text()).split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(m=>m.event==='message');
+  const key=await frInviteKey(code);
+  for(const p of posts.reverse()){try{return await frOpen(key,p.message)}catch(e){}}
+  return null;
+}
+// Accept an invite: the link waits as pending until the other board answers the key exchange
+async function frConnect(inv,kind,name){
+  const kp=await frEcdh();
+  const link={id:String(inv.id),name:String(inv.name||'A friend').slice(0,40),topic:String(inv.topic),ikey:String(inv.key),pending:true,priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};
+  if(kind)link.kind=kind;
+  fr.links.push(link); saveFr(); frListen();
+  try{await frPostSealed(link.topic,link.id,link.ikey,{type:'hello',name,topic:fr.inbox,pub:await frPub(kp)})}
+  catch(e){fr.links=fr.links.filter(l=>l!==link);saveFr();throw e}
+  return link;
+}
 $('frInvite').onclick=async()=>{
   if(frNeedName())return;
   $('frInvite').disabled=true;
   try{
-    const code=frNewCode(), id=frRand(12), key=b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
-    await frPost(await frInviteTopic(code),await frSeal(await frInviteKey(code),{v:1,id,name:fr.name,topic:fr.inbox,key}));
-    fr.invites=[...fr.invites.filter(i=>Date.now()-i.made<432e5).slice(-9),{id,key,made:Date.now()}]; saveFr(); frListen();
+    const {code,id}=await frMakeInvite(undefined,fr.name);
     $('frCode').textContent=frCodeFmt(code); $('frLink').value=location.origin+location.pathname+'#invite='+code;
     $('frInviteOut').dataset.id=id; $('frInviteOut').hidden=false;
     frSay('Send the code or the link to your friend. When they accept, their board appears under Connected boards.');
@@ -2282,11 +2378,9 @@ async function frLookup(raw){
   if(code.length!==8){frSay('Invite codes have 8 letters and numbers, like K7Q4-MX2P.');return}
   frSay('Looking up the invite…');
   try{
-    const r=await fetch(NTFY+await frInviteTopic(code)+'/json?poll=1&since=12h'); if(!r.ok)throw new Error('HTTP '+r.status);
-    const posts=(await r.text()).split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(m=>m.event==='message');
-    const key=await frInviteKey(code); let inv=null;
-    for(const p of posts.reverse()){try{inv=await frOpen(key,p.message);break}catch(e){}}
+    const inv=await frFetchInvite(code);
     if(!inv){frSay('That code doesn\'t match an invite. It may have expired (invites last 12 hours) or been mistyped.');return}
+    if(inv.kind==='tv'){frSay('That\'s a code for pairing a phone with a TV. Open Remote and type it there.');return}
     if(inv.topic===fr.inbox){frSay('That\'s your own invite. Send it to your friend instead.');return}
     if(frLink(inv.id)){frSay('You\'re already connected with '+inv.name+'.');return}
     frPending=inv; $('frAskMsg').textContent='Connect with '+inv.name+'? You\'ll be able to send each other messages, and you\'re asked before any message is shown.'; $('frAsk').hidden=false;
@@ -2298,27 +2392,170 @@ $('frCodeIn').onkeydown=e=>{if(e.key==='Enter')frLookup($('frCodeIn').value)};
 $('frDecline').onclick=()=>{frPending=null;$('frAsk').hidden=true;$('frCodeIn').value='';frSay('Declined. Nothing was connected.')};
 $('frAccept').onclick=async()=>{
   if(!frPending||frNeedName())return;
-  const inv=frPending, kp=await frEcdh();
-  const link={id:String(inv.id),name:String(inv.name||'A friend').slice(0,40),topic:String(inv.topic),ikey:String(inv.key),pending:true,priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};
+  const inv=frPending;
   $('frAccept').disabled=true;
   try{
-    fr.links.push(link); saveFr(); frListen();
-    await frPostSealed(link.topic,link.id,link.ikey,{type:'hello',name:fr.name,topic:fr.inbox,pub:await frPub(kp)});
+    const link=await frConnect(inv,undefined,fr.name);
     frPending=null; $('frAsk').hidden=true; $('frCodeIn').value=''; frRender();
     frSay('Waiting for '+link.name+'\'s board to confirm. That happens as soon as it\'s online.');
-  }catch(e){fr.links=fr.links.filter(l=>l!==link);saveFr();frRender();frSay('Couldn\'t connect. Check the connection and try again.')}
+  }catch(e){frRender();frSay('Couldn\'t connect. Check the connection and try again.')}
   finally{$('frAccept').disabled=false}
 };
 function frBoot(){
-  frRender(); frCount(); frListen(); frNotify();
+  buildRemote(); frRender(); rmRender(); frCount(); rmCount(); frListen(); frNotify();
   frHash(); addEventListener('hashchange',frHash);
 }
 // An invite link (#invite=CODE) opens the Friends tab and asks whether to connect
 function frHash(){
+  const p=location.hash.match(/^#pair=([A-Za-z0-9-]+)/);
+  if(p){history.replaceState(null,'',location.pathname+location.search);openTab('remote');openSheet('show');$('rmCodeIn').value=frCodeFmt(frCodeNorm(p[1]));rmLookup(p[1]);return true}
   const m=location.hash.match(/^#invite=([A-Za-z0-9-]+)/); if(!m)return false;
   history.replaceState(null,'',location.pathname+location.search);
   openTab('friends'); openSheet('show'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frLookup(m[1]);
   return true;
+}
+// Remote: a phone controls a Ciao Board on a TV. The TV shows a pairing code (and a QR code for the phone's camera);
+// the phone connects with the same invite and key exchange as Friends, then sends commands the TV carries out straight away.
+// A paired phone is trusted, so unlike friends' messages nothing waits for a tap. After each command the TV reports what it's showing.
+let rmPairing=null, rmPairT=null;
+const rmTvs=()=>fr.links.filter(l=>l.kind==='tv'), rmPhones=()=>fr.links.filter(l=>l.kind==='remote');
+function rmSay(t){$('rmStatus').textContent=t}
+function rmShowing(){
+  if(mode==='')return lastSent?lastSent.replace(/\{[roygbvw]\}/gi,'').split('\n').map(l=>l.trim()).filter(Boolean).join(' / ').toUpperCase().slice(0,60)||'color tiles':'a blank board';
+  if(mode==='news')return 'BBC headlines';
+  if(mode==='art')return 'Art: '+((ART_BY[artCur]||{}).name||'animation');
+  return MODE_NAME[mode]||mode;
+}
+function rmState(link){
+  const st=BOARD_STYLES.find(x=>x.id===styleId);
+  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,plan:schedOn}).catch(()=>{});
+}
+// On the TV: carry out a command from a paired phone, then report back
+function rmRun(link,o){
+  const ok={
+    text:()=>{if(typeof o.text==='string'){stopModes();send(o.text.slice(0,300))}},
+    clear:()=>{stopModes();send('')},
+    style:()=>{if(BOARD_STYLES.some(s=>s.id===o.id))applyStyle(o.id)},
+    clock:()=>startClock(),
+    news:()=>{if(NEWS_HEAD[o.section]){news.section=o.section;saveNews();$('newsSection').value=o.section}startNews()},
+    art:()=>{const a=ART_BY[o.id];if(a)a.frame?startArt(o.id):showArt(o.id)},
+    saved:()=>{if(mode!=='rotating'&&saved.length){mode='';$('rotateBtn').click()}},
+    plan:()=>{if(o.on)startSchedule();else{schedOff();stopModes()}},
+    ping:()=>{}
+  }[o.action];
+  if(!ok)return;
+  try{ok()}catch(e){}
+  setTimeout(()=>rmState(link),500);
+}
+// On the TV: show a pairing code on the board and a QR code in the corner until a phone connects
+async function rmShowCode(){
+  if(rmPairing)return;
+  $('rmPairBtn').disabled=true;
+  try{
+    const {code,id}=await frMakeInvite('tv',fr.name||'TV');
+    rmPairing={id,code,prev:{mode,text:lastSent,sched:schedOn}};
+    schedDriving=schedOn; try{stopModes()}finally{schedDriving=false}
+    send('{b} PAIR A PHONE {b}\n\nON YOUR PHONE GO TO\nCIAO BOARD - REMOTE\n\nCODE '+frCodeFmt(code),{label:'Pairing code '+frCodeFmt(code)});
+    $('rmPairCode').textContent=frCodeFmt(code); $('rmPairCard').hidden=false; $('rmPairCancel').focus();
+    document.body.classList.add('pairing'); requestAnimationFrame(fitFill);
+    clearTimeout(rmPairT); rmPairT=setTimeout(()=>rmEndPairing(true),10*60e3);
+    const url=location.origin+location.pathname+'#pair='+code;
+    rmQr(url).catch(()=>{$('rmQr').hidden=true});
+  }catch(e){toast('Couldn\'t make a pairing code. Check the connection and try again.')}
+  finally{$('rmPairBtn').disabled=false}
+}
+function rmQr(url){
+  const draw=()=>{const q=qrcode(0,'M');q.addData(url);q.make();$('rmQr').innerHTML=q.createSvgTag({cellSize:6,margin:2,scalable:true});$('rmQr').hidden=false};
+  if(window.qrcode){draw();return Promise.resolve()}
+  return new Promise((ok,no)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';sc.onload=()=>{try{draw();ok()}catch(e){no(e)}};sc.onerror=no;document.head.appendChild(sc)});
+}
+function rmEndPairing(cancel){
+  if(!rmPairing)return;
+  const p=rmPairing; rmPairing=null; clearTimeout(rmPairT);
+  $('rmPairCard').hidden=true; document.body.classList.remove('pairing'); requestAnimationFrame(fitFill);
+  if(cancel){fr.invites=fr.invites.filter(i=>i.id!==p.id);saveFr()}
+  frResume(p.prev);
+}
+function rmPaired(link){
+  if(rmPairing&&rmPairing.id===link.id)rmEndPairing(false);
+  toast('Phone connected: '+link.name); rmSay(link.name+' can now control this board.');
+  setTimeout(()=>rmState(link),800);
+}
+$('rmPairBtn').onclick=rmShowCode; $('tvPair').onclick=()=>{try{ensureAudio()}catch(e){}$('tvStart').hidden=true;enterFs();rmShowCode()};
+$('rmPairCancel').onclick=()=>rmEndPairing(true);
+// On the phone: find the TV's code and connect
+let rmPending=null;
+async function rmLookup(raw){
+  const code=frCodeNorm(raw); $('rmAsk').hidden=true; rmPending=null;
+  if(code.length!==8){rmSay('Pairing codes have 8 letters and numbers, like K7Q4-MX2P.');return}
+  rmSay('Looking up the code…');
+  try{
+    const inv=await frFetchInvite(code);
+    if(!inv){rmSay('That code doesn\'t match. Check it on the TV, or choose Pair a phone again for a new one.');return}
+    if(inv.kind!=='tv'){rmSay('That\'s a Friends invite. Open Friends and type it there.');return}
+    if(inv.topic===fr.inbox){rmSay('That\'s this board\'s own code. Type it on your phone instead.');return}
+    if(frLink(inv.id)){rmSay('This phone is already paired with '+inv.name+'.');return}
+    rmPending=inv; $('rmAskMsg').textContent='Control '+inv.name+' from this phone?'; $('rmAsk').hidden=false; rmSay('Found '+inv.name+'.');
+  }catch(e){rmSay('Couldn\'t look up that code. Check the connection and try again.')}
+}
+$('rmLook').onclick=()=>rmLookup($('rmCodeIn').value);
+$('rmCodeIn').onkeydown=e=>{if(e.key==='Enter')rmLookup($('rmCodeIn').value)};
+$('rmDecline').onclick=()=>{rmPending=null;$('rmAsk').hidden=true;$('rmCodeIn').value='';rmSay('Nothing was paired.')};
+$('rmAccept').onclick=async()=>{
+  if(!rmPending)return; const inv=rmPending; $('rmAccept').disabled=true;
+  try{const link=await frConnect(inv,'tv',fr.name||'Phone');rmPending=null;$('rmAsk').hidden=true;$('rmCodeIn').value='';rmSay('Waiting for '+link.name+' to confirm…');rmRender()}
+  catch(e){rmSay('Couldn\'t connect. Check the connection and try again.')}
+  finally{$('rmAccept').disabled=false}
+};
+// On the phone: send a command to the chosen TV
+const rmTv=()=>{const l=frLink($('rmTv').value);return l&&!l.pending&&l.kind==='tv'?l:null};
+async function rmCmd(o,done){
+  const tv=rmTv(); if(!tv)return;
+  try{await frSend(tv,Object.assign({type:'cmd'},o));rmSay(done||'Sent to '+tv.name+'.')}
+  catch(e){rmSay('Couldn\'t reach '+tv.name+'. Check the connection and try again.')}
+}
+function rmMsgText(){return fromEmoji($('rmMsg').value)}
+function rmCount(){const n=layout(rmMsgText()).length;$('rmCount').textContent=n>ROWS?n+' lines, '+(n-ROWS)+' won\'t fit':n+' of 6 lines';$('rmCount').classList.toggle('over',n>ROWS)}
+$('rmMsg').addEventListener('input',()=>{liveTokens($('rmMsg'));rmCount()});
+document.querySelectorAll('#pane-remote .chip').forEach(b=>b.onclick=()=>{
+  const el=$('rmMsg'),tok=EMO[b.dataset.c],s0=el.selectionStart??el.value.length,e0=el.selectionEnd??s0;
+  el.value=el.value.slice(0,s0)+tok+el.value.slice(e0); el.focus(); el.selectionStart=el.selectionEnd=s0+tok.length; rmCount();
+});
+$('rmSend').onclick=()=>{const t=rmMsgText().trim();if(!t)return;if(layout(t).length>ROWS||t.length>300){rmCount();toast('That won\'t fit on the board. Make it shorter.');return}rmCmd({action:'text',text:t},'Sent to the TV.')};
+$('rmClear').onclick=()=>rmCmd({action:'clear'},'Cleared the TV.');
+$('rmClock').onclick=()=>rmCmd({action:'clock'},'The TV is showing the clock.');
+$('rmNews').onclick=()=>rmCmd({action:'news',section:$('rmNewsSec').value},'The TV is showing BBC headlines.');
+$('rmArtGo').onclick=()=>rmCmd({action:'art',id:$('rmArt').value},'The TV is showing '+ART_BY[$('rmArt').value].name+'.');
+$('rmSaved').onclick=()=>rmCmd({action:'saved'},'The TV is rotating its saved messages.');
+$('rmPlanOn').onclick=()=>rmCmd({action:'plan',on:true},'The TV is running its day plan.');
+$('rmPlanOff').onclick=()=>rmCmd({action:'plan',on:false},'The TV\'s day plan is stopped.');
+$('rmStyle').onchange=()=>{if($('rmStyle').value)rmCmd({action:'style',id:$('rmStyle').value},'Style changed on the TV.')};
+$('rmTv').onchange=()=>{rmRender();rmCmd({action:'ping'},'')};
+// Filled at start-up, once the style list and Art pictures (defined further down) exist
+function buildRemote(){
+  BOARD_STYLES.forEach(st=>{const o=document.createElement('option');o.value=st.id;o.textContent=st.name;$('rmStyle').appendChild(o)});
+  ART.forEach(a=>{const o=document.createElement('option');o.value=a.id;o.textContent=a.name+(a.frame?' (animated)':'');$('rmArt').appendChild(o)});
+  $('rmNewsSec').innerHTML=$('newsSection').innerHTML;
+}
+function rmRender(){
+  const tvs=rmTvs(), live=tvs.filter(l=>!l.pending), sel=$('rmTv'), keep=sel.value;
+  sel.innerHTML=''; live.forEach(l=>{const o=document.createElement('option');o.value=l.id;o.textContent=l.name;sel.appendChild(o)});
+  if(live.some(l=>l.id===keep))sel.value=keep;
+  $('rmControls').hidden=!live.length; $('rmTvField').hidden=live.length<2;
+  const tv=rmTv(), st=tv&&tv.state;
+  $('rmState').textContent=!tv?'':st?'Showing '+st.showing+' · '+st.style+(st.plan?' · day plan running':''):'Asking '+tv.name+' what it\'s showing…';
+  if(st){const s=BOARD_STYLES.find(x=>x.name===st.style);$('rmStyle').value=s?s.id:''}
+  const ul=$('rmList'); ul.innerHTML='';
+  const all=[...tvs.map(l=>[l,'TV you control']),...rmPhones().map(l=>[l,'phone that controls this board'])];
+  if(!all.length)ul.innerHTML='<li class="hint">Nothing paired yet.</li>';
+  all.forEach(([l,what])=>{
+    const li=document.createElement('li');
+    const t=document.createElement('span'); t.className='txt'; t.textContent=l.name+' · '+what+(l.pending?' (waiting to confirm)':'');
+    const x=document.createElement('button'); x.type='button'; x.className='x'; x.textContent='Unpair'; x.setAttribute('aria-label','Unpair '+l.name);
+    x.onclick=()=>{if(!confirm('Unpair '+l.name+'?'))return;if(!l.pending)frSend(l,{type:'bye'}).catch(()=>{});fr.links=fr.links.filter(k=>k.id!==l.id);saveFr();rmRender()};
+    li.append(t,x); ul.appendChild(li);
+  });
+  try{updateSubs()}catch(e){}
 }
 setTimeout(frBoot,0);
 
@@ -2505,7 +2742,8 @@ function updateSubs(){
   const m=surfData.malibu; set('surf',m&&m.quality?'Malibu, '+String(m.quality).toLowerCase()+(m.height?', '+m.height:''):'Malibu and Venice');
   let c='Google Calendar'; if(calEvents){const now=new Date(),ev=calEvents.find(e=>!e.allDay&&e.end>now);c=ev?'Next: '+ev.title:'Nothing coming up'} set('calendar',c);
   set('news',newsData&&newsData.sections[news.section]?(newsData.sections[news.section].name==='Top stories'?'BBC top stories':'BBC '+newsData.sections[news.section].name.toLowerCase()):'BBC headlines');
-  set('friends',frQueue().length?frQueue().length+' waiting':fr.links.some(l=>!l.pending)?fr.links.filter(l=>!l.pending).length+' connected':'Message a friend\'s board');
+  {const tv=rmTvs().find(l=>!l.pending),n=rmPhones().length;set('remote',tv?'Controlling '+tv.name:n?n+' phone'+(n>1?'s':'')+' paired':'Control your TV')}
+  set('friends',frQueue().length?frQueue().length+' waiting':fr.links.some(l=>!l.pending&&!l.kind)?fr.links.filter(l=>!l.pending&&!l.kind).length+' connected':'Message a friend\'s board');
   set('schedule',schedOn?'Next: '+schedNextLabel():'Tap to run');
 }
 setInterval(()=>{try{updateSubs()}catch(e){}},20000);
@@ -2576,7 +2814,7 @@ $('board').addEventListener('dblclick',()=>{document.body.classList.contains('fs
 document.addEventListener('keydown',e=>{if(!keysOn||e.target===msg||['SELECT','INPUT'].includes(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='h'||e.key==='H')document.body.classList.toggle('kiosk');else if(e.key==='s')stepStyle(1);else if(e.key==='S')stepStyle(-1)});
 
 // Mode cards: tap to open a mode's settings; live modes also go up on the board right away
-const PANES=['message','saved','clock','news','art','friends','schedule','style'];
+const PANES=['message','saved','clock','news','art','remote','friends','schedule','style'];
 const CARDS=[...document.querySelectorAll('.card')];
 let lastCard=store.get('fb.card','message');
 function openTab(id){

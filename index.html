@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ciao Board</title>
-<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, 21 modern, vintage, transit and Japanese styles, and real flap sounds.">
+<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, 26 styles from around the world, and real flap sounds.">
 <meta name="theme-color" content="#16130f">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ciao Board">
 <meta property="og:title" content="Ciao Board">
-<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, 21 styles and real flap sounds.">
+<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, 26 styles and real flap sounds.">
 <meta property="og:url" content="https://nancy-rink.github.io/Ciao-board/">
 <meta property="og:image" content="https://nancy-rink.github.io/Ciao-board/assets/preview.png">
 <meta property="og:image:width" content="1200">
@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&display=swap">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
@@ -278,7 +278,65 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
   --wall:#2b1a12; --ui:#f3e8d6; --muted:#c4ab8c; --line:#4a3122; --panel:#331f15; --panel-2:#3d271b;
   --accent:#d8b25a; --accent-ink:#2a1a08; --ok:#8fc47a; --warn:#ff9a85;
 }
-[data-style="metropolitana"] .t,[data-style="standard"] .t,[data-style="doublearrow"] .t,[data-style="ulm"] .t,[data-style="olympia"] .t,[data-style="jetage"] .t,[data-style="patapata"] .t,[data-style="ekimei"] .t,[data-style="caslon"] .t,[data-style="dangan"] .t,[data-style="butterfly"] .t{font-weight:var(--tile-w,600)}
+/* Latin America */
+[data-style="metro"]{
+  --frame:#2a2a2a; --frame-edge:#3a3a3a; --frame-r:2cqw; --bevel:inset 0 0 0 .6cqw #e6007e;
+  --tile:#c4006b; --tile-hi:#d4007a; --ink:#ffffff; --seam:#00000040; --flap-r:.6cqw;
+  --c-r:#e6007e; --c-o:#f39200; --c-y:#ffcc00; --c-g:#00a651; --c-b:#0072bc;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:800; --tile-size:2.95cqw;
+  --wall:#1a1418; --ui:#f6eef3; --muted:#b9a7b2; --line:#3a2d35; --panel:#211a1f; --panel-2:#2b2228;
+  --accent:#ff4fa8; --accent-ink:#1a0510; --ok:#4fc06e; --warn:#ff8a7d;
+}
+[data-style="mexico68"]{
+  --frame:#111111; --frame-edge:#111111; --frame-r:4px; --frame-pad:3cqw;
+  --tile:#fafafa; --tile-hi:#ffffff; --ink:#111111; --seam:#d0d0d0; --c-w:#111111;
+  --c-r:#e6007e; --c-o:#ff6a13; --c-y:#ffd100; --c-g:#00a651; --c-b:#00a3e0; --c-v:#7a2a90;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:800; --tile-stretch:112%; --tile-size:2.8cqw;
+  --wall:#f2f2f0; --ui:#111111; --muted:#555555; --line:#d6d6d2; --panel:#fafaf8; --panel-2:#ececea;
+  --accent:#c4006b; --accent-ink:#ffffff; --ok:#1d7a3c; --warn:#b3261e; color-scheme:light;
+}
+[data-style="filete"]{
+  --frame:#0f0d0c; --frame-edge:#0f0d0c; --frame-r:1.2cqw; --frame-pad:3.2cqw;
+  --bevel:inset 0 0 0 .45cqw #c8102e,inset 0 0 0 .9cqw #0f0d0c,inset 0 0 0 1.25cqw #d4a017,inset 0 0 0 1.7cqw #0f0d0c,inset 0 0 0 1.95cqw #1f8a4c;
+  --tile:#1a1715; --tile-hi:#221e1b; --ink:#f2c14e; --seam:#000;
+  --c-r:#c8102e; --c-y:#d4a017; --c-g:#1f8a4c; --c-w:#f4ead2;
+  --f-tile:"Playfair Display",Georgia,serif; --tile-w:800; --tile-size:2.8cqw; --flap-r:.35cqw;
+  --wall:#0c0a09; --ui:#f4ead2; --muted:#b8a98a; --line:#2e2620; --panel:#15110f; --panel-2:#1e1916;
+  --accent:#f2c14e; --accent-ink:#1a1205; --ok:#5cc98a; --warn:#ff8a7d;
+}
+[data-style="calcadao"]{
+  --frame:#141414; --frame-edge:#141414; --frame-r:1cqw; --frame-pad:3.2cqw;
+  --tile:#f3efe6; --tile-hi:#fbf8f1; --ink:#141414; --seam:#cfc8b8; --c-w:#141414;
+  --c-r:#b33a2b; --c-g:#2f8f6e;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:700; --tile-stretch:95%; --tile-size:2.85cqw;
+  --wall:#efeae0; --ui:#141414; --muted:#5a554c; --line:#d6cfc2; --panel:#f7f4ee; --panel-2:#ebe6dc;
+  --accent:#b33a2b; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="cinetica"]{
+  --frame:#121212; --frame-edge:#121212; --frame-r:4px; --frame-pad:3cqw;
+  --tile:#1a1a1a; --tile-hi:#222222; --ink:#f4f4f0; --seam:#000; --flap-r:1px;
+  --c-r:#e63328; --c-g:#1e9e57; --c-b:#2459b8;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:600; --tile-stretch:75%; --tile-size:3.05cqw;
+  --wall:#0e0e0e; --ui:#f2f2ee; --muted:#a3a39d; --line:#2a2a2a; --panel:#161616; --panel-2:#1f1f1f;
+  --accent:#ff5a4f; --accent-ink:#1a0503; --ok:#3fc27a; --warn:#ff8a7d;
+}
+/* Patterned frames. They apply to the big board (.board) and to the small previews in the style picker (.minib). */
+[data-style="mexico68"].board,[data-style="mexico68"] .board,.minib[data-style="mexico68"]{
+  background:repeating-linear-gradient(90deg,#111111 0 3px,#fafafa 3px 7px)}
+[data-style="calcadao"].board,[data-style="calcadao"] .board,.minib[data-style="calcadao"]{
+  background:radial-gradient(circle at 50% 0,transparent 9px,#141414 10px 15px,transparent 16px) 0 0/32px 20px,
+             radial-gradient(circle at 50% 100%,transparent 9px,#141414 10px 15px,transparent 16px) 16px 10px/32px 20px,#f3efe6}
+[data-style="cinetica"].board,[data-style="cinetica"] .board,.minib[data-style="cinetica"]{
+  background:repeating-linear-gradient(90deg,#e63328 0 2px,#121212 2px 6px,#1e9e57 6px 8px,#121212 8px 12px,#2459b8 12px 14px,#121212 14px 18px)}
+/* A solid backing behind the tiles, so those patterns show only in the frame margin */
+[data-style="mexico68"] .grid{background:#111;padding:.6cqw;border-radius:.4cqw;box-sizing:border-box}
+[data-style="calcadao"] .grid{background:#141414;padding:.6cqw;border-radius:.4cqw;box-sizing:border-box}
+[data-style="cinetica"] .grid{background:#121212;padding:.6cqw;border-radius:.4cqw;box-sizing:border-box}
+.minib[data-style="mexico68"] .g6{background:#111}.minib[data-style="calcadao"] .g6{background:#141414}.minib[data-style="cinetica"] .g6{background:#121212}
+.minib[data-style="mexico68"] .g6,.minib[data-style="calcadao"] .g6,.minib[data-style="cinetica"] .g6{padding:2.4cqw;border-radius:1.5cqw}
+/* Filete's five border rings, sized for the small picker preview */
+.minib[data-style="filete"]{--bevel:inset 0 0 0 1.5px #c8102e,inset 0 0 0 3px #0f0d0c,inset 0 0 0 4.5px #d4a017,inset 0 0 0 6px #0f0d0c,inset 0 0 0 7px #1f8a4c}
+[data-style="metropolitana"] .t,[data-style="standard"] .t,[data-style="doublearrow"] .t,[data-style="ulm"] .t,[data-style="olympia"] .t,[data-style="jetage"] .t,[data-style="patapata"] .t,[data-style="ekimei"] .t,[data-style="caslon"] .t,[data-style="dangan"] .t,[data-style="butterfly"] .t,[data-style="metro"] .t,[data-style="mexico68"] .t,[data-style="filete"] .t,[data-style="calcadao"] .t,[data-style="cinetica"] .t{font-weight:var(--tile-w,600)}
 /* Caslon 101's orange lamp (::before, since ::after carries the glass glare) */
 .board[data-style="caslon"]::before{content:"";position:absolute;top:1cqw;right:2.2cqw;width:1cqw;height:1cqw;border-radius:50%;background:#ff7a2a;box-shadow:0 0 1.2cqw .3cqw #ff7a2a88;pointer-events:none;z-index:5}
 @keyframes gA{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
@@ -528,6 +586,7 @@ body.fs.idle{cursor:none}
     <div class="tray-group"><h3 id="trayVintage">Workshop <span>Old machines with pins and wear</span></h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
     <div class="tray-group"><h3 id="trayTransit">Transit icons <span>Famous station and airport designs</span></h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
     <div class="tray-group"><h3 id="trayJapan">Made in Japan <span>Japanese boards, clocks and design</span></h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
+    <div class="tray-group"><h3 id="trayLatam">Latin America <span>Metro lines, Olympic op art, porteño signs</span></h3><div class="swatches" id="swLatam" role="group" aria-labelledby="trayLatam"></div></div>
     <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
   </section>
 
@@ -999,7 +1058,7 @@ low tide 1:12 pm</textarea>
 (function(){
 const COLS=22, ROWS=6; let TICK=110;
 const COLORS={r:'--c-r',o:'--c-o',y:'--c-y',g:'--c-g',b:'--c-b',v:'--c-v',w:'--c-w'};
-const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
+const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°',...'ÁÉÍÓÚÑÃÕÇÂÊÔÀÜ','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
 const IDX=new Map(CHARS.map((c,i)=>[c,i]));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);
@@ -1038,7 +1097,8 @@ function step(tile){
 
 // Parse + layout
 function tokenize(str){
-  const out=[]; const s=str.toUpperCase(); let i=0;
+  // NFC first, so a letter typed as base + accent mark (as some keyboards do) is one character, then uppercase (é → É)
+  const out=[]; const s=str.normalize('NFC').toUpperCase(); let i=0;
   while(i<s.length){
     const m=s.slice(i).match(/^\{([ROYGBVW])\}/);
     if(m){out.push('{'+m[1].toLowerCase()+'}');i+=3;continue}
@@ -1910,7 +1970,7 @@ const news=Object.assign({section:'top',every:30,count:10},store.get('fb.news',{
 let newsData=null, newsAt=0, newsPages=[], newsIdx=0;
 function saveNews(){store.set('fb.news',news)}
 // Letters the board has no flap for: drop accents, straighten dashes, spell out the pound sign
-function newsClean(t){return t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[\u2013\u2014]/g,'-').replace(/\u2026/g,'...').replace(/£/g,'GBP ').replace(/€/g,'EUR ')}
+function newsClean(t){return [...t.normalize('NFC')].map(ch=>IDX.has(ch.toUpperCase())?ch:ch.normalize('NFD').replace(/[\u0300-\u036f]/g,'')).join('').replace(/[\u2013\u2014]/g,'-').replace(/\u2026/g,'...').replace(/£/g,'GBP ').replace(/€/g,'EUR ')}
 async function newsLoad(force){
   if(!force&&newsData&&Date.now()-newsAt<600000)return newsData;
   const r=await fetch(NEWS_URL,{cache:'no-cache'}); if(!r.ok)throw new Error('HTTP '+r.status);
@@ -2457,7 +2517,12 @@ const BOARD_STYLES=[
   {id:'ekimei',group:'japan',name:'Ekimei',note:'Station name sign: rounded gothic letters, white flaps.'},
   {id:'caslon',group:'japan',name:'Caslon 101',note:'Copal flip clock: serif letters, beige case, orange lamp.'},
   {id:'dangan',group:'japan',name:'Dangan',note:'Bullet train: ivory flaps, blue letters, a rounded nose.'},
-  {id:'butterfly',group:'japan',name:'Butterfly',note:'Sori Yanagi’s stool: plywood flaps, rosewood frame, brass.'}
+  {id:'butterfly',group:'japan',name:'Butterfly',note:'Sori Yanagi’s stool: plywood flaps, rosewood frame, brass.'},
+  {id:'metro',group:'latam',name:'Metro',note:'Mexico City Metro, 1969: line-pink flaps, white letters, soft corners.'},
+  {id:'mexico68',group:'latam',name:'Mexico 68',note:'1968 Olympics: op-art striped frame, white flaps, festive colors.'},
+  {id:'filete',group:'latam',name:'Filete',note:'Buenos Aires filete porteño: gold serif letters, red, gold and green borders.'},
+  {id:'calcadao',group:'latam',name:'Calçadão',note:'Copacabana promenade: a black-and-white wave frame, sand-white flaps.'},
+  {id:'cinetica',group:'latam',name:'Cinética',note:'Venezuelan kinetic art: fine red, green and blue rods around a black board.'}
 ];
 let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
 // Day plan times that used a retired style keep the current style instead
@@ -2498,7 +2563,7 @@ function miniTile(c){
     b.append(mb,nm);
     b.onclick=()=>{applyStyle(s.id);previewStyle(null);noteFor(s.id,true)};
     b.onmouseenter=()=>{previewStyle(s.id);noteFor(s.id)}; b.onfocus=()=>{previewStyle(s.id);noteFor(s.id)};
-    $({modern:'swModern',vintage:'swVintage',transit:'swTransit',japan:'swJapan'}[s.group]||'swModern').appendChild(b);
+    $({modern:'swModern',vintage:'swVintage',transit:'swTransit',japan:'swJapan',latam:'swLatam'}[s.group]||'swModern').appendChild(b);
   });
 })();
 // Hovering or focusing a swatch previews it on the board only; tapping keeps it

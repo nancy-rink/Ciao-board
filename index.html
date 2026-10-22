@@ -378,7 +378,8 @@ ul.list li.hint{display:block}
 /* Style gallery */
 .tray{display:flex;flex-direction:column;gap:16px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);animation:paneIn .18s ease-out}
 .tray-group{display:flex;flex-direction:column;gap:8px;min-width:0}
-.tray h3{margin:0;font-size:13px;font-weight:600;color:var(--muted)}
+.tray h3{margin:0;font-size:13px;font-weight:600;color:var(--ui)}
+.tray h3 span{font-weight:400;color:var(--muted);margin-left:6px}
 .swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.swatches{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.swatch{flex:0 0 148px;scroll-snap-align:start}}
 .swatch{position:relative;display:flex;flex-direction:column;gap:8px;padding:8px 8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);text-align:left;color:var(--ui);min-width:0}
@@ -504,10 +505,10 @@ body.fs.idle{cursor:none}
   </div>
 
   <section class="tray" id="styleTray" aria-label="Board styles" hidden>
-    <div class="tray-group"><h3 id="trayModern">Modern</h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
-    <div class="tray-group"><h3 id="trayVintage">Vintage</h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
-    <div class="tray-group"><h3 id="trayTransit">Stations and airports</h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
-    <div class="tray-group"><h3 id="trayJapan">Japanese design</h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
+    <div class="tray-group"><h3 id="trayModern">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
+    <div class="tray-group"><h3 id="trayVintage">Workshop <span>Old machines with pins and wear</span></h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
+    <div class="tray-group"><h3 id="trayTransit">Transit icons <span>Famous station and airport designs</span></h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
+    <div class="tray-group"><h3 id="trayJapan">Made in Japan <span>Japanese boards, clocks and design</span></h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
     <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
   </section>
 

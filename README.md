@@ -14,7 +14,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **News** — BBC headlines (top stories, world, UK, business, technology, science or sport), one at a time.
 - **Friends** — connect with a friend's board (you both have to agree) and send each other messages; the board asks before showing one.
 - **Day plan** — change what the board shows, and its style, at set times through the day.
-- **21 styles** — modern (Classic, Daylight, Rail, Harbor, Glow, Mint), vintage (Solari, Cifra clock, Worn, Euro rail), stations and airports (Metropolitana, Standard, Double Arrow, Ulm, Olympia 72, Jet Age) and Japanese design (Patapata, Ekimei, Caslon 101, Dangan, Butterfly).
+- **21 styles** in four groups: Everyday (Classic, Daylight, Rail, Harbor, Glow, Mint), Workshop (Solari, Cifra clock, Worn, Euro rail), Transit icons (Metropolitana, Standard, Double Arrow, Ulm, Olympia 72, Jet Age) and Made in Japan (Patapata, Ekimei, Caslon 101, Dangan, Butterfly).
 - **Animation** — realistic flaps that settle with a bounce, seven flip patterns (left to right, row by row, diagonal, center out, edges in, random, all at once), raised tiles with optional glass glare, and a choice of frames (brushed metal, walnut, matte black, white).
 - **Sound** — a modelled mechanical flap with left-to-right stereo, a dozen other click styles, finish chimes, or upload your own recording.
 - **Full screen** — fills a TV, tablet or monitor and keeps the screen awake.

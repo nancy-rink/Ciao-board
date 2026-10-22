@@ -61,7 +61,7 @@ If the TV stops answering (it was switched off, or its browser data was cleared)
 
 Messages travel through [ntfy.sh](https://ntfy.sh), a free public relay, so there's nothing to set up. Each board listens on its own random inbox. An invite code lets one friend find your board; when they accept, the two boards run a key exchange, and from then on every message is encrypted with a key only those two boards hold. The relay never sees what's written, and a board ignores anything not encrypted by a connected friend. Share invite codes only with the person you're connecting with.
 
-ntfy.sh keeps messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
+ntfy.sh's free tier allows 250 messages a day per internet connection, shared by every board and phone at home. A tap on the remote uses about two, so a very busy day can use them up; the board then says so, and the allowance refills through the day. ntfy.sh keeps messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
 
 ## License
 

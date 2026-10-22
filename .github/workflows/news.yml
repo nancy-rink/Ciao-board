@@ -1,0 +1,37 @@
+# Fetches BBC headlines every 20 minutes and publishes them as news.json on the
+# news-data branch, where the board reads them (raw.githubusercontent.com allows
+# browser requests; BBC's own feeds don't). The branch is overwritten each run,
+# so it never builds up history.
+name: Update BBC headlines
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: news
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch headlines
+        run: python3 scripts/fetch_news.py "$RUNNER_TEMP/news.json"
+      - name: Publish to news-data branch
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP"
+          mkdir site && mv news.json site/ && cd site
+          git init -q -b news-data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          git commit -q -m "Update BBC headlines"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" news-data

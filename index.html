@@ -357,8 +357,7 @@ body:not(.fs) #tapSound{display:none}
 .setbtn.on{border-color:var(--accent);color:var(--accent)}
 /* Mode cards */
 .card[hidden]{display:none}
-.modecards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0}
-@media (max-width:900px){.modecards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.modecards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;padding:0}
 @media (max-width:560px){.modecards{display:flex;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}.modecards::-webkit-scrollbar{display:none}.modecards .card{flex:0 0 40%;scroll-snap-align:start}}
 .card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px 11px;border-radius:9px;background:var(--panel-2);border:1px solid var(--line);color:var(--ui);min-width:0}
 .card:hover{border-color:var(--muted)}
@@ -445,6 +444,7 @@ body.fs.idle{cursor:none}
       <button class="card" hidden role="tab" data-tab="weather" id="tab-weather" aria-controls="pane-weather" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Weather</span><span class="sub" data-sub="weather">AccuWeather</span><span class="onb">On board</span></button>
       <button class="card" hidden role="tab" data-tab="surf" id="tab-surf" aria-controls="pane-surf" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Surf</span><span class="sub" data-sub="surf">Malibu and Venice</span><span class="onb">On board</span></button>
       <button class="card" hidden role="tab" data-tab="calendar" id="tab-calendar" aria-controls="pane-calendar" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">Calendar</span><span class="sub" data-sub="calendar">Google Calendar</span><span class="onb">On board</span></button>
+      <button class="card" role="tab" data-tab="news" id="tab-news" aria-controls="pane-news" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">News</span><span class="sub" data-sub="news">BBC headlines</span><span class="onb">On board</span></button>
       <button class="card" role="tab" data-tab="schedule" id="tab-schedule" aria-controls="pane-schedule" type="button"><i class="flap" style="--fc:var(--c-v)"></i><span class="nm">Day plan</span><span class="sub" data-sub="schedule">Tap to run</span><span class="onb">Running</span></button>
     </div>
 
@@ -643,6 +643,28 @@ low tide 1:12 pm</textarea>
             <button id="cdAdd" type="button">Add</button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-news" aria-labelledby="tab-news" hidden>
+      <div class="pane-head">
+        <div><h2>News</h2><p class="sub" id="newsStatus">Headlines from BBC News, refreshed every 20 minutes.</p></div>
+        <button class="go primary" id="newsBtn" type="button"><span class="when-off">Show news</span><span class="when-on">Stop news</span></button>
+      </div>
+      <div class="fields">
+        <label class="field" for="newsSection"><span>Section</span>
+          <select id="newsSection">
+            <option value="top">Top stories</option><option value="world">World</option><option value="uk">UK</option>
+            <option value="business">Business</option><option value="technology">Technology</option><option value="science">Science</option>
+            <option value="sport">Sport</option>
+          </select>
+        </label>
+        <label class="field" for="newsEvery"><span>Next headline every</span>
+          <select id="newsEvery"><option value="15">15 sec</option><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
+        </label>
+        <label class="field" for="newsCount"><span>Headlines</span>
+          <select id="newsCount"><option value="5">Top 5</option><option value="10">Top 10</option><option value="15">Top 15</option></select>
+        </label>
       </div>
     </section>
 
@@ -923,9 +945,9 @@ function loop(ts){
   if(tiles.some(t=>t.cur!==t.target)){requestAnimationFrame(loop)}
   else{busy=false;last=0;acc=0;setStatus('Showing');if(movedThisRun)landed();movedThisRun=false;speakBoard()}
 }
-const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar'};
+const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar',news:'news'};
 let schedDriving=false, schedOn=false;
-const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar'};
+const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar',news:'BBC headlines'};
 const COLOR_WORD={r:'red',o:'orange',y:'yellow',g:'green',b:'blue',v:'violet',w:'white'};
 let lastSpoken='';
 function speakBoard(){
@@ -1220,7 +1242,7 @@ renderSaved();
 
 // Modes
 let mode='', timer=null, rotIdx=0, lastClock='';
-function stopModes(){clearInterval(timer);timer=null;mode='';store.set('fb.mode','');$('rotateBtn').classList.remove('on');$('clockBtn').classList.remove('on');const wb=document.getElementById('wxBtn');if(wb)wb.classList.remove('on');const sb=document.getElementById('surfBtn');if(sb)sb.classList.remove('on');const cb=document.getElementById('calBtn');if(cb)cb.classList.remove('on');if(typeof calStop==='function')calStop();if(!schedDriving&&typeof schedOff==='function')schedOff();setStatus(busy?'Flipping':'Showing')}
+function stopModes(){clearInterval(timer);timer=null;mode='';store.set('fb.mode','');$('rotateBtn').classList.remove('on');$('clockBtn').classList.remove('on');const wb=document.getElementById('wxBtn');if(wb)wb.classList.remove('on');const sb=document.getElementById('surfBtn');if(sb)sb.classList.remove('on');const cb=document.getElementById('calBtn');if(cb)cb.classList.remove('on');$('newsBtn').classList.remove('on');if(typeof calStop==='function')calStop();if(!schedDriving&&typeof schedOff==='function')schedOff();setStatus(busy?'Flipping':'Showing')}
 $('rotateBtn').onclick=()=>{
   if(mode==='rotating'){stopModes();return}
   if(!saved.length)return;
@@ -1655,8 +1677,66 @@ $('cdAdd').onclick=()=>{
 };
 renderCal();
 
+// News: BBC headlines. BBC feeds block browser requests, so a GitHub Action (.github/workflows/news.yml) copies them to news.json on the news-data branch every 20 minutes
+const NEWS_URL='https://raw.githubusercontent.com/nancy-rink/Ciao-board/news-data/news.json';
+const NEWS_HEAD={top:'BBC NEWS',world:'BBC WORLD',uk:'BBC UK',business:'BBC BUSINESS',technology:'BBC TECH',science:'BBC SCIENCE',sport:'BBC SPORT'};
+const news=Object.assign({section:'top',every:30,count:10},store.get('fb.news',{}));
+let newsData=null, newsAt=0, newsPages=[], newsIdx=0;
+function saveNews(){store.set('fb.news',news)}
+// Letters the board has no flap for: drop accents, straighten dashes, spell out the pound sign
+function newsClean(t){return t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[\u2013\u2014]/g,'-').replace(/\u2026/g,'...').replace(/£/g,'GBP ').replace(/€/g,'EUR ')}
+async function newsLoad(force){
+  if(!force&&newsData&&Date.now()-newsAt<600000)return newsData;
+  const r=await fetch(NEWS_URL,{cache:'no-cache'}); if(!r.ok)throw new Error('HTTP '+r.status);
+  newsData=await r.json(); newsAt=Date.now(); return newsData;
+}
+// One page per headline; a headline too long for five rows runs over several pages
+function newsBuild(){
+  const sec=newsData&&(newsData.sections[news.section]||newsData.sections.top); newsPages=[];
+  if(!sec)return;
+  const head='{r} '+(NEWS_HEAD[news.section]||'BBC NEWS')+' {r}';
+  sec.items.slice(0,news.count).forEach(h=>{
+    const lines=layout(newsClean(h)).map(l=>l.join(''));
+    const n=Math.ceil(lines.length/5);
+    for(let i=0;i<lines.length;i+=5){
+      const part=lines.slice(i,i+5);
+      newsPages.push(head+(n>1?' '+(i/5+1)+'/'+n:'')+(part.length<=3&&n===1?'\n\n':'\n')+part.join('\n'));
+    }
+  });
+}
+function newsSetStatus(t){$('newsStatus').textContent=t}
+function newsAgo(){
+  const u=newsData&&Date.parse(newsData.updated); if(!u)return'';
+  const m=Math.round((Date.now()-u)/60000);
+  return m<2?'just now':m<90?m+' min ago':Math.round(m/60)+' hours ago';
+}
+async function newsNext(){
+  try{
+    const stale=!newsData||Date.now()-newsAt>=600000;
+    await newsLoad();
+    if(mode!=='news')return;
+    if(stale||!newsPages.length){newsBuild();if(newsIdx>=newsPages.length)newsIdx=0}
+    if(!newsPages.length)throw new Error('empty');
+    send(newsPages[newsIdx%newsPages.length]); newsIdx=(newsIdx+1)%newsPages.length;
+    newsSetStatus('Headlines from BBC News, updated '+newsAgo()+'.');
+  }catch(e){
+    if(mode!=='news')return;
+    newsSetStatus('Couldn\'t load BBC headlines. Check the internet connection; the board will try again.');
+    if(!newsPages.length)send('{r} BBC NEWS {r}\n\nCOULDN\'T LOAD\nHEADLINES');
+  }
+  try{updateSubs()}catch(e){}
+}
+function startNews(){
+  stopModes(); mode='news'; store.set('fb.mode','news'); $('newsBtn').classList.add('on'); setStatus(busy?'Flipping':'Showing');
+  newsIdx=0; newsPages=[]; newsNext();
+  timer=setInterval(newsNext,news.every*1000);
+}
+$('newsBtn').onclick=()=>{if(mode==='news')stopModes();else startNews()};
+$('newsSection').value=news.section; $('newsEvery').value=String(news.every); $('newsCount').value=String(news.count);
+[['newsSection','section'],['newsEvery','every'],['newsCount','count']].forEach(([id,k])=>{$(id).onchange=()=>{news[k]=k==='section'?$(id).value:+$(id).value;saveNews();startNews()}});
+
 // Day plan: what the board shows, and its style, by time of day
-const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages']];
+const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines']];
 const sched=Object.assign({on:false,slots:[
   {t:'06:30',show:'message',text:'{y} DAWN PATROL {y}\nMALIBU 3-4 FT FAIR\nOFFSHORE TILL 10',style:'daylight'},
   {t:'08:00',show:'clock',text:'',style:'keep'},
@@ -1691,6 +1771,7 @@ function schedApply(){
     else if(s.show==='clock')startClock();
     else if(s.show==='weather')startWeather();
     else if(s.show==='surf')startSurf();
+    else if(s.show==='news'){if(mode!=='news')startNews()}
     else if(s.show==='saved'){if(mode!=='rotating'){mode='';$('rotateBtn').click()}}
   }finally{schedDriving=false}
   setStatus(busy?'Flipping':'Showing');
@@ -1746,7 +1827,7 @@ sortSlots();
 function schedNextLabel(){
   const i=currentSlotIdx(); if(i<0)return '';
   const n=sched.slots[(i+1)%sched.slots.length];
-  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages'};
+  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages',news:'News'};
   return (SHORT[n.show]||n.show)+' at '+fmtSlotTime(n.t).replace(':00','');
 }
 function updateSubs(){
@@ -1756,6 +1837,7 @@ function updateSubs(){
   set('weather',wx.cities.length?wx.cities[0].name.split(',')[0]+(wx.cities.length>1?' +'+(wx.cities.length-1):''):'Add a city');
   const m=surfData.malibu; set('surf',m&&m.quality?'Malibu, '+String(m.quality).toLowerCase()+(m.height?', '+m.height:''):'Malibu and Venice');
   let c='Google Calendar'; if(calEvents){const now=new Date(),ev=calEvents.find(e=>!e.allDay&&e.end>now);c=ev?'Next: '+ev.title:'Nothing coming up'} set('calendar',c);
+  set('news',newsData&&newsData.sections[news.section]?(newsData.sections[news.section].name==='Top stories'?'BBC top stories':'BBC '+newsData.sections[news.section].name.toLowerCase()):'BBC headlines');
   set('schedule',schedOn?'Next: '+schedNextLabel():'Tap to run');
 }
 setInterval(()=>{try{updateSubs()}catch(e){}},20000);
@@ -1814,7 +1896,7 @@ $('board').addEventListener('dblclick',()=>{document.body.classList.contains('fs
 document.addEventListener('keydown',e=>{if(!keysOn||e.target===msg||['SELECT','INPUT'].includes(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='h'||e.key==='H')document.body.classList.toggle('kiosk');else if(e.key==='s')stepStyle(1);else if(e.key==='S')stepStyle(-1)});
 
 // Mode cards: tap to open a mode's settings; live modes also go up on the board right away
-const PANES=['message','saved','clock','schedule','style'];
+const PANES=['message','saved','clock','news','schedule','style'];
 const CARDS=[...document.querySelectorAll('.card')];
 let lastCard=store.get('fb.card','message');
 function openTab(id){
@@ -1825,7 +1907,7 @@ function openTab(id){
   if(id!=='style'){lastCard=id;store.set('fb.card',id)}
   store.set('fb.tab',id);
 }
-const START={clock:()=>{if(mode!=='clock')startClock()},weather:()=>{if(mode!=='weather')startWeather()},surf:()=>{if(mode!=='surf')startSurf()},calendar:()=>{if(mode!=='calendar')startCalendar()},schedule:()=>{if(!schedOn)startSchedule()}};
+const START={clock:()=>{if(mode!=='clock')startClock()},weather:()=>{if(mode!=='weather')startWeather()},surf:()=>{if(mode!=='surf')startSurf()},calendar:()=>{if(mode!=='calendar')startCalendar()},news:()=>{if(mode!=='news')startNews()},schedule:()=>{if(!schedOn)startSchedule()}};
 CARDS.forEach((b,i)=>{
   b.onclick=()=>{openTab(b.dataset.tab);if(START[b.dataset.tab])START[b.dataset.tab]()};
   b.onkeydown=e=>{const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();const n=CARDS[(i+d+CARDS.length)%CARDS.length];openTab(n.dataset.tab);n.focus()};
@@ -1903,7 +1985,7 @@ renderSlots();
 // Start: blank board, then flip in the current message
 tiles.forEach(t=>{paint(t.u,0);paint(t.d,0)});
 updateCount();
-setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
+setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='news')startNews();else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
 })();
 </script>
 

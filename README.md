@@ -12,6 +12,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Saved** — keep a list of messages and rotate through them.
 - **Clock** — time and date, with 12/24-hour, a second city, borders and accent tiles.
 - **News** — BBC headlines (top stories, world, UK, business, technology, science or sport), one at a time.
+- **Friends** — connect with a friend's board (you both have to agree) and send each other messages; the board asks before showing one.
 - **Day plan** — change what the board shows, and its style, at set times through the day.
 - **14 styles** — Classic, Departures, Daylight, Rail, Harbor, Glow, Neon, Mint, plus vintage Solari, Cifra clock, Worn, Game show, Euro rail and Brass.
 - **Animation** — realistic flaps that settle with a bounce, seven flip patterns (left to right, row by row, diagonal, center out, edges in, random, all at once), raised tiles with optional glass glare, and a choice of frames (brushed metal, walnut, matte black, white).
@@ -38,6 +39,12 @@ The whole board is one file, `index.html`, plus icons and preview images in `ass
 If you host it somewhere else, change the two `og:` links near the top of `index.html` to your own address so link previews keep working.
 
 BBC's feeds can't be read straight from a web page, so a GitHub Action (`.github/workflows/news.yml`) fetches the headlines every 20 minutes and saves them to the `news-data` branch, where the board picks them up. In your own copy, change `NEWS_URL` in `index.html` to point at your repository. GitHub pauses scheduled Actions after 60 days without any commits; re-enable it on the **Actions** tab if headlines stop updating.
+
+## How Friends works
+
+Messages travel through [ntfy.sh](https://ntfy.sh), a free public relay, so there's nothing to set up. Each board listens on its own random inbox. An invite code lets one friend find your board; when they accept, the two boards run a key exchange, and from then on every message is encrypted with a key only those two boards hold. The relay never sees what's written, and a board ignores anything not encrypted by a connected friend. Share invite codes only with the person you're connecting with.
+
+ntfy.sh keeps messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
 
 ## License
 

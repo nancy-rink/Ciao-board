@@ -169,6 +169,14 @@ body.real .g.b.land{animation:gLandB calc(var(--dur) * 2.6) linear var(--dur) bo
 /* Idle twitch: the top flap lifts a little and drops back with a small bounce */
 .t.twitch .h.u{transform-origin:50% 100%;animation:twitch .7s cubic-bezier(.3,.7,.4,1)}
 @keyframes twitch{0%{transform:rotateX(0)}22%{transform:rotateX(-28deg)}48%{transform:rotateX(6deg)}66%{transform:rotateX(-8deg)}82%{transform:rotateX(2deg)}100%{transform:rotateX(0)}}
+/* Smooth mode: keep the flap motion, drop the effects that cost the most to draw on slow screens */
+body.lite .t,body.lite .h.u,body.lite .h.d,body.lite .g{box-shadow:none!important}
+body.lite .board::after,body.lite .t::before,body.lite .f::before,body.lite .g::before,body.lite .f::after,body.lite .g::after{display:none}
+body.lite .t span{text-shadow:none}
+body.lite .t{contain:layout paint style}
+body.lite .f.a,body.lite .f.b{animation-timing-function:ease-in}
+body.lite .g.a,body.lite .g.a.land{animation:gA var(--dur) ease-out var(--dur) both}
+body.lite .g.b,body.lite .g.b.land{animation:gB var(--dur) ease-out var(--dur) both}
 /* Depth: tiles sit proud of the frame, shaded toward the split, with soft glare across the glass */
 body.depth .t{border-radius:var(--flap-r,2px);box-shadow:0 .22cqw .3cqw -.08cqw #0009}
 body.depth .h.u{box-shadow:inset 0 -.4cqw .35cqw -.25cqw #0005,inset 0 1px 0 #ffffff12}
@@ -973,6 +981,20 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
             <div class="field"><span>Art</span><div class="row" style="flex-wrap:nowrap"><select id="rmArt" aria-label="Picture"></select><button id="rmArtGo" type="button">Show</button></div></div>
             <label class="field" for="rmStyle"><span>TV style</span><select id="rmStyle"><option value="">Choose a style</option></select></label>
           </div>
+          <h3 class="fr-h">TV sound</h3>
+          <div class="fields">
+            <div class="field"><span>Sound</span><button id="rmSndOn" type="button" aria-pressed="false">Sound off</button></div>
+            <label class="field" for="rmVol"><span>Volume</span><span class="slider"><input type="range" id="rmVol" min="0" max="1" step="0.05" value="0.7"><span id="rmVolOut" class="num">70%</span></span></label>
+            <label class="field" for="rmSndStyle"><span>Flap sound</span><select id="rmSndStyle"></select></label>
+            <label class="field" for="rmChime"><span>Finish chime</span><select id="rmChime"></select></label>
+            <div class="field"><span>Check it</span><button id="rmSndTest" type="button">Play a test on the TV</button></div>
+            <p class="hint field wide" id="rmSndNote"></p>
+          </div>
+          <h3 class="fr-h">TV picture</h3>
+          <div class="fields">
+            <label class="field" for="rmPerf"><span>Animation</span><select id="rmPerf"><option value="auto">Automatic</option><option value="smooth">Smooth (lighter effects)</option><option value="best">Best quality</option></select></label>
+            <p class="hint field wide">If flips look jerky on the TV, choose Smooth.</p>
+          </div>
         </div>
         <h3 class="fr-h">Pair with a TV</h3>
         <p class="hint">On the TV, open Ciao Board and choose <b>Pair a phone</b> (on the start screen, or in Remote). Scan the QR code with this phone's camera, or type the code here.</p>
@@ -1115,6 +1137,14 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
               <option value="together">All at once</option>
             </select>
           </label>
+          <label class="field" for="anim-perf"><span>Performance</span>
+            <select id="anim-perf">
+              <option value="auto">Automatic</option>
+              <option value="smooth">Smooth (lighter effects)</option>
+              <option value="best">Best quality</option>
+            </select>
+          </label>
+          <p class="hint field wide" id="perfNote"></p>
           <label class="field" for="anim-motion"><span>Flap motion</span>
             <select id="anim-motion">
               <option value="real">Realistic</option>
@@ -1243,7 +1273,9 @@ function paint(face,idx){
 }
 function step(tile){
   // Direct tiles (art animations) go straight to their target in one flap; everything else steps through the alphabet like a real board
-  const old=tile.cur; tile.cur=tile.direct?tile.target:(tile.cur+1)%CHARS.length;
+  // In Smooth mode a long run skips ahead, so no tile takes more than about 8 flaps to arrive
+  const old=tile.cur, left=(tile.target-tile.cur+CHARS.length)%CHARS.length;
+  tile.cur=tile.direct?tile.target:(tile.cur+(liteNow&&left>8?Math.ceil(left/8):1))%CHARS.length;
   paint(tile.u,tile.cur);
   if(reduce){paint(tile.d,tile.cur);return}
   paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);
@@ -1309,12 +1341,19 @@ const PATTERNS={
   random:()=>Math.random()*12,
   together:()=>0
 };
-const anim=Object.assign({pattern:'wave',motion:'real',finish:'depth',frame:'style',restyle:'flip',boot:true,idle:true},store.get('fb.anim',{}));
+const anim=Object.assign({pattern:'wave',motion:'real',finish:'depth',frame:'style',restyle:'flip',boot:true,idle:true,perf:'auto'},store.get('fb.anim',{}));
+// Smooth mode drops the costly extras (shadows, glare, shading layers, the bounce, style flip-ins, twitches) for TVs and other slow screens.
+// Automatic turns it on in TV mode, or once the board measures that flips run slowly on this screen.
+const tvParam=new URLSearchParams(location.search).has('tv');
+let perfSlow=store.get('fb.perfSlow',false);
+const lite=()=>anim.perf==='smooth'||(anim.perf==='auto'&&(tvParam||perfSlow));
+let liteNow=false; // cached for the flip loop
 function applyAnim(){
   const b=document.body.classList;
-  b.toggle('real',anim.motion==='real'); b.toggle('depth',anim.finish!=='flat'); b.toggle('glare',anim.finish==='glare');
+  b.toggle('real',anim.motion==='real'); b.toggle('depth',anim.finish!=='flat'); b.toggle('glare',anim.finish==='glare'); liteNow=lite(); b.toggle('lite',liteNow);
   if(anim.frame==='style')delete document.body.dataset.frame; else document.body.dataset.frame=anim.frame;
-  ['pattern','motion','finish','frame','restyle'].forEach(k=>{const el=$('anim-'+k);if(el)el.value=anim[k]});
+  ['pattern','motion','finish','frame','restyle','perf'].forEach(k=>{const el=$('anim-'+k);if(el)el.value=anim[k]});
+  const pn=$('perfNote'); if(pn)pn.textContent=anim.perf!=='auto'?'':lite()?(tvParam?'Smooth mode is on, because this is TV mode.':'Smooth mode is on, because flips were running slowly on this screen.'):'Best quality is on. The board switches to Smooth by itself if flips run slowly.';
   ['boot','idle'].forEach(k=>{const el=$('anim-'+k);if(el)el.checked=!!anim[k]});
   store.set('fb.anim',anim);
 }
@@ -1323,7 +1362,7 @@ let restyleT=[];
 function restyleCascade(from){
   restyleT.forEach(clearTimeout); restyleT=[];
   tiles.forEach(t=>{t.el.removeAttribute('data-style');t.el.classList.remove('restyle')});
-  if(reduce||anim.restyle!=='flip'||!from||from===styleId)return;
+  if(reduce||anim.restyle!=='flip'||lite()||!from||from===styleId)return;
   const p=PATTERNS[anim.pattern]||PATTERNS.wave, half=Math.max(60,Math.round(TICK*0.6)), groups=new Map();
   tiles.forEach(t=>{
     t.el.dataset.style=from;
@@ -1340,7 +1379,7 @@ function restyleCascade(from){
 // Now and then a single flap lifts and resettles, so a still board never looks frozen
 setTimeout(function idleTwitch(){
   setTimeout(idleTwitch,35000+Math.random()*85000);
-  if(!anim.idle||reduce||busy||document.hidden||!tiles.length)return;
+  if(!anim.idle||reduce||lite()||busy||document.hidden||!tiles.length)return;
   const t=tiles[Math.random()*tiles.length|0];
   t.el.classList.remove('twitch'); void t.el.offsetWidth; t.el.classList.add('twitch');
   setTimeout(()=>click(1,[t.col]),110);
@@ -1368,7 +1407,19 @@ function send(str,opts){
   setStatus('Flipping');
   if(!busy){busy=true;requestAnimationFrame(loop)}
 }
+// Frame timing while flipping: if most frames come in late on two runs in a row, Automatic switches to Smooth mode
+let perfFrames=0, perfLate=0, perfStrikes=0;
+function perfCheck(){
+  // Two slow runs in a row, so one busy moment doesn't count
+  const slow=perfFrames>=40&&perfLate/perfFrames>.35; perfStrikes=slow?perfStrikes+1:0;
+  if(anim.perf==='auto'&&!lite()&&perfStrikes>=2){
+    perfSlow=true; store.set('fb.perfSlow',true); applyAnim();
+    toast('Switched to Smooth mode so flips run better on this screen. Change it in Settings → Motion.');
+  }
+  perfFrames=perfLate=0;
+}
 function loop(ts){
+  if(last){perfFrames++;if(ts-last>45)perfLate++}
   if(!last)last=ts; acc+=ts-last; last=ts;
   let moving=false, flipped=0; const cols=[];
   while(acc>=TICK){
@@ -1383,7 +1434,7 @@ function loop(ts){
   }
   if(flipped){click(flipped,cols);movedThisRun=true}
   if(tiles.some(t=>t.cur!==t.target)){requestAnimationFrame(loop)}
-  else{busy=false;last=0;acc=0;setStatus('Showing');if(movedThisRun)landed();movedThisRun=false;speakBoard()}
+  else{busy=false;last=0;acc=0;perfCheck();setStatus('Showing');if(movedThisRun)landed();movedThisRun=false;speakBoard()}
 }
 const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar',news:'news',art:'art'};
 let schedDriving=false, schedOn=false;
@@ -1530,7 +1581,7 @@ $('sndStyle').onchange=()=>{snd.style=$('sndStyle').value;saveSnd();preview(5)};
 $('sndRate').onchange=()=>{snd.rate=+$('sndRate').value;saveSnd();preview(5,TICK*snd.rate)};
 $('chimeStyle').onchange=()=>{snd.chime=$('chimeStyle').value;saveSnd();ensureAudio();setTimeout(playChime,60)};
 $('speed').onchange=()=>{snd.speed=$('speed').value;saveSnd();applySpeed()};
-['pattern','motion','finish','frame','restyle'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).value;applyAnim();if(k==='pattern'||k==='motion')replay()}});
+['pattern','motion','finish','frame','restyle','perf'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).value;if(k==='perf'){perfSlow=false;store.set('fb.perfSlow',false)}applyAnim();if(k==='pattern'||k==='motion')replay()}});
 ['boot','idle'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).checked;applyAnim()}});
 applyAnim();
 $('testBtn').onclick=()=>{ensureAudio();setTimeout(()=>{const n=8;for(let i=0;i<n;i++)setTimeout(()=>playClick(10),i*TICK*snd.rate);setTimeout(playChime,n*TICK*snd.rate+200)},60)};
@@ -2247,7 +2298,7 @@ async function frReceive(m){
   }else if(o.type==='cmd'&&link&&!link.pending&&link.kind==='remote'){
     rmRun(link,o);
   }else if(o.type==='state'&&link&&!link.pending&&link.kind==='tv'){
-    link.state={showing:String(o.showing||'').slice(0,80),style:String(o.style||''),plan:!!o.plan,at:Date.now()};
+    link.state={showing:String(o.showing||'').slice(0,80),style:String(o.style||''),plan:!!o.plan,sound:o.sound&&typeof o.sound==='object'?o.sound:null,perf:String(o.perf||'auto'),lite:!!o.lite,at:Date.now()};
   }else if(o.type==='msg'&&link&&!link.pending&&!link.kind&&typeof o.text==='string'){
     fr.waiting.push({key:m.id,id,text:o.text.slice(0,300),sent:(m.time||0)*1000}); fresh=true;
   }else if(o.type==='bye'&&link&&!link.pending){
@@ -2428,7 +2479,8 @@ function rmShowing(){
 }
 function rmState(link){
   const st=BOARD_STYLES.find(x=>x.id===styleId);
-  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,plan:schedOn}).catch(()=>{});
+  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,plan:schedOn,
+    sound:{on:snd.on,vol:snd.vol,style:snd.style,chime:snd.chime,blocked:snd.on&&audioBlocked()},perf:anim.perf,lite:lite()}).catch(()=>{});
 }
 // On the TV: carry out a command from a paired phone, then report back
 function rmRun(link,o){
@@ -2441,6 +2493,15 @@ function rmRun(link,o){
     art:()=>{const a=ART_BY[o.id];if(a)a.frame?startArt(o.id):showArt(o.id)},
     saved:()=>{if(mode!=='rotating'&&saved.length){mode='';$('rotateBtn').click()}},
     plan:()=>{if(o.on)startSchedule();else{schedOff();stopModes()}},
+    sound:()=>{
+      if(typeof o.on==='boolean'&&o.on!==snd.on){snd.on=o.on;if(snd.on)try{ensureAudio()}catch(e){}}
+      if(typeof o.vol==='number'){snd.vol=Math.min(1,Math.max(0,o.vol));if(master)master.gain.value=snd.vol}
+      if(o.style&&[...$('sndStyle').options].some(x=>x.value===o.style&&!x.disabled))snd.style=o.style;
+      if(o.chime&&[...$('chimeStyle').options].some(x=>x.value===o.chime))snd.chime=o.chime;
+      saveSnd(); renderSound(); checkAudio();
+      if(o.test)$('testBtn').click();
+    },
+    perf:()=>{if(['auto','smooth','best'].includes(o.perf)){anim.perf=o.perf;perfSlow=false;store.set('fb.perfSlow',false);applyAnim()}},
     ping:()=>{}
   }[o.action];
   if(!ok)return;
@@ -2530,12 +2591,21 @@ $('rmSaved').onclick=()=>rmCmd({action:'saved'},'The TV is rotating its saved me
 $('rmPlanOn').onclick=()=>rmCmd({action:'plan',on:true},'The TV is running its day plan.');
 $('rmPlanOff').onclick=()=>rmCmd({action:'plan',on:false},'The TV\'s day plan is stopped.');
 $('rmStyle').onchange=()=>{if($('rmStyle').value)rmCmd({action:'style',id:$('rmStyle').value},'Style changed on the TV.')};
+$('rmSndOn').onclick=()=>{const on=$('rmSndOn').getAttribute('aria-pressed')!=='true';rmCmd({action:'sound',on},on?'Sound is on on the TV.':'Sound is off on the TV.')};
+$('rmVol').oninput=()=>{$('rmVolOut').textContent=Math.round($('rmVol').value*100)+'%'};
+$('rmVol').onchange=()=>rmCmd({action:'sound',vol:+$('rmVol').value},'Volume set to '+Math.round($('rmVol').value*100)+'% on the TV.');
+$('rmSndStyle').onchange=()=>rmCmd({action:'sound',style:$('rmSndStyle').value,test:true},'Flap sound changed on the TV.');
+$('rmChime').onchange=()=>rmCmd({action:'sound',chime:$('rmChime').value,test:true},'Chime changed on the TV.');
+$('rmSndTest').onclick=()=>rmCmd({action:'sound',test:true},'Playing a test on the TV.');
+$('rmPerf').onchange=()=>rmCmd({action:'perf',perf:$('rmPerf').value},'Animation setting changed on the TV.');
 $('rmTv').onchange=()=>{rmRender();rmCmd({action:'ping'},'')};
 // Filled at start-up, once the style list and Art pictures (defined further down) exist
 function buildRemote(){
   BOARD_STYLES.forEach(st=>{const o=document.createElement('option');o.value=st.id;o.textContent=st.name;$('rmStyle').appendChild(o)});
   ART.forEach(a=>{const o=document.createElement('option');o.value=a.id;o.textContent=a.name+(a.frame?' (animated)':'');$('rmArt').appendChild(o)});
   $('rmNewsSec').innerHTML=$('newsSection').innerHTML;
+  [...$('sndStyle').options].filter(x=>x.value!=='sample').forEach(x=>{const o=document.createElement('option');o.value=x.value;o.textContent=x.textContent;$('rmSndStyle').appendChild(o)});
+  $('rmChime').innerHTML=$('chimeStyle').innerHTML;
 }
 function rmRender(){
   const tvs=rmTvs(), live=tvs.filter(l=>!l.pending), sel=$('rmTv'), keep=sel.value;
@@ -2545,6 +2615,14 @@ function rmRender(){
   const tv=rmTv(), st=tv&&tv.state;
   $('rmState').textContent=!tv?'':st?'Showing '+st.showing+' · '+st.style+(st.plan?' · day plan running':''):'Asking '+tv.name+' what it\'s showing…';
   if(st){const s=BOARD_STYLES.find(x=>x.name===st.style);$('rmStyle').value=s?s.id:''}
+  const so=st&&st.sound;
+  if(so){
+    $('rmSndOn').setAttribute('aria-pressed',String(!!so.on)); $('rmSndOn').textContent=so.on?'Sound on':'Sound off'; $('rmSndOn').classList.toggle('on',!!so.on);
+    if(document.activeElement!==$('rmVol')){$('rmVol').value=so.vol;$('rmVolOut').textContent=Math.round(so.vol*100)+'%'}
+    if(so.style)$('rmSndStyle').value=so.style; if(so.chime)$('rmChime').value=so.chime;
+  }
+  $('rmSndNote').textContent=so&&so.blocked?'The TV\'s browser is holding the sound back until someone presses a button on the TV. Press OK on the TV remote once.':'';
+  if(st)$('rmPerf').value=st.perf;
   const ul=$('rmList'); ul.innerHTML='';
   const all=[...tvs.map(l=>[l,'TV you control']),...rmPhones().map(l=>[l,'phone that controls this board'])];
   if(!all.length)ul.innerHTML='<li class="hint">Nothing paired yet.</li>';
@@ -2807,6 +2885,7 @@ if(tvMode){
   document.addEventListener('keydown',e=>{
     if(e.key!=='Enter'||!$('tvStart').hidden||e.target!==document.body)return;
     e.preventDefault(); document.body.classList.toggle('fs'); requestAnimationFrame(fitFill);
+    try{ensureAudio();setTimeout(checkAudio,200)}catch(err){} // a button press is what lets the TV's browser play sound
   });
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs'))exitFs()});

@@ -12,7 +12,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Saved** — keep a list of messages and rotate through them.
 - **Clock** — time and date, with 12/24-hour, a second city, borders and accent tiles.
 - **News** — BBC headlines (top stories, world, UK, business, technology, science or sport), one at a time.
-- **Remote** — use your phone as a remote for the board on your TV: send messages, change the style, show the clock, news or art, and start or stop the day plan. Pair once by scanning a QR code on the TV.
+- **Remote** — use your phone as a full-screen remote for the board on your TV: big buttons to send messages, change the style, show the clock, news or art, start or stop the day plan, and control the sound. Pair once by scanning a QR code on the TV.
 - **Friends** — connect with a friend's board (you both have to agree) and send each other messages; the board asks before showing one.
 - **Day plan** — change what the board shows, and its style, at set times through the day.
 - **26 styles** in five groups: Everyday (Classic, Daylight, Rail, Harbor, Glow, Mint), Workshop (Solari, Cifra clock, Worn, Euro rail), Transit icons (Metropolitana, Standard, Double Arrow, Ulm, Olympia 72, Jet Age), Made in Japan (Patapata, Ekimei, Caslon 101, Dangan, Butterfly) and Modernismo (Metro, Mexico 68, Filete, Calçadão, Cinética).
@@ -49,10 +49,11 @@ BBC's feeds can't be read straight from a web page, so a GitHub Action (`.github
 ## Use your phone as a TV remote
 
 1. On the TV, open the board (for example at **is.gd/ciaoboard**) and choose **Pair a phone as a remote** on the start screen. (Or press **OK** for the controls, open **What to show → Remote** and choose **Pair a phone**.)
-2. The board flips to show a pairing code, with a QR code in the corner. Scan the QR code with your phone's camera, or open the board on your phone, go to **What to show → Remote** and type the code.
-3. Tap **Connect**. From then on the Remote tab on your phone controls the TV, and shows what the TV is displaying.
+2. The board flips to show a pairing code, with a QR code in the corner. Scan the QR code with your phone's camera; it opens the remote. (Or open **nancy-rink.github.io/Ciao-board/remote** on your phone and type the code.)
+3. Tap **Connect**. Your phone is now a full-screen remote: type a message and tap **Show on TV**, tap big buttons for the clock, news, art, saved messages, the day plan or a clear board, swipe through styles, and mute or turn the volume up and down. **More** has the flap sound, chime and animation quality. The top line shows what the TV is displaying.
+4. Add the remote to your home screen (in Safari, **Share → Add to Home Screen**) so it opens like an app.
 
-The Remote tab also controls the TV's sound (on or off, volume, flap sound, chime, a test click) and its animation quality. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
+The same controls are also on the board itself, under **What to show → Remote**. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
 
 ## How Friends works
 

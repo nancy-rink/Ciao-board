@@ -1,0 +1,11 @@
+{
+  "name": "ciao-board",
+  "private": true,
+  "description": "Tests for Ciao Board. The board itself needs no build or install.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

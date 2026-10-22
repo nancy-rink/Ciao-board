@@ -1,0 +1,43 @@
+const {test,expect}=require('@playwright/test');
+const {device,stored,sendMessage,noErrors}=require('./helpers');
+
+test('a message flips onto the board, with accents and fallbacks',async({browser})=>{
+  const page=await device(browser); await page.goto('/');
+  await sendMessage(page,'Szia Budapest\nŐRÖK ÜRÜGY\nŁódź · Černý');
+  await expect(page.locator('#boardText')).toContainText('SZIA BUDAPEST',{timeout:30e3});
+  await expect(page.locator('#boardText')).toContainText('ŐRÖK ÜRÜGY');   // Hungarian letters have their own flaps
+  await expect(page.locator('#boardText')).toContainText('LÓDZ');         // Ł and Ź fall back to the plain letter
+  await expect(page.locator('#boardText')).toContainText('CERNY');
+  noErrors(page);
+});
+
+test('no sideways scroll on a phone',async({browser})=>{
+  const page=await device(browser,{width:360,height:780,phone:true}); await page.goto('/');
+  await page.waitForTimeout(800);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);
+  noErrors(page);
+});
+
+test('TV mode shows the start screen with a 6-digit pairing code',async({browser})=>{
+  const tv=await device(browser,{width:1920,height:1080}); await tv.goto('?tv');
+  await expect(tv.locator('#tvStart')).toBeVisible();
+  await expect(tv.locator('#tvCode')).toHaveText(/^\d{3} \d{3}$/);
+  await expect(tv.locator('#tvQr svg')).toBeVisible();
+  await tv.click('#tvGo'); await expect(tv.locator('#tvStart')).toBeHidden();
+  expect(await tv.evaluate(()=>document.body.classList.contains('lite'))).toBe(true); // Smooth mode on TVs
+  noErrors(tv);
+});
+
+test('the /tv and /remote short paths redirect',async({browser})=>{
+  const page=await device(browser);
+  await page.goto('tv/'); await page.waitForURL(/\?tv$/);
+  await page.goto('remote/'); await page.waitForURL(/\?remote$/);
+});
+
+test('a board on the old Worn style becomes Classic with Worn on',async({browser})=>{
+  const page=await device(browser,{storage:{'beta2.fb.style':'"worn"'}}); await page.goto('/');
+  expect(await stored(page,'style')).toBe('classic');
+  expect(await stored(page,'aged')).toBe(true);
+  await expect(page.locator('#board')).toHaveAttribute('data-aged','');
+  noErrors(page);
+});

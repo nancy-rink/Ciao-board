@@ -174,9 +174,10 @@ body.lite .t,body.lite .h.u,body.lite .h.d,body.lite .g{box-shadow:none!importan
 body.lite .board::after,body.lite .t::before,body.lite .f::before,body.lite .g::before,body.lite .f::after,body.lite .g::after{display:none}
 body.lite .t span{text-shadow:none}
 body.lite .t{contain:layout paint style}
-/* Glyph atlas: each face shows its letter as a slice of one pre-drawn strip */
-.grid.atlas .t span{color:transparent;text-shadow:none;background-image:var(--atlas);background-repeat:no-repeat;background-size:calc(var(--atlas-n) * 100%) 100%}
-.grid.atlas .t.lo span{background-image:var(--atlas-lo,var(--atlas))}
+/* Smooth mode's canvas sits exactly over the grid, which stays in place (invisible) to give the layout */
+#gridCanvas{position:absolute;pointer-events:none}
+#gridCanvas[hidden]{display:none}
+.grid.canvas{visibility:hidden}
 body.lite .f.a,body.lite .f.b{animation-timing-function:ease-in}
 body.lite .g.a,body.lite .g.a.land{animation:gA var(--dur) ease-out var(--dur) both}
 body.lite .g.b,body.lite .g.b.land{animation:gB var(--dur) ease-out var(--dur) both}
@@ -1269,53 +1270,98 @@ for(let i=0;i<COLS*ROWS;i++){
   u.addEventListener('animationend',()=>t.classList.remove('twitch'));
   grid.appendChild(t); tiles.push(tile);
 }
-// In Smooth mode the letters come from a glyph atlas drawn once ahead of time (see buildAtlas), so a flap only
-// moves a background image instead of laying out new text; otherwise each face holds real text
-let atlasOn=false;
-const ATLAS_POS=CHARS.map((c,i)=>(i/(CHARS.length-1)*100).toFixed(4)+'%');
-// Draw every character once, in the current style's font, ink and tile size, onto one strip image.
-// Rebuilt (debounced) when the style, the size or Smooth mode changes; Double Arrow's dark lower rows get their own strip.
-let atlasT=null, atlasUrls=[], atlasGen=0;
-function scheduleAtlas(){clearTimeout(atlasT);atlasT=setTimeout(buildAtlas,150)}
-async function atlasStrip(tile,w,h,dpr){
-  // Font from the letter itself; ink from the tile, because once the atlas is on the letters' own text is transparent
-  const cs=getComputedStyle(tile.u.firstChild), ink=getComputedStyle(tile.el).color, size=parseFloat(cs.fontSize)*dpr;
-  const c=document.createElement('canvas'); c.width=w*CHARS.length; c.height=h;
-  const x=c.getContext('2d'); if(!x)return null;
-  const font=cs.fontStyle+' '+cs.fontWeight+' '+size+'px '+cs.fontFamily;
+// Smooth mode draws the whole board on one canvas. Every tile face (each letter and color tile, in the current style's
+// colors, font and size) is drawn once into a sprite sheet; during a flip each frame just copies faces onto the canvas,
+// squashing the falling flap toward the split. The browser then has one layer to manage instead of hundreds of
+// animated, restyled, repainted flap elements, which is what slows TVs down. Rebuilt (debounced) when the style,
+// the size or Smooth mode changes; Double Arrow's dark lower rows get their own sheet row.
+let cvOn=false, cv=null, cvx=null, cvSheet=null, cvW=0, cvH=0, cvRun=false, atlasT=null, atlasGen=0;
+function scheduleAtlas(){clearTimeout(atlasT);atlasT=setTimeout(buildAtlas,60)}
+function cvPalette(t){
+  const cs=getComputedStyle(t.el), span=getComputedStyle(t.u.firstChild), v=k=>cs.getPropertyValue(k).trim();
+  return {tile:getComputedStyle(t.d).backgroundColor, hi:v('--tile-hi')||v('--tile'), seam:v('--seam')||'#000', ink:cs.color,
+    r:parseFloat(getComputedStyle(t.u).borderTopLeftRadius)||0, span, colors:Object.fromEntries('roygbvw'.split('').map(c=>[c,v('--c-'+c)]))};
+}
+async function cvDrawRow(x,row,pal,w,h,dpr){
+  const cs=pal.span, size=parseFloat(cs.fontSize)*dpr, font=cs.fontStyle+' '+cs.fontWeight+' '+size+'px '+cs.fontFamily;
   try{await document.fonts.load(font,'ABCÁ')}catch(e){}
-  x.font=font;
-  const st=parseFloat(cs.fontStretch)||100;
-  if('fontStretch' in x)x.fontStretch=st<56?'ultra-condensed':st<69?'extra-condensed':st<81?'condensed':st<94?'semi-condensed':st<106?'normal':st<119?'semi-expanded':'expanded';
-  x.fillStyle=ink; x.textAlign='center'; x.textBaseline='alphabetic';
-  // Center the line box the way the tiles' flexbox does: baseline sits (ascent - descent) / 2 below the middle
-  const m=x.measureText('H'), asc=m.fontBoundingBoxAscent??size*.8, desc=m.fontBoundingBoxDescent??size*.2, y=h/2+(asc-desc)/2;
-  CHARS.forEach((ch,i)=>{if(ch.length===1&&ch!==' ')x.fillText(ch,i*w+w/2,y)});
-  const blob=await new Promise(r=>c.toBlob(r));
-  return blob?URL.createObjectURL(blob):null;
+  const st=parseFloat(cs.fontStretch)||100, r=pal.r*dpr, oy=row*h;
+  CHARS.forEach((ch,i)=>{
+    const ox=i*w; x.save(); x.beginPath(); if(x.roundRect)x.roundRect(ox,oy,w,h,r);else x.rect(ox,oy,w,h); x.clip();
+    if(ch.length===3){x.fillStyle=pal.colors[ch[1]];x.fillRect(ox,oy,w,h);x.fillStyle='rgba(255,255,255,.06)';x.fillRect(ox,oy,w,h/2)}
+    else{
+      const g=x.createLinearGradient(0,oy,0,oy+h/2); g.addColorStop(0,pal.hi); g.addColorStop(1,pal.tile);
+      x.fillStyle=g; x.fillRect(ox,oy,w,h/2); x.fillStyle=pal.tile; x.fillRect(ox,oy+h/2,w,h/2);
+      if(ch!==' '){
+        x.font=font; if('fontStretch' in x)x.fontStretch=st<56?'ultra-condensed':st<69?'extra-condensed':st<81?'condensed':st<94?'semi-condensed':st<106?'normal':st<119?'semi-expanded':'expanded';
+        x.fillStyle=pal.ink; x.textAlign='center'; x.textBaseline='alphabetic';
+        // Center the line box the way the tiles' flexbox does: baseline sits (ascent - descent) / 2 below the middle
+        const m=x.measureText('H'), asc=m.fontBoundingBoxAscent??size*.8, desc=m.fontBoundingBoxDescent??size*.2;
+        x.fillText(ch,ox+w/2,oy+h/2+(asc-desc)/2);
+      }
+    }
+    x.restore();
+    x.fillStyle=pal.seam; x.fillRect(ox,oy+h/2-Math.max(1,dpr)/2,w,Math.max(1,dpr));
+  });
 }
 async function buildAtlas(){
   const gen=++atlasGen;
-  if(!liteNow||reduce){if(atlasOn){atlasOn=false;grid.classList.remove('atlas');tiles.forEach(t=>{paint(t.u,t.cur);paint(t.d,t.cur)})}return}
-  const r=tiles[0].el.getBoundingClientRect(); if(r.width<4)return;
-  const dpr=Math.min(2,window.devicePixelRatio||1), w=Math.ceil(r.width*dpr), h=Math.ceil(r.height*dpr);
-  const top=tiles[0], low=tiles[tiles.length-1];
-  const urls=[await atlasStrip(top,w,h,dpr)];
-  if(getComputedStyle(low.el).color!==getComputedStyle(top.el).color)urls.push(await atlasStrip(low,w,h,dpr));
-  if(gen!==atlasGen||!urls[0]){urls.forEach(u=>u&&URL.revokeObjectURL(u));return}
-  grid.style.setProperty('--atlas','url('+urls[0]+')'); grid.style.setProperty('--atlas-n',CHARS.length);
-  if(urls[1])grid.style.setProperty('--atlas-lo','url('+urls[1]+')'); else grid.style.removeProperty('--atlas-lo');
-  atlasUrls.forEach(u=>URL.revokeObjectURL(u)); atlasUrls=urls.filter(Boolean);
-  const was=atlasOn; atlasOn=true; grid.classList.add('atlas');
-  if(!was)tiles.forEach(t=>{paint(t.u,t.cur);paint(t.d,t.cur)});
+  if(!liteNow||reduce||!tiles.length){
+    if(cvOn){cvOn=false;grid.classList.remove('canvas');if(cv)cv.hidden=true;tiles.forEach(t=>{t.cvA=null;paint(t.u,t.cur);paint(t.d,t.cur)})}
+    return;
+  }
+  const gr=grid.getBoundingClientRect(); if(gr.width<10)return;
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  tiles.forEach(t=>{const r=t.el.getBoundingClientRect();t.geo=[(r.left-gr.left)*dpr,(r.top-gr.top)*dpr,r.width*dpr,r.height*dpr]});
+  const w=Math.ceil(tiles[0].geo[2]), h=Math.ceil(tiles[0].geo[3]);
+  const top=cvPalette(tiles[0]), low=cvPalette(tiles[tiles.length-1]), two=low.tile!==top.tile||low.ink!==top.ink;
+  const sheet=document.createElement('canvas'); sheet.width=w*CHARS.length; sheet.height=h*(two?2:1);
+  const sx=sheet.getContext('2d'); if(!sx)return;
+  await cvDrawRow(sx,0,top,w,h,dpr); if(two)await cvDrawRow(sx,1,low,w,h,dpr);
+  if(gen!==atlasGen)return;
+  if(!cv){cv=document.createElement('canvas');cv.id='gridCanvas';cv.setAttribute('aria-hidden','true');grid.after(cv);cvx=cv.getContext('2d')}
+  Object.assign(cv.style,{left:grid.offsetLeft+'px',top:grid.offsetTop+'px',width:gr.width+'px',height:gr.height+'px'});
+  cv.width=Math.round(gr.width*dpr); cv.height=Math.round(gr.height*dpr);
+  tiles.forEach(t=>{t.cvRow=two&&t.el.classList.contains('lo')?1:0});
+  cvSheet=sheet; cvW=w; cvH=h; cv.hidden=false;
+  if(!cvOn){cvOn=true;grid.classList.add('canvas')}
+  cvKick();
 }
+// One frame: copy every tile's face, and draw flaps mid-turn for tiles that are flipping
+const easeIn=q=>q*q, easeOut=q=>1-(1-q)*(1-q);
+function cvFace(idx,row,sy,sh,dx,dy,dw,dh){cvx.drawImage(cvSheet,idx*cvW,row*cvH+sy*cvH,cvW,sh*cvH,dx,dy,dw,dh)}
+function cvDraw(now){
+  cvx.clearRect(0,0,cv.width,cv.height);
+  let moving=false;
+  for(const t of tiles){
+    const [x,y,w,h]=t.geo, a=t.cvA, row=t.cvRow;
+    if(!a||now-a.t0>=a.d){t.cvA=null;cvFace(t.cur,row,0,1,x,y,w,h);continue}
+    moving=true;
+    const p=(now-a.t0)/a.d;
+    cvFace(a.to,row,0,.5,x,y,w,h/2);       // behind the falling flap: the new letter's top
+    cvFace(a.from,row,.5,.5,x,y+h/2,w,h/2); // the old letter's bottom, until the new flap covers it
+    if(p<.5){                               // the old top flap falls toward the split
+      const q=easeIn(p*2), fh=h/2*Math.cos(q*Math.PI/2);
+      cvFace(a.from,row,0,.5,x,y+h/2-fh,w,fh);
+      cvx.fillStyle='rgba(0,0,0,'+(.45*q).toFixed(3)+')'; cvx.fillRect(x,y+h/2-fh,w,fh);
+    }else{                                  // the new bottom flap swings down into place
+      const q=easeOut((p-.5)*2), fh=h/2*Math.sin(q*Math.PI/2);
+      cvFace(a.to,row,.5,.5,x,y+h/2,w,fh);
+      cvx.fillStyle='rgba(255,255,255,'+(.18*(1-q)).toFixed(3)+')'; cvx.fillRect(x,y+h/2,w,fh);
+    }
+  }
+  return moving;
+}
+function cvFrame(){const more=cvDraw(performance.now());if(more||busy)requestAnimationFrame(cvFrame);else cvRun=false}
+function cvKick(){if(cvOn&&cvSheet&&!cvRun){cvRun=true;requestAnimationFrame(cvFrame)}}
 addEventListener('resize',scheduleAtlas);
 if(document.fonts)document.fonts.addEventListener('loadingdone',scheduleAtlas);
+// Real text on each face. While the canvas draws the board (Smooth mode) the hidden faces are left alone, and are repainted when it stops.
 function paint(face,idx){
+  if(cvOn)return;
   const c=CHARS[idx], span=face.firstChild;
-  face.style.background=c.length===3?'var('+COLORS[c[1]]+')':'';
-  if(atlasOn){if(span.firstChild)span.textContent='';span.style.backgroundPositionX=ATLAS_POS[idx]}
-  else{span.style.backgroundPositionX='';span.textContent=c.length===3?'':c}
+  if(c.length===3){face.style.background='var('+COLORS[c[1]]+')';span.textContent=''}
+  else{face.style.background='';span.textContent=c}
 }
 // Every flap a tile will make is worked out when the message arrives (planPath), so the animation only steps through a list.
 // Direct tiles (art animations) go straight to their target in one flap; everything else steps through the alphabet like a real board.
@@ -1328,6 +1374,7 @@ function planPath(t){
 }
 function step(tile){
   const old=tile.cur; tile.cur=tile.path[tile.pi++];
+  if(cvOn){tile.cvA={from:old,to:tile.cur,t0:performance.now(),d:TICK*.9};return}
   paint(tile.u,tile.cur);
   if(reduce){paint(tile.d,tile.cur);return}
   paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);
@@ -1461,6 +1508,7 @@ function send(str,opts){
   // All the planning above is done before the first frame of movement
   if(!busy&&active.length){busy=true;last=0;acc=0;requestAnimationFrame(()=>requestAnimationFrame(loop))}
   else if(!busy){setStatus('Showing');speakBoard()}
+  cvKick();
 }
 // Frame timing while flipping: if most frames come in late on two runs in a row, Automatic switches to Smooth mode
 let perfFrames=0, perfLate=0, perfStrikes=0;

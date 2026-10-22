@@ -870,6 +870,7 @@ body.remotemode .wrap,body.remotemode .sheet,body.remotemode .scrim,body.remotem
 #raPair ol{padding-left:20px;color:var(--muted);line-height:1.5}
 .ra-tip{font-size:14px;color:var(--muted);margin:0 0 14px}
 #raPairBack{width:100%;margin-top:12px}
+.ra-code input{font-size:28px;letter-spacing:.2em;text-align:center;font-variant-numeric:tabular-nums}
 .ra-stale{display:flex;flex-direction:column;gap:10px;padding:14px;margin-bottom:14px;border-radius:14px;border:1px solid var(--accent);font-size:15px}
 .ra-stale[hidden]{display:none}
 .ra-row{display:flex;gap:8px}
@@ -974,16 +975,16 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
   <section id="raPair" hidden>
     <h1>Pair with your TV</h1>
     <ol>
-      <li>Open Ciao Board on the TV (<b>is.gd/ciaoboard</b>). Its start screen shows a QR code and a pairing code.</li>
-      <li>Scan the QR code with this phone's camera, or type the code below.</li>
+      <li>Open Ciao Board on the TV (<b>is.gd/ciaoboard</b>). Its start screen shows a QR code and a 6-digit pairing code.</li>
+      <li>Scan the QR code with this phone's camera, or type the 6 numbers below.</li>
     </ol>
     <p class="ra-tip">Already past the start screen? Press <b>OK</b> on the TV remote, open <b>What to show → Remote</b> and choose <b>Pair a phone</b>.</p>
-    <div class="ra-row"><input type="text" id="raCode" placeholder="Pairing code" aria-label="Pairing code from the TV" autocomplete="off" maxlength="12"><button class="primary" id="raLook" type="button">Find</button></div>
+    <div class="ra-row ra-code"><input type="text" id="raCode" inputmode="numeric" placeholder="6-digit code" aria-label="Pairing code from the TV" autocomplete="one-time-code" maxlength="12"><button class="primary" id="raLook" type="button">Find</button></div>
     <p class="ra-note" id="raPairNote" aria-live="polite"></p>
     <button type="button" id="raPairBack" hidden>Back to the remote</button>
   </section>
   <section id="raMain" hidden>
-    <div class="ra-stale" id="raStale" hidden><span>The TV isn't answering. Check Ciao Board is open on the TV. If it still doesn't answer, pair again.</span><button type="button" id="raRepair">Pair again</button></div>
+    <div class="ra-stale" id="raStale" hidden><span>Can't reach the TV. Turn it on and open Ciao Board; the remote reconnects by itself as soon as the board is open.</span><button type="button" id="raRepair">Still not working? Pair again</button></div>
     <div class="ra-compose">
       <textarea id="raMsg" rows="3" spellcheck="false" placeholder="Type a message for the TV" aria-label="Message for the TV"></textarea>
       <button class="primary" id="raSend" type="button">Show on TV</button>
@@ -1370,7 +1371,7 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
         <a class="ra-open" id="rmOpenApp" href="?remote" hidden>Open the full-screen remote</a>
         <h3 class="fr-h">Pair with a TV</h3>
         <p class="hint">On the TV, open Ciao Board and choose <b>Pair a phone</b> (on the start screen, or in Remote). Scan the QR code with this phone's camera, or type the code here.</p>
-        <div class="row" style="flex-wrap:nowrap"><input type="text" id="rmCodeIn" placeholder="Pairing code" aria-label="Pairing code from the TV" autocomplete="off" maxlength="12"><button id="rmLook" type="button">Connect</button></div>
+        <div class="row" style="flex-wrap:nowrap"><input type="text" id="rmCodeIn" inputmode="numeric" placeholder="6-digit code" aria-label="Pairing code from the TV" autocomplete="one-time-code" maxlength="12"><button id="rmLook" type="button">Connect</button></div>
         <div class="fr-ask" id="rmAsk" hidden><span id="rmAskMsg"></span><button class="primary" id="rmAccept" type="button">Connect</button><button id="rmDecline" type="button">Cancel</button></div>
         <h3 class="fr-h">Paired</h3>
         <ul class="list" id="rmList"></ul>
@@ -2884,9 +2885,14 @@ async function frOpen(key,s){const [iv,ct]=String(s).split('.');return JSON.pars
 // An invite code names a hidden topic and unlocks what's posted there; the code itself never reaches the relay
 async function frInviteTopic(code){const h=new Uint8Array(await crypto.subtle.digest('SHA-256',te.encode('ciao-board-invite:'+code)));return 'cbi'+[...h.slice(0,20)].map(b=>b.toString(16).padStart(2,'0')).join('')}
 async function frInviteKey(code){const k=await crypto.subtle.importKey('raw',te.encode(code),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:te.encode('ciao-board-invite'),iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
-const frCodeFmt=c=>c.slice(0,4)+'-'+c.slice(4);
+const frCodeFmt=c=>c.length===6?c.slice(0,3)+' '+c.slice(3):c.slice(0,4)+'-'+c.slice(4);
 const frCodeNorm=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-function frNewCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint32Array(8));return [...r].map(n=>A[n%A.length]).join('')}
+// A TV's pairing code is 6 digits; it only works while the TV shows it, and the relay's rate limits make guessing one impractical
+function frNewCode(kind){
+  if(kind==='tv'){const r=crypto.getRandomValues(new Uint32Array(6));return [...r].map(n=>n%10).join('')}
+  const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint32Array(8));return [...r].map(n=>A[n%A.length]).join('');
+}
+const frTvCodeOk=c=>/^\d{6}$/.test(c)||c.length===8;
 // ntfy.sh lets each internet connection post 250 messages a day (refilling through the day), and a home's TV and phone share one.
 // When it's used up the relay answers 429; frLimited remembers when, so the board can say so instead of failing quietly.
 let frLimited=0;
@@ -3071,7 +3077,7 @@ $('frAllow').checked=fr.allow; $('frAllow').onchange=()=>{fr.allow=$('frAllow').
 $('frHold').value=String(fr.hold); $('frHold').onchange=()=>{fr.hold=+$('frHold').value;saveFr()};
 // Invites, shared by Friends and Remote. kind 'tv' marks a TV asking for a phone remote.
 async function frMakeInvite(kind,name){
-  const code=frNewCode(), id=frRand(12), key=b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
+  const code=frNewCode(kind), id=frRand(12), key=b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
   await frPost(await frInviteTopic(code),await frSeal(await frInviteKey(code),{v:1,id,name,topic:fr.inbox,key,kind}));
   // Keep the last few invites for 12 hours, always including the TV start screen's
   const keepId=(store.get('fb.tvInvite',null)||{}).id, fresh=fr.invites.filter(i=>Date.now()-i.made<432e5);
@@ -3139,6 +3145,8 @@ $('frAccept').onclick=async()=>{
 function frBoot(){
   buildRemote(); if(remoteMode)raInit(); frRender(); rmRender(); frCount(); rmCount(); frListen(); frNotify();
   if(!remoteMode){frHash(); addEventListener('hashchange',frHash)}
+  if(rmPhones().length)setTimeout(()=>rmPhones().forEach(l=>rmState(l)),2500);
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 }
 // An invite link (#invite=CODE) opens the Friends tab and asks whether to connect
 function frHash(){
@@ -3235,7 +3243,7 @@ let tvInvite=null;
 async function tvStartPair(){
   try{
     let keep=store.get('fb.tvInvite',null);
-    if(!keep||Date.now()-keep.made>11*3600e3||!fr.invites.some(i=>i.id===keep.id)){
+    if(!keep||keep.code.length!==6||Date.now()-keep.made>11*3600e3||!fr.invites.some(i=>i.id===keep.id)){
       const made=await frMakeInvite('tv',fr.name||'TV'); keep={code:made.code,id:made.id,made:Date.now()}; store.set('fb.tvInvite',keep);
     }
     const {code,id}=keep; tvInvite=id;
@@ -3252,7 +3260,7 @@ $('rmPairCancel').onclick=()=>rmEndPairing(true);
 let rmPending=null;
 async function rmLookup(raw){
   const code=frCodeNorm(raw); $('rmAsk').hidden=true; rmPending=null;
-  if(code.length!==8){rmSay('Pairing codes have 8 letters and numbers, like K7Q4-MX2P.');return}
+  if(!frTvCodeOk(code)){rmSay('The pairing code is the 6 numbers on the TV, like 482 917.');return}
   rmSay('Looking up the code…');
   try{
     const inv=await frFetchInvite(code);
@@ -3265,6 +3273,7 @@ async function rmLookup(raw){
 }
 $('rmLook').onclick=()=>rmLookup($('rmCodeIn').value);
 $('rmCodeIn').onkeydown=e=>{if(e.key==='Enter')rmLookup($('rmCodeIn').value)};
+$('rmCodeIn').addEventListener('input',()=>{if(/^\d{6}$/.test(frCodeNorm($('rmCodeIn').value)))rmLookup($('rmCodeIn').value)});
 $('rmDecline').onclick=()=>{rmPending=null;$('rmAsk').hidden=true;$('rmCodeIn').value='';rmSay('Nothing was paired.')};
 $('rmAccept').onclick=async()=>{
   if(!rmPending)return; const inv=rmPending; $('rmAccept').disabled=true;
@@ -3366,7 +3375,7 @@ function raInit(){
   const say=t=>{$('raPairNote').textContent=t};
   const look=async raw=>{
     const code=frCodeNorm(raw);
-    if(code.length!==8){say('Pairing codes have 8 letters and numbers, like K7Q4-MX2P.');return}
+    if(!frTvCodeOk(code)){say('The pairing code is the 6 numbers on the TV, like 482 917.');return}
     say('Looking up the code…'); $('raLook').disabled=true;
     try{
       // The relay can take a moment to have a brand-new code, so look twice before giving up
@@ -3381,6 +3390,7 @@ function raInit(){
   };
   $('raLook').onclick=()=>look($('raCode').value);
   $('raCode').onkeydown=e=>{if(e.key==='Enter')look($('raCode').value)};
+  $('raCode').addEventListener('input',()=>{if(/^\d{6}$/.test(frCodeNorm($('raCode').value)))look($('raCode').value)});
   $('raRepair').onclick=()=>{raRepair=true;say('');$('raCode').value='';raRender()};
   $('raPairBack').onclick=()=>{raRepair=false;say('');raRender()};
   setInterval(()=>{if(rmTvs().some(l=>l.pending))raRender()},4000);
@@ -3397,7 +3407,7 @@ function raRender(){
   const wait=rmTvs().find(l=>l.pending);
   if(pairing&&wait&&!$('raLook').disabled)$('raPairNote').textContent=Date.now()-wait.at<20e3?'Connecting to '+wait.name+'…':'Still connecting. Make sure the code is still showing on the TV; if it isn\'t, choose Pair a phone on the TV and scan the new code.';
   const quiet=!!tv&&raAsked&&Date.now()-raAsked>=9e3&&!(st&&st.at>=raAsked);
-  $('raStale').hidden=!quiet; $('raStale').firstChild.textContent=frIsLimited()?FR_LIMIT_MSG:'The TV isn\'t answering. Check Ciao Board is open on the TV. If it still doesn\'t answer, pair again.';
+  $('raStale').hidden=!quiet; $('raStale').firstChild.textContent=frIsLimited()?FR_LIMIT_MSG:'Can\'t reach the TV. Turn it on and open Ciao Board; the remote reconnects by itself as soon as the board is open.';
   $('raTv').hidden=live.length<2; $('raTvName').hidden=live.length>=2;
   if(live.length>=2){$('raTv').innerHTML=$('rmTv').innerHTML;$('raTv').value=$('rmTv').value}
   $('raTvName').textContent=tv?tv.name:'Ciao Board remote';

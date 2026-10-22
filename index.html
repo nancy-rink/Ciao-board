@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ciao Board</title>
-<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, fourteen vintage and modern styles, and real flap sounds.">
+<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, 25 modern, vintage, transit and Japanese styles, and real flap sounds.">
 <meta name="theme-color" content="#16130f">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ciao Board">
 <meta property="og:title" content="Ciao Board">
-<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, fourteen styles and real flap sounds.">
+<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, 25 styles and real flap sounds.">
 <meta property="og:url" content="https://nancy-rink.github.io/Ciao-board/">
 <meta property="og:image" content="https://nancy-rink.github.io/Ciao-board/assets/preview.png">
 <meta property="og:image:width" content="1200">
@@ -26,13 +26,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&display=swap">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
 <style>
 /* Layout: a wall-mounted 6×22 split-flap board; beneath it a tabbed control deck. Each board style re-skins the whole wall. Kiosk mode hides everything but the board. */
-:root,[data-style="classic"]{
+:root,[data-style]{
+  --bevel:0 0 0 transparent; --frame-r:10px; --frame-pad:2.2cqw; --flap-r:2px; --pin-c:transparent; --pin-s:0; --gloss:transparent;
+  --wear:0; --grain:none; --scuff-c:transparent; --tile-stretch:100%; --tile-w:600; --route:transparent; --tile-k:1; --frame-img:none;
   --wall:#16130f; --frame:#0b0b0b; --frame-edge:#2a2a2a;
   --tile:#1c1c1c; --tile-hi:#252525; --ink:#f1ece2; --seam:#000; --glow:none;
   --ui:#f1ece2; --muted:#a39a8b; --line:#2e2a24; --panel:#1f1b16; --panel-2:#26211b;
@@ -212,6 +214,96 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
     radial-gradient(calc(var(--sw,1) * var(--u,1) * 1cqw) calc(var(--sh,1) * var(--u,1) * 1cqw) at var(--sx,50%) var(--sy,50%),var(--scuff-c,transparent),transparent 70%),
     var(--grain,none)}
 [data-style="pragotron"] .t.edge .h{box-shadow:inset .32cqw 0 0 var(--route)}
+/* Art boards: styles drawn from transit and Japanese design history */
+[data-style="metropolitana"]{
+  --frame:#0d0d0d; --frame-edge:#2a2a2a; --bevel:inset 0 .9cqw 0 #d52b1e;
+  --tile:#161616; --tile-hi:#1f1f1f; --ink:#f3f1ea; --seam:#000; --c-r:#d52b1e; --pin-c:#8b9097; --pin-s:.26;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-stretch:68%; --tile-w:600; --tile-size:3.15cqw;
+  --wall:#121212; --ui:#f1efe9; --muted:#a3a09a; --line:#2c2a27; --panel:#1a1918; --panel-2:#222120;
+  --accent:#ff5a4a; --accent-ink:#1a0503; --ok:#4fb67a; --warn:#ff8a7d;
+}
+[data-style="standard"]{
+  --frame:#111111; --frame-edge:#2a2a2a; --bevel:inset 0 1.1cqw 0 #000;
+  --tile:#fafafa; --tile-hi:#ffffff; --ink:#111111; --seam:#cfcfcf; --c-w:#111111; --c-r:#e2382d; --c-g:#1f9a4c;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:100%; --tile-w:600; --tile-size:2.95cqw;
+  --wall:#141414; --ui:#f2f2f2; --muted:#a6a6a6; --line:#2e2e2e; --panel:#1b1b1b; --panel-2:#242424;
+  --accent:#f6c400; --accent-ink:#141000; --ok:#3fbf6a; --warn:#ff7b66;
+}
+[data-style="doublearrow"]{
+  --frame:#23262b; --frame-edge:#3a3e45; --bevel:inset 0 -.9cqw 0 #b5121b;
+  --tile:#f7f7f4; --tile-hi:#ffffff; --ink:#111111; --seam:#00000055; --c-r:#b5121b;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:92%; --tile-w:700; --tile-size:2.95cqw; --flap-r:1px; --frame-r:4px;
+  --wall:#15171b; --ui:#eef0f3; --muted:#9ea4ad; --line:#2c3038; --panel:#1c1f24; --panel-2:#242830;
+  --accent:#ff5a5f; --accent-ink:#1a0506; --ok:#4fb67a; --warn:#ff8a7d;
+}
+[data-style="doublearrow"] .t.lo{--tile:#1b2a4a; --tile-hi:#22345a; --ink:#f7f7f4; --seam:#0d1526}
+[data-style="ulm"]{
+  --frame:#061a36; --frame-edge:#0f2a52;
+  --tile:#0b2d5b; --tile-hi:#0f356a; --ink:#f5b800; --seam:#020a16; --c-y:#f5b800;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:85%; --tile-w:600; --tile-size:2.95cqw; --flap-r:1px; --frame-r:0px;
+  --wall:#04132a; --ui:#eef2f8; --muted:#9fb0c8; --line:#173158; --panel:#082042; --panel-2:#0d2a52;
+  --accent:#f5b800; --accent-ink:#1b1400; --ok:#5cc98a; --warn:#ff8a7d;
+}
+[data-style="olympia"]{
+  --frame:#b9bdc2; --frame-edge:#d3d6da;
+  --tile:#fbfbf9; --tile-hi:#ffffff; --ink:#1f5f9f; --seam:#c9ced4; --c-b:#5aa7e0; --c-g:#3fae5a; --c-o:#f08c2e;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:100%; --tile-w:500; --tile-size:2.95cqw; --flap-r:.3cqw;
+  --wall:#e9ecef; --ui:#16324f; --muted:#4f6275; --line:#c9d0d8; --panel:#f5f7f9; --panel-2:#eaeef2;
+  --accent:#1f5f9f; --accent-ink:#ffffff; --ok:#1d7a3c; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="jetage"]{
+  --frame:#8f1c22; --frame-edge:#b23a40; --frame-r:4cqw 4cqw 1.4cqw 1.4cqw; --frame-pad:2.6cqw 3cqw 2.2cqw;
+  --tile:#ebe4d6; --tile-hi:#f3eee4; --ink:#8f1c22; --seam:#cbbfa9; --c-r:#c8202a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:110%; --tile-w:700; --tile-size:2.8cqw; --flap-r:.3cqw;
+  --wall:#f1ece3; --ui:#2a1416; --muted:#6e5a54; --line:#d9cfc0; --panel:#f8f5ef; --panel-2:#eee7db;
+  --accent:#a3191f; --accent-ink:#ffffff; --ok:#186a33; --warn:#a3191f;
+  color-scheme:light;
+}
+[data-style="patapata"]{
+  --frame:#2b2e33; --frame-edge:#4a4f56; --bevel:inset 0 0 0 .35cqw #4a4f56;
+  --tile:#141518; --tile-hi:#1c1e22; --ink:#e8e8e4; --seam:#000; --c-r:#e43b2f; --c-g:#2ea24f;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-stretch:80%; --tile-w:600; --tile-size:3cqw;
+  --wall:#17191c; --ui:#ecedee; --muted:#a1a6ad; --line:#2c3035; --panel:#1d2024; --panel-2:#25292e;
+  --accent:#ffb23e; --accent-ink:#1d1200; --ok:#4fc06e; --warn:#ff8a7d;
+}
+[data-style="ekimei"]{
+  --frame:#d9dbd7; --frame-edge:#eceeea; --bevel:inset 0 0 0 .25cqw #b7bab4;
+  --tile:#fbfbf8; --tile-hi:#ffffff; --ink:#1c1d1f; --seam:#c4c7c1; --c-g:#7ac143;
+  --f-tile:"M PLUS Rounded 1c","Archivo",sans-serif; --tile-w:700; --tile-size:2.8cqw; --flap-r:.45cqw;
+  --wall:#eef0ec; --ui:#1c1d1f; --muted:#575b55; --line:#cfd3cc; --panel:#f7f8f5; --panel-2:#e9ece6;
+  --accent:#276a19; --accent-ink:#ffffff; --ok:#276a19; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="caslon"]{
+  --frame:#e3d6bd; --frame-edge:#f1e8d6; --frame-r:3cqw; --frame-pad:2.6cqw 3cqw;
+  --bevel:inset 0 .3cqw 0 #f1e8d6,inset 0 -.45cqw 0 #c7b797;
+  --tile:#1e1b18; --tile-hi:#26221e; --ink:#f4eee2; --seam:#000; --c-o:#ff7a2a;
+  --f-tile:"Libre Caslon Text",Georgia,serif; --tile-w:400; --tile-size:3cqw; --flap-r:.45cqw;
+  --wall:#efe6d4; --ui:#2a2420; --muted:#6b5f52; --line:#d8ccb4; --panel:#f6f0e3; --panel-2:#ebe2cf;
+  --accent:#9a4013; --accent-ink:#ffffff; --ok:#2f6e3a; --warn:#a3261e;
+  color-scheme:light;
+}
+[data-style="dangan"]{
+  --frame:#e9e5da; --frame-edge:#f6f3ea; --frame-r:13cqw 2cqw 2cqw 13cqw; --frame-pad:2.4cqw 2.8cqw 2.4cqw 7cqw;
+  --bevel:inset 0 -1.1cqw 0 #1a3f8f;
+  --tile:#f6f3ea; --tile-hi:#fbf9f3; --ink:#1a3f8f; --seam:#d3cfc3; --c-b:#1a3f8f;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:90%; --tile-w:600; --tile-size:2.85cqw; --flap-r:.3cqw;
+  --wall:#f2efe6; --ui:#13264f; --muted:#525c6e; --line:#d6d1c4; --panel:#f8f6f0; --panel-2:#ece8dd;
+  --accent:#1a3f8f; --accent-ink:#ffffff; --ok:#1d6e38; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="butterfly"]{
+  --frame:#4a2a1c; --frame-edge:#6a4231; --frame-r:1.4cqw; --bevel:inset 0 .2cqw 0 #6a4231,inset 0 -.3cqw 0 #2e180f;
+  --tile:#eadfc8; --tile-hi:#f2e9d6; --ink:#3b2116; --seam:#b8955a; --pin-c:#b8955a; --pin-s:.24;
+  --c-r:#a8452e; --c-o:#c97a3c; --c-y:#d8b25a; --c-g:#6f8f5a; --c-b:#4f6f8f;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:95%; --tile-w:500; --tile-size:2.95cqw; --flap-r:.3cqw;
+  --wall:#2b1a12; --ui:#f3e8d6; --muted:#c4ab8c; --line:#4a3122; --panel:#331f15; --panel-2:#3d271b;
+  --accent:#d8b25a; --accent-ink:#2a1a08; --ok:#8fc47a; --warn:#ff9a85;
+}
+[data-style="metropolitana"] .t,[data-style="standard"] .t,[data-style="doublearrow"] .t,[data-style="ulm"] .t,[data-style="olympia"] .t,[data-style="jetage"] .t,[data-style="patapata"] .t,[data-style="ekimei"] .t,[data-style="caslon"] .t,[data-style="dangan"] .t,[data-style="butterfly"] .t{font-weight:var(--tile-w,600)}
+/* Caslon 101's orange lamp (::before, since ::after carries the glass glare) */
+.board[data-style="caslon"]::before{content:"";position:absolute;top:1cqw;right:2.2cqw;width:1cqw;height:1cqw;border-radius:50%;background:#ff7a2a;box-shadow:0 0 1.2cqw .3cqw #ff7a2a88;pointer-events:none;z-index:5}
 @keyframes gA{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 @keyframes gB{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 
@@ -446,6 +538,8 @@ body.fs.idle{cursor:none}
   <section class="tray" id="styleTray" aria-label="Board styles" hidden>
     <div class="tray-group"><h3 id="trayModern">Modern</h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
     <div class="tray-group"><h3 id="trayVintage">Vintage</h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
+    <div class="tray-group"><h3 id="trayTransit">Stations and airports</h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
+    <div class="tray-group"><h3 id="trayJapan">Japanese design</h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
     <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
   </section>
 
@@ -893,6 +987,7 @@ for(let i=0;i<COLS*ROWS;i++){
   const col=i%COLS, row=Math.floor(i/COLS), rnd=Math.random;
   t.style.cssText='--spd-r:'+(.86+rnd()*.28).toFixed(3)+';--jx:'+((rnd()-.5)*.5).toFixed(3)+';--jy:'+((rnd()-.5)*.35).toFixed(3)+';--fd:'+(rnd()*.35).toFixed(3)+';--sx:'+(rnd()*100|0)+'%;--sy:'+([10,50,50,90][rnd()*4|0]+((rnd()-.5)*12|0))+'%;--sw:'+(1+rnd()*2.2).toFixed(2)+';--sh:'+(.5+rnd()*1.2).toFixed(2);
   if(col===0&&row%2===0)t.classList.add('edge');
+  if(row>=3)t.classList.add('lo');
   const tile={el:t,u,d,f,g,col,row,cur:0,target:0,delay:0,flip:false};
   f.addEventListener('animationend',()=>{f.className='f'});
   g.addEventListener('animationend',()=>{paint(tile.d,tile.cur);g.className='g'});
@@ -947,11 +1042,14 @@ function layout(str){
   while(lines.length&&!lines[lines.length-1].length)lines.pop();
   return lines;
 }
+// Some styles set their rows flush left, like Japanese platform boards
+function alignLeft(){const b=document.getElementById('board');return !!b&&b.dataset.style==='patapata'}
 function toTargets(str){
   const lines=layout(str); const used=lines.length; const shown=lines.slice(0,ROWS);
   const top=Math.floor((ROWS-shown.length)/2);
   const cells=new Array(COLS*ROWS).fill(0);
-  shown.forEach((ln,r)=>{const left=Math.floor((COLS-ln.length)/2); ln.forEach((t,c)=>{cells[(top+r)*COLS+left+c]=IDX.get(t)??0})});
+  const leftAlign=alignLeft();
+  shown.forEach((ln,r)=>{const left=leftAlign?Math.min(1,COLS-ln.length):Math.floor((COLS-ln.length)/2); ln.forEach((t,c)=>{cells[(top+r)*COLS+left+c]=IDX.get(t)??0})});
   return {cells,used};
 }
 
@@ -2209,7 +2307,18 @@ const BOARD_STYLES=[
   {id:'neon',group:'modern',name:'Neon',note:'Hot pink letters glowing on violet-black.'},
   {id:'mint',group:'modern',name:'Mint',note:'Soft mint flaps, deep teal letters, for a bright room.'},
   {id:'pragotron',group:'vintage',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'},
-  {id:'brass',group:'vintage',name:'Brass',note:'Ivory flaps in a polished brass frame, like a grand hotel lobby.'}
+  {id:'brass',group:'vintage',name:'Brass',note:'Ivory flaps in a polished brass frame, like a grand hotel lobby.'},
+  {id:'metropolitana',group:'transit',name:'Metropolitana',note:'Italian station board: matte black, ivory letters, a red band on top.'},
+  {id:'standard',group:'transit',name:'Standard',note:'New York subway standards: white flaps, black letters, line colors.'},
+  {id:'doublearrow',group:'transit',name:'Double Arrow',note:'British Rail: light flaps above, dark below, a red strip.'},
+  {id:'ulm',group:'transit',name:'Ulm',note:'Otl Aicher’s airline grid: signal yellow on navy, square corners.'},
+  {id:'olympia',group:'transit',name:'Olympia 72',note:'Munich 1972: white flaps, blue letters, a silver frame.'},
+  {id:'jetage',group:'transit',name:'Jet Age',note:'1962 jet terminal: oyster flaps, red letters, a swooping frame.'},
+  {id:'patapata',group:'japan',name:'Patapata',note:'Japanese platform board: rows set flush left, black flaps.'},
+  {id:'ekimei',group:'japan',name:'Ekimei',note:'Station name sign: rounded gothic letters, white flaps.'},
+  {id:'caslon',group:'japan',name:'Caslon 101',note:'Copal flip clock: serif letters, beige case, orange lamp.'},
+  {id:'dangan',group:'japan',name:'Dangan',note:'Bullet train: ivory flaps, blue letters, a rounded nose.'},
+  {id:'butterfly',group:'japan',name:'Butterfly',note:'Sori Yanagi’s stool: plywood flaps, rosewood frame, brass.'}
 ];
 let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
 // A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
@@ -2220,7 +2329,9 @@ function styleScope(){
 }
 new MutationObserver(styleScope).observe(document.body,{attributes:true,attributeFilter:['class']});
 function applyStyle(id){
+  const wasLeft=alignLeft();
   styleId=id; store.set('fb.style',id); styleScope();
+  if(alignLeft()!==wasLeft){if(lastSent!=null)send(lastSent);try{updateCount()}catch(e){}}
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
   document.querySelectorAll('.swatch').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===id)));
   if(!$('styleTray').hidden)noteFor(id,true);
@@ -2240,12 +2351,12 @@ function miniTile(c){
     const b=document.createElement('button'); b.type='button'; b.className='swatch'; b.dataset.id=s.id; b.setAttribute('aria-pressed','false');
     b.setAttribute('aria-label',s.name+'. '+s.note);
     const mb=document.createElement('span'); mb.className='minib'; mb.dataset.style=s.id; mb.setAttribute('aria-hidden','true');
-    const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(s.id==='pragotron'&&i===0)t.classList.add('edge');g.appendChild(t)}); mb.appendChild(g);
+    const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(s.id==='pragotron'&&i===0)t.classList.add('edge');if(i>=6)t.classList.add('lo');g.appendChild(t)}); mb.appendChild(g);
     const nm=document.createElement('span'); nm.className='nm2'; nm.innerHTML='<span></span><i class="tick"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.2 5 8.5 9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>'; nm.firstChild.textContent=s.name;
     b.append(mb,nm);
     b.onclick=()=>{applyStyle(s.id);previewStyle(null);noteFor(s.id,true)};
     b.onmouseenter=()=>{previewStyle(s.id);noteFor(s.id)}; b.onfocus=()=>{previewStyle(s.id);noteFor(s.id)};
-    $(s.group==='vintage'?'swVintage':'swModern').appendChild(b);
+    $({modern:'swModern',vintage:'swVintage',transit:'swTransit',japan:'swJapan'}[s.group]||'swModern').appendChild(b);
   });
 })();
 // Hovering or focusing a swatch previews it on the board only; tapping keeps it

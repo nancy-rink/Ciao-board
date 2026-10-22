@@ -376,7 +376,7 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
 /* Shared controls */
 button,select{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--ui);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;transition:border-color .15s,background-color .15s,color .15s}
 select{padding-right:10px;max-width:100%;min-width:0}
-button:hover{border-color:var(--muted)}
+@media (hover:hover){button:hover{border-color:var(--muted)}}
 button:disabled{opacity:.5;cursor:default}
 button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
 button.primary:hover{filter:brightness(1.08)}
@@ -614,6 +614,51 @@ body.fs.idle{cursor:none}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 body.fs .sheet,body.fs .scrim,body.kiosk .sheet,body.kiosk .scrim{display:none}
 /* TV mode: a start screen sized for reading across a room, operated with the remote's arrows and OK */
+/* Remote mode (?remote): the phone becomes a full-screen remote for a paired TV, with big buttons and nothing else */
+body.remotemode{padding:0}
+body.remotemode .wrap,body.remotemode .sheet,body.remotemode .scrim,body.remotemode #tvStart,body.remotemode #rmPairCard{display:none!important}
+#remoteApp[hidden],#remoteApp section[hidden]{display:none}
+#remoteApp{max-width:560px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px}
+.ra-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:2;background:var(--wall);padding:8px 0}
+.ra-tv{display:flex;flex-direction:column;min-width:0}
+.ra-tv b{font-size:18px}
+.ra-tv span{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ra-tv select{font-size:16px;max-width:60vw}
+.ra-out{color:var(--muted);font-size:15px;padding:10px 4px}
+#raPair h1{font-size:24px;margin:8px 0}
+#raPair ol{padding-left:20px;color:var(--muted);line-height:1.5}
+.ra-row{display:flex;gap:8px}
+.ra-row input{flex:1;font-size:20px;letter-spacing:.08em;text-transform:uppercase;min-height:54px}
+.ra-ask{display:flex;flex-direction:column;gap:10px;margin-top:12px;padding:14px;border:1px solid var(--accent);border-radius:12px}
+.ra-note{color:var(--muted);font-size:14px;margin:0;min-height:1.4em}
+.ra-compose{display:flex;flex-direction:column;gap:8px}
+.ra-compose textarea{font-size:20px;min-height:110px}
+#remoteApp button{min-height:54px;font-size:17px}
+#raSend,#raLook,#raAccept{font-size:18px}
+.ra-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ra-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:84px!important;border-radius:14px;background:var(--panel-2);font-weight:600}
+.ra-grid button i{width:16px;height:21px;border-radius:3px;background:var(--fc);box-shadow:inset 0 -1px 0 #0003;position:relative}
+.ra-grid button i::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#0006}
+.ra-grid button.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.ra-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ra-chips button{min-height:46px!important;font-size:15px!important;border-radius:999px;padding:8px 16px}
+.ra-chips button.on{background:var(--ui);color:var(--wall);border-color:var(--ui)}
+#remoteApp h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 -6px;font-weight:600}
+.ra-styles{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;scrollbar-width:none}
+.ra-styles::-webkit-scrollbar{display:none}
+.ra-styles button{flex:0 0 40%;scroll-snap-align:start;display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:12px;background:var(--panel-2);text-align:left;font-size:14px!important;font-weight:600}
+.ra-styles button.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.ra-sound{display:grid;grid-template-columns:1.4fr .8fr auto .8fr 1fr;gap:8px;align-items:center}
+.ra-sound #raVolOut{text-align:center;font-weight:600;font-size:17px;min-width:3.5em}
+.ra-sound button{font-size:16px;white-space:nowrap;padding-left:6px;padding-right:6px}
+.ra-sound #raVolDown,.ra-sound #raVolUp{font-size:24px}
+#raMute,#raTest{font-size:16px!important}
+#raMute.on{border-color:var(--accent);color:var(--accent)}
+.ra-more{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.ra-more summary{cursor:pointer;font-weight:600;min-height:32px;display:flex;align-items:center}
+.ra-more label{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:13px;color:var(--muted)}
+.ra-more select{min-height:48px;font-size:16px}
+.ra-more p{font-size:14px;color:var(--muted)}
 #tvStart{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#000a}
 #tvStart[hidden]{display:none}
 .tvcard{display:flex;flex-direction:column;align-items:center;gap:2.4vh;text-align:center;padding:5vh 6vw;border-radius:20px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;font:clamp(16px,2vw,30px)/1.4 "Barlow",system-ui,sans-serif}
@@ -636,6 +681,8 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
 #rmQr[hidden]{display:none}
 #rmQr svg{width:min(220px,26vh);height:auto}
 #rmPairCancel:focus{outline:4px solid #f1ece2;outline-offset:3px}
+.ra-open{display:block;text-align:center;padding:14px;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:600;text-decoration:none}
+.ra-open[hidden]{display:none}
 .rm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
 .rm-state{margin:0;color:var(--muted);font-size:14px}
 .rm-state:empty{display:none}
@@ -669,6 +716,55 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
   </div>
 </div>
 
+<div id="remoteApp" hidden>
+  <header class="ra-head">
+    <div class="ra-tv"><select id="raTv" aria-label="TV" hidden></select><b id="raTvName">TV</b><span id="raState" aria-live="polite">Connecting…</span></div>
+    <a class="ra-out" href="./">Board</a>
+  </header>
+  <section id="raPair" hidden>
+    <h1>Pair with your TV</h1>
+    <ol>
+      <li>On the TV, open Ciao Board and choose <b>Pair a phone as a remote</b>.</li>
+      <li>Scan the QR code on the TV with this phone's camera, or type the code below.</li>
+    </ol>
+    <div class="ra-row"><input type="text" id="raCode" placeholder="Pairing code" aria-label="Pairing code from the TV" autocomplete="off" maxlength="12"><button class="primary" id="raLook" type="button">Find</button></div>
+    <div class="ra-ask" id="raAsk" hidden><span id="raAskMsg"></span><button class="primary" id="raAccept" type="button">Connect</button></div>
+    <p class="ra-note" id="raPairNote"></p>
+  </section>
+  <section id="raMain" hidden>
+    <div class="ra-compose">
+      <textarea id="raMsg" rows="3" spellcheck="false" placeholder="Type a message for the TV" aria-label="Message for the TV"></textarea>
+      <button class="primary" id="raSend" type="button">Show on TV</button>
+    </div>
+    <div class="ra-grid" role="group" aria-label="What the TV shows">
+      <button type="button" data-ra="clock"><i style="--fc:var(--c-w)"></i>Clock</button>
+      <button type="button" data-ra="news"><i style="--fc:var(--c-r)"></i>News</button>
+      <button type="button" data-ra="art"><i style="--fc:var(--c-b)"></i>Art</button>
+      <button type="button" data-ra="saved"><i style="--fc:var(--c-o)"></i>Saved</button>
+      <button type="button" data-ra="plan"><i style="--fc:var(--c-v)"></i><span id="raPlanLbl">Day plan</span></button>
+      <button type="button" data-ra="clear"><i style="--fc:var(--c-g)"></i>Clear</button>
+    </div>
+    <div class="ra-chips" id="raNewsChips" hidden></div>
+    <div class="ra-chips" id="raArtChips" hidden></div>
+    <h2>Style</h2>
+    <div class="ra-styles" id="raStyles" role="group" aria-label="TV style"></div>
+    <h2>Sound</h2>
+    <div class="ra-sound">
+      <button type="button" id="raMute" aria-pressed="false">Sound on</button>
+      <button type="button" id="raVolDown" aria-label="Volume down">−</button>
+      <span id="raVolOut">70%</span>
+      <button type="button" id="raVolUp" aria-label="Volume up">+</button>
+      <button type="button" id="raTest">Test</button>
+    </div>
+    <details class="ra-more"><summary>More</summary>
+      <label>Flap sound<select id="raSndStyle"></select></label>
+      <label>Finish chime<select id="raChime"></select></label>
+      <label>Animation<select id="raPerf"><option value="auto">Automatic</option><option value="smooth">Smooth (lighter effects)</option><option value="best">Best quality</option></select></label>
+      <p>Tip: add this page to your Home Screen (Share → Add to Home Screen) and it opens straight to the remote.</p>
+    </details>
+    <p class="ra-note" id="raNote" aria-live="polite"></p>
+  </section>
+</div>
 <div id="tvStart" hidden>
   <div class="tvcard">
     <h1>Ciao Board</h1>
@@ -1000,6 +1096,7 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
             <p class="hint field wide">If flips look jerky on the TV, choose Smooth.</p>
           </div>
         </div>
+        <a class="ra-open" id="rmOpenApp" href="?remote" hidden>Open the full-screen remote</a>
         <h3 class="fr-h">Pair with a TV</h3>
         <p class="hint">On the TV, open Ciao Board and choose <b>Pair a phone</b> (on the start screen, or in Remote). Scan the QR code with this phone's camera, or type the code here.</p>
         <div class="row" style="flex-wrap:nowrap"><input type="text" id="rmCodeIn" placeholder="Pairing code" aria-label="Pairing code from the TV" autocomplete="off" maxlength="12"><button id="rmLook" type="button">Connect</button></div>
@@ -2399,7 +2496,7 @@ async function frReceive(m){
   }else if(o.type==='cmd'&&link&&!link.pending&&link.kind==='remote'){
     rmRun(link,o);
   }else if(o.type==='state'&&link&&!link.pending&&link.kind==='tv'){
-    link.state={showing:String(o.showing||'').slice(0,80),style:String(o.style||''),plan:!!o.plan,sound:o.sound&&typeof o.sound==='object'?o.sound:null,perf:String(o.perf||'auto'),lite:!!o.lite,at:Date.now()};
+    link.state={showing:String(o.showing||'').slice(0,80),style:String(o.style||''),styleId:String(o.styleId||''),mode:String(o.mode||''),art:String(o.art||''),section:String(o.section||''),plan:!!o.plan,sound:o.sound&&typeof o.sound==='object'?o.sound:null,perf:String(o.perf||'auto'),lite:!!o.lite,at:Date.now()};
   }else if(o.type==='msg'&&link&&!link.pending&&!link.kind&&typeof o.text==='string'){
     fr.waiting.push({key:m.id,id,text:o.text.slice(0,300),sent:(m.time||0)*1000}); fresh=true;
   }else if(o.type==='bye'&&link&&!link.pending){
@@ -2554,8 +2651,8 @@ $('frAccept').onclick=async()=>{
   finally{$('frAccept').disabled=false}
 };
 function frBoot(){
-  buildRemote(); frRender(); rmRender(); frCount(); rmCount(); frListen(); frNotify();
-  frHash(); addEventListener('hashchange',frHash);
+  buildRemote(); if(remoteMode)raInit(); frRender(); rmRender(); frCount(); rmCount(); frListen(); frNotify();
+  if(!remoteMode){frHash(); addEventListener('hashchange',frHash)}
 }
 // An invite link (#invite=CODE) opens the Friends tab and asks whether to connect
 function frHash(){
@@ -2573,6 +2670,7 @@ let rmPairing=null, rmPairT=null;
 const rmTvs=()=>fr.links.filter(l=>l.kind==='tv'), rmPhones=()=>fr.links.filter(l=>l.kind==='remote');
 function rmSay(t){$('rmStatus').textContent=t}
 function rmShowing(){
+  if(mode===''&&boardLabel&&/^Picture: /.test(boardLabel))return 'Art: '+boardLabel.slice(9);
   if(mode==='')return lastSent?lastSent.replace(/\{[roygbvw]\}/gi,'').split('\n').map(l=>l.trim()).filter(Boolean).join(' / ').toUpperCase().slice(0,60)||'color tiles':'a blank board';
   if(mode==='news')return 'BBC headlines';
   if(mode==='art')return 'Art: '+((ART_BY[artCur]||{}).name||'animation');
@@ -2580,7 +2678,7 @@ function rmShowing(){
 }
 function rmState(link){
   const st=BOARD_STYLES.find(x=>x.id===styleId);
-  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,plan:schedOn,
+  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,styleId,mode,art:artCur,section:news.section,plan:schedOn,
     sound:{on:snd.on,vol:snd.vol,style:snd.style,chime:snd.chime,blocked:snd.on&&audioBlocked()},perf:anim.perf,lite:lite()}).catch(()=>{});
 }
 // On the TV: carry out a command from a paired phone, then report back
@@ -2621,7 +2719,7 @@ async function rmShowCode(){
     $('rmPairCode').textContent=frCodeFmt(code); $('rmPairCard').hidden=false; $('rmPairCancel').focus();
     document.body.classList.add('pairing'); requestAnimationFrame(fitFill);
     clearTimeout(rmPairT); rmPairT=setTimeout(()=>rmEndPairing(true),10*60e3);
-    const url=location.origin+location.pathname+'#pair='+code;
+    const url=location.origin+location.pathname+'?remote#pair='+code;
     rmQr(url).catch(()=>{$('rmQr').hidden=true});
   }catch(e){toast('Couldn\'t make a pairing code. Check the connection and try again.')}
   finally{$('rmPairBtn').disabled=false}
@@ -2708,6 +2806,91 @@ function buildRemote(){
   [...$('sndStyle').options].filter(x=>x.value!=='sample').forEach(x=>{const o=document.createElement('option');o.value=x.value;o.textContent=x.textContent;$('rmSndStyle').appendChild(o)});
   $('rmChime').innerHTML=$('chimeStyle').innerHTML;
 }
+// Remote mode: the full-screen remote. It reuses the remote's pairing and commands; this is only a bigger, simpler face for them.
+const remoteMode=new URLSearchParams(location.search).has('remote');
+let raOpen=null, raT=null;
+function raNote(t){const n=$('raNote');n.textContent=t;clearTimeout(raT);if(t)raT=setTimeout(()=>{n.textContent=''},4000)}
+async function raCmd(o,done){const tv=rmTv();if(!tv){raNote('The TV isn\'t connected yet.');return}
+  try{await frSend(tv,Object.assign({type:'cmd'},o));raNote(done||'Sent.')}catch(e){raNote('Couldn\'t reach '+tv.name+'. Check the connection.')}}
+function raChips(box,items,cur,act){
+  box.innerHTML='';
+  items.forEach(([v,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.classList.toggle('on',v===cur);b.onclick=()=>act(v,label);box.appendChild(b)});
+}
+function raInit(){
+  document.body.classList.add('remotemode'); $('remoteApp').hidden=false;
+  // Big tiles
+  document.querySelectorAll('.ra-grid button').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.ra, st=(rmTv()||{}).state||{};
+    if(k==='news'||k==='art'){raOpen=raOpen===k?null:k;raRender();return}
+    raOpen=null;
+    if(k==='clock')raCmd({action:'clock'},'Showing the clock.');
+    else if(k==='saved')raCmd({action:'saved'},'Rotating the TV\'s saved messages.');
+    else if(k==='clear')raCmd({action:'clear'},'Cleared.');
+    else if(k==='plan')raCmd({action:'plan',on:!st.plan},st.plan?'Day plan stopped.':'Day plan running.');
+    raRender();
+  });
+  $('raSend').onclick=()=>{const t=fromEmoji($('raMsg').value).trim();if(!t)return;
+    if(layout(t).length>ROWS||t.length>300){raNote('That won\'t fit on the board. Make it shorter.');return}
+    raCmd({action:'text',text:t},'Sent to the TV.');$('raMsg').blur()};
+  $('raMsg').addEventListener('input',()=>liveTokens($('raMsg')));
+  // Style thumbnails, copied from the style picker
+  BOARD_STYLES.forEach(st=>{
+    const b=document.createElement('button'); b.type='button'; b.dataset.id=st.id;
+    const mb=document.querySelector('.swatch[data-id="'+st.id+'"] .minib'); if(mb)b.appendChild(mb.cloneNode(true));
+    b.append(st.name); b.onclick=()=>raCmd({action:'style',id:st.id},st.name+' style on the TV.'); $('raStyles').appendChild(b);
+  });
+  // Sound
+  const vol=()=>{const so=((rmTv()||{}).state||{}).sound;return so?so.vol:.7};
+  $('raMute').onclick=()=>{const on=$('raMute').getAttribute('aria-pressed')!=='true';$('raMute').setAttribute('aria-pressed',String(on));raCmd({action:'sound',on},on?'Sound on.':'Sound off.')};
+  $('raVolDown').onclick=()=>{const v=Math.max(0,Math.round((vol()-.1)*20)/20);raCmd({action:'sound',vol:v},'Volume '+Math.round(v*100)+'%.');$('raVolOut').textContent=Math.round(v*100)+'%'};
+  $('raVolUp').onclick=()=>{const v=Math.min(1,Math.round((vol()+.1)*20)/20);raCmd({action:'sound',vol:v},'Volume '+Math.round(v*100)+'%.');$('raVolOut').textContent=Math.round(v*100)+'%'};
+  $('raTest').onclick=()=>raCmd({action:'sound',test:true},'Playing a test on the TV.');
+  $('raSndStyle').innerHTML=$('rmSndStyle').innerHTML; $('raChime').innerHTML=$('rmChime').innerHTML;
+  $('raSndStyle').onchange=()=>raCmd({action:'sound',style:$('raSndStyle').value,test:true},'Flap sound changed.');
+  $('raChime').onchange=()=>raCmd({action:'sound',chime:$('raChime').value,test:true},'Chime changed.');
+  $('raPerf').onchange=()=>raCmd({action:'perf',perf:$('raPerf').value},'Animation setting changed.');
+  $('raTv').onchange=()=>{$('rmTv').value=$('raTv').value;rmRender();raCmd({action:'ping'},'')};
+  // Pairing, when no TV is paired yet
+  let pending=null;
+  const look=async raw=>{
+    const code=frCodeNorm(raw); $('raAsk').hidden=true; pending=null;
+    if(code.length!==8){$('raPairNote').textContent='Pairing codes have 8 letters and numbers, like K7Q4-MX2P.';return}
+    $('raPairNote').textContent='Looking up the code…';
+    try{
+      const inv=await frFetchInvite(code);
+      if(!inv||inv.kind!=='tv'){$('raPairNote').textContent='That code doesn\'t match a TV. Check it on the TV, or choose Pair a phone again.';return}
+      if(frLink(inv.id)){$('raPairNote').textContent='Already paired with '+inv.name+'.';return}
+      pending=inv; $('raAskMsg').textContent='Control '+inv.name+' from this phone?'; $('raAsk').hidden=false; $('raPairNote').textContent='';
+    }catch(e){$('raPairNote').textContent='Couldn\'t look up that code. Check the connection and try again.'}
+  };
+  $('raLook').onclick=()=>look($('raCode').value);
+  $('raCode').onkeydown=e=>{if(e.key==='Enter')look($('raCode').value)};
+  $('raAccept').onclick=async()=>{if(!pending)return;try{await frConnect(pending,'tv',fr.name||'Phone');pending=null;$('raAsk').hidden=true;$('raPairNote').textContent='Waiting for the TV to confirm…';rmRender()}catch(e){$('raPairNote').textContent='Couldn\'t connect. Check the connection and try again.'}};
+  const m=location.hash.match(/^#pair=([A-Za-z0-9-]+)/);
+  if(m){history.replaceState(null,'',location.pathname+location.search);$('raCode').value=frCodeFmt(frCodeNorm(m[1]));look(m[1])}
+  const tv=rmTv(); if(tv)frSend(tv,{type:'cmd',action:'ping'}).catch(()=>{});
+}
+function raRender(){
+  if(!remoteMode)return;
+  const live=rmTvs().filter(l=>!l.pending), tv=rmTv(), st=tv&&tv.state;
+  $('raPair').hidden=!!live.length; $('raMain').hidden=!live.length;
+  $('raTv').hidden=live.length<2; $('raTvName').hidden=live.length>=2;
+  if(live.length>=2){$('raTv').innerHTML=$('rmTv').innerHTML;$('raTv').value=$('rmTv').value}
+  $('raTvName').textContent=tv?tv.name:'Ciao Board remote';
+  $('raState').textContent=!tv?(rmTvs().length?'Waiting for the TV to confirm…':'Not paired yet'):st?st.showing+' · '+st.style:'Asking the TV what it\'s showing…';
+  const mode=st?st.mode:'';
+  document.querySelectorAll('.ra-grid button').forEach(b=>{const k=b.dataset.ra;b.classList.toggle('on',k==='plan'?!!(st&&st.plan):k===({clock:'clock',news:'news',art:'art',rotating:'saved'}[mode])||raOpen===k)});
+  $('raPlanLbl').textContent=st&&st.plan?'Stop day plan':'Day plan';
+  $('raNewsChips').hidden=raOpen!=='news'; $('raArtChips').hidden=raOpen!=='art';
+  if(raOpen==='news')raChips($('raNewsChips'),[...$('newsSection').options].map(o=>[o.value,o.textContent]),mode==='news'?st.section:'',(v,l)=>{raCmd({action:'news',section:v},'BBC '+l.toLowerCase()+' on the TV.');raOpen=null;raRender()});
+  if(raOpen==='art')raChips($('raArtChips'),ART.map(a=>[a.id,a.name]),st&&(mode==='art'||/^Art: /.test(st.showing))?st.art:'',(v,l)=>{raCmd({action:'art',id:v},l+' on the TV.');raOpen=null;raRender()});
+  document.querySelectorAll('#raStyles button').forEach(b=>b.classList.toggle('on',!!st&&b.dataset.id===st.styleId));
+  const so=st&&st.sound;
+  if(so){$('raMute').setAttribute('aria-pressed',String(!!so.on));$('raMute').textContent=so.on?'Sound on':'Sound off';$('raMute').classList.toggle('on',!!so.on);$('raVolOut').textContent=Math.round(so.vol*100)+'%';
+    if(so.style)$('raSndStyle').value=so.style;if(so.chime)$('raChime').value=so.chime}
+  if(st)$('raPerf').value=st.perf;
+  if(so&&so.blocked)raNote('The TV is holding sound back. Press OK on the TV remote once.');
+}
 function rmRender(){
   const tvs=rmTvs(), live=tvs.filter(l=>!l.pending), sel=$('rmTv'), keep=sel.value;
   sel.innerHTML=''; live.forEach(l=>{const o=document.createElement('option');o.value=l.id;o.textContent=l.name;sel.appendChild(o)});
@@ -2734,6 +2917,8 @@ function rmRender(){
     x.onclick=()=>{if(!confirm('Unpair '+l.name+'?'))return;if(!l.pending)frSend(l,{type:'bye'}).catch(()=>{});fr.links=fr.links.filter(k=>k.id!==l.id);saveFr();rmRender()};
     li.append(t,x); ul.appendChild(li);
   });
+  $('rmOpenApp').hidden=!tvs.some(l=>!l.pending);
+  raRender();
   try{updateSubs()}catch(e){}
 }
 setTimeout(frBoot,0);
@@ -3150,7 +3335,7 @@ renderSlots();
 // Start: blank board, then flip in the current message
 tiles.forEach(t=>{paint(t.u,0);paint(t.d,0)});
 updateCount();
-setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='news')startNews();else if(m==='art'&&ART_BY[artCur])startArt(artCur);else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
+if(!new URLSearchParams(location.search).has('remote'))setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='news')startNews();else if(m==='art'&&ART_BY[artCur])startArt(artCur);else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
 })();
 </script>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, eleven vintage and modern styles, and real flap sounds.">
+<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, fourteen vintage and modern styles, and real flap sounds.">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
@@ -100,12 +100,40 @@
   --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-w:500; --tile-size:2.8cqw; --tile-k:.92;
   --route:#c23b2a; --pin-c:#6b737c; --pin-s:.24;
 }
+[data-style="neon"]{
+  --wall:#0b0614; --frame:#05020b; --frame-edge:#2a1840;
+  --tile:#140b22; --tile-hi:#1c1030; --ink:#ff5bdc; --seam:#000; --glow:0 0 .45cqw #ff4fd8aa,0 0 1.1cqw #ff4fd855;
+  --ui:#f2e9ff; --muted:#a795c2; --line:#2c1d45; --panel:#130b20; --panel-2:#1b102c;
+  --accent:#39e6ff; --accent-ink:#021216; --ok:#4fe3a0; --c-b:#39b6ff; --c-v:#a36bff;
+}
+[data-style="mint"]{
+  --wall:#dfeee8; --frame:#f6fbf9; --frame-edge:#ffffff;
+  --tile:#cfe9df; --tile-hi:#dcf1e9; --ink:#10443a; --seam:#a7cfc1;
+  --ui:#10443a; --muted:#4a7369; --line:#b9d8cc; --panel:#ecf6f2; --panel-2:#e1efe9;
+  --accent:#c2453f; --accent-ink:#ffffff; --c-w:#10443a; --ok:#1b6e3e; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="brass"]{
+  --wall:#1b1610; --frame:#6e5320; --frame-edge:#e0c070;
+  --frame-img:linear-gradient(160deg,#c9a24a 0%,#7a5c22 30%,#e2c06a 52%,#6a4e1c 78%,#b8913e 100%);
+  --tile:#efe7d2; --tile-hi:#faf4e6; --ink:#1c1814; --seam:#9c8f72;
+  --ui:#f1e6cf; --muted:#c3ad85; --line:#3d3020; --panel:#221b12; --panel-2:#2c2318;
+  --accent:#e2c06a; --accent-ink:#231a08; --ok:#7cc47f; --warn:#ff8a75; --c-w:#1c1814;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:78%; --tile-w:700; --tile-size:3.2cqw;
+  --gloss:rgba(255,255,255,.4); --flap-r:.3cqw; --frame-r:1.2cqw; --frame-pad:2.6cqw;
+  --pin-c:#9c7a32; --pin-s:.28; --bevel:inset 0 2px 0 #f0d488,inset 0 -3px 0 #3d2c0e;
+}
+/* Frame materials from Settings override the style's own frame */
+body[data-frame="metal"],body[data-frame="metal"] .board{--frame:#7d8288;--frame-edge:#d4d8dc;--frame-img:linear-gradient(170deg,#a9aeb4 0%,#6c7177 35%,#b9bec3 55%,#5f646a 100%),repeating-linear-gradient(90deg,#ffffff08 0 1px,#0000 1px 3px);--bevel:inset 0 2px 0 #e2e6ea,inset 0 -3px 0 #3a3e42}
+body[data-frame="walnut"],body[data-frame="walnut"] .board{--frame:#4a2e1b;--frame-edge:#8a5a36;--frame-img:repeating-linear-gradient(92deg,#ffffff06 0 2px,#0000 2px 9px,#00000014 9px 11px,#0000 11px 17px),linear-gradient(175deg,#6b4428,#3f2716 60%,#5a381f);--bevel:inset 0 2px 0 #8f6040,inset 0 -3px 0 #22140a}
+body[data-frame="black"],body[data-frame="black"] .board{--frame:#0a0a0a;--frame-edge:#1f1f1f;--frame-img:none;--bevel:0 0 0 transparent}
+body[data-frame="white"],body[data-frame="white"] .board{--frame:#f4f2ee;--frame-edge:#ffffff;--frame-img:none;--bevel:inset 0 -2px 0 #d9d5cc}
 html,body{background:var(--wall);color:var(--ui)}
 body{font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px;min-height:100%;transition:background-color .4s,color .4s}
 .wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 
 /* Board */
-.board{container-type:inline-size;background:var(--frame);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
+.board{container-type:inline-size;position:relative;background:var(--frame);background-image:var(--frame-img,none);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
 .grid{display:grid;grid-template-columns:repeat(22,1fr);gap:.45cqw}
 .t{position:relative;aspect-ratio:.82;max-width:100%;perspective:300px;font-family:var(--f-tile);font-weight:600;font-size:var(--tile-size);color:var(--ink);text-shadow:var(--glow)}
 body[data-style="departures"] .t,body[data-style="rail"] .t{font-weight:500}
@@ -122,24 +150,39 @@ body[data-style="glow"] .t{font-weight:400}
 .g{bottom:0;transform-origin:50% 0;background:var(--tile);border-radius:0 0 var(--flap-r,2px) var(--flap-r,2px)}
 .f span,.g span{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center}
 .g span{bottom:0}
-.f.a{visibility:visible;animation:fA var(--half,35ms) ease-in forwards}
-.f.b{visibility:visible;animation:fB var(--half,35ms) ease-in forwards}
-.g.a{visibility:visible;animation:gA var(--half,35ms) ease-out var(--half,35ms) both}
-.g.b{visibility:visible;animation:gB var(--half,35ms) ease-out var(--half,35ms) both}
+.t{--dur:calc(var(--half,35ms) * var(--spd,1))}
+.f.a{visibility:visible;animation:fA var(--dur) ease-in forwards}
+.f.b{visibility:visible;animation:fB var(--dur) ease-in forwards}
+.g.a{visibility:visible;animation:gA var(--dur) ease-out var(--dur) both}
+.g.b{visibility:visible;animation:gB var(--dur) ease-out var(--dur) both}
+/* Realistic motion: the flap keeps gathering speed as it falls, each tile runs a touch fast or slow, and the last flap settles with a bounce */
+body.real .t{--spd:var(--spd-r,1)}
+body.real .f.a,body.real .f.b{animation-timing-function:cubic-bezier(.55,0,.9,.55)}
+body.real .g.a,body.real .g.b{animation-timing-function:cubic-bezier(.35,.4,.75,1)}
+body.real .g.a.land{animation:gLandA calc(var(--dur) * 2.6) linear var(--dur) both}
+body.real .g.b.land{animation:gLandB calc(var(--dur) * 2.6) linear var(--dur) both}
+@keyframes gLandA{0%{transform:rotateX(90deg);animation-timing-function:cubic-bezier(.35,.4,.75,1)}38%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}56%{transform:rotateX(16deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}74%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}84%{transform:rotateX(4deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}93%,100%{transform:rotateX(0)}}
+@keyframes gLandB{0%{transform:rotateX(90deg);animation-timing-function:cubic-bezier(.35,.4,.75,1)}38%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}56%{transform:rotateX(16deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}74%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}84%{transform:rotateX(4deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}93%,100%{transform:rotateX(0)}}
 @keyframes fA{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
 @keyframes fB{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
 /* Shading rides on opacity overlays, which the compositor handles cheaply */
 .f::before,.g::before{content:"";position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none}
 .f::before{background:#000}
 .g::before{background:#fff}
-.f.a::before,.f.b::before{animation:shadeIn var(--half,35ms) ease-in forwards}
-.g.a::before,.g.b::before{animation:shadeOut var(--half,35ms) ease-out var(--half,35ms) both}
+.f.a::before,.f.b::before{animation:shadeIn var(--dur) ease-in forwards}
+.g.a::before,.g.b::before{animation:shadeOut var(--dur) ease-out var(--dur) both}
+/* Depth: tiles sit proud of the frame, shaded toward the split, with soft glare across the glass */
+body.depth .t{border-radius:var(--flap-r,2px);box-shadow:0 .22cqw .3cqw -.08cqw #0009}
+body.depth .h.u{box-shadow:inset 0 -.4cqw .35cqw -.25cqw #0005,inset 0 1px 0 #ffffff12}
+body.depth .h.d{box-shadow:inset 0 .45cqw .4cqw -.25cqw #0006,inset 0 -1px 0 #0000002e}
+body.depth .g{box-shadow:0 .3cqw .5cqw -.1cqw #0007}
+body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;background:linear-gradient(112deg,#ffffff00 14%,#ffffff1f 27%,#ffffff0a 40%,#ffffff00 50%,#ffffff00 66%,#ffffff12 75%,#ffffff00 84%),linear-gradient(180deg,#ffffff0d,#ffffff00 35%)}
 @keyframes shadeIn{from{opacity:0}to{opacity:.45}}
 @keyframes shadeOut{from{opacity:.22}to{opacity:0}}
 .f,.g{will-change:auto}
-[data-style="glow"] .f span,[data-style="glow"] .g span{text-shadow:none}
+[data-style="glow"] .f span,[data-style="glow"] .g span,[data-style="neon"] .f span,[data-style="neon"] .g span{text-shadow:none}
 .t{font-stretch:var(--tile-stretch,100%)}
-[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="gameshow"] .t,[data-style="pragotron"] .t{font-weight:var(--tile-w,600)}
+[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="gameshow"] .t,[data-style="pragotron"] .t,[data-style="brass"] .t{font-weight:var(--tile-w,600)}
 /* Off-center silkscreen printing and faded letters, scaled by the style's --wear */
 .t span{translate:calc(var(--jx,0) * var(--wear,0) * var(--u,1) * 1cqw) calc(var(--jy,0) * var(--wear,0) * var(--u,1) * 1cqw);opacity:calc(1 - var(--fd,0) * var(--wear,0))}
 /* Hinge pins, a scuff and grain, sitting over the resting flaps and under the moving ones */
@@ -266,7 +309,7 @@ ul.list li.hint{display:block}
 .swatch .tick{width:16px;height:16px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:none;align-items:center;justify-content:center}
 .swatch[aria-pressed="true"] .tick{display:inline-flex}
 /* The preview is a real miniature board: same tiles, same tokens, scaled with --u */
-.minib{display:block;container-type:inline-size;--u:3.4;background:var(--frame);border-radius:min(var(--frame-r,6px),10px);padding:7%;box-shadow:var(--bevel,0 0 0 transparent);pointer-events:none}
+.minib{display:block;container-type:inline-size;--u:3.4;background:var(--frame);background-image:var(--frame-img,none);border-radius:min(var(--frame-r,6px),10px);padding:7%;box-shadow:var(--bevel,0 0 0 transparent);pointer-events:none}
 .minib .g6{display:grid;grid-template-columns:repeat(6,1fr);gap:2.4cqw}
 .minib .t{font-size:calc(var(--tile-size) * 3.3 * var(--tile-k,1))}
 .tray-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -326,7 +369,7 @@ body.kiosk .boardbar{justify-content:flex-end}
 body:not(.kiosk) #showBtn{display:none}
 /* Full screen: the page goes full screen and the board scales to fit the device, edge to edge */
 body.fs{overflow:hidden;background:var(--frame)}
-body.fs .wrap{position:fixed;inset:0;z-index:5;max-width:none;display:flex;align-items:center;justify-content:center;gap:0;background:var(--frame);padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+body.fs .wrap{position:fixed;inset:0;z-index:5;max-width:none;display:flex;align-items:center;justify-content:center;gap:0;background:var(--frame);background-image:var(--frame-img,none);padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 body.fs .deck,body.fs .tray,body.kiosk .tray{display:none}
 body.fs .board{width:min(97vw,calc(94vh * 2.55));width:min(97vw,calc(94dvh * 2.55));padding:1.2cqw;border-radius:0;box-shadow:none}
 body.fs .boardbar{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));justify-content:center;z-index:20}
@@ -344,7 +387,7 @@ body.fs.idle{cursor:none}
 #fsNote{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:30;max-width:min(92vw,460px);box-sizing:border-box;padding:10px 14px;border-radius:10px;background:var(--panel);color:var(--ui);border:1px solid var(--line);font-size:14px;text-align:center;transition:opacity .5s}
 #fsNote.gone{opacity:0;pointer-events:none}
 @media (max-width:560px){.pane{padding:18px 0 8px}.stylestep .nm{min-width:0}}
-@media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
+@media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
 </style>
 
 <div class="wrap">
@@ -625,6 +668,39 @@ low tide 1:12 pm</textarea>
             <option value="lazy">Very slow</option>
           </select>
         </label>
+        <label class="field" for="anim-pattern"><span>Flip pattern</span>
+          <select id="anim-pattern">
+            <option value="wave">Left to right</option>
+            <option value="rows">Row by row</option>
+            <option value="diagonal">Diagonal sweep</option>
+            <option value="center">From the center out</option>
+            <option value="outside">From the edges in</option>
+            <option value="random">Random</option>
+            <option value="together">All at once</option>
+          </select>
+        </label>
+        <label class="field" for="anim-motion"><span>Flap motion</span>
+          <select id="anim-motion">
+            <option value="real">Realistic</option>
+            <option value="crisp">Crisp</option>
+          </select>
+        </label>
+        <label class="field" for="anim-finish"><span>Board finish</span>
+          <select id="anim-finish">
+            <option value="depth">Raised tiles</option>
+            <option value="glare">Raised tiles with glass glare</option>
+            <option value="flat">Flat</option>
+          </select>
+        </label>
+        <label class="field" for="anim-frame"><span>Frame</span>
+          <select id="anim-frame">
+            <option value="style">Match the style</option>
+            <option value="metal">Brushed metal</option>
+            <option value="walnut">Walnut</option>
+            <option value="black">Matte black</option>
+            <option value="white">White</option>
+          </select>
+        </label>
       </div>
       <div class="pane-head" style="border-top:1px solid var(--line);padding-top:18px">
         <div><h2>Sound</h2><p class="sub">No sound on an iPhone or iPad? Flip the ringer switch off silent and turn up the media volume.</p></div>
@@ -709,7 +785,7 @@ for(let i=0;i<COLS*ROWS;i++){
   t.innerHTML='<div class="h u"><span></span></div><div class="h d"><span></span></div><div class="f"><span></span></div><div class="g"><span></span></div>';
   const [u,d,f,g]=t.children;
   const col=i%COLS, row=Math.floor(i/COLS), rnd=Math.random;
-  t.style.cssText='--jx:'+((rnd()-.5)*.5).toFixed(3)+';--jy:'+((rnd()-.5)*.35).toFixed(3)+';--fd:'+(rnd()*.35).toFixed(3)+';--sx:'+(rnd()*100|0)+'%;--sy:'+([10,50,50,90][rnd()*4|0]+((rnd()-.5)*12|0))+'%;--sw:'+(1+rnd()*2.2).toFixed(2)+';--sh:'+(.5+rnd()*1.2).toFixed(2);
+  t.style.cssText='--spd-r:'+(.86+rnd()*.28).toFixed(3)+';--jx:'+((rnd()-.5)*.5).toFixed(3)+';--jy:'+((rnd()-.5)*.35).toFixed(3)+';--fd:'+(rnd()*.35).toFixed(3)+';--sx:'+(rnd()*100|0)+'%;--sy:'+([10,50,50,90][rnd()*4|0]+((rnd()-.5)*12|0))+'%;--sw:'+(1+rnd()*2.2).toFixed(2)+';--sh:'+(.5+rnd()*1.2).toFixed(2);
   if(col===0&&row%2===0)t.classList.add('edge');
   const tile={el:t,u,d,f,g,col,row,cur:0,target:0,delay:0,flip:false};
   f.addEventListener('animationend',()=>{f.className='f'});
@@ -727,7 +803,7 @@ function step(tile){
   if(reduce){paint(tile.d,tile.cur);return}
   paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);
   tile.flip=!tile.flip; const k=tile.flip?'a':'b';
-  tile.f.className='f '+k; tile.g.className='g '+k;
+  tile.f.className='f '+k; tile.g.className='g '+k+(tile.cur===tile.target?' land':'');
 }
 
 // Parse + layout
@@ -774,6 +850,30 @@ function toTargets(str){
 }
 
 // Engine
+// Flip patterns: how many ticks each tile waits before it starts, by column and row
+const PATTERNS={
+  wave:(c,r)=>c*0.6+r*1.2,
+  rows:(c,r)=>r*3+c*0.1,
+  diagonal:(c,r)=>(c+r*3)*0.45,
+  center:(c,r)=>Math.hypot(Math.abs(c-(COLS-1)/2),Math.abs(r-(ROWS-1)/2)*2.2)*0.75,
+  outside:(c,r)=>Math.max(0,8-Math.hypot(Math.abs(c-(COLS-1)/2),Math.abs(r-(ROWS-1)/2)*2.2)*0.75),
+  random:()=>Math.random()*12,
+  together:()=>0
+};
+const anim=Object.assign({pattern:'wave',motion:'real',finish:'depth',frame:'style'},store.get('fb.anim',{}));
+function applyAnim(){
+  const b=document.body.classList;
+  b.toggle('real',anim.motion==='real'); b.toggle('depth',anim.finish!=='flat'); b.toggle('glare',anim.finish==='glare');
+  if(anim.frame==='style')delete document.body.dataset.frame; else document.body.dataset.frame=anim.frame;
+  ['pattern','motion','finish','frame'].forEach(k=>{const el=$('anim-'+k);if(el)el.value=anim[k]});
+  store.set('fb.anim',anim);
+}
+// Re-run the current message from a few flaps back, to show off a new pattern or motion
+function replay(){
+  if(busy||reduce||lastSent==null)return;
+  tiles.forEach(t=>{t.cur=(t.target-3+CHARS.length)%CHARS.length;paint(t.u,t.cur);paint(t.d,t.cur)});
+  send(lastSent);
+}
 let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null;
 function send(str){
   lastSent=str;
@@ -781,7 +881,8 @@ function send(str){
   tiles.forEach((t,i)=>{
     t.target=cells[i];
     if(reduce){t.cur=t.target;paint(t.u,t.cur);paint(t.d,t.cur);return}
-    t.delay=(i%COLS)*0.6+Math.floor(i/COLS)*1.2|0;
+    const p=PATTERNS[anim.pattern]||PATTERNS.wave;
+    t.delay=p(i%COLS,Math.floor(i/COLS))+(anim.motion==='real'&&Math.random()<.25?1:0)|0;
   });
   setStatus('Flipping');
   if(!busy){busy=true;requestAnimationFrame(loop)}
@@ -947,6 +1048,8 @@ $('sndStyle').onchange=()=>{snd.style=$('sndStyle').value;saveSnd();preview(5)};
 $('sndRate').onchange=()=>{snd.rate=+$('sndRate').value;saveSnd();preview(5,TICK*snd.rate)};
 $('chimeStyle').onchange=()=>{snd.chime=$('chimeStyle').value;saveSnd();ensureAudio();setTimeout(playChime,60)};
 $('speed').onchange=()=>{snd.speed=$('speed').value;saveSnd();applySpeed()};
+['pattern','motion','finish','frame'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).value;applyAnim();if(k==='pattern'||k==='motion')replay()}});
+applyAnim();
 $('testBtn').onclick=()=>{ensureAudio();setTimeout(()=>{const n=8;for(let i=0;i<n;i++)setTimeout(()=>playClick(10),i*TICK*snd.rate);setTimeout(playChime,n*TICK*snd.rate+200)},60)};
 renderSound(); checkAudio();
 $('sndStereo').onchange=()=>{snd.stereo=$('sndStereo').checked;saveSnd();preview(5)};
@@ -1720,7 +1823,10 @@ const BOARD_STYLES=[
   {id:'cifra',group:'vintage',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
   {id:'worn',group:'vintage',name:'Worn',note:'A ticket-hall board: scuffed, faded, printed a little off-center.'},
   {id:'gameshow',group:'vintage',name:'Game show',note:'1970s burnt orange on chocolate brown.'},
-  {id:'pragotron',group:'vintage',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'}
+  {id:'neon',group:'modern',name:'Neon',note:'Hot pink letters glowing on violet-black.'},
+  {id:'mint',group:'modern',name:'Mint',note:'Soft mint flaps, deep teal letters, for a bright room.'},
+  {id:'pragotron',group:'vintage',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'},
+  {id:'brass',group:'vintage',name:'Brass',note:'Ivory flaps in a polished brass frame, like a grand hotel lobby.'}
 ];
 let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
 function applyStyle(id){

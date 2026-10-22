@@ -22,7 +22,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Wall display** — dims the board during the night hours you choose, and in full screen drifts it a few pixels over time to protect TV screens from burn-in.
 - **Sound** — a modelled mechanical flap with left-to-right stereo, a dozen other click styles, finish chimes, or upload your own recording.
 - **Full screen** — fills a TV, tablet or monitor and keeps the screen awake.
-- **Smooth mode** — on TVs and other slow screens the board drops its costliest effects and caps how many flaps each tile turns, so flips stay fluid. It's on automatically in TV mode, or when the board notices flips running slowly; choose it yourself in Settings → Motion.
+- **Smooth mode** — on TVs and other slow screens the board draws every tile face ahead of time and animates the whole board on a single canvas, caps how many flaps each tile turns, and drops its costliest effects, so flips stay fluid. It's on automatically in TV mode, or when the board notices flips running slowly; choose it yourself in Settings → Motion.
 
 Settings are kept in each person's own browser.
 

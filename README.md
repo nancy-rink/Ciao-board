@@ -8,7 +8,8 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Saved** — keep a list of messages and rotate through them.
 - **Clock** — time and date, with 12/24-hour, a second city, borders and accent tiles.
 - **Day plan** — change what the board shows, and its style, at set times through the day.
-- **11 styles** — Classic, Departures, Daylight, Rail, Harbor, Glow, plus vintage Solari, Cifra clock, Worn, Game show and Euro rail.
+- **14 styles** — Classic, Departures, Daylight, Rail, Harbor, Glow, Neon, Mint, plus vintage Solari, Cifra clock, Worn, Game show, Euro rail and Brass.
+- **Animation** — realistic flaps that settle with a bounce, seven flip patterns (left to right, row by row, diagonal, center out, edges in, random, all at once), raised tiles with optional glass glare, and a choice of frames (brushed metal, walnut, matte black, white).
 - **Sound** — a modelled mechanical flap with left-to-right stereo, a dozen other click styles, finish chimes, or upload your own recording.
 - **Full screen** — fills a TV, tablet or monitor edge to edge and keeps the screen awake.
 

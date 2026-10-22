@@ -524,7 +524,7 @@ low tide 1:12 pm</textarea>
             <option value="">None</option>
             <option value="America/New_York">New York</option><option value="America/Chicago">Chicago</option><option value="America/Denver">Denver</option>
             <option value="America/Los_Angeles">Los Angeles</option><option value="Pacific/Honolulu">Honolulu</option><option value="Europe/London">London</option>
-            <option value="Europe/Paris">Paris</option><option value="Europe/Berlin">Berlin</option><option value="Asia/Dubai">Dubai</option>
+            <option value="Europe/Paris">Paris</option><option value="Europe/Berlin">Berlin</option><option value="Europe/Oslo">Oslo</option><option value="Asia/Dubai">Dubai</option>
             <option value="Asia/Kolkata">Mumbai</option><option value="Asia/Tokyo">Tokyo</option><option value="Australia/Sydney">Sydney</option>
           </select>
         </label>
@@ -1230,7 +1230,7 @@ $('rotateBtn').onclick=()=>{
 };
 $('rotateEvery').onchange=()=>{if(mode==='rotating'){mode='';$('rotateBtn').click()}};
 const clk=Object.assign({hours:'12',ampm:true,date:'long',border:'none',accent:'none',tz:'',label:'',order:'time'},store.get('fb.clock',{}));
-const TZ_NAMES={'America/New_York':'NEW YORK','America/Chicago':'CHICAGO','America/Denver':'DENVER','America/Los_Angeles':'LOS ANGELES','Pacific/Honolulu':'HONOLULU','Europe/London':'LONDON','Europe/Paris':'PARIS','Europe/Berlin':'BERLIN','Asia/Dubai':'DUBAI','Asia/Kolkata':'MUMBAI','Asia/Tokyo':'TOKYO','Australia/Sydney':'SYDNEY'};
+const TZ_NAMES={'America/New_York':'NEW YORK','America/Chicago':'CHICAGO','America/Denver':'DENVER','America/Los_Angeles':'LOS ANGELES','Pacific/Honolulu':'HONOLULU','Europe/London':'LONDON','Europe/Paris':'PARIS','Europe/Berlin':'BERLIN','Europe/Oslo':'OSLO','Asia/Dubai':'DUBAI','Asia/Kolkata':'MUMBAI','Asia/Tokyo':'TOKYO','Australia/Sydney':'SYDNEY'};
 function hm(d,tz){
   if(!tz)return [d.getHours(),d.getMinutes()];
   const parts=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(d);

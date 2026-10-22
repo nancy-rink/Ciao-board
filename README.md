@@ -63,6 +63,18 @@ Messages travel through [ntfy.sh](https://ntfy.sh), a free public relay, so ther
 
 ntfy.sh's free tier allows 250 messages a day per internet connection, shared by every board and phone at home. A tap on the remote uses about two, so a very busy day can use them up; the board then says so, and the allowance refills through the day. ntfy.sh keeps messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
 
+## Tests
+
+The board has no build step; the tests are the only thing that needs installing. They open the board in Chromium against a local copy of the site and a local stand-in for ntfy.sh, so they never touch the real relay.
+
+```sh
+npm install
+npx playwright install chromium   # once
+npm test
+```
+
+They also run on every pull request (`.github/workflows/test.yml`).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

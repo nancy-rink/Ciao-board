@@ -2930,7 +2930,7 @@ function frListen(){
   if(frES||(!fr.links.length&&!fr.invites.length))return;
   frES=new EventSource(NTFY+fr.inbox+'/sse?since='+encodeURIComponent(fr.since||'12h'));
   frES.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='message')frReceive(m)}catch(x){}};
-  frES.onerror=()=>{if(frES&&frES.readyState===2)setTimeout(frListen,5000)};
+  frES.onerror=()=>{if(frES&&frES.readyState===2)setTimeout(frListen,5000);if(!frPollT)frPollSoon()};
 }
 // The stream can stall (phones pause it in the background, some TV browsers drop it), and a missed handshake
 // leaves pairing stuck. While one is in progress, also ask the relay for anything new every few seconds.
@@ -2954,7 +2954,10 @@ function frNudge(){
   });
   if(drop){fr.links=fr.links.filter(l=>!(l.pending&&now-l.at>15*60e3));saveFr();frRender();rmRender()}
 }
-function frPollSoon(){clearTimeout(frPollT);if(frHandshaking())frPollT=setTimeout(async()=>{frNudge();await frPoll();frPollSoon()},6000)}
+// While pairing, check every 6 seconds. After that, keep checking every 15 seconds for as long as the live stream is down,
+// so a TV whose browser keeps dropping the stream still gets the remote's commands.
+const frStreamDown=()=>(fr.links.length||fr.invites.length)&&!(frES&&frES.readyState===1);
+function frPollSoon(){clearTimeout(frPollT);frPollT=null;const hs=frHandshaking();if(hs||frStreamDown())frPollT=setTimeout(async()=>{frNudge();await frPoll();frPollSoon()},hs?6000:15000)}
 function frWake(){if(document.visibilityState!=='visible')return;frListen();frPoll(true);frPollSoon()}
 document.addEventListener('visibilitychange',frWake); addEventListener('online',frWake); addEventListener('pageshow',frWake);
 async function frReceive(m){

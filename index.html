@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ciao Board</title>
-<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, fourteen vintage and modern styles, and real flap sounds.">
+<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, 21 modern, vintage, transit and Japanese styles, and real flap sounds.">
 <meta name="theme-color" content="#16130f">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ciao Board">
 <meta property="og:title" content="Ciao Board">
-<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, fourteen styles and real flap sounds.">
+<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, 21 styles and real flap sounds.">
 <meta property="og:url" content="https://nancy-rink.github.io/Ciao-board/">
 <meta property="og:image" content="https://nancy-rink.github.io/Ciao-board/assets/preview.png">
 <meta property="og:image:width" content="1200">
@@ -26,13 +26,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&display=swap">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
 <style>
 /* Layout: a wall-mounted 6×22 split-flap board; beneath it a tabbed control deck. Each board style re-skins the whole wall. Kiosk mode hides everything but the board. */
-:root,[data-style="classic"]{
+:root,[data-style]{
+  --bevel:0 0 0 transparent; --frame-r:10px; --frame-pad:2.2cqw; --flap-r:2px; --pin-c:transparent; --pin-s:0; --gloss:transparent;
+  --wear:0; --grain:none; --scuff-c:transparent; --tile-stretch:100%; --tile-w:600; --route:transparent; --tile-k:1; --frame-img:none;
   --wall:#16130f; --frame:#0b0b0b; --frame-edge:#2a2a2a;
   --tile:#1c1c1c; --tile-hi:#252525; --ink:#f1ece2; --seam:#000; --glow:none;
   --ui:#f1ece2; --muted:#a39a8b; --line:#2e2a24; --panel:#1f1b16; --panel-2:#26211b;
@@ -42,13 +44,6 @@
   --f-ui:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:ui-monospace,Menlo,monospace;
   color-scheme:dark;
-}
-[data-style="departures"]{
-  --wall:#10151d; --frame:#070a0f; --frame-edge:#1e2632;
-  --tile:#161c26; --tile-hi:#1f2733; --ink:#ffc94a; --seam:#05070a;
-  --ui:#e9eef5; --muted:#8d99ab; --line:#283244; --panel:#161d28; --panel-2:#1c2533;
-  --accent:#ffc94a; --accent-ink:#1b1400;
-  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-size:2.8cqw;
 }
 [data-style="daylight"]{
   --wall:#e6e2d9; --frame:#f7f5f0; --frame-edge:#ffffff;
@@ -102,15 +97,6 @@
   --accent:#d9a441; --accent-ink:#1a1205; --ok:#5cb87f;
   --wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:rgba(255,236,200,.11); --pin-c:#4f483d; --pin-s:.26;
 }
-[data-style="gameshow"]{
-  --wall:#24140c; --frame:#3b1f10; --frame-edge:#7a4520;
-  --tile:#4a2814; --tile-hi:#5a3219; --ink:#ff8c2a; --seam:#1d0f07;
-  --ui:#f8e6d2; --muted:#d2ad8d; --line:#5a3420; --panel:#2e1a0f; --panel-2:#3a2214;
-  --accent:#ff8c2a; --accent-ink:#2a1100; --ok:#7cc47f; --warn:#ff9a85;
-  --f-tile:"Bungee",Impact,sans-serif; --tile-w:400; --tile-size:2.75cqw;
-  --gloss:rgba(255,200,150,.08); --flap-r:.55cqw; --frame-r:3.4cqw; --frame-pad:3.4cqw;
-  --bevel:inset 0 3px 0 #8a5228,inset 0 -4px 0 #1f0f06;
-}
 [data-style="pragotron"]{
   --wall:#181b1e; --frame:#0c0e10; --frame-edge:#262b30;
   --tile:#2a2e33; --tile-hi:#33383e; --ink:#e8ebee; --seam:#0a0b0c;
@@ -119,28 +105,12 @@
   --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-w:500; --tile-size:2.8cqw; --tile-k:.92;
   --route:#c23b2a; --pin-c:#6b737c; --pin-s:.24;
 }
-[data-style="neon"]{
-  --wall:#0b0614; --frame:#05020b; --frame-edge:#2a1840;
-  --tile:#140b22; --tile-hi:#1c1030; --ink:#ff5bdc; --seam:#000; --glow:0 0 .45cqw #ff4fd8aa,0 0 1.1cqw #ff4fd855;
-  --ui:#f2e9ff; --muted:#a795c2; --line:#2c1d45; --panel:#130b20; --panel-2:#1b102c;
-  --accent:#39e6ff; --accent-ink:#021216; --ok:#4fe3a0; --c-b:#39b6ff; --c-v:#a36bff;
-}
 [data-style="mint"]{
   --wall:#dfeee8; --frame:#f6fbf9; --frame-edge:#ffffff;
   --tile:#cfe9df; --tile-hi:#dcf1e9; --ink:#10443a; --seam:#a7cfc1;
   --ui:#10443a; --muted:#4a7369; --line:#b9d8cc; --panel:#ecf6f2; --panel-2:#e1efe9;
   --accent:#c2453f; --accent-ink:#ffffff; --c-w:#10443a; --ok:#1b6e3e; --warn:#b3261e;
   color-scheme:light;
-}
-[data-style="brass"]{
-  --wall:#1b1610; --frame:#6e5320; --frame-edge:#e0c070;
-  --frame-img:linear-gradient(160deg,#c9a24a 0%,#7a5c22 30%,#e2c06a 52%,#6a4e1c 78%,#b8913e 100%);
-  --tile:#efe7d2; --tile-hi:#faf4e6; --ink:#1c1814; --seam:#9c8f72;
-  --ui:#f1e6cf; --muted:#c3ad85; --line:#3d3020; --panel:#221b12; --panel-2:#2c2318;
-  --accent:#e2c06a; --accent-ink:#231a08; --ok:#7cc47f; --warn:#ff8a75; --c-w:#1c1814;
-  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:78%; --tile-w:700; --tile-size:3.2cqw;
-  --gloss:rgba(255,255,255,.4); --flap-r:.3cqw; --frame-r:1.2cqw; --frame-pad:2.6cqw;
-  --pin-c:#9c7a32; --pin-s:.28; --bevel:inset 0 2px 0 #f0d488,inset 0 -3px 0 #3d2c0e;
 }
 /* Frame materials from Settings override the style's own frame */
 body[data-frame="metal"],body[data-frame="metal"] .board{--frame:#7d8288;--frame-edge:#d4d8dc;--frame-img:linear-gradient(170deg,#a9aeb4 0%,#6c7177 35%,#b9bec3 55%,#5f646a 100%),repeating-linear-gradient(90deg,#ffffff08 0 1px,#0000 1px 3px);--bevel:inset 0 2px 0 #e2e6ea,inset 0 -3px 0 #3a3e42}
@@ -155,7 +125,7 @@ body{font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-left:max(16p
 .board{container-type:inline-size;position:relative;background:var(--frame);background-image:var(--frame-img,none);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
 .grid{display:grid;grid-template-columns:repeat(22,1fr);gap:.45cqw}
 .t{position:relative;aspect-ratio:.82;max-width:100%;perspective:300px;font-family:var(--f-tile);font-weight:600;font-size:var(--tile-size);color:var(--ink);text-shadow:var(--glow)}
-[data-style="departures"] .t,[data-style="rail"] .t{font-weight:500}
+[data-style="rail"] .t{font-weight:500}
 [data-style="glow"] .t{font-weight:400}
 .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile)}
 .h.u{top:0;border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile))}
@@ -199,9 +169,9 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
 @keyframes shadeIn{from{opacity:0}to{opacity:.45}}
 @keyframes shadeOut{from{opacity:.22}to{opacity:0}}
 .f,.g{will-change:auto}
-[data-style="glow"] .f span,[data-style="glow"] .g span,[data-style="neon"] .f span,[data-style="neon"] .g span{text-shadow:none}
+[data-style="glow"] .f span,[data-style="glow"] .g span{text-shadow:none}
 .t{font-stretch:var(--tile-stretch,100%)}
-[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="gameshow"] .t,[data-style="pragotron"] .t,[data-style="brass"] .t{font-weight:var(--tile-w,600)}
+[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="pragotron"] .t{font-weight:var(--tile-w,600)}
 /* Off-center silkscreen printing and faded letters, scaled by the style's --wear */
 .t span{translate:calc(var(--jx,0) * var(--wear,0) * var(--u,1) * 1cqw) calc(var(--jy,0) * var(--wear,0) * var(--u,1) * 1cqw);opacity:calc(1 - var(--fd,0) * var(--wear,0))}
 /* Hinge pins, a scuff and grain, sitting over the resting flaps and under the moving ones */
@@ -212,6 +182,96 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
     radial-gradient(calc(var(--sw,1) * var(--u,1) * 1cqw) calc(var(--sh,1) * var(--u,1) * 1cqw) at var(--sx,50%) var(--sy,50%),var(--scuff-c,transparent),transparent 70%),
     var(--grain,none)}
 [data-style="pragotron"] .t.edge .h{box-shadow:inset .32cqw 0 0 var(--route)}
+/* Art boards: styles drawn from transit and Japanese design history */
+[data-style="metropolitana"]{
+  --frame:#0d0d0d; --frame-edge:#2a2a2a; --bevel:inset 0 .9cqw 0 #d52b1e;
+  --tile:#161616; --tile-hi:#1f1f1f; --ink:#f3f1ea; --seam:#000; --c-r:#d52b1e; --pin-c:#8b9097; --pin-s:.26;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-stretch:68%; --tile-w:600; --tile-size:3.15cqw;
+  --wall:#121212; --ui:#f1efe9; --muted:#a3a09a; --line:#2c2a27; --panel:#1a1918; --panel-2:#222120;
+  --accent:#ff5a4a; --accent-ink:#1a0503; --ok:#4fb67a; --warn:#ff8a7d;
+}
+[data-style="standard"]{
+  --frame:#111111; --frame-edge:#2a2a2a; --bevel:inset 0 1.1cqw 0 #000;
+  --tile:#fafafa; --tile-hi:#ffffff; --ink:#111111; --seam:#cfcfcf; --c-w:#111111; --c-r:#e2382d; --c-g:#1f9a4c;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:100%; --tile-w:600; --tile-size:2.95cqw;
+  --wall:#141414; --ui:#f2f2f2; --muted:#a6a6a6; --line:#2e2e2e; --panel:#1b1b1b; --panel-2:#242424;
+  --accent:#f6c400; --accent-ink:#141000; --ok:#3fbf6a; --warn:#ff7b66;
+}
+[data-style="doublearrow"]{
+  --frame:#23262b; --frame-edge:#3a3e45; --bevel:inset 0 -.9cqw 0 #b5121b;
+  --tile:#f7f7f4; --tile-hi:#ffffff; --ink:#111111; --seam:#00000055; --c-r:#b5121b;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:92%; --tile-w:700; --tile-size:2.95cqw; --flap-r:1px; --frame-r:4px;
+  --wall:#15171b; --ui:#eef0f3; --muted:#9ea4ad; --line:#2c3038; --panel:#1c1f24; --panel-2:#242830;
+  --accent:#ff5a5f; --accent-ink:#1a0506; --ok:#4fb67a; --warn:#ff8a7d;
+}
+[data-style="doublearrow"] .t.lo{--tile:#1b2a4a; --tile-hi:#22345a; --ink:#f7f7f4; --seam:#0d1526}
+[data-style="ulm"]{
+  --frame:#061a36; --frame-edge:#0f2a52;
+  --tile:#0b2d5b; --tile-hi:#0f356a; --ink:#f5b800; --seam:#020a16; --c-y:#f5b800;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:85%; --tile-w:600; --tile-size:2.95cqw; --flap-r:1px; --frame-r:0px;
+  --wall:#04132a; --ui:#eef2f8; --muted:#9fb0c8; --line:#173158; --panel:#082042; --panel-2:#0d2a52;
+  --accent:#f5b800; --accent-ink:#1b1400; --ok:#5cc98a; --warn:#ff8a7d;
+}
+[data-style="olympia"]{
+  --frame:#b9bdc2; --frame-edge:#d3d6da;
+  --tile:#fbfbf9; --tile-hi:#ffffff; --ink:#1f5f9f; --seam:#c9ced4; --c-b:#5aa7e0; --c-g:#3fae5a; --c-o:#f08c2e;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:100%; --tile-w:500; --tile-size:2.95cqw; --flap-r:.3cqw;
+  --wall:#e9ecef; --ui:#16324f; --muted:#4f6275; --line:#c9d0d8; --panel:#f5f7f9; --panel-2:#eaeef2;
+  --accent:#1f5f9f; --accent-ink:#ffffff; --ok:#1d7a3c; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="jetage"]{
+  --frame:#8f1c22; --frame-edge:#b23a40; --frame-r:4cqw 4cqw 1.4cqw 1.4cqw; --frame-pad:2.6cqw 3cqw 2.2cqw;
+  --tile:#ebe4d6; --tile-hi:#f3eee4; --ink:#8f1c22; --seam:#cbbfa9; --c-r:#c8202a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:110%; --tile-w:700; --tile-size:2.8cqw; --flap-r:.3cqw;
+  --wall:#f1ece3; --ui:#2a1416; --muted:#6e5a54; --line:#d9cfc0; --panel:#f8f5ef; --panel-2:#eee7db;
+  --accent:#a3191f; --accent-ink:#ffffff; --ok:#186a33; --warn:#a3191f;
+  color-scheme:light;
+}
+[data-style="patapata"]{
+  --frame:#2b2e33; --frame-edge:#4a4f56; --bevel:inset 0 0 0 .35cqw #4a4f56;
+  --tile:#141518; --tile-hi:#1c1e22; --ink:#e8e8e4; --seam:#000; --c-r:#e43b2f; --c-g:#2ea24f;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-stretch:80%; --tile-w:600; --tile-size:3cqw;
+  --wall:#17191c; --ui:#ecedee; --muted:#a1a6ad; --line:#2c3035; --panel:#1d2024; --panel-2:#25292e;
+  --accent:#ffb23e; --accent-ink:#1d1200; --ok:#4fc06e; --warn:#ff8a7d;
+}
+[data-style="ekimei"]{
+  --frame:#d9dbd7; --frame-edge:#eceeea; --bevel:inset 0 0 0 .25cqw #b7bab4;
+  --tile:#fbfbf8; --tile-hi:#ffffff; --ink:#1c1d1f; --seam:#c4c7c1; --c-g:#7ac143;
+  --f-tile:"M PLUS Rounded 1c","Archivo",sans-serif; --tile-w:700; --tile-size:2.8cqw; --flap-r:.45cqw;
+  --wall:#eef0ec; --ui:#1c1d1f; --muted:#575b55; --line:#cfd3cc; --panel:#f7f8f5; --panel-2:#e9ece6;
+  --accent:#276a19; --accent-ink:#ffffff; --ok:#276a19; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="caslon"]{
+  --frame:#e3d6bd; --frame-edge:#f1e8d6; --frame-r:3cqw; --frame-pad:2.6cqw 3cqw;
+  --bevel:inset 0 .3cqw 0 #f1e8d6,inset 0 -.45cqw 0 #c7b797;
+  --tile:#1e1b18; --tile-hi:#26221e; --ink:#f4eee2; --seam:#000; --c-o:#ff7a2a;
+  --f-tile:"Libre Caslon Text",Georgia,serif; --tile-w:400; --tile-size:3cqw; --flap-r:.45cqw;
+  --wall:#efe6d4; --ui:#2a2420; --muted:#6b5f52; --line:#d8ccb4; --panel:#f6f0e3; --panel-2:#ebe2cf;
+  --accent:#9a4013; --accent-ink:#ffffff; --ok:#2f6e3a; --warn:#a3261e;
+  color-scheme:light;
+}
+[data-style="dangan"]{
+  --frame:#e9e5da; --frame-edge:#f6f3ea; --frame-r:13cqw 2cqw 2cqw 13cqw; --frame-pad:2.4cqw 2.8cqw 2.4cqw 7cqw;
+  --bevel:inset 0 -1.1cqw 0 #1a3f8f;
+  --tile:#f6f3ea; --tile-hi:#fbf9f3; --ink:#1a3f8f; --seam:#d3cfc3; --c-b:#1a3f8f;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:90%; --tile-w:600; --tile-size:2.85cqw; --flap-r:.3cqw;
+  --wall:#f2efe6; --ui:#13264f; --muted:#525c6e; --line:#d6d1c4; --panel:#f8f6f0; --panel-2:#ece8dd;
+  --accent:#1a3f8f; --accent-ink:#ffffff; --ok:#1d6e38; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="butterfly"]{
+  --frame:#4a2a1c; --frame-edge:#6a4231; --frame-r:1.4cqw; --bevel:inset 0 .2cqw 0 #6a4231,inset 0 -.3cqw 0 #2e180f;
+  --tile:#eadfc8; --tile-hi:#f2e9d6; --ink:#3b2116; --seam:#b8955a; --pin-c:#b8955a; --pin-s:.24;
+  --c-r:#a8452e; --c-o:#c97a3c; --c-y:#d8b25a; --c-g:#6f8f5a; --c-b:#4f6f8f;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:95%; --tile-w:500; --tile-size:2.95cqw; --flap-r:.3cqw;
+  --wall:#2b1a12; --ui:#f3e8d6; --muted:#c4ab8c; --line:#4a3122; --panel:#331f15; --panel-2:#3d271b;
+  --accent:#d8b25a; --accent-ink:#2a1a08; --ok:#8fc47a; --warn:#ff9a85;
+}
+[data-style="metropolitana"] .t,[data-style="standard"] .t,[data-style="doublearrow"] .t,[data-style="ulm"] .t,[data-style="olympia"] .t,[data-style="jetage"] .t,[data-style="patapata"] .t,[data-style="ekimei"] .t,[data-style="caslon"] .t,[data-style="dangan"] .t,[data-style="butterfly"] .t{font-weight:var(--tile-w,600)}
+/* Caslon 101's orange lamp (::before, since ::after carries the glass glare) */
+.board[data-style="caslon"]::before{content:"";position:absolute;top:1cqw;right:2.2cqw;width:1cqw;height:1cqw;border-radius:50%;background:#ff7a2a;box-shadow:0 0 1.2cqw .3cqw #ff7a2a88;pointer-events:none;z-index:5}
 @keyframes gA{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 @keyframes gB{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 
@@ -318,7 +378,8 @@ ul.list li.hint{display:block}
 /* Style gallery */
 .tray{display:flex;flex-direction:column;gap:16px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);animation:paneIn .18s ease-out}
 .tray-group{display:flex;flex-direction:column;gap:8px;min-width:0}
-.tray h3{margin:0;font-size:13px;font-weight:600;color:var(--muted)}
+.tray h3{margin:0;font-size:13px;font-weight:600;color:var(--ui)}
+.tray h3 span{font-weight:400;color:var(--muted);margin-left:6px}
 .swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.swatches{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.swatch{flex:0 0 148px;scroll-snap-align:start}}
 .swatch{position:relative;display:flex;flex-direction:column;gap:8px;padding:8px 8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);text-align:left;color:var(--ui);min-width:0}
@@ -408,7 +469,7 @@ body.fs .boardbar > :not(#tapSound){display:none}
 body.fs.fill .board{width:100%;height:100%;box-sizing:border-box;padding:4.5vh 3vw;padding:4.5dvh 3vw;display:flex;align-items:center;justify-content:center}
 body.fs.fill .grid{width:var(--fill-w,100%);max-width:100%;gap:var(--fill-gap,.45cqw)}
 body.fs.fill .t{aspect-ratio:var(--tile-ar,.82);font-size:calc(var(--fill-font,3.1cqw) * var(--tile-k,1))}
-[data-style="departures"],[data-style="rail"]{--tile-k:.92}
+[data-style="rail"]{--tile-k:.92}
 [data-style="glow"]{--tile-k:1.18}
 #fsExit{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:30;display:none;transition:opacity .4s;background:color-mix(in srgb,var(--panel) 85%,transparent)}
 body.fs #fsExit{display:block}
@@ -444,8 +505,10 @@ body.fs.idle{cursor:none}
   </div>
 
   <section class="tray" id="styleTray" aria-label="Board styles" hidden>
-    <div class="tray-group"><h3 id="trayModern">Modern</h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
-    <div class="tray-group"><h3 id="trayVintage">Vintage</h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
+    <div class="tray-group"><h3 id="trayModern">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
+    <div class="tray-group"><h3 id="trayVintage">Workshop <span>Old machines with pins and wear</span></h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
+    <div class="tray-group"><h3 id="trayTransit">Transit icons <span>Famous station and airport designs</span></h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
+    <div class="tray-group"><h3 id="trayJapan">Made in Japan <span>Japanese boards, clocks and design</span></h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
     <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
   </section>
 
@@ -893,6 +956,7 @@ for(let i=0;i<COLS*ROWS;i++){
   const col=i%COLS, row=Math.floor(i/COLS), rnd=Math.random;
   t.style.cssText='--spd-r:'+(.86+rnd()*.28).toFixed(3)+';--jx:'+((rnd()-.5)*.5).toFixed(3)+';--jy:'+((rnd()-.5)*.35).toFixed(3)+';--fd:'+(rnd()*.35).toFixed(3)+';--sx:'+(rnd()*100|0)+'%;--sy:'+([10,50,50,90][rnd()*4|0]+((rnd()-.5)*12|0))+'%;--sw:'+(1+rnd()*2.2).toFixed(2)+';--sh:'+(.5+rnd()*1.2).toFixed(2);
   if(col===0&&row%2===0)t.classList.add('edge');
+  if(row>=3)t.classList.add('lo');
   const tile={el:t,u,d,f,g,col,row,cur:0,target:0,delay:0,flip:false};
   f.addEventListener('animationend',()=>{f.className='f'});
   g.addEventListener('animationend',()=>{paint(tile.d,tile.cur);g.className='g'});
@@ -947,11 +1011,14 @@ function layout(str){
   while(lines.length&&!lines[lines.length-1].length)lines.pop();
   return lines;
 }
+// Some styles set their rows flush left, like Japanese platform boards
+function alignLeft(){const b=document.getElementById('board');return !!b&&b.dataset.style==='patapata'}
 function toTargets(str){
   const lines=layout(str); const used=lines.length; const shown=lines.slice(0,ROWS);
   const top=Math.floor((ROWS-shown.length)/2);
   const cells=new Array(COLS*ROWS).fill(0);
-  shown.forEach((ln,r)=>{const left=Math.floor((COLS-ln.length)/2); ln.forEach((t,c)=>{cells[(top+r)*COLS+left+c]=IDX.get(t)??0})});
+  const leftAlign=alignLeft();
+  shown.forEach((ln,r)=>{const left=leftAlign?Math.min(1,COLS-ln.length):Math.floor((COLS-ln.length)/2); ln.forEach((t,c)=>{cells[(top+r)*COLS+left+c]=IDX.get(t)??0})});
   return {cells,used};
 }
 
@@ -2197,7 +2264,6 @@ openTab(store.get('fb.tab','message'));
 // Board styles
 const BOARD_STYLES=[
   {id:'classic',group:'modern',name:'Classic',note:'Black flaps, cream letters.'},
-  {id:'departures',group:'modern',name:'Departures',note:'Amber on blue-black, like an airport board.'},
   {id:'daylight',group:'modern',name:'Daylight',note:'White flaps for a bright room.'},
   {id:'rail',group:'modern',name:'Rail',note:'Green flaps, white letters.'},
   {id:'harbor',group:'modern',name:'Harbor',note:'Navy flaps, sand letters.'},
@@ -2205,13 +2271,23 @@ const BOARD_STYLES=[
   {id:'solari',group:'vintage',name:'Solari',note:'Station board: matte black, hinge pins, crisp white letters.'},
   {id:'cifra',group:'vintage',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
   {id:'worn',group:'vintage',name:'Worn',note:'A ticket-hall board: scuffed, faded, printed a little off-center.'},
-  {id:'gameshow',group:'vintage',name:'Game show',note:'1970s burnt orange on chocolate brown.'},
-  {id:'neon',group:'modern',name:'Neon',note:'Hot pink letters glowing on violet-black.'},
   {id:'mint',group:'modern',name:'Mint',note:'Soft mint flaps, deep teal letters, for a bright room.'},
   {id:'pragotron',group:'vintage',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'},
-  {id:'brass',group:'vintage',name:'Brass',note:'Ivory flaps in a polished brass frame, like a grand hotel lobby.'}
+  {id:'metropolitana',group:'transit',name:'Metropolitana',note:'Italian station board: matte black, ivory letters, a red band on top.'},
+  {id:'standard',group:'transit',name:'Standard',note:'New York subway standards: white flaps, black letters, line colors.'},
+  {id:'doublearrow',group:'transit',name:'Double Arrow',note:'British Rail: light flaps above, dark below, a red strip.'},
+  {id:'ulm',group:'transit',name:'Ulm',note:'Otl Aicher’s airline grid: signal yellow on navy, square corners.'},
+  {id:'olympia',group:'transit',name:'Olympia 72',note:'Munich 1972: white flaps, blue letters, a silver frame.'},
+  {id:'jetage',group:'transit',name:'Jet Age',note:'1962 jet terminal: oyster flaps, red letters, a swooping frame.'},
+  {id:'patapata',group:'japan',name:'Patapata',note:'Japanese platform board: rows set flush left, black flaps.'},
+  {id:'ekimei',group:'japan',name:'Ekimei',note:'Station name sign: rounded gothic letters, white flaps.'},
+  {id:'caslon',group:'japan',name:'Caslon 101',note:'Copal flip clock: serif letters, beige case, orange lamp.'},
+  {id:'dangan',group:'japan',name:'Dangan',note:'Bullet train: ivory flaps, blue letters, a rounded nose.'},
+  {id:'butterfly',group:'japan',name:'Butterfly',note:'Sori Yanagi’s stool: plywood flaps, rosewood frame, brass.'}
 ];
 let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
+// Day plan times that used a retired style keep the current style instead
+if(sched.slots.some(s=>s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s.style))){sched.slots.forEach(s=>{if(s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s.style))s.style='keep'});saveSched();renderSlots()}
 // A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
 // In full screen nothing but the board shows, so the whole screen takes the style's frame color.
 function styleScope(){
@@ -2220,7 +2296,9 @@ function styleScope(){
 }
 new MutationObserver(styleScope).observe(document.body,{attributes:true,attributeFilter:['class']});
 function applyStyle(id){
+  const wasLeft=alignLeft();
   styleId=id; store.set('fb.style',id); styleScope();
+  if(alignLeft()!==wasLeft){if(lastSent!=null)send(lastSent);try{updateCount()}catch(e){}}
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
   document.querySelectorAll('.swatch').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===id)));
   if(!$('styleTray').hidden)noteFor(id,true);
@@ -2240,12 +2318,12 @@ function miniTile(c){
     const b=document.createElement('button'); b.type='button'; b.className='swatch'; b.dataset.id=s.id; b.setAttribute('aria-pressed','false');
     b.setAttribute('aria-label',s.name+'. '+s.note);
     const mb=document.createElement('span'); mb.className='minib'; mb.dataset.style=s.id; mb.setAttribute('aria-hidden','true');
-    const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(s.id==='pragotron'&&i===0)t.classList.add('edge');g.appendChild(t)}); mb.appendChild(g);
+    const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(s.id==='pragotron'&&i===0)t.classList.add('edge');if(i>=6)t.classList.add('lo');g.appendChild(t)}); mb.appendChild(g);
     const nm=document.createElement('span'); nm.className='nm2'; nm.innerHTML='<span></span><i class="tick"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.2 5 8.5 9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>'; nm.firstChild.textContent=s.name;
     b.append(mb,nm);
     b.onclick=()=>{applyStyle(s.id);previewStyle(null);noteFor(s.id,true)};
     b.onmouseenter=()=>{previewStyle(s.id);noteFor(s.id)}; b.onfocus=()=>{previewStyle(s.id);noteFor(s.id)};
-    $(s.group==='vintage'?'swVintage':'swModern').appendChild(b);
+    $({modern:'swModern',vintage:'swVintage',transit:'swTransit',japan:'swJapan'}[s.group]||'swModern').appendChild(b);
   });
 })();
 // Hovering or focusing a swatch previews it on the board only; tapping keeps it

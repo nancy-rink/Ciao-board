@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ciao Board</title>
-<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, 25 modern, vintage, transit and Japanese styles, and real flap sounds.">
+<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, 21 modern, vintage, transit and Japanese styles, and real flap sounds.">
 <meta name="theme-color" content="#16130f">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ciao Board">
 <meta property="og:title" content="Ciao Board">
-<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, 25 styles and real flap sounds.">
+<meta property="og:description" content="A split-flap message board for your wall. Runs in any browser: messages, a clock, a day plan, 21 styles and real flap sounds.">
 <meta property="og:url" content="https://nancy-rink.github.io/Ciao-board/">
 <meta property="og:image" content="https://nancy-rink.github.io/Ciao-board/assets/preview.png">
 <meta property="og:image:width" content="1200">
@@ -44,13 +44,6 @@
   --f-ui:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:ui-monospace,Menlo,monospace;
   color-scheme:dark;
-}
-[data-style="departures"]{
-  --wall:#10151d; --frame:#070a0f; --frame-edge:#1e2632;
-  --tile:#161c26; --tile-hi:#1f2733; --ink:#ffc94a; --seam:#05070a;
-  --ui:#e9eef5; --muted:#8d99ab; --line:#283244; --panel:#161d28; --panel-2:#1c2533;
-  --accent:#ffc94a; --accent-ink:#1b1400;
-  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-size:2.8cqw;
 }
 [data-style="daylight"]{
   --wall:#e6e2d9; --frame:#f7f5f0; --frame-edge:#ffffff;
@@ -104,15 +97,6 @@
   --accent:#d9a441; --accent-ink:#1a1205; --ok:#5cb87f;
   --wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:rgba(255,236,200,.11); --pin-c:#4f483d; --pin-s:.26;
 }
-[data-style="gameshow"]{
-  --wall:#24140c; --frame:#3b1f10; --frame-edge:#7a4520;
-  --tile:#4a2814; --tile-hi:#5a3219; --ink:#ff8c2a; --seam:#1d0f07;
-  --ui:#f8e6d2; --muted:#d2ad8d; --line:#5a3420; --panel:#2e1a0f; --panel-2:#3a2214;
-  --accent:#ff8c2a; --accent-ink:#2a1100; --ok:#7cc47f; --warn:#ff9a85;
-  --f-tile:"Bungee",Impact,sans-serif; --tile-w:400; --tile-size:2.75cqw;
-  --gloss:rgba(255,200,150,.08); --flap-r:.55cqw; --frame-r:3.4cqw; --frame-pad:3.4cqw;
-  --bevel:inset 0 3px 0 #8a5228,inset 0 -4px 0 #1f0f06;
-}
 [data-style="pragotron"]{
   --wall:#181b1e; --frame:#0c0e10; --frame-edge:#262b30;
   --tile:#2a2e33; --tile-hi:#33383e; --ink:#e8ebee; --seam:#0a0b0c;
@@ -121,28 +105,12 @@
   --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-w:500; --tile-size:2.8cqw; --tile-k:.92;
   --route:#c23b2a; --pin-c:#6b737c; --pin-s:.24;
 }
-[data-style="neon"]{
-  --wall:#0b0614; --frame:#05020b; --frame-edge:#2a1840;
-  --tile:#140b22; --tile-hi:#1c1030; --ink:#ff5bdc; --seam:#000; --glow:0 0 .45cqw #ff4fd8aa,0 0 1.1cqw #ff4fd855;
-  --ui:#f2e9ff; --muted:#a795c2; --line:#2c1d45; --panel:#130b20; --panel-2:#1b102c;
-  --accent:#39e6ff; --accent-ink:#021216; --ok:#4fe3a0; --c-b:#39b6ff; --c-v:#a36bff;
-}
 [data-style="mint"]{
   --wall:#dfeee8; --frame:#f6fbf9; --frame-edge:#ffffff;
   --tile:#cfe9df; --tile-hi:#dcf1e9; --ink:#10443a; --seam:#a7cfc1;
   --ui:#10443a; --muted:#4a7369; --line:#b9d8cc; --panel:#ecf6f2; --panel-2:#e1efe9;
   --accent:#c2453f; --accent-ink:#ffffff; --c-w:#10443a; --ok:#1b6e3e; --warn:#b3261e;
   color-scheme:light;
-}
-[data-style="brass"]{
-  --wall:#1b1610; --frame:#6e5320; --frame-edge:#e0c070;
-  --frame-img:linear-gradient(160deg,#c9a24a 0%,#7a5c22 30%,#e2c06a 52%,#6a4e1c 78%,#b8913e 100%);
-  --tile:#efe7d2; --tile-hi:#faf4e6; --ink:#1c1814; --seam:#9c8f72;
-  --ui:#f1e6cf; --muted:#c3ad85; --line:#3d3020; --panel:#221b12; --panel-2:#2c2318;
-  --accent:#e2c06a; --accent-ink:#231a08; --ok:#7cc47f; --warn:#ff8a75; --c-w:#1c1814;
-  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:78%; --tile-w:700; --tile-size:3.2cqw;
-  --gloss:rgba(255,255,255,.4); --flap-r:.3cqw; --frame-r:1.2cqw; --frame-pad:2.6cqw;
-  --pin-c:#9c7a32; --pin-s:.28; --bevel:inset 0 2px 0 #f0d488,inset 0 -3px 0 #3d2c0e;
 }
 /* Frame materials from Settings override the style's own frame */
 body[data-frame="metal"],body[data-frame="metal"] .board{--frame:#7d8288;--frame-edge:#d4d8dc;--frame-img:linear-gradient(170deg,#a9aeb4 0%,#6c7177 35%,#b9bec3 55%,#5f646a 100%),repeating-linear-gradient(90deg,#ffffff08 0 1px,#0000 1px 3px);--bevel:inset 0 2px 0 #e2e6ea,inset 0 -3px 0 #3a3e42}
@@ -157,7 +125,7 @@ body{font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-left:max(16p
 .board{container-type:inline-size;position:relative;background:var(--frame);background-image:var(--frame-img,none);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
 .grid{display:grid;grid-template-columns:repeat(22,1fr);gap:.45cqw}
 .t{position:relative;aspect-ratio:.82;max-width:100%;perspective:300px;font-family:var(--f-tile);font-weight:600;font-size:var(--tile-size);color:var(--ink);text-shadow:var(--glow)}
-[data-style="departures"] .t,[data-style="rail"] .t{font-weight:500}
+[data-style="rail"] .t{font-weight:500}
 [data-style="glow"] .t{font-weight:400}
 .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile)}
 .h.u{top:0;border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile))}
@@ -201,9 +169,9 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
 @keyframes shadeIn{from{opacity:0}to{opacity:.45}}
 @keyframes shadeOut{from{opacity:.22}to{opacity:0}}
 .f,.g{will-change:auto}
-[data-style="glow"] .f span,[data-style="glow"] .g span,[data-style="neon"] .f span,[data-style="neon"] .g span{text-shadow:none}
+[data-style="glow"] .f span,[data-style="glow"] .g span{text-shadow:none}
 .t{font-stretch:var(--tile-stretch,100%)}
-[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="gameshow"] .t,[data-style="pragotron"] .t,[data-style="brass"] .t{font-weight:var(--tile-w,600)}
+[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="pragotron"] .t{font-weight:var(--tile-w,600)}
 /* Off-center silkscreen printing and faded letters, scaled by the style's --wear */
 .t span{translate:calc(var(--jx,0) * var(--wear,0) * var(--u,1) * 1cqw) calc(var(--jy,0) * var(--wear,0) * var(--u,1) * 1cqw);opacity:calc(1 - var(--fd,0) * var(--wear,0))}
 /* Hinge pins, a scuff and grain, sitting over the resting flaps and under the moving ones */
@@ -500,7 +468,7 @@ body.fs .boardbar > :not(#tapSound){display:none}
 body.fs.fill .board{width:100%;height:100%;box-sizing:border-box;padding:4.5vh 3vw;padding:4.5dvh 3vw;display:flex;align-items:center;justify-content:center}
 body.fs.fill .grid{width:var(--fill-w,100%);max-width:100%;gap:var(--fill-gap,.45cqw)}
 body.fs.fill .t{aspect-ratio:var(--tile-ar,.82);font-size:calc(var(--fill-font,3.1cqw) * var(--tile-k,1))}
-[data-style="departures"],[data-style="rail"]{--tile-k:.92}
+[data-style="rail"]{--tile-k:.92}
 [data-style="glow"]{--tile-k:1.18}
 #fsExit{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:30;display:none;transition:opacity .4s;background:color-mix(in srgb,var(--panel) 85%,transparent)}
 body.fs #fsExit{display:block}
@@ -2295,7 +2263,6 @@ openTab(store.get('fb.tab','message'));
 // Board styles
 const BOARD_STYLES=[
   {id:'classic',group:'modern',name:'Classic',note:'Black flaps, cream letters.'},
-  {id:'departures',group:'modern',name:'Departures',note:'Amber on blue-black, like an airport board.'},
   {id:'daylight',group:'modern',name:'Daylight',note:'White flaps for a bright room.'},
   {id:'rail',group:'modern',name:'Rail',note:'Green flaps, white letters.'},
   {id:'harbor',group:'modern',name:'Harbor',note:'Navy flaps, sand letters.'},
@@ -2303,11 +2270,8 @@ const BOARD_STYLES=[
   {id:'solari',group:'vintage',name:'Solari',note:'Station board: matte black, hinge pins, crisp white letters.'},
   {id:'cifra',group:'vintage',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
   {id:'worn',group:'vintage',name:'Worn',note:'A ticket-hall board: scuffed, faded, printed a little off-center.'},
-  {id:'gameshow',group:'vintage',name:'Game show',note:'1970s burnt orange on chocolate brown.'},
-  {id:'neon',group:'modern',name:'Neon',note:'Hot pink letters glowing on violet-black.'},
   {id:'mint',group:'modern',name:'Mint',note:'Soft mint flaps, deep teal letters, for a bright room.'},
   {id:'pragotron',group:'vintage',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'},
-  {id:'brass',group:'vintage',name:'Brass',note:'Ivory flaps in a polished brass frame, like a grand hotel lobby.'},
   {id:'metropolitana',group:'transit',name:'Metropolitana',note:'Italian station board: matte black, ivory letters, a red band on top.'},
   {id:'standard',group:'transit',name:'Standard',note:'New York subway standards: white flaps, black letters, line colors.'},
   {id:'doublearrow',group:'transit',name:'Double Arrow',note:'British Rail: light flaps above, dark below, a red strip.'},
@@ -2321,6 +2285,8 @@ const BOARD_STYLES=[
   {id:'butterfly',group:'japan',name:'Butterfly',note:'Sori Yanagi’s stool: plywood flaps, rosewood frame, brass.'}
 ];
 let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
+// Day plan times that used a retired style keep the current style instead
+if(sched.slots.some(s=>s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s.style))){sched.slots.forEach(s=>{if(s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s.style))s.style='keep'});saveSched();renderSlots()}
 // A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
 // In full screen nothing but the board shows, so the whole screen takes the style's frame color.
 function styleScope(){

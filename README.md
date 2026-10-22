@@ -26,7 +26,8 @@ Settings are kept in each person's own browser.
 
 ## Put it on a wall
 
-- **TV or monitor:** open the link in the browser, tap **Full screen**, and turn off the TV's auto power-off (on a Samsung Frame, for example).
+- **Smart TV:** in the TV's web browser, go to **is.gd/ciaoboard** (or `nancy-rink.github.io/Ciao-board/tv`). It opens in TV mode: the board alone, filling the screen. Press **OK** on the remote to go full screen; after that, **OK** shows or hides the controls. Then pin the page so it's one click away: on Samsung, open the browser's menu and choose **Add to Home**; on LG, choose **Pin to Home**; on Google TV and Fire TV, add it as a bookmark. Turn off the TV's auto power-off (on a Samsung Frame, for example). The TV keeps its own settings, so set its style and Day plan from the TV once.
+- **Monitor or laptop:** open the link, tap **Full screen**, or press `H` to hide the controls.
 - **iPad or tablet:** open the link in Safari, tap **Share → Add to Home Screen**, then open it from the home screen icon and turn the tablet sideways. Set **Auto-Lock** to Never while it's on the wall.
 - **Sound:** browsers only play sound after a tap, so tap the board once. On iPhone or iPad, turn off silent mode.
 - **Keyboard:** `S` changes the style and `H` hides the controls (you can turn these off in Settings).

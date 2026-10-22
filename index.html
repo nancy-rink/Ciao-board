@@ -90,13 +90,8 @@
   --gloss:rgba(255,255,255,.45); --flap-r:.9cqw; --frame-r:2.4cqw; --frame-pad:2.8cqw;
   --bevel:inset 0 2px 0 #7a5233,inset 0 -3px 0 #24150c;
 }
-[data-style="worn"]{
-  --wall:#17140f; --frame:#0e0c09; --frame-edge:#2a251e;
-  --tile:#23201b; --tile-hi:#2c2822; --ink:#e6d8b8; --seam:#050403;
-  --ui:#ece2cc; --muted:#a69a84; --line:#322c24; --panel:#1d1914; --panel-2:#25201a;
-  --accent:#d9a441; --accent-ink:#1a1205; --ok:#5cb87f;
-  --wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:rgba(255,236,200,.11); --pin-c:#4f483d; --pin-s:.26;
-}
+/* Worn: any style, aged. Scuffs take a little of the letter color so they read on light and dark flaps alike. */
+.board[data-aged],[data-aged] .board,.pv[data-aged]{--wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:color-mix(in srgb,var(--ink) 13%,transparent)}
 [data-style="pragotron"]{
   --wall:#181b1e; --frame:#0c0e10; --frame-edge:#262b30;
   --tile:#2a2e33; --tile-hi:#33383e; --ink:#e8ebee; --seam:#0a0b0c;
@@ -524,7 +519,12 @@ ul.list .x:hover{color:var(--warn);border-color:transparent}
   ul.list button{padding:8px 14px}
   .checks .check,.check{min-height:44px}
   #toast button{min-height:44px;padding:6px 14px}
+  .tray-jump button,.seg button{min-height:36px}
+  .tray-filter .check{min-height:36px}
+  .sw-fav{min-height:0;width:44px;height:44px;right:0;bottom:0}
 }
+/* On phones the picker's top bar keeps the note to one line */
+@media (max-width:560px){.tb-text span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tray-bar.trying .tb-text span{white-space:normal}.tray-top{gap:8px;padding-top:10px}}
 @media (max-width:560px){
   .board{padding:1.4cqw;border-radius:8px}
   .grid{gap:.3cqw}
@@ -575,12 +575,44 @@ ul.list li.hint{display:block}
 .tray h3 span{font-weight:400;color:var(--muted);margin-left:6px}
 .swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.swatches{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.swatch{flex:0 0 148px;scroll-snap-align:start}}
-.swatch{position:relative;display:flex;flex-direction:column;gap:8px;padding:8px 8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);text-align:left;color:var(--ui);min-width:0}
+.swatch{position:relative;display:flex;flex-direction:column;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);min-width:0}
+.swatch[hidden]{display:none}
 .swatch:hover{border-color:var(--muted)}
-.swatch[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
-.swatch .nm2{font-size:13.5px;font-weight:600;padding:0 2px;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.swatch .tick{width:16px;height:16px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:none;align-items:center;justify-content:center}
-.swatch[aria-pressed="true"] .tick{display:inline-flex}
+.swatch.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.swatch.trying{border-color:var(--ui);border-style:dashed;box-shadow:none}
+.sw-main{display:flex;flex-direction:column;gap:8px;width:100%;padding:8px 8px 10px;border:0;border-radius:inherit;background:none;color:var(--ui);text-align:left;font:inherit;cursor:pointer}
+.sw-main:hover{border-color:transparent}
+.swatch .nm2{font-size:14px;font-weight:600;padding:0 2px;display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:20px}
+.swatch .tick{width:18px;height:18px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:none;align-items:center;justify-content:center}
+.swatch.on .tick{display:inline-flex}
+/* Favorite star, at the end of the name row */
+.swatch .nm2{padding-right:34px}
+.sw-fav{position:absolute;right:4px;bottom:4px;width:36px;height:36px;padding:0;border:0;border-radius:50%;display:grid;place-items:center;background:none;color:var(--muted)}
+.sw-fav:hover{color:var(--ui);border-color:transparent}
+.sw-fav.on{--star-fill:#f2c94c;color:#f2c94c}
+/* Everyday: one wide card with a dot per colorway */
+.swatch.family{grid-column:1/-1}
+.swatch.family .minib{max-width:300px}
+.swatch.family .sw-fav{bottom:12px;right:8px}
+.sw-dots{display:flex;flex-wrap:wrap;gap:10px;padding:0 10px 12px}
+.sw-dots button{position:relative;width:38px;height:38px;padding:0;border-radius:50%;background:var(--tile);border:4px solid var(--frame);box-shadow:0 0 0 1px var(--line)}
+.sw-dots button::after{content:"";position:absolute;inset:32%;border-radius:50%;background:var(--ink)}
+.sw-dots button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--panel-2),0 0 0 4px var(--accent)}
+/* The picker's top: what's showing or being tried, group chips, filters. It stays put while the styles scroll. */
+.tray-top{position:sticky;top:-16px;z-index:4;margin:-16px -18px 0;padding:12px 18px 10px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.tray-bar{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap}
+.tb-text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 220px}
+.tb-text b{font-size:15px}
+.tb-text span{font-size:13px;line-height:1.35;color:var(--muted)}
+.tray-bar.trying b{color:var(--accent)}
+.tb-acts{display:flex;gap:8px}
+.tray-jump{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px}
+.tray-jump button{flex:none;border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.tray-filter{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 13px;font-size:13px;background:transparent}
+.seg button[aria-pressed="true"]{background:var(--ui);color:var(--wall)}
+.tray-group[hidden]{display:none}
 /* The preview is a real miniature board: same tiles, same tokens, scaled with --u */
 .minib{display:block;container-type:inline-size;--u:3.4;background:var(--frame);background-image:var(--frame-img,none);border-radius:min(var(--frame-r,6px),10px);padding:7%;box-shadow:var(--bevel,0 0 0 transparent);pointer-events:none}
 .minib .g6{display:grid;grid-template-columns:repeat(6,1fr);gap:2.4cqw}
@@ -715,7 +747,7 @@ body.fs.idle{cursor:none}
 .sheet .modecards{display:grid;grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));overflow:visible}
 .sheet .card{padding:9px 11px 10px}
 .sheet .card .onb{top:8px;right:8px;font-size:0;gap:0}
-.sheet .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));overflow:visible}
+.sheet .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));overflow:visible}
 .sheet .fields{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
 @media (max-width:899px){body.sheet-open{overflow:hidden}body.sheet-open .wrap{justify-content:flex-start}}
 @media (min-width:900px){
@@ -919,13 +951,25 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
   </nav>
   <div class="sheet-body" id="sheetBody">
     <section class="tray" id="styleTray" aria-label="Board styles" hidden>
-      <div class="tray-group"><h3 id="tray-everyday">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="sw-everyday" role="group" aria-labelledby="tray-everyday"></div></div>
-      <div class="tray-group"><h3 id="tray-machines">Machines <span>Station boards, clocks and tickets you could hold</span></h3><div class="swatches" id="sw-machines" role="group" aria-labelledby="tray-machines"></div></div>
-      <div class="tray-group"><h3 id="tray-wayfinding">Wayfinding <span>Signs that got people to the right platform</span></h3><div class="swatches" id="sw-wayfinding" role="group" aria-labelledby="tray-wayfinding"></div></div>
-      <div class="tray-group"><h3 id="tray-identity">Identities <span>Airlines, trains and Olympic Games</span></h3><div class="swatches" id="sw-identity" role="group" aria-labelledby="tray-identity"></div></div>
-      <div class="tray-group"><h3 id="tray-material">Materials <span>Furniture, fabric, iron, concrete, plaster and paving</span></h3><div class="swatches" id="sw-material" role="group" aria-labelledby="tray-material"></div></div>
-      <div class="tray-group"><h3 id="tray-studio">Studio <span>After painters who worked in lines and color</span></h3><div class="swatches" id="sw-studio" role="group" aria-labelledby="tray-studio"></div></div>
-      <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
+      <div class="tray-top" id="trayTop">
+        <div class="tray-bar" id="trayBar" aria-live="polite">
+          <div class="tb-text"><b id="tryName"></b><span id="tryNote"></span></div>
+          <div class="tb-acts"><button type="button" id="tryCancel" hidden>Cancel</button><button class="primary" type="button" id="tryUse" hidden>Use this style</button></div>
+        </div>
+        <div class="tray-tools">
+          <div class="tray-jump" id="trayJump" role="toolbar" aria-label="Jump to a group"><button type="button" data-g="fav" id="chip-fav" hidden>★ Favorites</button><button type="button" data-g="everyday">Everyday</button><button type="button" data-g="machines">Machines</button><button type="button" data-g="wayfinding">Wayfinding</button><button type="button" data-g="identity">Identities</button><button type="button" data-g="material">Materials</button><button type="button" data-g="studio">Studio</button></div>
+          <div class="tray-filter"><div class="seg" id="trayTone" role="group" aria-label="Show"><button type="button" data-tone="all" aria-pressed="true">All</button><button type="button" data-tone="light" aria-pressed="false">Light</button><button type="button" data-tone="dark" aria-pressed="false">Dark</button></div>
+          <label class="check" for="agedTray"><input type="checkbox" id="agedTray"> Worn</label></div>
+        </div>
+      </div>
+      <div class="tray-group" id="grp-fav" hidden><h3 id="tray-fav">Favorites <span>Your picks. The ‹ › arrows step through just these.</span></h3><div class="swatches" id="sw-fav" role="group" aria-labelledby="tray-fav"></div></div>
+      <div class="tray-group" id="grp-everyday"><h3 id="tray-everyday">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="sw-everyday" role="group" aria-labelledby="tray-everyday"></div></div>
+      <div class="tray-group" id="grp-machines"><h3 id="tray-machines">Machines <span>Station boards, clocks and tickets you could hold</span></h3><div class="swatches" id="sw-machines" role="group" aria-labelledby="tray-machines"></div></div>
+      <div class="tray-group" id="grp-wayfinding"><h3 id="tray-wayfinding">Wayfinding <span>Signs that got people to the right platform</span></h3><div class="swatches" id="sw-wayfinding" role="group" aria-labelledby="tray-wayfinding"></div></div>
+      <div class="tray-group" id="grp-identity"><h3 id="tray-identity">Identities <span>Airlines, trains and Olympic Games</span></h3><div class="swatches" id="sw-identity" role="group" aria-labelledby="tray-identity"></div></div>
+      <div class="tray-group" id="grp-material"><h3 id="tray-material">Materials <span>Furniture, fabric, iron, concrete, plaster and paving</span></h3><div class="swatches" id="sw-material" role="group" aria-labelledby="tray-material"></div></div>
+      <div class="tray-group" id="grp-studio"><h3 id="tray-studio">Studio <span>After painters who worked in lines and color</span></h3><div class="swatches" id="sw-studio" role="group" aria-labelledby="tray-studio"></div></div>
+      <div class="tray-foot"><p class="hint">Tap a style to try it on the board, then <b>Use this style</b>. Tap ☆ to add a favorite.</p><button class="primary" id="trayDone" type="button">Done</button></div>
     </section>
 
     <div class="deck">
@@ -1301,7 +1345,7 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
       <section class="pane" role="tabpanel" id="pane-style" aria-labelledby="tab-style" hidden>
         <div class="setsec" data-sec="look">
         <div class="pane-head">
-          <div><h2>Look</h2><p class="sub">Pick a style with the style button under the board. The ‹ › arrows, or <kbd>S</kbd>, step through them one at a time.</p></div>
+          <div><h2>Look</h2><p class="sub">Pick a style with the style button under the board. The ‹ › arrows, or <kbd>S</kbd>, step through them one at a time, or through just your favorites once you've starred two or more.</p></div>
           <button id="openTrayFromSettings" type="button">Choose a style</button>
         </div>
         <div class="fields">
@@ -1313,6 +1357,7 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
               <option value="3600">Every hour</option>
             </select>
           </label>
+          <div class="field"><span>Wear</span><label class="check" for="setAged"><input type="checkbox" id="setAged"> Worn: scuffed, faded and printed a little off-center</label></div>
           <label class="field" for="anim-finish"><span>Board finish</span>
             <select id="anim-finish">
               <option value="depth">Raised tiles</option>
@@ -3035,7 +3080,7 @@ function raInit(){
   // Style thumbnails, copied from the style picker
   BOARD_STYLES.forEach(st=>{
     const b=document.createElement('button'); b.type='button'; b.dataset.id=st.id;
-    const mb=document.querySelector('.swatch[data-id="'+st.id+'"] .minib'); if(mb)b.appendChild(mb.cloneNode(true));
+    b.appendChild(miniBoard(st.id));
     b.append(st.name); b.onclick=()=>raCmd({action:'style',id:st.id},st.name+' style on the TV.'); $('raStyles').appendChild(b);
   });
   // Sound
@@ -3247,7 +3292,8 @@ function schedApply(){
   if(key===schedKey)return; schedKey=key;
   schedDriving=true;
   try{
-    if(s.style&&s.style!=='keep'&&BOARD_STYLES.some(x=>x.id===s.style))applyStyle(s.style);
+    if(s.style==='fav'){const f=store.get('fb.favStyles',[]).filter(id=>BOARD_STYLES.some(x=>x.id===id));if(f.length)applyStyle(f[(f.indexOf(styleId)+1)%f.length])}
+    else if(s.style&&s.style!=='keep'&&BOARD_STYLES.some(x=>x.id===s.style))applyStyle(s.style);
     if(s.show==='message'){stopModes();send(s.text||'')}
     else if(s.show==='calendar')startCalendar();
     else if(s.show==='clock')startClock();
@@ -3287,7 +3333,7 @@ function renderSlots(){
     SHOW_OPTS.forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;sel.appendChild(o)}); sel.value=s.show;
     sel.onchange=()=>{s.show=sel.value;renderSlots();schedEdited()};
     const sty=document.createElement('select'); sty.id='slot-y-'+i; sty.setAttribute('aria-label','Board style');
-    [['keep','Keep current style'],...BOARD_STYLES.map(x=>[x.id,x.name+' style'])].forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;sty.appendChild(o)}); sty.value=s.style||'keep';
+    [['keep','Keep current style'],['fav','Next favorite style'],...BOARD_STYLES.map(x=>[x.id,x.name+' style'])].forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;sty.appendChild(o)}); sty.value=s.style||'keep';
     sty.onchange=()=>{s.style=sty.value;schedEdited()};
     what.append(sel,sty);
     if(s.show==='message'){
@@ -3467,7 +3513,6 @@ const BOARD_STYLES=[
   {id:'glow',group:'everyday',name:'Glow',note:'Glowing amber pixels.'},
   {id:'solari',group:'machines',name:'Solari',note:'Station board: matte black, hinge pins, crisp white letters.'},
   {id:'pragotron',group:'machines',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'},
-  {id:'worn',group:'machines',name:'Worn',note:'A ticket-hall board: scuffed, faded, printed a little off-center.'},
   {id:'patapata',group:'machines',name:'Patapata',note:'Platform board from Japanese stations: rows set flush left, black flaps.'},
   {id:'cifra',group:'machines',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
   {id:'caslon',group:'machines',name:'Caslon 101',note:'Copal’s 1970s flip clock: serif letters, beige case, orange lamp.'},
@@ -3495,14 +3540,20 @@ const BOARD_STYLES=[
   {id:'tonfan',group:'studio',name:'Ton Fan',note:'After Ho Kan and Taipei’s Ton Fan painters, 1957: black flaps on cream, a red sun, a blue bar.'},
   {id:'graphite',group:'studio',name:'Graphite',note:'After Nasreen Mohamedi’s ink and graphite grids: paper-white flaps, hairline letters, one long diagonal.'}
 ];
-let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
+let styleId=store.get('fb.style','classic');
+// Worn used to be a style; it's now a finish that ages any style. A board that was Worn becomes Classic, worn.
+let aged=!!store.get('fb.aged',false); if(styleId==='worn'){styleId='classic';aged=true;store.set('fb.style',styleId);store.set('fb.aged',true)}
+if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
+let favStyles=store.get('fb.favStyles',[]).filter(id=>BOARD_STYLES.some(s=>s.id===id));
 // Day plan times that used a retired style keep the current style instead
-if(sched.slots.some(s=>s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s.style))){sched.slots.forEach(s=>{if(s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s.style))s.style='keep'});saveSched();renderSlots()}
+const schedStyleOk=v=>!v||v==='keep'||v==='fav'||BOARD_STYLES.some(x=>x.id===v);
+if(sched.slots.some(s=>!schedStyleOk(s.style))){sched.slots.forEach(s=>{if(!schedStyleOk(s.style))s.style='keep'});saveSched();renderSlots()}
 // A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
 // In full screen nothing but the board shows, so the whole screen takes the style's frame color.
 function styleScope(){
   $('board').dataset.style=styleId; $('pv').dataset.style=styleId; document.querySelectorAll('.art-pv').forEach(e=>e.dataset.style=styleId); $('styleOpen').querySelector('.sw').dataset.style=styleId;
   if(document.body.classList.contains('fs'))document.body.dataset.style=styleId; else delete document.body.dataset.style;
+  [$('board'),$('pv')].forEach(e=>{if(aged)e.dataset.aged='';else delete e.dataset.aged});
 }
 new MutationObserver(()=>{styleScope();scheduleAtlas()}).observe(document.body,{attributes:true,attributeFilter:['class']});
 function applyStyle(id){
@@ -3511,11 +3562,14 @@ function applyStyle(id){
   if(shown!==id)restyleCascade(shown);
   if(alignLeft()!==wasLeft){if(lastSent!=null)send(lastSent);try{updateCount()}catch(e){}}
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
-  document.querySelectorAll('.swatch').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===id)));
-  if(!$('styleTray').hidden)noteFor(id,true);
+  markSwatches(); trayBar();
 }
-function stepStyle(d){const i=BOARD_STYLES.findIndex(s=>s.id===styleId);applyStyle(BOARD_STYLES[(i+d+BOARD_STYLES.length)%BOARD_STYLES.length].id)}
-const SW_CELLS=[' ','F','L','A','P',' ','{y}','6',':','4','5','{b}'];
+// ‹ › step through your favorites when you have two or more, otherwise through every style
+function stepStyle(d){
+  const list=favStyles.length>1?favStyles:BOARD_STYLES.map(s=>s.id), i=list.indexOf(styleId);
+  applyStyle(list[((i<0?(d>0?-1:0):i)+d+list.length)%list.length]);
+}
+const SW_CELLS=[' ','C','I','A','O',' ','{r}','7',':','4','5','{b}'];
 function miniTile(c){
   const t=document.createElement('div'); t.className='t';
   t.style.cssText='--jx:'+((Math.random()-.5)*.5).toFixed(2)+';--jy:'+((Math.random()-.5)*.3).toFixed(2)+';--fd:'+(Math.random()*.35).toFixed(2)+';--sx:'+(Math.random()*100|0)+'%;--sy:'+(Math.random()*100|0)+'%';
@@ -3524,30 +3578,123 @@ function miniTile(c){
   t.querySelectorAll('.h').forEach(h=>{if(color)h.style.background=color;else h.firstChild.textContent=c.trim()});
   return t;
 }
-(function buildStyles(){
+// A miniature board in a style: the same tiles and tokens as the real one, scaled down
+function miniBoard(id){
+  const mb=document.createElement('span'); mb.className='minib'; mb.dataset.style=id; mb.setAttribute('aria-hidden','true');
+  const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(id==='pragotron'&&i===0)t.classList.add('edge');if(i>=6)t.classList.add('lo');g.appendChild(t)}); mb.appendChild(g);
+  return mb;
+}
+// The six Everyday colorways share one card, with a dot for each
+const EVERYDAY=BOARD_STYLES.filter(s=>s.group==='everyday').map(s=>s.id);
+const STAR='<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7z" fill="var(--star-fill,none)" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+let trying=null;
+function styleCard(id,family){
+  const s=BOARD_STYLES.find(x=>x.id===id);
+  const c=document.createElement('div'); c.className='swatch'+(family?' family':''); c.dataset.id=id; if(family)c.dataset.family='everyday';
+  const main=document.createElement('button'); main.type='button'; main.className='sw-main';
+  const nm=document.createElement('span'); nm.className='nm2'; nm.innerHTML='<span></span><i class="tick"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.2 5 8.5 9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>';
+  nm.firstChild.textContent=family?'Everyday':s.name;
+  main.append(miniBoard(id),nm);
+  main.onclick=()=>tryStyle(c.dataset.id);
+  main.onmouseenter=()=>{if(!trying)previewStyle(c.dataset.id)};
+  const fav=document.createElement('button'); fav.type='button'; fav.className='sw-fav'; fav.innerHTML=STAR;
+  fav.onclick=()=>toggleFav(c.dataset.id);
+  c.append(main,fav);
+  if(family){
+    const dots=document.createElement('div'); dots.className='sw-dots'; dots.setAttribute('role','group'); dots.setAttribute('aria-label','Everyday colors');
+    EVERYDAY.forEach(eid=>{const e=BOARD_STYLES.find(x=>x.id===eid),d=document.createElement('button');d.type='button';d.dataset.id=eid;d.dataset.style=eid;d.title=e.name;d.setAttribute('aria-label',e.name);
+      d.onclick=()=>{setFamily(c,eid);tryStyle(eid)};d.onmouseenter=()=>{if(!trying)previewStyle(eid)};dots.appendChild(d)});
+    c.appendChild(dots);
+  }
+  return c;
+}
+function setFamily(card,id){
+  card.dataset.id=id; const mb=card.querySelector('.minib'); mb.replaceWith(miniBoard(id));
+  card.querySelector('.nm2 span').textContent='Everyday · '+BOARD_STYLES.find(x=>x.id===id).name;
+}
+function buildStyles(){
+  document.querySelectorAll('#styleTray .swatches').forEach(b=>b.innerHTML='');
   BOARD_STYLES.forEach(s=>{
-    const b=document.createElement('button'); b.type='button'; b.className='swatch'; b.dataset.id=s.id; b.setAttribute('aria-pressed','false');
-    b.setAttribute('aria-label',s.name+'. '+s.note);
-    const mb=document.createElement('span'); mb.className='minib'; mb.dataset.style=s.id; mb.setAttribute('aria-hidden','true');
-    const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(s.id==='pragotron'&&i===0)t.classList.add('edge');if(i>=6)t.classList.add('lo');g.appendChild(t)}); mb.appendChild(g);
-    const nm=document.createElement('span'); nm.className='nm2'; nm.innerHTML='<span></span><i class="tick"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.2 5 8.5 9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>'; nm.firstChild.textContent=s.name;
-    b.append(mb,nm);
-    b.onclick=()=>{applyStyle(s.id);previewStyle(null);noteFor(s.id,true)};
-    b.onmouseenter=()=>{previewStyle(s.id);noteFor(s.id)}; b.onfocus=()=>{previewStyle(s.id);noteFor(s.id)};
-    ($('sw-'+s.group)||$('sw-everyday')).appendChild(b);
+    if(s.group==='everyday'){if(s.id===EVERYDAY[0]){const c=styleCard(EVERYDAY.includes(styleId)?styleId:s.id,true);$('sw-everyday').appendChild(c);setFamily(c,c.dataset.id)}return}
+    ($('sw-'+s.group)||$('sw-everyday')).appendChild(styleCard(s.id));
   });
-})();
-// Hovering or focusing a swatch previews it on the board only; tapping keeps it
-function previewStyle(id){$('board').dataset.style=id||styleId;requestAnimationFrame(fitFill);scheduleAtlas()}
-function noteFor(id,chosen){const s=BOARD_STYLES.find(x=>x.id===id);$('styleNote').textContent=s?(chosen||id===styleId?'Showing '+s.name+'. ':'Previewing '+s.name+'. ')+s.note:''}
-function openTray(){const t=$('styleTray');openSheet('style');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');noteFor(styleId,true);const cur=t.querySelector('.swatch[aria-pressed="true"]');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
-function closeTray(keepSheet){const t=$('styleTray');if(t.hidden)return;t.hidden=true;previewStyle(null);$('styleOpen').setAttribute('aria-expanded','false');if(!keepSheet&&sheetIs('style'))closeSheet()}
+  favStyles.forEach(id=>$('sw-fav').appendChild(styleCard(id)));
+  $('grp-fav').hidden=!favStyles.length; $('chip-fav').hidden=!favStyles.length;
+  // Light or dark, from each style's own flap color
+  document.querySelectorAll('#styleTray .swatch').forEach(c=>{c.dataset.tone=styleTone(c.dataset.id)});
+  filterStyles(); markSwatches();
+}
+const toneCache={};
+function styleTone(id){
+  if(toneCache[id])return toneCache[id];
+  const probe=document.createElement('span'); probe.dataset.style=id; probe.hidden=true; document.body.appendChild(probe);
+  const hex=getComputedStyle(probe).getPropertyValue('--tile').trim(); probe.remove();
+  const m=hex.match(/^#([0-9a-f]{6})$/i); let tone='dark';
+  if(m){const n=parseInt(m[1],16),l=.2126*(n>>16)+.7152*(n>>8&255)+.0722*(n&255);tone=l>140?'light':'dark'}
+  return toneCache[id]=tone;
+}
+function markSwatches(){
+  document.querySelectorAll('#styleTray .swatch').forEach(c=>{
+    const on=c.dataset.family?EVERYDAY.includes(styleId):c.dataset.id===styleId;
+    if(c.dataset.family&&on&&c.dataset.id!==styleId)setFamily(c,styleId);
+    c.classList.toggle('on',on); c.querySelector('.sw-main').setAttribute('aria-pressed',String(on));
+    c.classList.toggle('trying',!!trying&&(c.dataset.family?EVERYDAY.includes(trying):c.dataset.id===trying));
+    const fav=favStyles.includes(c.dataset.id), f=c.querySelector('.sw-fav'), nm=BOARD_STYLES.find(x=>x.id===c.dataset.id).name;
+    f.classList.toggle('on',fav); f.setAttribute('aria-pressed',String(fav)); f.setAttribute('aria-label',(fav?'Remove ':'Add ')+nm+(fav?' from':' to')+' favorites');
+    c.querySelectorAll('.sw-dots button').forEach(d=>d.setAttribute('aria-pressed',String(d.dataset.id===(trying&&EVERYDAY.includes(trying)?trying:styleId))));
+  });
+  $('stylePrev').setAttribute('aria-label',favStyles.length>1?'Previous favorite style':'Previous style');
+  $('styleNext').setAttribute('aria-label',favStyles.length>1?'Next favorite style':'Next style');
+}
+// The bar at the top of the picker: what's showing, or what you're trying, with Use and Cancel
+function trayBar(){
+  const id=trying||styleId, s=BOARD_STYLES.find(x=>x.id===id);
+  $('tryName').textContent=(trying?'Trying ':'Showing ')+s.name; $('tryNote').textContent=s.note;
+  $('tryUse').hidden=$('tryCancel').hidden=!trying; $('trayBar').classList.toggle('trying',!!trying);
+}
+function tryStyle(id){
+  if(id===styleId&&!trying)return;
+  if(trying===id){useTried();return} // a second tap on the same card picks it
+  trying=id===styleId?null:id; previewStyle(trying); markSwatches(); trayBar();
+}
+function useTried(){const id=trying;trying=null;if(id)applyStyle(id);previewStyle(null);markSwatches();trayBar()}
+function cancelTry(){if(!trying)return;trying=null;previewStyle(null);markSwatches();trayBar()}
+function toggleFav(id){
+  favStyles=favStyles.includes(id)?favStyles.filter(x=>x!==id):[...favStyles,id]; store.set('fb.favStyles',favStyles);
+  $('sw-fav').innerHTML=''; favStyles.forEach(f=>$('sw-fav').appendChild(styleCard(f)));
+  $('sw-fav').querySelectorAll('.swatch').forEach(c=>{c.dataset.tone=styleTone(c.dataset.id)});
+  $('grp-fav').hidden=!favStyles.length; $('chip-fav').hidden=!favStyles.length;
+  filterStyles(); markSwatches(); renderSlots();
+}
+let toneFilter='all';
+function filterStyles(){
+  document.querySelectorAll('#styleTray .swatch').forEach(c=>{c.hidden=toneFilter!=='all'&&!(c.dataset.family?EVERYDAY.some(e=>styleTone(e)===toneFilter):c.dataset.tone===toneFilter)});
+  document.querySelectorAll('#styleTray .tray-group').forEach(g=>{if(g.id!=='grp-fav'||favStyles.length)g.hidden=![...g.querySelectorAll('.swatch')].some(c=>!c.hidden)});
+  document.querySelectorAll('#trayTone button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tone===toneFilter)));
+}
+document.querySelectorAll('#trayTone button').forEach(b=>b.onclick=()=>{toneFilter=b.dataset.tone;filterStyles()});
+document.querySelectorAll('#trayJump button').forEach(b=>b.onclick=()=>{
+  const g=$('grp-'+b.dataset.g); if(!g||g.hidden)return;
+  const body=$('sheetBody'), top=g.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop-$('trayTop').offsetHeight-4;
+  body.scrollTo({top,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+});
+$('tryUse').onclick=useTried; $('tryCancel').onclick=cancelTry;
+// Worn: scuffs, faded letters and off-center printing, over any style
+$('agedTray').checked=$('setAged').checked=aged;
+function setAged(on){aged=!!on;store.set('fb.aged',aged);$('agedTray').checked=$('setAged').checked=aged;styleScope();scheduleAtlas()}
+$('agedTray').onchange=()=>setAged($('agedTray').checked); $('setAged').onchange=()=>setAged($('setAged').checked);
+buildStyles();
+// Hovering previews on the board only; tapping tries a style, and Use (or a second tap) keeps it
+function previewStyle(id){$('board').dataset.style=id||trying||styleId;requestAnimationFrame(fitFill);scheduleAtlas()}
+function noteFor(){trayBar()}
+function openTray(){const t=$('styleTray');openSheet('style');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');trayBar();const cur=t.querySelector('.swatch.on:not([hidden]) .sw-main');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
+function closeTray(keepSheet){const t=$('styleTray');if(t.hidden)return;trying=null;t.hidden=true;previewStyle(null);markSwatches();$('styleOpen').setAttribute('aria-expanded','false');if(!keepSheet&&sheetIs('style'))closeSheet()}
 $('styleOpen').onclick=()=>{$('styleTray').hidden?openTray():closeTray()};
 $('trayDone').onclick=()=>{closeTray();$('styleOpen').focus()};
 $('openTrayFromSettings').onclick=()=>openTray();
 $('styleTray').addEventListener('mouseleave',()=>previewStyle(null));
 $('styleTray').addEventListener('focusout',e=>{if(!$('styleTray').contains(e.relatedTarget))previewStyle(null)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('styleTray').hidden){closeTray();$('styleOpen').focus()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('styleTray').hidden){if(trying){cancelTry();return}closeTray();$('styleOpen').focus()}});
 document.addEventListener('pointerdown',e=>{if(!$('styleTray').hidden&&!$('styleTray').contains(e.target)&&!e.target.closest('.stylestep'))closeTray()});
 $('stylePrev').onclick=()=>stepStyle(-1); $('styleNext').onclick=()=>stepStyle(1);
 let styleTimer=null;

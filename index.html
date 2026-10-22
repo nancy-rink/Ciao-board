@@ -160,6 +160,15 @@ body.real .g.b.land{animation:gLandB calc(var(--dur) * 2.6) linear var(--dur) bo
 .g::before{background:#fff}
 .f.a::before,.f.b::before{animation:shadeIn var(--dur) ease-in forwards}
 .g.a::before,.g.b::before{animation:shadeOut var(--dur) ease-out var(--dur) both}
+/* A flap's free edge catches the light as it turns, so it reads as a card with thickness */
+.f::after,.g::after{content:"";position:absolute;left:0;right:0;height:max(1px,.16cqw);z-index:2;pointer-events:none;background:color-mix(in srgb,var(--tile) 55%,var(--ink) 45%);opacity:.85}
+.f::after{top:0}.g::after{bottom:0}
+/* Style change: the tile turns edge-on (the new style swaps in out of sight) and back */
+.t.restyle{animation:restyleFlip var(--restyle,240ms) ease-in-out}
+@keyframes restyleFlip{0%{transform:perspective(40cqw) rotateX(0)}50%{transform:perspective(40cqw) rotateX(-90deg)}100%{transform:perspective(40cqw) rotateX(0)}}
+/* Idle twitch: the top flap lifts a little and drops back with a small bounce */
+.t.twitch .h.u{transform-origin:50% 100%;animation:twitch .7s cubic-bezier(.3,.7,.4,1)}
+@keyframes twitch{0%{transform:rotateX(0)}22%{transform:rotateX(-28deg)}48%{transform:rotateX(6deg)}66%{transform:rotateX(-8deg)}82%{transform:rotateX(2deg)}100%{transform:rotateX(0)}}
 /* Depth: tiles sit proud of the frame, shaded toward the split, with soft glare across the glass */
 body.depth .t{border-radius:var(--flap-r,2px);box-shadow:0 .22cqw .3cqw -.08cqw #0009}
 body.depth .h.u{box-shadow:inset 0 -.4cqw .35cqw -.25cqw #0005,inset 0 1px 0 #ffffff12}
@@ -412,11 +421,20 @@ ul.slots{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 textarea,input{caret-color:var(--accent)}
 html{scrollbar-color:var(--line) var(--wall)}
 .pane[hidden],ul.list[hidden],#tapSound[hidden],#toast[hidden],#fnote[hidden]{display:none}
+/* Night dimming: a black veil over everything that lets taps through */
+#dimmer{position:fixed;inset:0;z-index:60;background:#000;opacity:0;pointer-events:none;transition:opacity 4s ease}
+/* Burn-in protection moves the board slowly between positions */
+.board{transition:background-color .4s,translate 25s linear}
 /* A friend's message waiting to be shown */
 #fnote{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:41;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-radius:12px;background:var(--panel);color:var(--ui);border:1px solid var(--accent);box-shadow:0 12px 30px -10px #000a;font-size:15px;max-width:calc(100vw - 32px);box-sizing:border-box}
 #fnote span{flex:1;min-width:0}
 #fnoteShow{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
 body.fs #fnote{top:calc(16px + env(safe-area-inset-top,0px));bottom:auto}
+.artgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.artcard{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px;text-align:left;background:var(--panel-2)}
+.artcard[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.artcard .pv{pointer-events:none;width:100%;box-sizing:border-box;padding:6px;gap:1px}
+.artcard b{font-weight:600}
 .fr-h{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px;font-weight:600}
 #frMsg{min-height:120px}
 .fr-code,.fr-ask{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
@@ -478,7 +496,7 @@ body.fs.idle{cursor:none}
 #fsNote{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:30;max-width:min(92vw,460px);box-sizing:border-box;padding:10px 14px;border-radius:10px;background:var(--panel);color:var(--ui);border:1px solid var(--line);font-size:14px;text-align:center;transition:opacity .5s}
 #fsNote.gone{opacity:0;pointer-events:none}
 @media (max-width:560px){.pane{padding:18px 0 8px}.stylestep .nm{min-width:0}}
-@media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
+@media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land,.t.restyle,.t.twitch .h.u{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
 </style>
 
 <div class="wrap">
@@ -489,6 +507,7 @@ body.fs.idle{cursor:none}
     <button class="primary" id="tapSound" type="button" hidden>Tap to turn on sound</button>
     <button id="fsExit" type="button">Exit full screen</button>
     <div id="fsNote" role="status" hidden></div>
+    <div id="dimmer" aria-hidden="true"></div>
     <div id="fnote" role="alert" hidden><span id="fnoteMsg"></span><button id="fnoteShow" type="button">Show</button><button id="fnoteLater" type="button">Later</button></div>
     <div id="toast" role="status" hidden><span id="toastMsg"></span><button id="toastUndo" type="button">Undo</button></div>
     <div class="bar-r">
@@ -521,6 +540,7 @@ body.fs.idle{cursor:none}
       <button class="card" hidden role="tab" data-tab="surf" id="tab-surf" aria-controls="pane-surf" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Surf</span><span class="sub" data-sub="surf">Malibu and Venice</span><span class="onb">On board</span></button>
       <button class="card" hidden role="tab" data-tab="calendar" id="tab-calendar" aria-controls="pane-calendar" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">Calendar</span><span class="sub" data-sub="calendar">Google Calendar</span><span class="onb">On board</span></button>
       <button class="card" role="tab" data-tab="news" id="tab-news" aria-controls="pane-news" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">News</span><span class="sub" data-sub="news">BBC headlines</span><span class="onb">On board</span></button>
+      <button class="card" role="tab" data-tab="art" id="tab-art" aria-controls="pane-art" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Art</span><span class="sub" data-sub="art">Color-tile pictures</span><span class="onb">On board</span></button>
       <button class="card" role="tab" data-tab="friends" id="tab-friends" aria-controls="pane-friends" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Friends</span><span class="sub" data-sub="friends">Message a friend's board</span><span class="onb">On board</span></button>
       <button class="card" role="tab" data-tab="schedule" id="tab-schedule" aria-controls="pane-schedule" type="button"><i class="flap" style="--fc:var(--c-v)"></i><span class="nm">Day plan</span><span class="sub" data-sub="schedule">Tap to run</span><span class="onb">Running</span></button>
     </div>
@@ -745,6 +765,22 @@ low tide 1:12 pm</textarea>
       </div>
     </section>
 
+    <section class="pane" role="tabpanel" id="pane-art" aria-labelledby="tab-art" hidden>
+      <div class="pane-head">
+        <div><h2>Art</h2><p class="sub" id="artStatus">Pictures made from color tiles. Tap one to put it on the board.</p></div>
+        <div class="row">
+          <label class="field" style="flex-direction:row;align-items:center;gap:8px" for="artSpeed"><span>Animation speed</span>
+            <select id="artSpeed"><option value="1.6">Slow</option><option value="1">Normal</option><option value="0.65">Fast</option></select>
+          </label>
+          <button class="go primary on" id="artStop" type="button" hidden>Stop animation</button>
+        </div>
+      </div>
+      <h3 class="fr-h">Pictures</h3>
+      <div class="artgrid" id="artPics"></div>
+      <h3 class="fr-h">Animated</h3>
+      <div class="artgrid" id="artAnims"></div>
+    </section>
+
     <section class="pane" role="tabpanel" id="pane-friends" aria-labelledby="tab-friends" hidden>
       <div class="pane-head">
         <div><h2>Friends</h2><p class="sub" id="frStatus">Connect with a friend's Ciao Board and send messages to each other. You both have to agree before anything can be sent.</p></div>
@@ -870,6 +906,28 @@ low tide 1:12 pm</textarea>
             <option value="white">White</option>
           </select>
         </label>
+        <label class="field" for="anim-restyle"><span>Changing style</span>
+          <select id="anim-restyle">
+            <option value="flip">Flip in tile by tile</option>
+            <option value="instant">Switch all at once</option>
+          </select>
+        </label>
+        <div class="field wide"><span>Board life</span>
+          <label class="check" for="anim-boot"><input type="checkbox" id="anim-boot"> Spin every tile up when the board starts</label>
+          <label class="check" for="anim-idle"><input type="checkbox" id="anim-idle"> Let a flap twitch now and then</label>
+        </div>
+      </div>
+      <div class="pane-head" style="border-top:1px solid var(--line);padding-top:18px">
+        <div><h2>Wall display</h2><p class="sub">For a board that stays on all day and night.</p></div>
+      </div>
+      <div class="fields">
+        <div class="field wide"><label class="check" for="wallDim"><input type="checkbox" id="wallDim"> Dim the board at night</label></div>
+        <label class="field" for="wallFrom"><span>Dim from</span><input type="time" id="wallFrom"></label>
+        <label class="field" for="wallTo"><span>Until</span><input type="time" id="wallTo"></label>
+        <label class="field" for="wallLevel"><span>How much</span>
+          <select id="wallLevel"><option value="0.3">A little</option><option value="0.55">Half</option><option value="0.8">A lot</option></select>
+        </label>
+        <div class="field wide"><label class="check" for="wallShift"><input type="checkbox" id="wallShift"> In full screen, drift the board a few pixels over time to protect TV screens from burn-in</label></div>
       </div>
       <div class="pane-head" style="border-top:1px solid var(--line);padding-top:18px">
         <div><h2>Sound</h2><p class="sub">No sound on an iPhone or iPad? Flip the ringer switch off silent and turn up the media volume.</p></div>
@@ -960,6 +1018,7 @@ for(let i=0;i<COLS*ROWS;i++){
   const tile={el:t,u,d,f,g,col,row,cur:0,target:0,delay:0,flip:false};
   f.addEventListener('animationend',()=>{f.className='f'});
   g.addEventListener('animationend',()=>{paint(tile.d,tile.cur);g.className='g'});
+  u.addEventListener('animationend',()=>t.classList.remove('twitch'));
   grid.appendChild(t); tiles.push(tile);
 }
 function paint(face,idx){
@@ -968,7 +1027,8 @@ function paint(face,idx){
   else{face.style.background='';span.textContent=c}
 }
 function step(tile){
-  const old=tile.cur; tile.cur=(tile.cur+1)%CHARS.length;
+  // Direct tiles (art animations) go straight to their target in one flap; everything else steps through the alphabet like a real board
+  const old=tile.cur; tile.cur=tile.direct?tile.target:(tile.cur+1)%CHARS.length;
   paint(tile.u,tile.cur);
   if(reduce){paint(tile.d,tile.cur);return}
   paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);
@@ -1033,29 +1093,61 @@ const PATTERNS={
   random:()=>Math.random()*12,
   together:()=>0
 };
-const anim=Object.assign({pattern:'wave',motion:'real',finish:'depth',frame:'style'},store.get('fb.anim',{}));
+const anim=Object.assign({pattern:'wave',motion:'real',finish:'depth',frame:'style',restyle:'flip',boot:true,idle:true},store.get('fb.anim',{}));
 function applyAnim(){
   const b=document.body.classList;
   b.toggle('real',anim.motion==='real'); b.toggle('depth',anim.finish!=='flat'); b.toggle('glare',anim.finish==='glare');
   if(anim.frame==='style')delete document.body.dataset.frame; else document.body.dataset.frame=anim.frame;
-  ['pattern','motion','finish','frame'].forEach(k=>{const el=$('anim-'+k);if(el)el.value=anim[k]});
+  ['pattern','motion','finish','frame','restyle'].forEach(k=>{const el=$('anim-'+k);if(el)el.value=anim[k]});
+  ['boot','idle'].forEach(k=>{const el=$('anim-'+k);if(el)el.checked=!!anim[k]});
   store.set('fb.anim',anim);
 }
+// A new style ripples across the board in the flip pattern: each tile turns edge-on, takes the new look, and turns back
+let restyleT=[];
+function restyleCascade(from){
+  restyleT.forEach(clearTimeout); restyleT=[];
+  tiles.forEach(t=>{t.el.removeAttribute('data-style');t.el.classList.remove('restyle')});
+  if(reduce||anim.restyle!=='flip'||!from||from===styleId)return;
+  const p=PATTERNS[anim.pattern]||PATTERNS.wave, half=Math.max(60,Math.round(TICK*0.6)), groups=new Map();
+  tiles.forEach(t=>{
+    t.el.dataset.style=from;
+    const d=Math.round(p(t.col,t.row)*TICK*0.55);
+    if(!groups.has(d))groups.set(d,[]); groups.get(d).push(t);
+  });
+  document.documentElement.style.setProperty('--restyle',half*2+'ms');
+  groups.forEach((g,d)=>{
+    restyleT.push(setTimeout(()=>{g.forEach(t=>t.el.classList.add('restyle'));click(g.length,g.map(t=>t.col))},d));
+    restyleT.push(setTimeout(()=>g.forEach(t=>t.el.removeAttribute('data-style')),d+half));
+    restyleT.push(setTimeout(()=>g.forEach(t=>t.el.classList.remove('restyle')),d+half*2+30));
+  });
+}
+// Now and then a single flap lifts and resettles, so a still board never looks frozen
+setTimeout(function idleTwitch(){
+  setTimeout(idleTwitch,35000+Math.random()*85000);
+  if(!anim.idle||reduce||busy||document.hidden||!tiles.length)return;
+  const t=tiles[Math.random()*tiles.length|0];
+  t.el.classList.remove('twitch'); void t.el.offsetWidth; t.el.classList.add('twitch');
+  setTimeout(()=>click(1,[t.col]),110);
+},40000);
 // Re-run the current message from a few flaps back, to show off a new pattern or motion
 function replay(){
   if(busy||reduce||lastSent==null)return;
   tiles.forEach(t=>{t.cur=(t.target-3+CHARS.length)%CHARS.length;paint(t.u,t.cur);paint(t.d,t.cur)});
   send(lastSent);
 }
-let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null;
-function send(str){
-  lastSent=str;
-  const {cells}=toTargets(str);
+let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null, boardLabel=null, booted=false;
+// opts.cells sends an exact grid (art) instead of laying out text; opts.direct flips each tile straight to its target; opts.label is read to screen readers
+function send(str,opts){
+  opts=opts||{}; lastSent=str; boardLabel=opts.label||null;
+  const cells=opts.cells||toTargets(str).cells;
+  // Power-on: the first time anything is shown, every tile spins up from a random spot
+  const boot=!booted&&anim.boot&&!reduce; booted=true;
   tiles.forEach((t,i)=>{
-    t.target=cells[i];
+    t.target=cells[i]; t.direct=!!opts.direct;
     if(reduce){t.cur=t.target;paint(t.u,t.cur);paint(t.d,t.cur);return}
-    const p=PATTERNS[anim.pattern]||PATTERNS.wave;
-    t.delay=p(i%COLS,Math.floor(i/COLS))+(anim.motion==='real'&&Math.random()<.25?1:0)|0;
+    if(boot){t.cur=((t.target-(12+Math.random()*30|0))%CHARS.length+CHARS.length)%CHARS.length;paint(t.u,t.cur);paint(t.d,t.cur);t.delay=Math.random()*4|0;return}
+    const p=opts.pattern||PATTERNS[anim.pattern]||PATTERNS.wave;
+    t.delay=p(i%COLS,Math.floor(i/COLS))+(anim.motion==='real'&&!opts.direct&&Math.random()<.25?1:0)|0;
   });
   setStatus('Flipping');
   if(!busy){busy=true;requestAnimationFrame(loop)}
@@ -1077,12 +1169,13 @@ function loop(ts){
   if(tiles.some(t=>t.cur!==t.target)){requestAnimationFrame(loop)}
   else{busy=false;last=0;acc=0;setStatus('Showing');if(movedThisRun)landed();movedThisRun=false;speakBoard()}
 }
-const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar',news:'news'};
+const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar',news:'news',art:'art'};
 let schedDriving=false, schedOn=false;
-const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar',news:'BBC headlines'};
+const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar',news:'BBC headlines',art:'an animation'};
 const COLOR_WORD={r:'red',o:'orange',y:'yellow',g:'green',b:'blue',v:'violet',w:'white'};
 let lastSpoken='';
 function speakBoard(){
+  if(boardLabel){if(boardLabel!==lastSpoken){lastSpoken=boardLabel;$('boardText').textContent=boardLabel}return}
   const lines=layout(lastSent||'').slice(0,ROWS).map(l=>l.filter(t=>t.length!==3).join('').trim()).filter(Boolean);
   const text=lines.length?lines.join('. ')+'.':'The board is blank.';
   if(text===lastSpoken)return; lastSpoken=text; $('boardText').textContent=text;
@@ -1221,7 +1314,8 @@ $('sndStyle').onchange=()=>{snd.style=$('sndStyle').value;saveSnd();preview(5)};
 $('sndRate').onchange=()=>{snd.rate=+$('sndRate').value;saveSnd();preview(5,TICK*snd.rate)};
 $('chimeStyle').onchange=()=>{snd.chime=$('chimeStyle').value;saveSnd();ensureAudio();setTimeout(playChime,60)};
 $('speed').onchange=()=>{snd.speed=$('speed').value;saveSnd();applySpeed()};
-['pattern','motion','finish','frame'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).value;applyAnim();if(k==='pattern'||k==='motion')replay()}});
+['pattern','motion','finish','frame','restyle'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).value;applyAnim();if(k==='pattern'||k==='motion')replay()}});
+['boot','idle'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).checked;applyAnim()}});
 applyAnim();
 $('testBtn').onclick=()=>{ensureAudio();setTimeout(()=>{const n=8;for(let i=0;i<n;i++)setTimeout(()=>playClick(10),i*TICK*snd.rate);setTimeout(playChime,n*TICK*snd.rate+200)},60)};
 renderSound(); checkAudio();
@@ -1374,7 +1468,7 @@ renderSaved();
 
 // Modes
 let mode='', timer=null, rotIdx=0, lastClock='';
-function stopModes(){clearInterval(timer);timer=null;mode='';store.set('fb.mode','');$('rotateBtn').classList.remove('on');$('clockBtn').classList.remove('on');const wb=document.getElementById('wxBtn');if(wb)wb.classList.remove('on');const sb=document.getElementById('surfBtn');if(sb)sb.classList.remove('on');const cb=document.getElementById('calBtn');if(cb)cb.classList.remove('on');$('newsBtn').classList.remove('on');if(typeof calStop==='function')calStop();if(!schedDriving&&typeof schedOff==='function')schedOff();setStatus(busy?'Flipping':'Showing')}
+function stopModes(){clearInterval(timer);timer=null;mode='';store.set('fb.mode','');$('rotateBtn').classList.remove('on');$('clockBtn').classList.remove('on');const wb=document.getElementById('wxBtn');if(wb)wb.classList.remove('on');const sb=document.getElementById('surfBtn');if(sb)sb.classList.remove('on');const cb=document.getElementById('calBtn');if(cb)cb.classList.remove('on');$('newsBtn').classList.remove('on');$('artStop').hidden=true;document.querySelectorAll('.artcard[aria-pressed="true"]').forEach(b=>b.setAttribute('aria-pressed','false'));if(typeof calStop==='function')calStop();if(!schedDriving&&typeof schedOff==='function')schedOff();setStatus(busy?'Flipping':'Showing')}
 $('rotateBtn').onclick=()=>{
   if(mode==='rotating'){stopModes();return}
   if(!saved.length)return;
@@ -1965,7 +2059,7 @@ function frShow(m){
 // After the hold, go back to whatever the board was doing
 function frResume(p){
   if(p.sched&&schedOn){schedKey='';schedApply();return}
-  const go={clock:startClock,weather:startWeather,surf:startSurf,calendar:startCalendar,news:startNews,rotating:()=>{mode='';$('rotateBtn').click()}}[p.mode];
+  const go={clock:startClock,weather:startWeather,surf:startSurf,calendar:startCalendar,news:startNews,art:()=>startArt(artCur),rotating:()=>{mode='';$('rotateBtn').click()}}[p.mode];
   if(go)go(); else send(p.text||'');
 }
 function frRender(){
@@ -2080,8 +2174,87 @@ function frHash(){
 }
 setTimeout(frBoot,0);
 
+// Art: pictures drawn in color tiles, and short animations.
+// Rows are 22 cells: r o y g b v w are color tiles, '.' is blank, capitals and digits are printed letters. Shorter rows are centered.
+const ART_C='roygbv';
+const ART=[
+  {id:'heart',name:'Heart',rows:['.rr.rr.','rrrrrrr','rrrrrrr','.rrrrr.','..rrr..','...r...']},
+  {id:'sunset',name:'Sunset',rows:['vvvvvvvvvvvvvvvvvvvvvv','ooooooooyyyyyyoooooooo','ooooooyyyyyyyyyyoooooo','rrrrryyyyyyyyyyyyrrrrr','bbbbbbbbbwwwwbbbbbbbbb','bbbbbbbwwbbbbwwbbbbbbb']},
+  {id:'rainbow',name:'Rainbow',rows:['rrrrrrrrrrrrrrrrrrrrrr','oooooooooooooooooooooo','yyyyyyyyyyyyyyyyyyyyyy','gggggggggggggggggggggg','bbbbbbbbbbbbbbbbbbbbbb','vvvvvvvvvvvvvvvvvvvvvv']},
+  {id:'smile',name:'Smile',rows:['.yyyyyy.','yy.yy.yy','yyyyyyyy','y.yyyy.y','yy....yy','.yyyyyy.']},
+  {id:'cake',name:'Birthday cake',rows:['HAPPY BIRTHDAY','y..y..y','w..w..w','vvvvvvvvvvvvv','ooooooooooooo','vvvvvvvvvvvvv']},
+  {id:'ciao',name:'Ciao',rows:['gggggggwwwwwwwwrrrrrrr','','CIAO!','','','gggggggwwwwwwwwrrrrrrr']},
+  {id:'italy',name:'Italian flag',rows:['gggggggwwwwwwwwrrrrrrr','gggggggwwwwwwwwrrrrrrr','gggggggwwwwwwwwrrrrrrr','gggggggwwwwwwwwrrrrrrr','gggggggwwwwwwwwrrrrrrr','gggggggwwwwwwwwrrrrrrr']},
+  {id:'norway',name:'Norwegian flag',rows:['rrrrrrwbbwrrrrrrrrrrrr','wwwwwwwbbwwwwwwwwwwwww','bbbbbbbbbbbbbbbbbbbbbb','bbbbbbbbbbbbbbbbbbbbbb','wwwwwwwbbwwwwwwwwwwwww','rrrrrrwbbwrrrrrrrrrrrr']},
+  // Animated pieces: frame(n) returns the rows for frame n; every is the time between frames in ms
+  {id:'wave',name:'Rainbow wave',every:1400,frame:n=>Array.from({length:6},(_,r)=>Array.from({length:22},(_,c)=>ART_C[((c+r*2-n)%6+6)%6]).join(''))},
+  {id:'sparkle',name:'Sparkle',every:1000,frame:()=>{const g=Array.from({length:6},()=>Array(22).fill('.'));for(let i=0;i<16;i++)g[Math.random()*6|0][Math.random()*22|0]=Math.random()<.7?'w':'y';return g.map(r=>r.join(''))}},
+  {id:'rain',name:'Rain',every:750,frame:n=>{artRain=artRain.map(([r,c])=>[r+1,c]).filter(([r])=>r<6);for(let i=0;i<4;i++)artRain.push([0,Math.random()*22|0]);const g=Array.from({length:6},()=>Array(22).fill('.'));artRain.forEach(([r,c])=>{g[r][c]=r===5?'w':'b'});return g.map(r=>r.join(''))}},
+  {id:'heartbeat',name:'Heartbeat',every:800,frame:n=>n%2?['.rr.rr.','rrrrrrr','rrrrrrr','.rrrrr.','..rrr..','...r...']:['','..r.r..','.rrrrr.','..rrr..','...r...','']}
+];
+const ART_BY=Object.fromEntries(ART.map(a=>[a.id,a]));
+let artRain=[], artN=0, artCur=store.get('fb.art','heart');
+function artCells(rows){
+  const cells=new Array(COLS*ROWS).fill(0);
+  rows.slice(0,ROWS).forEach((row,r)=>{
+    const left=Math.max(0,Math.floor((COLS-row.length)/2));
+    [...row].slice(0,COLS).forEach((ch,c)=>{cells[r*COLS+left+c]=ch==='.'||ch===' '?0:/[roygbvw]/.test(ch)?IDX.get('{'+ch+'}'):IDX.get(ch)??0});
+  });
+  return cells;
+}
+const artSpeed=()=>+store.get('fb.artSpeed',1)||1;
+function showArt(id){
+  const a=ART_BY[id]; if(!a)return;
+  if(a.frame){if(mode!=='art'||artCur!==id)startArt(id);return}
+  schedDriving=schedOn; try{stopModes()}finally{schedDriving=false}
+  artCur=id; store.set('fb.art',id);
+  send('',{cells:artCells(a.rows),label:'Picture: '+a.name});
+  artMark(id);
+}
+function startArt(id){
+  const a=ART_BY[id]; if(!a)return; if(!a.frame){showArt(id);return}
+  const wasSched=schedOn; schedDriving=wasSched; try{stopModes()}finally{schedDriving=false}
+  mode='art'; artCur=id; artN=0; artRain=[]; store.set('fb.mode','art'); store.set('fb.art',id);
+  const tick=()=>{send('',{cells:artCells(a.frame(artN++)),direct:artN>1,pattern:()=>0,label:'Animation: '+a.name})};
+  tick(); timer=setInterval(tick,a.every*artSpeed());
+  $('artStop').hidden=false; artMark(id); setStatus(busy?'Flipping':'Showing');
+}
+function artMark(id){document.querySelectorAll('.artcard').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===id&&(mode==='art'||!ART_BY[id].frame))))}
+$('artStop').onclick=()=>stopModes();
+$('artSpeed').value=String(artSpeed()); $('artSpeed').onchange=()=>{store.set('fb.artSpeed',+$('artSpeed').value);if(mode==='art')startArt(artCur)};
+(function buildArt(){
+  ART.forEach(a=>{
+    const b=document.createElement('button'); b.type='button'; b.className='artcard'; b.dataset.id=a.id; b.setAttribute('aria-pressed','false');
+    const pv=document.createElement('div'); pv.className='pv art-pv'; pv.setAttribute('aria-hidden','true');
+    artCells(a.frame?a.frame(a.id==='heartbeat'?1:3):a.rows).forEach(idx=>{const c=document.createElement('i'),ch=CHARS[idx];if(ch.length===3)c.style.background='var('+COLORS[ch[1]]+')';else c.textContent=ch===' '?'':ch;pv.appendChild(c)});
+    const nm=document.createElement('b'); nm.textContent=a.name+(a.frame?' (animated)':'');
+    b.append(pv,nm); b.onclick=()=>a.frame?startArt(a.id):showArt(a.id);
+    $(a.frame?'artAnims':'artPics').appendChild(b);
+  });
+  artRain=[];
+})();
+
+// Wall display: dim during the night hours, and in full screen drift the board a few pixels so no pixel stays lit the same way all day
+const wall=Object.assign({dim:false,from:'22:00',to:'07:00',level:0.55,shift:true},store.get('fb.wall',{}));
+function wallTick(){
+  const d=new Date(), now=pad2(d.getHours())+':'+pad2(d.getMinutes());
+  const night=wall.from<wall.to?(now>=wall.from&&now<wall.to):(now>=wall.from||now<wall.to);
+  $('dimmer').style.opacity=wall.dim&&night?wall.level:0;
+  const full=document.body.classList.contains('fs')||document.body.classList.contains('kiosk');
+  if(wall.shift&&full){const t=Date.now()/60000;$('board').style.translate=Math.round(Math.sin(t/7)*5)+'px '+Math.round(Math.cos(t/11)*4)+'px'}
+  else $('board').style.translate='';
+}
+function saveWall(){store.set('fb.wall',wall);wallTick()}
+$('wallDim').checked=wall.dim; $('wallFrom').value=wall.from; $('wallTo').value=wall.to; $('wallLevel').value=String(wall.level); $('wallShift').checked=wall.shift;
+$('wallDim').onchange=()=>{wall.dim=$('wallDim').checked;saveWall()};
+$('wallFrom').onchange=()=>{if($('wallFrom').value){wall.from=$('wallFrom').value;saveWall()}};
+$('wallTo').onchange=()=>{if($('wallTo').value){wall.to=$('wallTo').value;saveWall()}};
+$('wallLevel').onchange=()=>{wall.level=+$('wallLevel').value;saveWall()};
+$('wallShift').onchange=()=>{wall.shift=$('wallShift').checked;saveWall()};
+setInterval(wallTick,30000); setTimeout(wallTick,0);
+
 // Day plan: what the board shows, and its style, by time of day
-const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines']];
+const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
 const sched=Object.assign({on:false,slots:[
   {t:'06:30',show:'message',text:'{y} DAWN PATROL {y}\nMALIBU 3-4 FT FAIR\nOFFSHORE TILL 10',style:'daylight'},
   {t:'08:00',show:'clock',text:'',style:'keep'},
@@ -2117,6 +2290,7 @@ function schedApply(){
     else if(s.show==='weather')startWeather();
     else if(s.show==='surf')startSurf();
     else if(s.show==='news'){if(mode!=='news')startNews()}
+    else if(s.show.startsWith('art:'))showArt(s.show.slice(4));
     else if(s.show==='saved'){if(mode!=='rotating'){mode='';$('rotateBtn').click()}}
   }finally{schedDriving=false}
   setStatus(busy?'Flipping':'Showing');
@@ -2173,7 +2347,7 @@ function schedNextLabel(){
   const i=currentSlotIdx(); if(i<0)return '';
   const n=sched.slots[(i+1)%sched.slots.length];
   const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages',news:'News'};
-  return (SHORT[n.show]||n.show)+' at '+fmtSlotTime(n.t).replace(':00','');
+  return (SHORT[n.show]||(SHOW_OPTS.find(o=>o[0]===n.show)||[0,n.show])[1])+' at '+fmtSlotTime(n.t).replace(':00','');
 }
 function updateSubs(){
   const set=(k,t)=>{const el=document.querySelector('[data-sub="'+k+'"]');if(el&&el.textContent!==t)el.textContent=t};
@@ -2242,7 +2416,7 @@ $('board').addEventListener('dblclick',()=>{document.body.classList.contains('fs
 document.addEventListener('keydown',e=>{if(!keysOn||e.target===msg||['SELECT','INPUT'].includes(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='h'||e.key==='H')document.body.classList.toggle('kiosk');else if(e.key==='s')stepStyle(1);else if(e.key==='S')stepStyle(-1)});
 
 // Mode cards: tap to open a mode's settings; live modes also go up on the board right away
-const PANES=['message','saved','clock','news','friends','schedule','style'];
+const PANES=['message','saved','clock','news','art','friends','schedule','style'];
 const CARDS=[...document.querySelectorAll('.card')];
 let lastCard=store.get('fb.card','message');
 function openTab(id){
@@ -2291,13 +2465,14 @@ if(sched.slots.some(s=>s.style&&s.style!=='keep'&&!BOARD_STYLES.some(x=>x.id===s
 // A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
 // In full screen nothing but the board shows, so the whole screen takes the style's frame color.
 function styleScope(){
-  $('board').dataset.style=styleId; $('pv').dataset.style=styleId; $('styleOpen').querySelector('.sw').dataset.style=styleId;
+  $('board').dataset.style=styleId; $('pv').dataset.style=styleId; document.querySelectorAll('.art-pv').forEach(e=>e.dataset.style=styleId); $('styleOpen').querySelector('.sw').dataset.style=styleId;
   if(document.body.classList.contains('fs'))document.body.dataset.style=styleId; else delete document.body.dataset.style;
 }
 new MutationObserver(styleScope).observe(document.body,{attributes:true,attributeFilter:['class']});
 function applyStyle(id){
-  const wasLeft=alignLeft();
+  const wasLeft=alignLeft(), shown=$('board').dataset.style;
   styleId=id; store.set('fb.style',id); styleScope();
+  if(shown!==id)restyleCascade(shown);
   if(alignLeft()!==wasLeft){if(lastSent!=null)send(lastSent);try{updateCount()}catch(e){}}
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
   document.querySelectorAll('.swatch').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===id)));
@@ -2348,7 +2523,7 @@ renderSlots();
 // Start: blank board, then flip in the current message
 tiles.forEach(t=>{paint(t.u,0);paint(t.d,0)});
 updateCount();
-setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='news')startNews();else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
+setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='news')startNews();else if(m==='art'&&ART_BY[artCur])startArt(artCur);else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
 })();
 </script>
 

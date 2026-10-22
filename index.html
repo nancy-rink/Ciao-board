@@ -554,6 +554,54 @@ body.fs.idle{cursor:none}
 #fsNote{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:30;max-width:min(92vw,460px);box-sizing:border-box;padding:10px 14px;border-radius:10px;background:var(--panel);color:var(--ui);border:1px solid var(--line);font-size:14px;text-align:center;transition:opacity .5s}
 #fsNote.gone{opacity:0;pointer-events:none}
 @media (max-width:560px){.pane{padding:18px 0 8px}.stylestep .nm{min-width:0}}
+/* Board first: the board fills the page and everything else lives in a sheet,
+   which slides in from the right on wide screens and up from the bottom on phones and tablets */
+.wrap{max-width:min(1600px,100%);min-height:calc(100dvh - 72px);justify-content:center;gap:14px;transition:padding .25s ease}
+.wrap>.board,.wrap>.boardbar{width:min(100%,calc((100dvh - 150px) * 2.75));margin-inline:auto;box-sizing:border-box}
+.ibtn,.showopen{display:inline-flex;align-items:center;gap:7px}
+.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.showopen .ic rect{fill:currentColor;stroke:none}
+#soundBtn:not(.on) .wave{display:none}
+.status{cursor:pointer}
+.status:hover{border-color:var(--muted)}
+@media (max-width:900px){.ibtn .lbl{display:none}.ibtn{padding-inline:10px}}
+@media (max-width:560px){.boardbar .status{width:100%;justify-content:center}.showopen{flex:1 1 100%;justify-content:center}}
+.scrim{position:fixed;inset:0;z-index:34;background:#0009;animation:fadeIn .2s ease-out}
+.scrim[hidden],.sheet[hidden]{display:none}
+.sheet{position:fixed;z-index:35;left:0;right:0;bottom:0;max-height:min(88dvh,860px);display:flex;flex-direction:column;background:var(--panel);color:var(--ui);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;box-shadow:0 -20px 60px -20px #000c;animation:sheetUp .26s cubic-bezier(.2,.8,.3,1)}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 10px 20px;border-bottom:1px solid var(--line)}
+.sheet-head h2{margin:0;font-size:17px;font-weight:600}
+.sheet-x{border-color:transparent;background:transparent}
+.sheet-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:16px 18px calc(28px + env(safe-area-inset-bottom,0px))}
+.setnav{display:none;gap:6px;padding:10px 18px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.sheet[data-view="settings"] .setnav{display:flex}
+.setnav button{border-radius:999px;padding:6px 14px;white-space:nowrap}
+.setnav button[aria-pressed="true"]{background:var(--ui);color:var(--wall);border-color:var(--ui)}
+.setsec[hidden]{display:none}
+.setsec{display:flex;flex-direction:column;gap:18px}
+.sheet[data-view="style"] .deck,.sheet[data-view="settings"] .modecards{display:none}
+.sheet .deck{border-top:0;padding-top:0}
+.sheet .pane{padding-top:18px}
+.sheet .pane-head h2{display:none}
+.sheet .pane-head .sub{font-size:14px;color:var(--ui);margin:0}
+.sheet .tray{border:0;padding:0;background:none;animation:none}
+.sheet .composer{grid-template-columns:minmax(0,1fr)}
+.sheet .modecards{display:grid;grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));overflow:visible}
+.sheet .card{padding:9px 11px 10px}
+.sheet .card .onb{top:8px;right:8px;font-size:0;gap:0}
+.sheet .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));overflow:visible}
+.sheet .fields{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+@media (max-width:899px){body.sheet-open{overflow:hidden}body.sheet-open .wrap{justify-content:flex-start}}
+@media (min-width:900px){
+  .sheet{left:auto;top:12px;right:12px;bottom:12px;width:min(500px,40vw);max-height:none;border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 60px -24px #000c;animation-name:sheetIn}
+  .scrim{display:none}
+  body.sheet-open .wrap{padding-right:calc(min(500px,40vw) + 12px)}
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes sheetIn{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+body.fs .sheet,body.fs .scrim,body.kiosk .sheet,body.kiosk .scrim{display:none}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{animation:none}.wrap{transition:none}}
 @media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land,.t.restyle,.t.twitch .h.u{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
 </style>
 
@@ -569,298 +617,62 @@ body.fs.idle{cursor:none}
     <div id="fnote" role="alert" hidden><span id="fnoteMsg"></span><button id="fnoteShow" type="button">Show</button><button id="fnoteLater" type="button">Later</button></div>
     <div id="toast" role="status" hidden><span id="toastMsg"></span><button id="toastUndo" type="button">Undo</button></div>
     <div class="bar-r">
+      <button class="primary showopen" id="showOpen" type="button" aria-controls="sheet" aria-expanded="false"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg><span>What to show</span></button>
       <div class="stylestep" role="group" aria-label="Board style">
         <button id="stylePrev" type="button" aria-label="Previous style">‹</button>
         <button class="nm" id="styleOpen" type="button" aria-expanded="false" aria-controls="styleTray"><i class="sw"></i><span id="styleName">Classic</span><svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button id="styleNext" type="button" aria-label="Next style">›</button>
       </div>
-      <button id="soundBtn" type="button">Sound on</button>
-      <button id="fsBtn" type="button">Full screen</button>
-      <button class="setbtn" id="tab-style" data-tab="style" aria-controls="pane-style" aria-expanded="false" type="button">Settings</button>
+      <button class="ibtn" id="soundBtn" type="button"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8h3l4-3.5v11L7 12H4z"/><path class="wave" d="M13.5 7.5a3.5 3.5 0 0 1 0 5M15.5 5.5a6.5 6.5 0 0 1 0 9"/></svg><span class="lbl">Sound on</span></button>
+      <button class="ibtn" id="fsBtn" type="button" aria-label="Full screen"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 7.5v-4h4M12.5 3.5h4v4M16.5 12.5v4h-4M7.5 16.5h-4v-4"/></svg><span class="lbl">Full screen</span></button>
+      <button class="ibtn setbtn" id="tab-style" data-tab="style" aria-controls="sheet" aria-expanded="false" aria-label="Settings" type="button"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.8v2M10 15.2v2M2.8 10h2M15.2 10h2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4"/></svg><span class="lbl">Settings</span></button>
       <button id="showBtn" type="button">Show controls</button>
     </div>
   </div>
+</div>
 
-  <section class="tray" id="styleTray" aria-label="Board styles" hidden>
-    <div class="tray-group"><h3 id="trayModern">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
-    <div class="tray-group"><h3 id="trayVintage">Workshop <span>Old machines with pins and wear</span></h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
-    <div class="tray-group"><h3 id="trayTransit">Transit icons <span>Famous station and airport designs</span></h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
-    <div class="tray-group"><h3 id="trayJapan">Made in Japan <span>Japanese boards, clocks and design</span></h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
-    <div class="tray-group"><h3 id="trayLatam">Modernismo <span>Mid-century design from Mexico to Brazil</span></h3><div class="swatches" id="swLatam" role="group" aria-labelledby="trayLatam"></div></div>
-    <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
-  </section>
-
-  <div class="deck">
-    <div class="modecards" role="tablist" aria-label="What the board shows">
-      <button class="card" role="tab" data-tab="message" id="tab-message" aria-controls="pane-message" type="button"><i class="flap" style="--fc:var(--c-y)"></i><span class="nm">Message</span><span class="sub" data-sub="message">Write your own</span><span class="onb">On board</span></button>
-      <button class="card" role="tab" data-tab="saved" id="tab-saved" aria-controls="pane-saved" type="button"><i class="flap" style="--fc:var(--c-o)"></i><span class="nm">Saved</span><span class="sub" data-sub="saved">Your saved messages</span><span class="onb">On board</span></button>
-      <button class="card" role="tab" data-tab="clock" id="tab-clock" aria-controls="pane-clock" type="button"><i class="flap" style="--fc:var(--c-w)"></i><span class="nm">Clock</span><span class="sub" data-sub="clock">Time and date</span><span class="onb">On board</span></button>
-      <button class="card" hidden role="tab" data-tab="weather" id="tab-weather" aria-controls="pane-weather" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Weather</span><span class="sub" data-sub="weather">AccuWeather</span><span class="onb">On board</span></button>
-      <button class="card" hidden role="tab" data-tab="surf" id="tab-surf" aria-controls="pane-surf" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Surf</span><span class="sub" data-sub="surf">Malibu and Venice</span><span class="onb">On board</span></button>
-      <button class="card" hidden role="tab" data-tab="calendar" id="tab-calendar" aria-controls="pane-calendar" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">Calendar</span><span class="sub" data-sub="calendar">Google Calendar</span><span class="onb">On board</span></button>
-      <button class="card" role="tab" data-tab="news" id="tab-news" aria-controls="pane-news" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">News</span><span class="sub" data-sub="news">BBC headlines</span><span class="onb">On board</span></button>
-      <button class="card" role="tab" data-tab="art" id="tab-art" aria-controls="pane-art" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Art</span><span class="sub" data-sub="art">Color-tile pictures</span><span class="onb">On board</span></button>
-      <button class="card" role="tab" data-tab="friends" id="tab-friends" aria-controls="pane-friends" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Friends</span><span class="sub" data-sub="friends">Message a friend's board</span><span class="onb">On board</span></button>
-      <button class="card" role="tab" data-tab="schedule" id="tab-schedule" aria-controls="pane-schedule" type="button"><i class="flap" style="--fc:var(--c-v)"></i><span class="nm">Day plan</span><span class="sub" data-sub="schedule">Tap to run</span><span class="onb">Running</span></button>
-    </div>
-
-    <section class="pane" role="tabpanel" id="pane-message" aria-labelledby="tab-message">
-      <div class="composer">
-        <div class="cmp-edit">
-          <textarea id="msgBox" spellcheck="false" aria-label="Message for the board">{g}{g} surf report {g}{g}
-malibu - fair
-3-4 ft
-swell 3 ft 15s ssw
-wind 6 mph offshore
-low tide 1:12 pm</textarea>
-          <div class="chips" aria-label="Add a color tile">
-            <button class="chip" style="background:var(--c-r)" data-c="r" type="button" aria-label="Add a red tile"></button>
-            <button class="chip" style="background:var(--c-o)" data-c="o" type="button" aria-label="Add an orange tile"></button>
-            <button class="chip" style="background:var(--c-y)" data-c="y" type="button" aria-label="Add a yellow tile"></button>
-            <button class="chip" style="background:var(--c-g)" data-c="g" type="button" aria-label="Add a green tile"></button>
-            <button class="chip" style="background:var(--c-b)" data-c="b" type="button" aria-label="Add a blue tile"></button>
-            <button class="chip" style="background:var(--c-v)" data-c="v" type="button" aria-label="Add a violet tile"></button>
-            <button class="chip" style="background:var(--c-w)" data-c="w" type="button" aria-label="Add a white tile"></button>
-          </div>
-          <div class="row">
-            <button class="primary" id="sendBtn" type="button">Send to board</button>
-            <button id="saveBtn" type="button">Save message</button>
-            <button id="clearBtn" type="button">Clear board</button>
-          </div>
-          <p class="hint">Words wrap and center on their own. Enter starts a new line; <kbd>⌘/Ctrl</kbd> + <kbd>Enter</kbd> sends. Tap a color to drop in a color tile.</p>
-        </div>
-        <div class="cmp-prev">
-          <div class="pv-head"><span>Preview</span><span class="count" id="count">3 of 6 lines</span></div>
-          <div class="pv" id="pv" aria-hidden="true"></div>
-        </div>
-      </div>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="sheet" id="sheet" data-view="show" aria-labelledby="sheetTitle" hidden>
+  <div class="sheet-head">
+    <h2 id="sheetTitle">What to show</h2>
+    <button class="ibtn sheet-x" id="sheetClose" type="button" aria-label="Close"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+  </div>
+  <nav class="setnav" id="setNav" aria-label="Settings sections">
+    <button type="button" data-sec="look" aria-pressed="true">Look</button><button type="button" data-sec="motion" aria-pressed="false">Motion</button><button type="button" data-sec="wall" aria-pressed="false">Wall display</button><button type="button" data-sec="sound" aria-pressed="false">Sound</button>
+  </nav>
+  <div class="sheet-body" id="sheetBody">
+    <section class="tray" id="styleTray" aria-label="Board styles" hidden>
+      <div class="tray-group"><h3 id="trayModern">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
+      <div class="tray-group"><h3 id="trayVintage">Workshop <span>Old machines with pins and wear</span></h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
+      <div class="tray-group"><h3 id="trayTransit">Transit icons <span>Famous station and airport designs</span></h3><div class="swatches" id="swTransit" role="group" aria-labelledby="trayTransit"></div></div>
+      <div class="tray-group"><h3 id="trayJapan">Made in Japan <span>Japanese boards, clocks and design</span></h3><div class="swatches" id="swJapan" role="group" aria-labelledby="trayJapan"></div></div>
+      <div class="tray-group"><h3 id="trayLatam">Modernismo <span>Mid-century design from Mexico to Brazil</span></h3><div class="swatches" id="swLatam" role="group" aria-labelledby="trayLatam"></div></div>
+      <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
     </section>
 
-    <section class="pane" role="tabpanel" id="pane-saved" aria-labelledby="tab-saved" hidden>
-      <div class="pane-head">
-        <div><h2>Saved messages</h2><p class="sub">These are examples of what the board can show. Tap Show to put one up, rotate through them, or swap in your own.</p></div>
-        <div class="row">
-          <label class="field" style="flex-direction:row;align-items:center;gap:8px" for="rotateEvery"><span>Every</span>
-            <select id="rotateEvery">
-              <option value="30">30 sec</option>
-              <option value="60" selected>1 min</option>
-              <option value="300">5 min</option>
-              <option value="900">15 min</option>
-            </select>
-          </label>
-          <button class="go primary" id="rotateBtn" type="button"><span class="when-off">Rotate saved</span><span class="when-on">Stop rotating</span></button>
-        </div>
+    <div class="deck">
+      <div class="modecards" role="tablist" aria-label="What the board shows">
+        <button class="card" role="tab" data-tab="message" id="tab-message" aria-controls="pane-message" type="button"><i class="flap" style="--fc:var(--c-y)"></i><span class="nm">Message</span><span class="sub" data-sub="message">Write your own</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="saved" id="tab-saved" aria-controls="pane-saved" type="button"><i class="flap" style="--fc:var(--c-o)"></i><span class="nm">Saved</span><span class="sub" data-sub="saved">Your saved messages</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="clock" id="tab-clock" aria-controls="pane-clock" type="button"><i class="flap" style="--fc:var(--c-w)"></i><span class="nm">Clock</span><span class="sub" data-sub="clock">Time and date</span><span class="onb">On board</span></button>
+        <button class="card" hidden role="tab" data-tab="weather" id="tab-weather" aria-controls="pane-weather" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Weather</span><span class="sub" data-sub="weather">AccuWeather</span><span class="onb">On board</span></button>
+        <button class="card" hidden role="tab" data-tab="surf" id="tab-surf" aria-controls="pane-surf" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Surf</span><span class="sub" data-sub="surf">Malibu and Venice</span><span class="onb">On board</span></button>
+        <button class="card" hidden role="tab" data-tab="calendar" id="tab-calendar" aria-controls="pane-calendar" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">Calendar</span><span class="sub" data-sub="calendar">Google Calendar</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="news" id="tab-news" aria-controls="pane-news" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">News</span><span class="sub" data-sub="news">BBC headlines</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="art" id="tab-art" aria-controls="pane-art" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Art</span><span class="sub" data-sub="art">Color-tile pictures</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="friends" id="tab-friends" aria-controls="pane-friends" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Friends</span><span class="sub" data-sub="friends">Message a friend's board</span><span class="onb">On board</span></button>
+        <button class="card" role="tab" data-tab="schedule" id="tab-schedule" aria-controls="pane-schedule" type="button"><i class="flap" style="--fc:var(--c-v)"></i><span class="nm">Day plan</span><span class="sub" data-sub="schedule">Tap to run</span><span class="onb">Running</span></button>
       </div>
-      <ul class="list" id="saved"></ul>
-    </section>
 
-    <section class="pane" role="tabpanel" id="pane-clock" aria-labelledby="tab-clock" hidden>
-      <div class="pane-head">
-        <div><h2>Clock</h2><p class="sub">Updates each minute. Changes apply right away.</p></div>
-        <button class="go primary" id="clockBtn" type="button"><span class="when-off">Show clock</span><span class="when-on">Stop clock</span></button>
-      </div>
-      <div class="fields">
-        <label class="field" for="clkHours"><span>Hours</span>
-          <select id="clkHours"><option value="12">12-hour</option><option value="24">24-hour</option></select>
-        </label>
-        <label class="field" for="clkDate"><span>Date</span>
-          <select id="clkDate">
-            <option value="long">Wednesday Oct 21</option>
-            <option value="full">October 21, 2026</option>
-            <option value="short">Wed 10/21</option>
-            <option value="day">Day only</option>
-            <option value="none">No date</option>
-          </select>
-        </label>
-        <label class="field" for="clkOrder"><span>Order</span>
-          <select id="clkOrder"><option value="time">Time on top</option><option value="date">Date on top</option></select>
-        </label>
-        <label class="field" for="clkTz"><span>Second city</span>
-          <select id="clkTz">
-            <option value="">None</option>
-            <option value="America/New_York">New York</option><option value="America/Chicago">Chicago</option><option value="America/Denver">Denver</option>
-            <option value="America/Los_Angeles">Los Angeles</option><option value="Pacific/Honolulu">Honolulu</option><option value="Europe/London">London</option>
-            <option value="Europe/Paris">Paris</option><option value="Europe/Berlin">Berlin</option><option value="Europe/Oslo">Oslo</option><option value="Asia/Dubai">Dubai</option>
-            <option value="Asia/Kolkata">Mumbai</option><option value="Asia/Tokyo">Tokyo</option><option value="Australia/Sydney">Sydney</option>
-          </select>
-        </label>
-        <label class="field" for="clkBorder"><span>Border</span>
-          <select id="clkBorder">
-            <option value="none">None</option>
-            <option value="w">White</option><option value="r">Red</option><option value="o">Orange</option><option value="y">Yellow</option>
-            <option value="g">Green</option><option value="b">Blue</option><option value="v">Violet</option>
-          </select>
-        </label>
-        <label class="field" for="clkAccent"><span>Tiles beside the time</span>
-          <select id="clkAccent">
-            <option value="none">None</option>
-            <option value="w">White</option><option value="r">Red</option><option value="o">Orange</option><option value="y">Yellow</option>
-            <option value="g">Green</option><option value="b">Blue</option><option value="v">Violet</option>
-          </select>
-        </label>
-        <label class="field" for="clkLabel"><span>Extra line</span>
-          <input type="text" id="clkLabel" maxlength="22" placeholder="e.g. Have a good day">
-        </label>
-        <div class="field"><span>Options</span>
-          <label class="check" for="clkAmpm"><input type="checkbox" id="clkAmpm"> Show AM/PM</label>
-        </div>
-      </div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-weather" aria-labelledby="tab-weather" hidden>
-      <div class="pane-head">
-        <div><h2>Weather</h2><p class="sub" id="wxStatus">Live conditions from AccuWeather.</p></div>
-        <button class="go primary" id="wxBtn" type="button"><span class="when-off">Show weather</span><span class="when-on">Stop weather</span></button>
-      </div>
-      <div class="fields">
-        <label class="field" for="wxCity"><span>Show</span><select id="wxCity"></select></label>
-        <label class="field" for="wxEvery"><span>Switch cities every</span>
-          <select id="wxEvery"><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
-        </label>
-        <label class="field" for="wxUnit"><span>Units</span>
-          <select id="wxUnit"><option value="imperial">°F</option><option value="metric">°C</option></select>
-        </label>
-        <label class="field" for="wxDetail"><span>Bottom line</span>
-          <select id="wxDetail">
-            <option value="rain">Chance of rain</option>
-            <option value="feels">Feels like</option>
-            <option value="wind">Wind</option>
-            <option value="tomorrow">Tomorrow's forecast</option>
-            <option value="none">Nothing</option>
-          </select>
-        </label>
-        <div class="field wide"><label class="check" for="wxTile"><input type="checkbox" id="wxTile"> Color tile for the conditions</label></div>
-        <div class="field wide"><span>Cities</span>
-          <ul class="list" id="wxCities"></ul>
-        </div>
-        <div class="field wide">
-          <div class="row" style="flex-wrap:nowrap">
-            <input type="text" id="wxQuery" placeholder="Add a city or ZIP code" aria-label="City or ZIP code to add">
-            <button id="wxFind" type="button">Find</button>
-          </div>
-          <ul class="list" id="wxResults" hidden></ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-surf" aria-labelledby="tab-surf" hidden>
-      <div class="pane-head">
-        <div><h2>Surf</h2><p class="sub" id="surfStatus">Reports update every 2 hours, 5am to 7pm.</p></div>
-        <button class="go primary" id="surfBtn" type="button"><span class="when-off">Show surf</span><span class="when-on">Stop surf</span></button>
-      </div>
-      <div class="fields">
-        <label class="field" for="surfSpot"><span>Show</span>
-          <select id="surfSpot">
-            <option value="all">Malibu and Venice, one at a time</option>
-            <option value="malibu">Malibu</option>
-            <option value="venice">Venice</option>
-          </select>
-        </label>
-        <label class="field" for="surfEvery"><span>Switch spots every</span>
-          <select id="surfEvery"><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
-        </label>
-        <div class="field wide"><span>Lines to show</span>
-          <div class="checks">
-            <label class="check" for="surfSwell"><input type="checkbox" id="surfSwell"> Swell</label>
-            <label class="check" for="surfWind"><input type="checkbox" id="surfWind"> Wind</label>
-            <label class="check" for="surfWater"><input type="checkbox" id="surfWater"> Water temp</label>
-            <label class="check" for="surfTide"><input type="checkbox" id="surfTide"> Next tide</label>
-            <label class="check" for="surfTile"><input type="checkbox" id="surfTile"> Color tile for the rating</label>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-calendar" aria-labelledby="tab-calendar" hidden>
-      <div class="pane-head">
-        <div><h2>Calendar</h2><p class="sub" id="calStatus">Your Google Calendar: what's next, today's plan, and countdowns.</p></div>
-        <button class="go primary" id="calBtn" type="button"><span class="when-off">Show calendar</span><span class="when-on">Stop calendar</span></button>
-      </div>
-      <div class="fields">
-        <div class="field wide"><span>Screens to show</span>
-          <div class="checks">
-            <label class="check" for="calNext"><input type="checkbox" id="calNext"> Next up, with countdown</label>
-            <label class="check" for="calToday"><input type="checkbox" id="calToday"> Today's events</label>
-            <label class="check" for="calTomorrow"><input type="checkbox" id="calTomorrow"> Tomorrow after 6pm</label>
-            <label class="check" for="calCount"><input type="checkbox" id="calCount"> Countdowns</label>
-          </div>
-        </div>
-        <label class="field" for="calEvery"><span>Switch screens every</span>
-          <select id="calEvery"><option value="20">20 sec</option><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option></select>
-        </label>
-        <div class="field"><span>Options</span>
-          <label class="check" for="calAllDay"><input type="checkbox" id="calAllDay"> Include all-day events</label>
-        </div>
-        <div class="field wide"><span>Countdowns</span>
-          <ul class="list" id="cdList"></ul>
-          <div class="row" style="flex-wrap:nowrap">
-            <input type="text" id="cdName" maxlength="14" placeholder="What, e.g. Maui" aria-label="Countdown name">
-            <input type="date" id="cdDate" aria-label="Countdown date">
-            <button id="cdAdd" type="button">Add</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-news" aria-labelledby="tab-news" hidden>
-      <div class="pane-head">
-        <div><h2>News</h2><p class="sub" id="newsStatus">Headlines from BBC News, refreshed every 20 minutes.</p></div>
-        <button class="go primary" id="newsBtn" type="button"><span class="when-off">Show news</span><span class="when-on">Stop news</span></button>
-      </div>
-      <div class="fields">
-        <label class="field" for="newsSection"><span>Section</span>
-          <select id="newsSection">
-            <option value="top">Top stories</option><option value="world">World</option><option value="uk">UK</option>
-            <option value="business">Business</option><option value="technology">Technology</option><option value="science">Science</option>
-            <option value="sport">Sport</option>
-          </select>
-        </label>
-        <label class="field" for="newsEvery"><span>Next headline every</span>
-          <select id="newsEvery"><option value="15">15 sec</option><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
-        </label>
-        <label class="field" for="newsCount"><span>Headlines</span>
-          <select id="newsCount"><option value="5">Top 5</option><option value="10">Top 10</option><option value="15">Top 15</option></select>
-        </label>
-      </div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-art" aria-labelledby="tab-art" hidden>
-      <div class="pane-head">
-        <div><h2>Art</h2><p class="sub" id="artStatus">Pictures made from color tiles. Tap one to put it on the board.</p></div>
-        <div class="row">
-          <label class="field" style="flex-direction:row;align-items:center;gap:8px" for="artSpeed"><span>Animation speed</span>
-            <select id="artSpeed"><option value="1.6">Slow</option><option value="1">Normal</option><option value="0.65">Fast</option></select>
-          </label>
-          <button class="go primary on" id="artStop" type="button" hidden>Stop animation</button>
-        </div>
-      </div>
-      <h3 class="fr-h">Pictures</h3>
-      <div class="artgrid" id="artPics"></div>
-      <h3 class="fr-h">Animated</h3>
-      <div class="artgrid" id="artAnims"></div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-friends" aria-labelledby="tab-friends" hidden>
-      <div class="pane-head">
-        <div><h2>Friends</h2><p class="sub" id="frStatus">Connect with a friend's Ciao Board and send messages to each other. You both have to agree before anything can be sent.</p></div>
-      </div>
-      <div id="frBody">
-        <div class="fields">
-          <label class="field" for="frName"><span>Name your friends see</span><input type="text" id="frName" maxlength="40" placeholder="For example: Nancy's kitchen" autocomplete="off"></label>
-          <label class="field" for="frHold"><span>Show a friend's message for</span>
-            <select id="frHold"><option value="1">1 min</option><option value="5">5 min</option><option value="15">15 min</option><option value="60">1 hour</option><option value="0">Until I change it</option></select>
-          </label>
-          <div class="field wide"><label class="check" for="frAllow"><input type="checkbox" id="frAllow"> Accept messages from friends (you're asked before each one is shown)</label></div>
-        </div>
-
-        <h3 class="fr-h">Messages waiting</h3>
-        <ul class="list" id="frInbox"></ul>
-
-        <h3 class="fr-h">Send a message</h3>
-        <div class="fields" id="frSendBox">
-          <label class="field" for="frTo"><span>To</span><select id="frTo"></select></label>
-          <div class="field wide">
-            <textarea id="frMsg" spellcheck="false" rows="4" aria-label="Message for your friend's board" placeholder="Up to 6 lines of 22 letters"></textarea>
+      <section class="pane" role="tabpanel" id="pane-message" aria-labelledby="tab-message">
+        <div class="composer">
+          <div class="cmp-edit">
+            <textarea id="msgBox" spellcheck="false" aria-label="Message for the board">{g}{g} surf report {g}{g}
+  malibu - fair
+  3-4 ft
+  swell 3 ft 15s ssw
+  wind 6 mph offshore
+  low tide 1:12 pm</textarea>
             <div class="chips" aria-label="Add a color tile">
               <button class="chip" style="background:var(--c-r)" data-c="r" type="button" aria-label="Add a red tile"></button>
               <button class="chip" style="background:var(--c-o)" data-c="o" type="button" aria-label="Add an orange tile"></button>
@@ -870,189 +682,449 @@ low tide 1:12 pm</textarea>
               <button class="chip" style="background:var(--c-v)" data-c="v" type="button" aria-label="Add a violet tile"></button>
               <button class="chip" style="background:var(--c-w)" data-c="w" type="button" aria-label="Add a white tile"></button>
             </div>
-            <div class="row"><button class="primary" id="frSend" type="button">Send</button><span class="hint" id="frCount"></span></div>
+            <div class="row">
+              <button class="primary" id="sendBtn" type="button">Send to board</button>
+              <button id="saveBtn" type="button">Save message</button>
+              <button id="clearBtn" type="button">Clear board</button>
+            </div>
+            <p class="hint">Words wrap and center on their own. Enter starts a new line; <kbd>⌘/Ctrl</kbd> + <kbd>Enter</kbd> sends. Tap a color to drop in a color tile.</p>
+          </div>
+          <div class="cmp-prev">
+            <div class="pv-head"><span>Preview</span><span class="count" id="count">3 of 6 lines</span></div>
+            <div class="pv" id="pv" aria-hidden="true"></div>
           </div>
         </div>
+      </section>
 
-        <h3 class="fr-h">Connected boards</h3>
-        <ul class="list" id="frList"></ul>
-
-        <h3 class="fr-h">Connect a board</h3>
-        <div class="fields">
-          <div class="field wide">
-            <div class="row"><button id="frInvite" type="button">Create an invite</button><span class="hint">Gives you a code and a link to send your friend. It works once, for 12 hours.</span></div>
-            <div class="fr-code" id="frInviteOut" hidden><b id="frCode"></b><input type="text" id="frLink" readonly aria-label="Invite link"><button id="frCopy" type="button">Copy link</button></div>
-          </div>
-          <div class="field wide">
-            <div class="row" style="flex-wrap:nowrap"><input type="text" id="frCodeIn" placeholder="Have a code? Type it here" aria-label="Invite code" autocomplete="off" maxlength="12"><button id="frLook" type="button">Look up</button></div>
-            <div class="fr-ask" id="frAsk" hidden><span id="frAskMsg"></span><button class="primary" id="frAccept" type="button">Accept</button><button id="frDecline" type="button">Decline</button></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-schedule" aria-labelledby="tab-schedule" hidden>
-      <div class="pane-head">
-        <div><h2>Day plan</h2><p class="sub" id="schedStatus">The board changes what it shows, and how it looks, through the day.</p></div>
-        <button class="go primary" id="schedBtn" type="button"><span class="when-off">Run day plan</span><span class="when-on">Stop day plan</span></button>
-      </div>
-      <ul class="slots" id="slots"></ul>
-      <div class="row"><button id="slotAdd" type="button">Add a time</button><p class="hint">Each time runs until the next one. Tapping another mode or sending a message pauses the plan.</p></div>
-    </section>
-
-    <section class="pane" role="tabpanel" id="pane-style" aria-labelledby="tab-style" hidden>
-      <div class="pane-head">
-        <div><h2>Look</h2><p class="sub">Pick a style with the style button under the board. The ‹ › arrows, or <kbd>S</kbd>, step through them one at a time.</p></div>
-        <button id="openTrayFromSettings" type="button">Choose a style</button>
-      </div>
-      <div class="fields">
-        <label class="field" for="styleAuto"><span>Change style on its own</span>
-          <select id="styleAuto">
-            <option value="0">Off</option>
-            <option value="300">Every 5 min</option>
-            <option value="900">Every 15 min</option>
-            <option value="3600">Every hour</option>
-          </select>
-        </label>
-        <label class="field" for="fsLayout"><span>Full screen layout</span>
-          <select id="fsLayout">
-            <option value="fill">Fill the screen</option>
-            <option value="shape">Keep board shape</option>
-          </select>
-        </label>
-        <div class="field"><span>Keyboard</span>
-          <label class="check" for="keysOn"><input type="checkbox" id="keysOn" checked> Shortcuts: S for style, H to hide controls</label>
-        </div>
-        <label class="field" for="speed"><span>Flip speed</span>
-          <select id="speed">
-            <option value="fast">Fast</option>
-            <option value="normal">Normal</option>
-            <option value="relaxed">Relaxed</option>
-            <option value="slow">Slow</option>
-            <option value="lazy">Very slow</option>
-          </select>
-        </label>
-        <label class="field" for="anim-pattern"><span>Flip pattern</span>
-          <select id="anim-pattern">
-            <option value="wave">Left to right</option>
-            <option value="rows">Row by row</option>
-            <option value="diagonal">Diagonal sweep</option>
-            <option value="center">From the center out</option>
-            <option value="outside">From the edges in</option>
-            <option value="random">Random</option>
-            <option value="together">All at once</option>
-          </select>
-        </label>
-        <label class="field" for="anim-motion"><span>Flap motion</span>
-          <select id="anim-motion">
-            <option value="real">Realistic</option>
-            <option value="crisp">Crisp</option>
-          </select>
-        </label>
-        <label class="field" for="anim-finish"><span>Board finish</span>
-          <select id="anim-finish">
-            <option value="depth">Raised tiles</option>
-            <option value="glare">Raised tiles with glass glare</option>
-            <option value="flat">Flat</option>
-          </select>
-        </label>
-        <label class="field" for="anim-frame"><span>Frame</span>
-          <select id="anim-frame">
-            <option value="style">Match the style</option>
-            <option value="metal">Brushed metal</option>
-            <option value="walnut">Walnut</option>
-            <option value="black">Matte black</option>
-            <option value="white">White</option>
-          </select>
-        </label>
-        <label class="field" for="anim-restyle"><span>Changing style</span>
-          <select id="anim-restyle">
-            <option value="flip">Flip in tile by tile</option>
-            <option value="instant">Switch all at once</option>
-          </select>
-        </label>
-        <div class="field wide"><span>Board life</span>
-          <label class="check" for="anim-boot"><input type="checkbox" id="anim-boot"> Spin every tile up when the board starts</label>
-          <label class="check" for="anim-idle"><input type="checkbox" id="anim-idle"> Let a flap twitch now and then</label>
-        </div>
-      </div>
-      <div class="pane-head" style="border-top:1px solid var(--line);padding-top:18px">
-        <div><h2>Wall display</h2><p class="sub">For a board that stays on all day and night.</p></div>
-      </div>
-      <div class="fields">
-        <div class="field wide"><label class="check" for="wallDim"><input type="checkbox" id="wallDim"> Dim the board at night</label></div>
-        <label class="field" for="wallFrom"><span>Dim from</span><input type="time" id="wallFrom"></label>
-        <label class="field" for="wallTo"><span>Until</span><input type="time" id="wallTo"></label>
-        <label class="field" for="wallLevel"><span>How much</span>
-          <select id="wallLevel"><option value="0.3">A little</option><option value="0.55">Half</option><option value="0.8">A lot</option></select>
-        </label>
-        <div class="field wide"><label class="check" for="wallShift"><input type="checkbox" id="wallShift"> In full screen, drift the board a few pixels over time to protect TV screens from burn-in</label></div>
-      </div>
-      <div class="pane-head" style="border-top:1px solid var(--line);padding-top:18px">
-        <div><h2>Sound</h2><p class="sub">No sound on an iPhone or iPad? Flip the ringer switch off silent and turn up the media volume.</p></div>
-        <div class="row">
-          <button id="testBtn" type="button">Play test</button>
-          <button id="sndToggle" type="button">Sound off</button>
-        </div>
-      </div>
-      <div class="fields">
-        <label class="field" for="sndStyle"><span>Flap sound</span>
-          <select id="sndStyle">
-            <option value="real">Real flap (modelled)</option>
-            <option value="sample" id="optSample" disabled>Your recording</option>
-            <option value="clack">Classic clack</option>
-            <option value="station">Train station</option>
-            <option value="soft">Soft thud</option>
-            <option value="wood">Wooden block</option>
-            <option value="typewriter">Typewriter</option>
-            <option value="tick">Light tick</option>
-            <option value="paper">Paper shuffle</option>
-            <option value="rattle">Busy rattle</option>
-            <option value="rain">Rain on glass</option>
-            <option value="glass">Glass ping</option>
-            <option value="marble">Marbles</option>
-            <option value="blip">Retro blip</option>
-          </select>
-        </label>
-        <label class="field" for="chimeStyle"><span>Finish chime</span>
-          <select id="chimeStyle">
-            <option value="two">Two-note ding</option>
-            <option value="airport">Airport announcement</option>
-            <option value="bell">Bell</option>
-            <option value="marimba">Marimba</option>
-            <option value="arcade">Arcade</option>
-            <option value="none">None</option>
-          </select>
-        </label>
-        <label class="field" for="sndRate"><span>Clicks</span>
-          <select id="sndRate">
-            <option value="1">Every flip</option>
-            <option value="2">Every other flip</option>
-            <option value="3">Sparse</option>
-            <option value="6">Very sparse</option>
-          </select>
-        </label>
-        <label class="field" for="vol"><span>Volume</span>
-          <span class="slider"><input type="range" id="vol" min="0" max="1" step="0.05" value="0.7"><span id="volOut" class="num">70%</span></span>
-        </label>
-        <label class="field" for="pitch"><span>Pitch</span>
-          <span class="slider"><input type="range" id="pitch" min="0.6" max="1.5" step="0.05" value="1"><span id="pitchOut" class="num">Normal</span></span>
-        </label>
-        <div class="field"><span>Stereo</span>
-          <label class="check" for="sndStereo"><input type="checkbox" id="sndStereo" checked> Spread clicks left to right</label>
-        </div>
-        <div class="field wide"><span>Your own recording</span>
+      <section class="pane" role="tabpanel" id="pane-saved" aria-labelledby="tab-saved" hidden>
+        <div class="pane-head">
+          <div><h2>Saved messages</h2><p class="sub">These are examples of what the board can show. Tap Show to put one up, rotate through them, or swap in your own.</p></div>
           <div class="row">
-            <button id="sampleBtn" type="button">Upload a recording</button>
-            <button id="sampleClear" class="x" type="button" hidden>Remove recording</button>
-            <input type="file" id="sampleFile" accept="audio/*" class="sr-only" tabindex="-1" aria-hidden="true">
+            <label class="field" style="flex-direction:row;align-items:center;gap:8px" for="rotateEvery"><span>Every</span>
+              <select id="rotateEvery">
+                <option value="30">30 sec</option>
+                <option value="60" selected>1 min</option>
+                <option value="300">5 min</option>
+                <option value="900">15 min</option>
+              </select>
+            </label>
+            <button class="go primary" id="rotateBtn" type="button"><span class="when-off">Rotate saved</span><span class="when-on">Stop rotating</span></button>
           </div>
-          <p class="hint" id="sampleStatus">Record a flip clock or a split-flap board (a phone voice memo works), or download a recording from a sound library. The board finds each clack and plays them as the tiles flip.</p>
         </div>
-      </div>
-    </section>
+        <ul class="list" id="saved"></ul>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-clock" aria-labelledby="tab-clock" hidden>
+        <div class="pane-head">
+          <div><h2>Clock</h2><p class="sub">Updates each minute. Changes apply right away.</p></div>
+          <button class="go primary" id="clockBtn" type="button"><span class="when-off">Show clock</span><span class="when-on">Stop clock</span></button>
+        </div>
+        <div class="fields">
+          <label class="field" for="clkHours"><span>Hours</span>
+            <select id="clkHours"><option value="12">12-hour</option><option value="24">24-hour</option></select>
+          </label>
+          <label class="field" for="clkDate"><span>Date</span>
+            <select id="clkDate">
+              <option value="long">Wednesday Oct 21</option>
+              <option value="full">October 21, 2026</option>
+              <option value="short">Wed 10/21</option>
+              <option value="day">Day only</option>
+              <option value="none">No date</option>
+            </select>
+          </label>
+          <label class="field" for="clkOrder"><span>Order</span>
+            <select id="clkOrder"><option value="time">Time on top</option><option value="date">Date on top</option></select>
+          </label>
+          <label class="field" for="clkTz"><span>Second city</span>
+            <select id="clkTz">
+              <option value="">None</option>
+              <option value="America/New_York">New York</option><option value="America/Chicago">Chicago</option><option value="America/Denver">Denver</option>
+              <option value="America/Los_Angeles">Los Angeles</option><option value="Pacific/Honolulu">Honolulu</option><option value="Europe/London">London</option>
+              <option value="Europe/Paris">Paris</option><option value="Europe/Berlin">Berlin</option><option value="Europe/Oslo">Oslo</option><option value="Asia/Dubai">Dubai</option>
+              <option value="Asia/Kolkata">Mumbai</option><option value="Asia/Tokyo">Tokyo</option><option value="Australia/Sydney">Sydney</option>
+            </select>
+          </label>
+          <label class="field" for="clkBorder"><span>Border</span>
+            <select id="clkBorder">
+              <option value="none">None</option>
+              <option value="w">White</option><option value="r">Red</option><option value="o">Orange</option><option value="y">Yellow</option>
+              <option value="g">Green</option><option value="b">Blue</option><option value="v">Violet</option>
+            </select>
+          </label>
+          <label class="field" for="clkAccent"><span>Tiles beside the time</span>
+            <select id="clkAccent">
+              <option value="none">None</option>
+              <option value="w">White</option><option value="r">Red</option><option value="o">Orange</option><option value="y">Yellow</option>
+              <option value="g">Green</option><option value="b">Blue</option><option value="v">Violet</option>
+            </select>
+          </label>
+          <label class="field" for="clkLabel"><span>Extra line</span>
+            <input type="text" id="clkLabel" maxlength="22" placeholder="e.g. Have a good day">
+          </label>
+          <div class="field"><span>Options</span>
+            <label class="check" for="clkAmpm"><input type="checkbox" id="clkAmpm"> Show AM/PM</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-weather" aria-labelledby="tab-weather" hidden>
+        <div class="pane-head">
+          <div><h2>Weather</h2><p class="sub" id="wxStatus">Live conditions from AccuWeather.</p></div>
+          <button class="go primary" id="wxBtn" type="button"><span class="when-off">Show weather</span><span class="when-on">Stop weather</span></button>
+        </div>
+        <div class="fields">
+          <label class="field" for="wxCity"><span>Show</span><select id="wxCity"></select></label>
+          <label class="field" for="wxEvery"><span>Switch cities every</span>
+            <select id="wxEvery"><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
+          </label>
+          <label class="field" for="wxUnit"><span>Units</span>
+            <select id="wxUnit"><option value="imperial">°F</option><option value="metric">°C</option></select>
+          </label>
+          <label class="field" for="wxDetail"><span>Bottom line</span>
+            <select id="wxDetail">
+              <option value="rain">Chance of rain</option>
+              <option value="feels">Feels like</option>
+              <option value="wind">Wind</option>
+              <option value="tomorrow">Tomorrow's forecast</option>
+              <option value="none">Nothing</option>
+            </select>
+          </label>
+          <div class="field wide"><label class="check" for="wxTile"><input type="checkbox" id="wxTile"> Color tile for the conditions</label></div>
+          <div class="field wide"><span>Cities</span>
+            <ul class="list" id="wxCities"></ul>
+          </div>
+          <div class="field wide">
+            <div class="row" style="flex-wrap:nowrap">
+              <input type="text" id="wxQuery" placeholder="Add a city or ZIP code" aria-label="City or ZIP code to add">
+              <button id="wxFind" type="button">Find</button>
+            </div>
+            <ul class="list" id="wxResults" hidden></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-surf" aria-labelledby="tab-surf" hidden>
+        <div class="pane-head">
+          <div><h2>Surf</h2><p class="sub" id="surfStatus">Reports update every 2 hours, 5am to 7pm.</p></div>
+          <button class="go primary" id="surfBtn" type="button"><span class="when-off">Show surf</span><span class="when-on">Stop surf</span></button>
+        </div>
+        <div class="fields">
+          <label class="field" for="surfSpot"><span>Show</span>
+            <select id="surfSpot">
+              <option value="all">Malibu and Venice, one at a time</option>
+              <option value="malibu">Malibu</option>
+              <option value="venice">Venice</option>
+            </select>
+          </label>
+          <label class="field" for="surfEvery"><span>Switch spots every</span>
+            <select id="surfEvery"><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
+          </label>
+          <div class="field wide"><span>Lines to show</span>
+            <div class="checks">
+              <label class="check" for="surfSwell"><input type="checkbox" id="surfSwell"> Swell</label>
+              <label class="check" for="surfWind"><input type="checkbox" id="surfWind"> Wind</label>
+              <label class="check" for="surfWater"><input type="checkbox" id="surfWater"> Water temp</label>
+              <label class="check" for="surfTide"><input type="checkbox" id="surfTide"> Next tide</label>
+              <label class="check" for="surfTile"><input type="checkbox" id="surfTile"> Color tile for the rating</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-calendar" aria-labelledby="tab-calendar" hidden>
+        <div class="pane-head">
+          <div><h2>Calendar</h2><p class="sub" id="calStatus">Your Google Calendar: what's next, today's plan, and countdowns.</p></div>
+          <button class="go primary" id="calBtn" type="button"><span class="when-off">Show calendar</span><span class="when-on">Stop calendar</span></button>
+        </div>
+        <div class="fields">
+          <div class="field wide"><span>Screens to show</span>
+            <div class="checks">
+              <label class="check" for="calNext"><input type="checkbox" id="calNext"> Next up, with countdown</label>
+              <label class="check" for="calToday"><input type="checkbox" id="calToday"> Today's events</label>
+              <label class="check" for="calTomorrow"><input type="checkbox" id="calTomorrow"> Tomorrow after 6pm</label>
+              <label class="check" for="calCount"><input type="checkbox" id="calCount"> Countdowns</label>
+            </div>
+          </div>
+          <label class="field" for="calEvery"><span>Switch screens every</span>
+            <select id="calEvery"><option value="20">20 sec</option><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option></select>
+          </label>
+          <div class="field"><span>Options</span>
+            <label class="check" for="calAllDay"><input type="checkbox" id="calAllDay"> Include all-day events</label>
+          </div>
+          <div class="field wide"><span>Countdowns</span>
+            <ul class="list" id="cdList"></ul>
+            <div class="row" style="flex-wrap:nowrap">
+              <input type="text" id="cdName" maxlength="14" placeholder="What, e.g. Maui" aria-label="Countdown name">
+              <input type="date" id="cdDate" aria-label="Countdown date">
+              <button id="cdAdd" type="button">Add</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-news" aria-labelledby="tab-news" hidden>
+        <div class="pane-head">
+          <div><h2>News</h2><p class="sub" id="newsStatus">Headlines from BBC News, refreshed every 20 minutes.</p></div>
+          <button class="go primary" id="newsBtn" type="button"><span class="when-off">Show news</span><span class="when-on">Stop news</span></button>
+        </div>
+        <div class="fields">
+          <label class="field" for="newsSection"><span>Section</span>
+            <select id="newsSection">
+              <option value="top">Top stories</option><option value="world">World</option><option value="uk">UK</option>
+              <option value="business">Business</option><option value="technology">Technology</option><option value="science">Science</option>
+              <option value="sport">Sport</option>
+            </select>
+          </label>
+          <label class="field" for="newsEvery"><span>Next headline every</span>
+            <select id="newsEvery"><option value="15">15 sec</option><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
+          </label>
+          <label class="field" for="newsCount"><span>Headlines</span>
+            <select id="newsCount"><option value="5">Top 5</option><option value="10">Top 10</option><option value="15">Top 15</option></select>
+          </label>
+        </div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-art" aria-labelledby="tab-art" hidden>
+        <div class="pane-head">
+          <div><h2>Art</h2><p class="sub" id="artStatus">Pictures made from color tiles. Tap one to put it on the board.</p></div>
+          <div class="row">
+            <label class="field" style="flex-direction:row;align-items:center;gap:8px" for="artSpeed"><span>Animation speed</span>
+              <select id="artSpeed"><option value="1.6">Slow</option><option value="1">Normal</option><option value="0.65">Fast</option></select>
+            </label>
+            <button class="go primary on" id="artStop" type="button" hidden>Stop animation</button>
+          </div>
+        </div>
+        <h3 class="fr-h">Pictures</h3>
+        <div class="artgrid" id="artPics"></div>
+        <h3 class="fr-h">Animated</h3>
+        <div class="artgrid" id="artAnims"></div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-friends" aria-labelledby="tab-friends" hidden>
+        <div class="pane-head">
+          <div><h2>Friends</h2><p class="sub" id="frStatus">Connect with a friend's Ciao Board and send messages to each other. You both have to agree before anything can be sent.</p></div>
+        </div>
+        <div id="frBody">
+          <div class="fields">
+            <label class="field" for="frName"><span>Name your friends see</span><input type="text" id="frName" maxlength="40" placeholder="For example: Nancy's kitchen" autocomplete="off"></label>
+            <label class="field" for="frHold"><span>Show a friend's message for</span>
+              <select id="frHold"><option value="1">1 min</option><option value="5">5 min</option><option value="15">15 min</option><option value="60">1 hour</option><option value="0">Until I change it</option></select>
+            </label>
+            <div class="field wide"><label class="check" for="frAllow"><input type="checkbox" id="frAllow"> Accept messages from friends (you're asked before each one is shown)</label></div>
+          </div>
+
+          <h3 class="fr-h">Messages waiting</h3>
+          <ul class="list" id="frInbox"></ul>
+
+          <h3 class="fr-h">Send a message</h3>
+          <div class="fields" id="frSendBox">
+            <label class="field" for="frTo"><span>To</span><select id="frTo"></select></label>
+            <div class="field wide">
+              <textarea id="frMsg" spellcheck="false" rows="4" aria-label="Message for your friend's board" placeholder="Up to 6 lines of 22 letters"></textarea>
+              <div class="chips" aria-label="Add a color tile">
+                <button class="chip" style="background:var(--c-r)" data-c="r" type="button" aria-label="Add a red tile"></button>
+                <button class="chip" style="background:var(--c-o)" data-c="o" type="button" aria-label="Add an orange tile"></button>
+                <button class="chip" style="background:var(--c-y)" data-c="y" type="button" aria-label="Add a yellow tile"></button>
+                <button class="chip" style="background:var(--c-g)" data-c="g" type="button" aria-label="Add a green tile"></button>
+                <button class="chip" style="background:var(--c-b)" data-c="b" type="button" aria-label="Add a blue tile"></button>
+                <button class="chip" style="background:var(--c-v)" data-c="v" type="button" aria-label="Add a violet tile"></button>
+                <button class="chip" style="background:var(--c-w)" data-c="w" type="button" aria-label="Add a white tile"></button>
+              </div>
+              <div class="row"><button class="primary" id="frSend" type="button">Send</button><span class="hint" id="frCount"></span></div>
+            </div>
+          </div>
+
+          <h3 class="fr-h">Connected boards</h3>
+          <ul class="list" id="frList"></ul>
+
+          <h3 class="fr-h">Connect a board</h3>
+          <div class="fields">
+            <div class="field wide">
+              <div class="row"><button id="frInvite" type="button">Create an invite</button><span class="hint">Gives you a code and a link to send your friend. It works once, for 12 hours.</span></div>
+              <div class="fr-code" id="frInviteOut" hidden><b id="frCode"></b><input type="text" id="frLink" readonly aria-label="Invite link"><button id="frCopy" type="button">Copy link</button></div>
+            </div>
+            <div class="field wide">
+              <div class="row" style="flex-wrap:nowrap"><input type="text" id="frCodeIn" placeholder="Have a code? Type it here" aria-label="Invite code" autocomplete="off" maxlength="12"><button id="frLook" type="button">Look up</button></div>
+              <div class="fr-ask" id="frAsk" hidden><span id="frAskMsg"></span><button class="primary" id="frAccept" type="button">Accept</button><button id="frDecline" type="button">Decline</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-schedule" aria-labelledby="tab-schedule" hidden>
+        <div class="pane-head">
+          <div><h2>Day plan</h2><p class="sub" id="schedStatus">The board changes what it shows, and how it looks, through the day.</p></div>
+          <button class="go primary" id="schedBtn" type="button"><span class="when-off">Run day plan</span><span class="when-on">Stop day plan</span></button>
+        </div>
+        <ul class="slots" id="slots"></ul>
+        <div class="row"><button id="slotAdd" type="button">Add a time</button><p class="hint">Each time runs until the next one. Tapping another mode or sending a message pauses the plan.</p></div>
+      </section>
+
+      <section class="pane" role="tabpanel" id="pane-style" aria-labelledby="tab-style" hidden>
+        <div class="setsec" data-sec="look">
+        <div class="pane-head">
+          <div><h2>Look</h2><p class="sub">Pick a style with the style button under the board. The ‹ › arrows, or <kbd>S</kbd>, step through them one at a time.</p></div>
+          <button id="openTrayFromSettings" type="button">Choose a style</button>
+        </div>
+        <div class="fields">
+          <label class="field" for="styleAuto"><span>Change style on its own</span>
+            <select id="styleAuto">
+              <option value="0">Off</option>
+              <option value="300">Every 5 min</option>
+              <option value="900">Every 15 min</option>
+              <option value="3600">Every hour</option>
+            </select>
+          </label>
+          <label class="field" for="anim-finish"><span>Board finish</span>
+            <select id="anim-finish">
+              <option value="depth">Raised tiles</option>
+              <option value="glare">Raised tiles with glass glare</option>
+              <option value="flat">Flat</option>
+            </select>
+          </label>
+          <label class="field" for="anim-frame"><span>Frame</span>
+            <select id="anim-frame">
+              <option value="style">Match the style</option>
+              <option value="metal">Brushed metal</option>
+              <option value="walnut">Walnut</option>
+              <option value="black">Matte black</option>
+              <option value="white">White</option>
+            </select>
+          </label>
+          <label class="field" for="anim-restyle"><span>Changing style</span>
+            <select id="anim-restyle">
+              <option value="flip">Flip in tile by tile</option>
+              <option value="instant">Switch all at once</option>
+            </select>
+          </label>
+          <label class="field" for="fsLayout"><span>Full screen layout</span>
+            <select id="fsLayout">
+              <option value="fill">Fill the screen</option>
+              <option value="shape">Keep board shape</option>
+            </select>
+          </label>
+          <div class="field"><span>Keyboard</span>
+            <label class="check" for="keysOn"><input type="checkbox" id="keysOn" checked> Shortcuts: S for style, H to hide controls</label>
+          </div>
+        </div>
+        </div>
+        <div class="setsec" data-sec="motion" hidden>
+        <div class="pane-head"><div><h2>Motion</h2><p class="sub">How the flaps move.</p></div></div>
+        <div class="fields">
+          <label class="field" for="speed"><span>Flip speed</span>
+            <select id="speed">
+              <option value="fast">Fast</option>
+              <option value="normal">Normal</option>
+              <option value="relaxed">Relaxed</option>
+              <option value="slow">Slow</option>
+              <option value="lazy">Very slow</option>
+            </select>
+          </label>
+          <label class="field" for="anim-pattern"><span>Flip pattern</span>
+            <select id="anim-pattern">
+              <option value="wave">Left to right</option>
+              <option value="rows">Row by row</option>
+              <option value="diagonal">Diagonal sweep</option>
+              <option value="center">From the center out</option>
+              <option value="outside">From the edges in</option>
+              <option value="random">Random</option>
+              <option value="together">All at once</option>
+            </select>
+          </label>
+          <label class="field" for="anim-motion"><span>Flap motion</span>
+            <select id="anim-motion">
+              <option value="real">Realistic</option>
+              <option value="crisp">Crisp</option>
+            </select>
+          </label>
+          <div class="field wide"><span>Board life</span>
+            <label class="check" for="anim-boot"><input type="checkbox" id="anim-boot"> Spin every tile up when the board starts</label>
+            <label class="check" for="anim-idle"><input type="checkbox" id="anim-idle"> Let a flap twitch now and then</label>
+          </div>
+        </div>
+        </div>
+        <div class="setsec" data-sec="wall" hidden>
+        <div class="pane-head">
+          <div><h2>Wall display</h2><p class="sub">For a board that stays on all day and night.</p></div>
+        </div>
+        <div class="fields">
+          <div class="field wide"><label class="check" for="wallDim"><input type="checkbox" id="wallDim"> Dim the board at night</label></div>
+          <label class="field" for="wallFrom"><span>Dim from</span><input type="time" id="wallFrom"></label>
+          <label class="field" for="wallTo"><span>Until</span><input type="time" id="wallTo"></label>
+          <label class="field" for="wallLevel"><span>How much</span>
+            <select id="wallLevel"><option value="0.3">A little</option><option value="0.55">Half</option><option value="0.8">A lot</option></select>
+          </label>
+          <div class="field wide"><label class="check" for="wallShift"><input type="checkbox" id="wallShift"> In full screen, drift the board a few pixels over time to protect TV screens from burn-in</label></div>
+        </div>
+        </div>
+        <div class="setsec" data-sec="sound" hidden>
+        <div class="pane-head">
+          <div><h2>Sound</h2><p class="sub">No sound on an iPhone or iPad? Flip the ringer switch off silent and turn up the media volume.</p></div>
+          <div class="row">
+            <button id="testBtn" type="button">Play test</button>
+            <button id="sndToggle" type="button">Sound off</button>
+          </div>
+        </div>
+        <div class="fields">
+          <label class="field" for="sndStyle"><span>Flap sound</span>
+            <select id="sndStyle">
+              <option value="real">Real flap (modelled)</option>
+              <option value="sample" id="optSample" disabled>Your recording</option>
+              <option value="clack">Classic clack</option>
+              <option value="station">Train station</option>
+              <option value="soft">Soft thud</option>
+              <option value="wood">Wooden block</option>
+              <option value="typewriter">Typewriter</option>
+              <option value="tick">Light tick</option>
+              <option value="paper">Paper shuffle</option>
+              <option value="rattle">Busy rattle</option>
+              <option value="rain">Rain on glass</option>
+              <option value="glass">Glass ping</option>
+              <option value="marble">Marbles</option>
+              <option value="blip">Retro blip</option>
+            </select>
+          </label>
+          <label class="field" for="chimeStyle"><span>Finish chime</span>
+            <select id="chimeStyle">
+              <option value="two">Two-note ding</option>
+              <option value="airport">Airport announcement</option>
+              <option value="bell">Bell</option>
+              <option value="marimba">Marimba</option>
+              <option value="arcade">Arcade</option>
+              <option value="none">None</option>
+            </select>
+          </label>
+          <label class="field" for="sndRate"><span>Clicks</span>
+            <select id="sndRate">
+              <option value="1">Every flip</option>
+              <option value="2">Every other flip</option>
+              <option value="3">Sparse</option>
+              <option value="6">Very sparse</option>
+            </select>
+          </label>
+          <label class="field" for="vol"><span>Volume</span>
+            <span class="slider"><input type="range" id="vol" min="0" max="1" step="0.05" value="0.7"><span id="volOut" class="num">70%</span></span>
+          </label>
+          <label class="field" for="pitch"><span>Pitch</span>
+            <span class="slider"><input type="range" id="pitch" min="0.6" max="1.5" step="0.05" value="1"><span id="pitchOut" class="num">Normal</span></span>
+          </label>
+          <div class="field"><span>Stereo</span>
+            <label class="check" for="sndStereo"><input type="checkbox" id="sndStereo" checked> Spread clicks left to right</label>
+          </div>
+          <div class="field wide"><span>Your own recording</span>
+            <div class="row">
+              <button id="sampleBtn" type="button">Upload a recording</button>
+              <button id="sampleClear" class="x" type="button" hidden>Remove recording</button>
+              <input type="file" id="sampleFile" accept="audio/*" class="sr-only" tabindex="-1" aria-hidden="true">
+            </div>
+            <p class="hint" id="sampleStatus">Record a flip clock or a split-flap board (a phone voice memo works), or download a recording from a sound library. The board finds each clack and plays them as the tiles flip.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+    </div>
   </div>
-</div>
+</aside>
 
 <script>
 (function(){
@@ -1278,7 +1350,7 @@ let blockedBefore=false;
 ['pointerdown','keydown','touchend'].forEach(ev=>addEventListener(ev,()=>{blockedBefore=audioBlocked();if(snd.on){ensureAudio();setTimeout(checkAudio,150)}},{passive:true,capture:true}));
 addEventListener('click',()=>{if(snd.on){ensureAudio();setTimeout(checkAudio,150)}},{passive:true,capture:true});
 function audioBlocked(){return snd.on&&(!ac||ac.state!=='running')}
-function renderSoundBtn(){const b=$('soundBtn'),bl=audioBlocked();b.textContent=!snd.on?'Sound off':bl?'Tap for sound':'Sound on';b.classList.toggle('on',snd.on&&!bl);b.classList.toggle('needs',bl);b.setAttribute('aria-pressed',String(snd.on))}
+function renderSoundBtn(){const b=$('soundBtn'),bl=audioBlocked(),t=!snd.on?'Sound off':bl?'Tap for sound':'Sound on';b.querySelector('.lbl').textContent=t;b.setAttribute('aria-label',t);b.classList.toggle('on',snd.on&&!bl);b.classList.toggle('needs',bl);b.setAttribute('aria-pressed',String(snd.on))}
 function checkAudio(){$('tapSound').hidden=!audioBlocked();renderSoundBtn()}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ac&&snd.on){try{ac.resume()}catch(e){}setTimeout(checkAudio,300)}});
 setInterval(checkAudio,2000);
@@ -2229,7 +2301,7 @@ function frBoot(){
 function frHash(){
   const m=location.hash.match(/^#invite=([A-Za-z0-9-]+)/); if(!m)return false;
   history.replaceState(null,'',location.pathname+location.search);
-  openTab('friends'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frLookup(m[1]);
+  openTab('friends'); openSheet('show'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frLookup(m[1]);
   return true;
 }
 setTimeout(frBoot,0);
@@ -2492,8 +2564,52 @@ CARDS.forEach((b,i)=>{
   b.onclick=()=>{openTab(b.dataset.tab);if(START[b.dataset.tab])START[b.dataset.tab]()};
   b.onkeydown=e=>{const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();const n=CARDS[(i+d+CARDS.length)%CARDS.length];openTab(n.dataset.tab);n.focus()};
 });
-$('tab-style').onclick=()=>openTab($('pane-style').hidden?'style':lastCard);
-openTab(store.get('fb.tab','message'));
+// The sheet: what to show, settings, or the style picker. Open buttons toggle it; the scrim, the close button and Escape close it.
+const SHEET_TITLE={show:'What to show',settings:'Settings',style:'Board style'};
+let sheetFrom=null;
+function openSheet(view){
+  const sh=$('sheet'); if(sh.hidden)sheetFrom=document.activeElement;
+  if(view!=='style'&&!$('styleTray').hidden)closeTray(true);
+  sh.dataset.view=view; sh.hidden=false; $('scrim').hidden=false; document.body.classList.add('sheet-open');
+  $('sheetTitle').textContent=SHEET_TITLE[view];
+  $('showOpen').setAttribute('aria-expanded',String(view==='show'));
+  $('tab-style').setAttribute('aria-expanded',String(view==='settings')); $('tab-style').classList.toggle('on',view==='settings');
+  if(innerWidth<900)scrollTo(0,0);
+  requestAnimationFrame(fitSheet);
+}
+// On phones and tablets the board moves to the top and the sheet stops just below its bar, so changes stay in view;
+// if that leaves too little room (a phone on its side), the sheet covers the board instead
+function fitSheet(){
+  const sh=$('sheet'); if(sh.hidden)return;
+  if(innerWidth>=900){sh.style.maxHeight='';$('scrim').hidden=true;return}
+  const avail=innerHeight-document.querySelector('.boardbar').getBoundingClientRect().bottom-10;
+  const room=avail>=innerHeight*.5;
+  sh.style.maxHeight=room?avail+'px':'';
+  $('scrim').hidden=room; // a backdrop only when the sheet has to cover the board
+}
+addEventListener('resize',()=>requestAnimationFrame(fitSheet));
+function closeSheet(){
+  const sh=$('sheet'); if(sh.hidden)return;
+  if(!$('styleTray').hidden)closeTray(true);
+  sh.hidden=true; $('scrim').hidden=true; document.body.classList.remove('sheet-open');
+  $('showOpen').setAttribute('aria-expanded','false'); $('tab-style').setAttribute('aria-expanded','false'); $('tab-style').classList.remove('on');
+  if(sheetFrom&&sheetFrom.isConnected)sheetFrom.focus({preventScroll:true}); sheetFrom=null;
+}
+const sheetIs=v=>!$('sheet').hidden&&$('sheet').dataset.view===v;
+$('sheetClose').onclick=closeSheet; $('scrim').onclick=closeSheet;
+$('showOpen').onclick=()=>{if(sheetIs('show')){closeSheet();return}openTab(lastCard);openSheet('show')};
+$('tab-style').onclick=()=>{if(sheetIs('settings')){closeSheet();return}openTab('style');openSheet('settings')};
+// Tapping the status pill opens whatever is on the board
+$('status').onclick=()=>{openTab(schedOn?'schedule':MODE_TAB[mode]||lastCard);openSheet('show')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sheet').hidden&&$('styleTray').hidden&&!document.body.classList.contains('fs'))closeSheet()});
+function openSec(sec){
+  document.querySelectorAll('.setsec').forEach(d=>d.hidden=d.dataset.sec!==sec);
+  document.querySelectorAll('#setNav button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sec===sec)));
+  store.set('fb.setsec',sec);
+}
+document.querySelectorAll('#setNav button').forEach(b=>b.onclick=()=>openSec(b.dataset.sec));
+openSec(store.get('fb.setsec','look'));
+openTab(lastCard);
 
 // Board styles
 const BOARD_STYLES=[
@@ -2569,11 +2685,11 @@ function miniTile(c){
 // Hovering or focusing a swatch previews it on the board only; tapping keeps it
 function previewStyle(id){$('board').dataset.style=id||styleId;requestAnimationFrame(fitFill)}
 function noteFor(id,chosen){const s=BOARD_STYLES.find(x=>x.id===id);$('styleNote').textContent=s?(chosen||id===styleId?'Showing '+s.name+'. ':'Previewing '+s.name+'. ')+s.note:''}
-function openTray(){const t=$('styleTray');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');noteFor(styleId,true);const cur=t.querySelector('.swatch[aria-pressed="true"]');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
-function closeTray(){const t=$('styleTray');if(t.hidden)return;t.hidden=true;previewStyle(null);$('styleOpen').setAttribute('aria-expanded','false')}
+function openTray(){const t=$('styleTray');openSheet('style');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');noteFor(styleId,true);const cur=t.querySelector('.swatch[aria-pressed="true"]');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
+function closeTray(keepSheet){const t=$('styleTray');if(t.hidden)return;t.hidden=true;previewStyle(null);$('styleOpen').setAttribute('aria-expanded','false');if(!keepSheet&&sheetIs('style'))closeSheet()}
 $('styleOpen').onclick=()=>{$('styleTray').hidden?openTray():closeTray()};
 $('trayDone').onclick=()=>{closeTray();$('styleOpen').focus()};
-$('openTrayFromSettings').onclick=()=>{openTray();$('styleTray').scrollIntoView({block:'nearest',behavior:'smooth'})};
+$('openTrayFromSettings').onclick=()=>openTray();
 $('styleTray').addEventListener('mouseleave',()=>previewStyle(null));
 $('styleTray').addEventListener('focusout',e=>{if(!$('styleTray').contains(e.relatedTarget))previewStyle(null)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('styleTray').hidden){closeTray();$('styleOpen').focus()}});

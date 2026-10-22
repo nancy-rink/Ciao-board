@@ -155,8 +155,8 @@ body{font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-left:max(16p
 .board{container-type:inline-size;position:relative;background:var(--frame);background-image:var(--frame-img,none);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
 .grid{display:grid;grid-template-columns:repeat(22,1fr);gap:.45cqw}
 .t{position:relative;aspect-ratio:.82;max-width:100%;perspective:300px;font-family:var(--f-tile);font-weight:600;font-size:var(--tile-size);color:var(--ink);text-shadow:var(--glow)}
-body[data-style="departures"] .t,body[data-style="rail"] .t{font-weight:500}
-body[data-style="glow"] .t{font-weight:400}
+[data-style="departures"] .t,[data-style="rail"] .t{font-weight:500}
+[data-style="glow"] .t{font-weight:400}
 .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile)}
 .h.u{top:0;border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile))}
 .h.d{bottom:0;border-radius:0 0 var(--flap-r,2px) var(--flap-r,2px)}
@@ -2212,9 +2212,15 @@ const BOARD_STYLES=[
   {id:'brass',group:'vintage',name:'Brass',note:'Ivory flaps in a polished brass frame, like a grand hotel lobby.'}
 ];
 let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
+// A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
+// In full screen nothing but the board shows, so the whole screen takes the style's frame color.
+function styleScope(){
+  $('board').dataset.style=styleId; $('pv').dataset.style=styleId; $('styleOpen').querySelector('.sw').dataset.style=styleId;
+  if(document.body.classList.contains('fs'))document.body.dataset.style=styleId; else delete document.body.dataset.style;
+}
+new MutationObserver(styleScope).observe(document.body,{attributes:true,attributeFilter:['class']});
 function applyStyle(id){
-  styleId=id; store.set('fb.style',id);
-  if(id==='classic')delete document.body.dataset.style; else document.body.dataset.style=id;
+  styleId=id; store.set('fb.style',id); styleScope();
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
   document.querySelectorAll('.swatch').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===id)));
   if(!$('styleTray').hidden)noteFor(id,true);
@@ -2243,7 +2249,7 @@ function miniTile(c){
   });
 })();
 // Hovering or focusing a swatch previews it on the board only; tapping keeps it
-function previewStyle(id){const bd=$('board');if(id&&id!==styleId)bd.dataset.style=id;else delete bd.dataset.style;requestAnimationFrame(fitFill)}
+function previewStyle(id){$('board').dataset.style=id||styleId;requestAnimationFrame(fitFill)}
 function noteFor(id,chosen){const s=BOARD_STYLES.find(x=>x.id===id);$('styleNote').textContent=s?(chosen||id===styleId?'Showing '+s.name+'. ':'Previewing '+s.name+'. ')+s.note:''}
 function openTray(){const t=$('styleTray');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');noteFor(styleId,true);const cur=t.querySelector('.swatch[aria-pressed="true"]');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
 function closeTray(){const t=$('styleTray');if(t.hidden)return;t.hidden=true;previewStyle(null);$('styleOpen').setAttribute('aria-expanded','false')}

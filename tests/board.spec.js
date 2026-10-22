@@ -41,3 +41,13 @@ test('a board on the old Worn style becomes Classic with Worn on',async({browser
   await expect(page.locator('#board')).toHaveAttribute('data-aged','');
   noErrors(page);
 });
+
+test('loads cleanly when the scripts arrive slowly, as on a TV',async({browser})=>{
+  for(const q of ['','?tv','?remote']){
+    const page=await device(browser,{width:1920,height:1080});
+    // each script arrives 300 ms after the one before it, so timers set by early files get a chance to fire in between
+    let n=0; await page.route(/\/js\/.*\.js/,async r=>{const wait=300*(++n);await new Promise(ok=>setTimeout(ok,wait));await r.continue()});
+    await page.goto(q||'/'); await page.waitForTimeout(5000);
+    noErrors(page);
+  }
+});

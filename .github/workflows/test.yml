@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Check the css/ and js/ version stamps in index.html
+        run: python3 scripts/stamp.py --check
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test

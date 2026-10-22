@@ -36,7 +36,7 @@ Settings are kept in each person's own browser.
 
 ## Host your own copy
 
-The whole board is one file, `index.html`, plus icons and preview images in `assets/`.
+The board is plain HTML, CSS and JavaScript with no build step: `index.html`, the stylesheets in `css/`, the scripts in `js/`, and icons and preview images in `assets/`.
 
 1. Fork this repository, or create a new public one and upload all of its files.
 2. Go to **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, pick `main` and `/ (root)`, and click **Save**.
@@ -62,6 +62,13 @@ If the TV is switched off, the remote says it can't reach it, and reconnects by 
 Messages travel through [ntfy.sh](https://ntfy.sh), a free public relay, so there's nothing to set up. Each board listens on its own random inbox. An invite code lets one friend find your board; when they accept, the two boards run a key exchange, and from then on every message is encrypted with a key only those two boards hold. The relay never sees what's written, and a board ignores anything not encrypted by a connected friend. Share invite codes only with the person you're connecting with.
 
 ntfy.sh's free tier allows 250 messages a day per internet connection, shared by every board and phone at home. A tap on the remote uses about two, so a very busy day can use them up; the board then says so, and the allowance refills through the day. ntfy.sh keeps messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
+
+## How the code is laid out
+
+- `index.html`: the page itself.
+- `css/`: `board.css` (tokens, flaps, motion), `styles.css` (the board styles), `app.css` (the controls around the board), `tv-remote.css` (TV mode, the phone remote, pairing).
+- `js/`: plain scripts loaded in order. They share one scope, as if they were one file: `core.js` (basics, tiles, the Smooth mode canvas), `engine.js` (layout and the flip engine), `sound.js`, `modes.js` (messages, clock, weather, surf, calendar, news), `friends.js` (the relay and encrypted links), `remote.js` (the phone remote and TV pairing), `art.js`, `wall.js` (wall display, Day plan, full screen, TV mode), `ui.js` (cards and the sheet), `styles.js` (styles and the picker), and `start.js`, which runs last and starts everything. Anything that needs every file loaded starts from `start.js` (or `onReady`), never from a timer in its own file.
+- After changing a file in `css/` or `js/`, run `python3 scripts/stamp.py`. It updates the `?v=` stamps in `index.html`, so browsers fetch the new file instead of a cached one. The tests workflow fails if a stamp is out of date.
 
 ## Tests
 

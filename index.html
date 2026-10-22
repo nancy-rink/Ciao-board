@@ -601,6 +601,15 @@ body.fs.idle{cursor:none}
 @keyframes sheetIn{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 body.fs .sheet,body.fs .scrim,body.kiosk .sheet,body.kiosk .scrim{display:none}
+/* TV mode: a start screen sized for reading across a room, operated with the remote's arrows and OK */
+#tvStart{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#000a}
+#tvStart[hidden]{display:none}
+.tvcard{display:flex;flex-direction:column;align-items:center;gap:2.4vh;text-align:center;padding:5vh 6vw;border-radius:20px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;font:clamp(16px,2vw,30px)/1.4 "Barlow",system-ui,sans-serif}
+.tvcard h1{margin:0;font:600 clamp(30px,4.6vw,72px)/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.tvcard p{margin:0;color:#a39a8b;max-width:34ch}
+#tvGo{font-size:clamp(18px,2.6vw,38px);padding:.6em 1.5em;border-radius:14px;background:#e8a33d;border-color:#e8a33d;color:#1a1307}
+#tvGo:focus{outline:5px solid #f1ece2;outline-offset:5px}
+body.tvmode #fsExit{display:none}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim{animation:none}.wrap{transition:none}}
 @media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land,.t.restyle,.t.twitch .h.u{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
 </style>
@@ -631,6 +640,13 @@ body.fs .sheet,body.fs .scrim,body.kiosk .sheet,body.kiosk .scrim{display:none}
   </div>
 </div>
 
+<div id="tvStart" hidden>
+  <div class="tvcard">
+    <h1>Ciao Board</h1>
+    <button class="primary" id="tvGo" type="button">Press OK to start</button>
+    <p>Goes full screen and keeps the TV awake. Press OK again any time to show or hide the controls.</p>
+  </div>
+</div>
 <div class="scrim" id="scrim" hidden></div>
 <aside class="sheet" id="sheet" data-view="show" aria-labelledby="sheetTitle" hidden>
   <div class="sheet-head">
@@ -2519,6 +2535,8 @@ function fitFill(){
   b.style.setProperty('--fill-font',Math.min(colW*0.95,tileH*0.6).toFixed(1)+'px');
 }
 let fsLayout=store.get('fb.fsLayout','fill');
+// TV mode (?tv, or the …/tv address): the board alone, filling the window, with a start screen for the remote
+const tvMode=new URLSearchParams(location.search).has('tv');
 let keysOn=store.get('fb.keys',true);
 $('keysOn').checked=keysOn; $('keysOn').onchange=()=>{keysOn=$('keysOn').checked;store.set('fb.keys',keysOn)};
 function applyFsLayout(){document.body.classList.toggle('fill',fsLayout==='fill');$('fsLayout').value=fsLayout;requestAnimationFrame(fitFill)}
@@ -2534,15 +2552,25 @@ async function enterFs(){
     else throw new Error('none');
     try{await screen.orientation.lock('landscape')}catch(e){}
   }catch(e){
-    fsNote('This screen won’t let the board take over completely, so it fills the window instead. Turn your device sideways for the biggest board.');
+    if(!tvMode)fsNote('This screen won’t let the board take over completely, so it fills the window instead. Turn your device sideways for the biggest board.');
   }
 }
 function exitFs(){
-  document.body.classList.remove('fs','idle'); $('fsNote').hidden=true;
+  document.body.classList.remove('idle'); if(!tvMode)document.body.classList.remove('fs'); $('fsNote').hidden=true;
   if(inNativeFs()){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}}
 }
-['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{requestAnimationFrame(fitFill);if(!inNativeFs()){document.body.classList.remove('fs','idle');$('fsNote').hidden=true}}));
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{requestAnimationFrame(fitFill);if(!inNativeFs()&&!tvMode){document.body.classList.remove('fs','idle');$('fsNote').hidden=true}}));
 $('fsBtn').onclick=enterFs; $('fsExit').onclick=exitFs;
+if(tvMode){
+  document.body.classList.add('tvmode','fs'); fsLayout='fill'; applyFsLayout(); keepAwake();
+  $('tvStart').hidden=false; setTimeout(()=>$('tvGo').focus(),300);
+  $('tvGo').onclick=()=>{try{ensureAudio()}catch(e){}$('tvStart').hidden=true;$('tvGo').blur();enterFs()};
+  // OK on the remote (Enter) with nothing selected shows or hides the controls
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'||!$('tvStart').hidden||e.target!==document.body)return;
+    e.preventDefault(); document.body.classList.toggle('fs'); requestAnimationFrame(fitFill);
+  });
+}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs'))exitFs()});
 $('board').addEventListener('dblclick',()=>{document.body.classList.contains('fs')?exitFs():enterFs()});
 document.addEventListener('keydown',e=>{if(!keysOn||e.target===msg||['SELECT','INPUT'].includes(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='h'||e.key==='H')document.body.classList.toggle('kiosk');else if(e.key==='s')stepStyle(1);else if(e.key==='S')stepStyle(-1)});

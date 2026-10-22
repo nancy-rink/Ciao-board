@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ciao Board widget</title>
+<meta name="description" content="Put a Ciao Board on your iPhone Home Screen as a Small, Medium or Large widget, using the free Scriptable app.">
+<meta name="theme-color" content="#16130f">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600&display=swap">
+<style>
+:root{--wall:#16130f;--panel:#1f1b16;--panel-2:#26211b;--line:#2e2a24;--ui:#f1ece2;--muted:#a39a8b;--accent:#e8a33d;--accent-ink:#1a1307;--ok:#3fa66b;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--wall);color:var(--ui)}
+body{font:16px/1.55 "Barlow",system-ui,-apple-system,sans-serif;padding:28px max(16px,env(safe-area-inset-left,0px)) 56px max(16px,env(safe-area-inset-right,0px))}
+main{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1{font:600 30px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;margin:0}
+.lead{color:var(--muted);margin:6px 0 0}
+a{color:var(--accent)}
+ol{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px}
+ol>li{counter-increment:s;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px 14px 56px;position:relative}
+ol>li::before{content:counter(s);position:absolute;left:16px;top:13px;width:26px;height:26px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line);display:grid;place-items:center;font:600 15px "Barlow Condensed",sans-serif}
+ol>li b{color:var(--ui)}
+ol>li p{margin:4px 0 0;color:var(--muted);font-size:15px}
+button{font:600 16px "Barlow",sans-serif;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:12px 18px;min-height:48px;cursor:pointer;margin-top:10px}
+button.done{background:var(--ok);border-color:var(--ok)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{white-space:nowrap}
+code{font:500 14px ui-monospace,Menlo,monospace;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;word-break:break-word}
+h2{font-size:18px;margin:8px 0 0}
+.note{color:var(--muted);font-size:15px;margin:0}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ciao Board widget</h1>
+    <p class="lead">Put a still Ciao Board on your iPhone Home Screen: Small, Medium or Large. It uses <a href="https://apps.apple.com/app/scriptable/id1405459188">Scriptable</a>, a free app that runs small widgets. Tap the widget to open the full board.</p>
+  </header>
+
+  <ol>
+    <li><b>Install Scriptable</b> from the App Store and open it once.</li>
+    <li><b>Copy the widget script.</b>
+      <p>Open this page on your iPhone, then tap the button.</p>
+      <button id="copy" type="button">Copy script</button>
+      <p id="copyNote" hidden></p>
+    </li>
+    <li><b>Add it to Scriptable.</b>
+      <p>Tap <b>+</b> at the top right, paste, and name the script <b>Ciao Board</b> at the top. Tap <b>Done</b>.</p>
+    </li>
+    <li><b>Add the widget.</b>
+      <p>Touch and hold an empty spot on your Home Screen, tap <b>Edit</b> → <b>Add Widget</b>, find <b>Scriptable</b>, pick the Large size, and tap <b>Add Widget</b>.</p>
+    </li>
+    <li><b>Choose the script.</b>
+      <p>Touch and hold the new widget, tap <b>Edit Widget</b>, set <b>Script</b> to <b>Ciao Board</b>, and type what to show in <b>Parameter</b> (see below). Leave <b>When Interacting</b> as it is.</p>
+    </li>
+  </ol>
+
+  <section>
+    <h2>What to type in Parameter</h2>
+    <table>
+      <tr><td><i>(leave it empty)</i></td><td>BBC top stories, a new headline at each refresh</td></tr>
+      <tr><td><code>news world</code></td><td>A BBC section: top, world, uk, business, technology, science or sport</td></tr>
+      <tr><td><code>clock</code></td><td>The time and date</td></tr>
+      <tr><td><code>art heart</code></td><td>A picture: heart, sunset, rainbow, smile, cake, ciao, italy or norway</td></tr>
+      <tr><td><code>art</code></td><td>A different picture each day</td></tr>
+      <tr><td><code>CIAO NANCY / 7:45</code></td><td>Anything else is a message. <code>/</code> starts a new line, and <code>{r}</code> <code>{o}</code> <code>{y}</code> <code>{g}</code> <code>{b}</code> <code>{v}</code> <code>{w}</code> are color tiles.</td></tr>
+      <tr><td><code>… @daylight</code></td><td>End with <code>@</code> and a style to change the look, for example <code>clock @daylight</code> or <code>CIAO! @metro</code>. All 26 board styles work.</td></tr>
+    </table>
+  </section>
+
+  <p class="note">iPhone decides when widgets refresh, usually every 15 to 30 minutes, and widgets can't animate. So the clock's minutes lag and nothing flips; tap the widget for the real board. To update the widget later, copy the script again and paste it over the old one in Scriptable.</p>
+  <p class="note"><a href="../">← Back to Ciao Board</a></p>
+</main>
+<script>
+// Copy the widget script to the clipboard. It's fetched when the page opens, because iPhone Safari only allows
+// copying straight after a tap, not after waiting on the network.
+const code=fetch('ciao-board-widget.js',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()});
+let text=null; code.then(t=>text=t).catch(()=>{});
+document.getElementById('copy').onclick=async()=>{
+  const b=document.getElementById('copy'), n=document.getElementById('copyNote');
+  try{
+    if(text!==null)await navigator.clipboard.writeText(text);
+    else await navigator.clipboard.write([new ClipboardItem({'text/plain':code.then(t=>new Blob([t],{type:'text/plain'}))})]);
+    b.textContent='Copied'; b.classList.add('done'); n.hidden=true;
+    setTimeout(()=>{b.textContent='Copy script';b.classList.remove('done')},2500);
+  }catch(e){
+    n.hidden=false; n.innerHTML='Couldn\u2019t copy automatically. <a href="ciao-board-widget.js">Open the script</a>, select all of it, and copy it instead.';
+  }
+};
+</script>
+</body>
+</html>

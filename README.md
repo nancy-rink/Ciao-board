@@ -27,6 +27,7 @@ Settings are kept in each person's own browser.
 ## Put it on a wall
 
 - **TV or monitor:** open the link in the browser, tap **Full screen**, and turn off the TV's auto power-off (on a Samsung Frame, for example).
+- **iPhone Home Screen:** a still Ciao Board as a Small, Medium or Large widget, showing a message, BBC headlines, the clock or a picture in any style. It uses the free Scriptable app; the steps and a copy button are at [nancy-rink.github.io/Ciao-board/widget](https://nancy-rink.github.io/Ciao-board/widget/).
 - **iPad or tablet:** open the link in Safari, tap **Share → Add to Home Screen**, then open it from the home screen icon and turn the tablet sideways. Set **Auto-Lock** to Never while it's on the wall.
 - **Sound:** browsers only play sound after a tap, so tap the board once. On iPhone or iPad, turn off silent mode.
 - **Keyboard:** `S` changes the style and `H` hides the controls (you can turn these off in Settings).

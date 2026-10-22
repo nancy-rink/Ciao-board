@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&family=Cabin:wght@600;700&family=Stardos+Stencil:wght@700&family=Josefin+Sans:wght@600&family=Jost:wght@300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&family=Cabin:wght@600;700&family=Stardos+Stencil:wght@700&family=Josefin+Sans:wght@600&family=Jost:wght@300&family=Permanent+Marker&display=swap">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
@@ -401,6 +401,75 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
   --wall:#efece5; --ui:#222222; --muted:#6a665e; --line:#dcd8cf; --panel:#f8f6f1; --panel-2:#eeebe4;
   --accent:#2a2a2a; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
 }
+/* Budapest, Pécs, Prague, Warsaw, East Berlin */
+[data-style="foldalatti"]{
+  --frame:#3a2417; --frame-edge:#5a3a26; --frame-r:.8cqw; --frame-pad:3cqw;
+  --bevel:inset 0 .25cqw 0 #6a4630,inset 0 -.35cqw 0 #22140b,inset 0 0 0 1.25cqw #3a2417,inset 0 0 0 1.55cqw #efe9dc,inset 0 0 0 1.9cqw #6e1f1a;
+  --tile:#f4f1ea; --tile-hi:#fbf9f4; --ink:#6e1f1a; --seam:#cfc8ba; --flap-r:.15cqw; --c-w:#6e1f1a;
+  --c-r:#8a2a20; --c-o:#c27a3a; --c-y:#d9b24a; --c-g:#3d6b4a; --c-b:#2f4f7a;
+  --f-tile:"Libre Caslon Text",Georgia,serif; --tile-w:400; --tile-size:2.85cqw;
+  --wall:#20140c; --ui:#f3eadb; --muted:#bca58e; --line:#3e2a1c; --panel:#291a10; --panel-2:#332216;
+  --accent:#e2b26a; --accent-ink:#2a1a08; --ok:#8fcf8a; --warn:#ff9a85;
+}
+[data-style="zsolnay"]{
+  --frame:#2f6b4f; --frame-edge:#2f6b4f; --frame-r:1cqw; --frame-pad:3.2cqw;
+  --tile:#f3ead6; --tile-hi:#faf3e3; --ink:#1f4f3a; --seam:#c9b98f; --flap-r:.35cqw; --c-w:#1f4f3a;
+  --c-r:#a8402e; --c-o:#c9783a; --c-y:#c9a23a; --c-g:#2f6b4f; --c-b:#2d5f7a; --c-v:#6d4a86;
+  --f-tile:"Playfair Display",Georgia,serif; --tile-w:800; --tile-size:2.75cqw;
+  --wall:#14261d; --ui:#f1ead8; --muted:#a9bba9; --line:#24402f; --panel:#18301f; --panel-2:#1f3a28;
+  --accent:#d9b44a; --accent-ink:#1d1603; --ok:#7cd09a; --warn:#ff9a85;
+}
+[data-style="ikarus"]{
+  --frame:#1f4fa0; --frame-edge:#2c62bc; --frame-r:1.6cqw; --frame-pad:2.4cqw 2.6cqw 4cqw;
+  --bevel:inset 0 -1.6cqw 0 #1f4fa0,inset 0 -2.2cqw 0 #e9e4d6,inset 0 .25cqw 0 #3a6fc6;
+  --tile:#121212; --tile-hi:#191919; --ink:#f5f5f0; --seam:#000; --flap-r:.1cqw;
+  --c-r:#e0412f; --c-o:#f08a24; --c-y:#f5c814; --c-g:#3aa35a; --c-b:#3a7fd5;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:85%; --tile-size:3cqw;
+  --wall:#0f1a2c; --ui:#eef2f8; --muted:#9fb0c8; --line:#22365a; --panel:#13213a; --panel-2:#1a2a48;
+  --accent:#f5c814; --accent-ink:#1d1700; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="kassak"]{
+  --frame:#ece6d8; --frame-edge:#ece6d8; --frame-r:0px; --frame-pad:3.6cqw 2.4cqw 2.4cqw 6.4cqw;
+  --tile:#f2ede2; --tile-hi:#f8f4ec; --ink:#111111; --seam:#cbc4b4; --flap-r:0px; --c-w:#111111;
+  --c-r:#c8281e; --c-o:#d9622a; --c-y:#e3b52a; --c-g:#2f6e4a; --c-b:#24479a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:800; --tile-stretch:105%; --tile-size:2.85cqw;
+  --wall:#e9e3d5; --ui:#111111; --muted:#5d584e; --line:#d4cdbd; --panel:#f5f2ea; --panel-2:#ebe6da;
+  --accent:#c8281e; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="praguemetro"]{
+  --frame:#b88a2a; --frame-edge:#b88a2a; --frame-r:.6cqw; --frame-pad:3cqw;
+  --tile:#1c1c1e; --tile-hi:#242426; --ink:#f2f2f0; --seam:#000;
+  --c-g:#1a9e5a; --c-y:#f7c600; --c-r:#e2231a; --c-b:#2f6fb8; --c-o:#e8822a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:600; --tile-stretch:95%; --tile-size:2.9cqw;
+  --wall:#1a1610; --ui:#f3ecdc; --muted:#b5a888; --line:#3a3122; --panel:#211c14; --panel-2:#2a2419;
+  --accent:#e9c36a; --accent-ink:#231a04; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="cubist"]{
+  --frame:#c4963f; --frame-edge:#c4963f; --frame-r:0px; --frame-pad:3.2cqw;
+  --bevel:inset 0 0 0 .3cqw #1a1714;
+  --tile:#efe8d8; --tile-hi:#f7f1e4; --ink:#1a1714; --seam:#c9bea5; --flap-r:0px; --c-w:#1a1714;
+  --c-r:#a8402e; --c-o:#c9783a; --c-y:#d9ae5b; --c-g:#4f6b4a; --c-b:#34506e;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:72%; --tile-size:3.1cqw;
+  --wall:#231d14; --ui:#f1e8d4; --muted:#bba98a; --line:#3e3424; --panel:#2b2418; --panel-2:#352c1e;
+  --accent:#d9ae5b; --accent-ink:#231a08; --ok:#8fcf7a; --warn:#ff9a85;
+}
+[data-style="plakat"]{
+  --frame:#f1ebde; --frame-edge:#f1ebde; --frame-r:2px; --frame-pad:3.4cqw;
+  --tile:#f6f1e6; --tile-hi:#fbf8f1; --ink:#1b1b1b; --seam:#d6cfbf; --flap-r:.45cqw; --c-w:#1b1b1b;
+  --c-r:#d7372b; --c-o:#ee7a2a; --c-y:#f2c230; --c-g:#3d8f4f; --c-b:#1f5fa8; --c-v:#7a3f8f;
+  --f-tile:"Permanent Marker","Marker Felt",cursive; --tile-w:400; --tile-size:2.75cqw;
+  --wall:#efe8da; --ui:#1b1b1b; --muted:#615b50; --line:#d8d0bf; --panel:#f8f5ee; --panel-2:#eee8dc;
+  --accent:#d7372b; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="weltzeituhr"]{
+  --frame:#c3c8cd; --frame-edge:#e4e7ea; --frame-r:1.4cqw; --frame-pad:3.6cqw 2.6cqw 2.6cqw;
+  --bevel:inset 0 .3cqw 0 #eef1f3,inset 0 -.4cqw 0 #8b9198;
+  --tile:#20262c; --tile-hi:#283038; --ink:#f2f2ee; --seam:#0b0e10;
+  --c-r:#d95d4a; --c-o:#e48a4a; --c-y:#e8c15a; --c-g:#5fa37d; --c-b:#3f7fbf; --c-v:#8a6fb0;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:600; --tile-stretch:90%; --tile-size:2.9cqw;
+  --wall:#1a1e22; --ui:#eef1f4; --muted:#a2abb4; --line:#30373e; --panel:#20252a; --panel-2:#282e34;
+  --accent:#e8c15a; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;
+}
 /* Patterned frames. They apply to the big board (.board) and to the small previews in the style picker (.minib). */
 [data-style="mexico68"].board,[data-style="mexico68"] .board,.minib[data-style="mexico68"]{
   background:repeating-linear-gradient(90deg,#111111 0 3px,#fafafa 3px 7px)}
@@ -438,6 +507,25 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
 [data-style="graphite"].board,[data-style="graphite"] .board,.minib[data-style="graphite"]{
   background:linear-gradient(17deg,transparent calc(50% - .5px),#2a2a2a55 50%,transparent calc(50% + .5px)),
              repeating-linear-gradient(90deg,transparent 0 11px,#55555526 11px 12px),repeating-linear-gradient(0deg,transparent 0 11px,#55555526 11px 12px),#f3f0e8}
+[data-style="zsolnay"].board,[data-style="zsolnay"] .board,.minib[data-style="zsolnay"]{
+  background:linear-gradient(115deg,transparent 25%,#d8f5e033 40%,#f3c8ff2e 50%,#fff3b02e 60%,transparent 75%),
+             conic-gradient(from 45deg,#2f6b4f 0 25%,#c9a23a 0 50%,#2f6b4f 0 75%,#1f4f3a 0) 0 0/18px 18px}
+[data-style="kassak"].board,[data-style="kassak"] .board{
+  background:linear-gradient(#c8281e,#c8281e) 0 0/4.6cqw 62% no-repeat,linear-gradient(#111,#111) 5.2cqw 0/.5cqw 100% no-repeat,
+             linear-gradient(#111,#111) 100% 0/34% 1.6cqw no-repeat,linear-gradient(#c8281e,#c8281e) 0 100%/4.6cqw 1.6cqw no-repeat,#ece6d8}
+.minib[data-style="kassak"]{padding-left:20%;background:linear-gradient(#c8281e,#c8281e) 0 0/14% 62% no-repeat,linear-gradient(#111,#111) 15% 0/2px 100% no-repeat,linear-gradient(#111,#111) 100% 0/34% 5px no-repeat,#ece6d8}
+[data-style="praguemetro"].board,[data-style="praguemetro"] .board,.minib[data-style="praguemetro"]{
+  background:radial-gradient(circle at 40% 38%,#f6dd94 0 12%,#d9ab45 30%,#a87a22 52%,#7a5614 60%,transparent 62%) 0 0/20px 20px,#8a6418}
+[data-style="cubist"].board,[data-style="cubist"] .board,.minib[data-style="cubist"]{
+  background:conic-gradient(from 20deg at 30% 42%,#d9ae5b 0 60deg,#9c7432 0 130deg,#ecc983 0 200deg,#6e5222 0 255deg,#c4963f 0 300deg,#e2bb6d 0),
+             #c4963f;background-blend-mode:normal}
+[data-style="plakat"].board,[data-style="plakat"] .board,.minib[data-style="plakat"]{
+  background:radial-gradient(ellipse 22% 38% at 4% 10%,#d7372b 0 96%,transparent 100%),radial-gradient(ellipse 16% 30% at 97% 92%,#1f5fa8 0 96%,transparent 100%),
+             radial-gradient(ellipse 9% 16% at 92% 6%,#f2c230 0 95%,transparent 100%),#f1ebde}
+[data-style="weltzeituhr"].board,[data-style="weltzeituhr"] .board,.minib[data-style="weltzeituhr"]{
+  background:linear-gradient(90deg,#d95d4a 0 8.33%,#e48a4a 0 16.66%,#e8c15a 0 25%,#9cc27a 0 33.33%,#5fa37d 0 41.66%,#4fa3a8 0 50%,#3f7fbf 0 58.33%,#5a6fbf 0 66.66%,#8a6fb0 0 75%,#b06fa0 0 83.33%,#d0708a 0 91.66%,#d95d4a 0) 0 0/100% 12% no-repeat,
+             repeating-linear-gradient(90deg,#cdd2d6 0 2px,#b9bfc4 2px 3px,#c6cbd0 3px 5px)}
+.board[data-style="weltzeituhr"],[data-style="weltzeituhr"] .board{background-size:100% 1.6cqw,auto}
 /* A solid backing behind the tiles, so those patterns show only in the frame margin */
 [data-style="mexico68"] .grid{background:#111;padding:.6cqw;border-radius:.4cqw;box-sizing:border-box}
 [data-style="calcadao"] .grid{background:#141414;padding:.6cqw;border-radius:.4cqw;box-sizing:border-box}
@@ -449,13 +537,20 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
 [data-style="marinedrive"] .grid{background:#1e4a47;padding:.6cqw;border-radius:.8cqw;box-sizing:border-box}
 [data-style="tonfan"] .grid{background:#161616;padding:.5cqw;box-sizing:border-box}
 [data-style="graphite"] .grid{background:#d9d5cb;padding:1px;box-sizing:border-box}
+[data-style="zsolnay"] .grid{background:#1f4f3a;padding:.6cqw;border-radius:.6cqw;box-sizing:border-box}
+[data-style="kassak"] .grid{background:#111;padding:.4cqw;box-sizing:border-box}
+[data-style="praguemetro"] .grid{background:#0e0e10;padding:.6cqw;border-radius:.3cqw;box-sizing:border-box}
+[data-style="cubist"] .grid{background:#1a1714;padding:.5cqw;box-sizing:border-box}
+[data-style="plakat"] .grid{background:#1b1b1b;padding:.5cqw;border-radius:.5cqw;box-sizing:border-box}
+[data-style="weltzeituhr"] .grid{background:#0b0e10;padding:.6cqw;border-radius:.6cqw;box-sizing:border-box}
 .minib[data-style="mexico68"] .g6{background:#111}.minib[data-style="calcadao"] .g6{background:#141414}.minib[data-style="cinetica"] .g6{background:#121212}
 .minib[data-style="mexico68"] .g6,.minib[data-style="calcadao"] .g6,.minib[data-style="cinetica"] .g6{padding:2.4cqw;border-radius:1.5cqw}
 .minib[data-style="moquette"] .g6{background:#0a1016}.minib[data-style="ticket"] .g6{background:#2b1a0d}.minib[data-style="grille"] .g6{background:#2f5f57}.minib[data-style="chandigarh"] .g6{background:#3a3936}.minib[data-style="marinedrive"] .g6{background:#1e4a47}.minib[data-style="tonfan"] .g6{background:#161616}.minib[data-style="graphite"] .g6{background:#d9d5cb}
-.minib[data-style="moquette"] .g6,.minib[data-style="ticket"] .g6,.minib[data-style="grille"] .g6,.minib[data-style="chandigarh"] .g6,.minib[data-style="marinedrive"] .g6,.minib[data-style="tonfan"] .g6{padding:2.4cqw;border-radius:1.5cqw}
+.minib[data-style="zsolnay"] .g6{background:#1f4f3a}.minib[data-style="kassak"] .g6{background:#111}.minib[data-style="praguemetro"] .g6{background:#0e0e10}.minib[data-style="cubist"] .g6{background:#1a1714}.minib[data-style="plakat"] .g6{background:#1b1b1b}.minib[data-style="weltzeituhr"] .g6{background:#0b0e10}
+.minib[data-style="zsolnay"] .g6,.minib[data-style="kassak"] .g6,.minib[data-style="praguemetro"] .g6,.minib[data-style="cubist"] .g6,.minib[data-style="plakat"] .g6,.minib[data-style="weltzeituhr"] .g6,.minib[data-style="moquette"] .g6,.minib[data-style="ticket"] .g6,.minib[data-style="grille"] .g6,.minib[data-style="chandigarh"] .g6,.minib[data-style="marinedrive"] .g6,.minib[data-style="tonfan"] .g6{padding:2.4cqw;border-radius:1.5cqw}
 /* Filete's five border rings, sized for the small picker preview */
 .minib[data-style="filete"]{--bevel:inset 0 0 0 1.5px #c8102e,inset 0 0 0 3px #0f0d0c,inset 0 0 0 4.5px #d4a017,inset 0 0 0 6px #0f0d0c,inset 0 0 0 7px #1f8a4c}
-[data-style="metropolitana"] .t,[data-style="standard"] .t,[data-style="doublearrow"] .t,[data-style="ulm"] .t,[data-style="olympia"] .t,[data-style="jetage"] .t,[data-style="patapata"] .t,[data-style="ekimei"] .t,[data-style="caslon"] .t,[data-style="dangan"] .t,[data-style="butterfly"] .t,[data-style="metro"] .t,[data-style="mexico68"] .t,[data-style="filete"] .t,[data-style="calcadao"] .t,[data-style="cinetica"] .t,[data-style="taipei"] .t,[data-style="oxblood"] .t,[data-style="moquette"] .t,[data-style="ticket"] .t,[data-style="grille"] .t,[data-style="chandigarh"] .t,[data-style="marinedrive"] .t,[data-style="tonfan"] .t,[data-style="graphite"] .t{font-weight:var(--tile-w,600)}
+[data-style="metropolitana"] .t,[data-style="standard"] .t,[data-style="doublearrow"] .t,[data-style="ulm"] .t,[data-style="olympia"] .t,[data-style="jetage"] .t,[data-style="patapata"] .t,[data-style="ekimei"] .t,[data-style="caslon"] .t,[data-style="dangan"] .t,[data-style="butterfly"] .t,[data-style="metro"] .t,[data-style="mexico68"] .t,[data-style="filete"] .t,[data-style="calcadao"] .t,[data-style="cinetica"] .t,[data-style="taipei"] .t,[data-style="oxblood"] .t,[data-style="moquette"] .t,[data-style="ticket"] .t,[data-style="grille"] .t,[data-style="chandigarh"] .t,[data-style="marinedrive"] .t,[data-style="tonfan"] .t,[data-style="graphite"] .t,[data-style="foldalatti"] .t,[data-style="zsolnay"] .t,[data-style="ikarus"] .t,[data-style="kassak"] .t,[data-style="praguemetro"] .t,[data-style="cubist"] .t,[data-style="plakat"] .t,[data-style="weltzeituhr"] .t{font-weight:var(--tile-w,600)}
 /* Graphite's one long diagonal, drawn across the whole board like a ruled line through a drawing */
 .board[data-style="graphite"]::before{content:"";position:absolute;inset:0;background:linear-gradient(17deg,transparent calc(50% - .6px),#2a2a2a59 50%,transparent calc(50% + .6px));pointer-events:none;z-index:5}
 /* Caslon 101's orange lamp (::before, since ::after carries the glass glare) */
@@ -916,6 +1011,7 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
     <details class="ra-more"><summary>More</summary>
       <label>Flap sound<select id="raSndStyle"></select></label>
       <label>Finish chime<select id="raChime"></select></label>
+      <label>Background<select id="raAmb"></select></label>
       <label>Animation<select id="raPerf"><option value="auto">Automatic</option><option value="smooth">Smooth (lighter effects)</option><option value="best">Best quality</option></select></label>
       <p>Tip: add this page to your Home Screen (Share → Add to Home Screen) and it opens straight to the remote.</p>
     </details>
@@ -1459,6 +1555,7 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
         <div class="fields">
           <label class="field" for="sndStyle"><span>Flap sound</span>
             <select id="sndStyle">
+              <option value="auto">Match the board style</option>
               <option value="real">Real flap (modelled)</option>
               <option value="sample" id="optSample" disabled>Your recording</option>
               <option value="clack">Classic clack</option>
@@ -1477,6 +1574,12 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
           </label>
           <label class="field" for="chimeStyle"><span>Finish chime</span>
             <select id="chimeStyle">
+              <option value="arrival">Arrival bells</option>
+              <option value="vibes">Vibraphone</option>
+              <option value="departure">Departure bells</option>
+              <option value="tubular">Tubular bell</option>
+              <option value="kalimba">Kalimba</option>
+              <option value="celesta">Celesta</option>
               <option value="two">Two-note ding</option>
               <option value="airport">Airport announcement</option>
               <option value="bell">Bell</option>
@@ -1484,6 +1587,25 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
               <option value="arcade">Arcade</option>
               <option value="none">None</option>
             </select>
+          </label>
+          <label class="field" for="sndRoom"><span>Room echo</span>
+            <select id="sndRoom">
+              <option value="off">None</option>
+              <option value="room">Small room</option>
+              <option value="hall">Station hall</option>
+            </select>
+          </label>
+          <label class="field" for="sndAmb"><span>Background</span>
+            <select id="sndAmb">
+              <option value="off">None</option>
+              <option value="hall">Station hall</option>
+              <option value="rain">Rain</option>
+              <option value="cafe">Café</option>
+              <option value="room">Quiet room</option>
+            </select>
+          </label>
+          <label class="field" for="ambVol" id="ambVolField"><span>Background volume</span>
+            <span class="slider"><input type="range" id="ambVol" min="0.05" max="1" step="0.05" value="0.4"><span id="ambVolOut" class="num">40%</span></span>
           </label>
           <label class="field" for="sndRate"><span>Clicks</span>
             <select id="sndRate">
@@ -1521,7 +1643,7 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
 (function(){
 const COLS=22, ROWS=6; let TICK=110;
 const COLORS={r:'--c-r',o:'--c-o',y:'--c-y',g:'--c-g',b:'--c-b',v:'--c-v',w:'--c-w'};
-const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°',...'ÁÉÍÓÚÑÃÕÇÂÊÔÀÜ','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
+const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°',...'ÁÉÍÓÚÑÃÕÇÂÊÔÀÜÖŐŰ','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
 const IDX=new Map(CHARS.map((c,i)=>[c,i]));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);
@@ -1664,6 +1786,8 @@ function tokenize(str){
     if(m){out.push('{'+m[1].toLowerCase()+'}');i+=3;continue}
     let ch=s[i]; if(ch==='\n'){out.push('\n');i++;continue}
     if(ch==='’'||ch==='‘')ch="'"; if(ch==='“'||ch==='”')ch='"';
+    // Letters without their own flap fall back to the plain letter (Ł → L, Č → C, Ř → R) rather than a blank
+    if(!IDX.has(ch)){const base=({'Ł':'L','Ø':'O','Đ':'D','ß':'S','Æ':'A','Œ':'O'})[ch]||ch.normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(IDX.has(base))ch=base}
     out.push(IDX.has(ch)?ch:' '); i++;
   }
   return out;
@@ -1833,9 +1957,10 @@ function setStatus(word){
 
 // Sound + speed settings
 const SPEEDS={fast:70,normal:110,relaxed:170,slow:260,lazy:400};
-const snd=Object.assign({on:false,vol:0.7,style:'real',chime:'two',rate:1,pitch:1,speed:'normal',stereo:true},store.get('fb.snd',{}));
+const snd=Object.assign({on:false,vol:0.7,style:'auto',chime:'two',rate:1,pitch:1,speed:'normal',stereo:true,room:'room',ambient:'off',ambVol:0.4},store.get('fb.snd',{}));
 if(snd.chime===true)snd.chime='two'; if(snd.chime===false)snd.chime='none';
 if(!snd.realV1){if(snd.style==='clack')snd.style='real';snd.realV1=true}
+if(!snd.autoV1){if(snd.style==='real')snd.style='auto';snd.autoV1=true}
 snd.on=true; // Sound always starts on; the Sound button only mutes until the page is reopened.
 const saveSnd=()=>store.set('fb.snd',snd);
 function applySpeed(){TICK=SPEEDS[snd.speed]||110;document.documentElement.style.setProperty('--half',Math.round(TICK*0.45)+'ms')}
@@ -1849,9 +1974,11 @@ function ensureAudio(){
       master=ac.createGain(); master.connect(ac.destination);
       noise=ac.createBuffer(1,Math.floor(ac.sampleRate*0.3),ac.sampleRate);
       const d=noise.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+      buildRoom(); buildRush();
     }
     master.gain.value=snd.vol;
     if(ac.state!=='running')ac.resume();
+    if(snd.on&&!amb&&snd.ambient!=='off')ambientStart();
   }catch(e){}
 }
 // Browsers only allow audio after a tap or key press, so unlock on any interaction.
@@ -1867,13 +1994,41 @@ function burst(t,o){
   const s=ac.createBufferSource(); s.buffer=noise;
   const f=ac.createBiquadFilter(); f.type=o.type; f.frequency.value=o.freq; f.Q.value=o.q||1;
   const g=ac.createGain(); g.gain.setValueAtTime(o.gain,t); g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);
-  s.connect(f).connect(g).connect(curDest||master); s.start(t,Math.random()*0.2,o.dur+0.02);
+  s.connect(f).connect(g).connect(curDest||master); if(roomIn)g.connect(roomIn); s.start(t,Math.random()*0.2,o.dur+0.02);
 }
 function tone(t,o){
   const osc=ac.createOscillator(); osc.type=o.wave||'sine';
   osc.frequency.setValueAtTime(o.freq,t); if(o.to)osc.frequency.exponentialRampToValueAtTime(o.to,t+o.dur);
   const g=ac.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(o.gain,t+(o.attack||0.002)); g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);
-  osc.connect(g).connect(curDest||master); osc.start(t); osc.stop(t+o.dur+0.03);
+  osc.connect(g).connect(curDest||master); if(roomIn)g.connect(roomIn); osc.start(t); osc.stop(t+o.dur+0.03);
+}
+// Room echo: a short synthetic reverb that flaps and chimes share, so they sound like they're in a room, not inside the speaker
+let roomIn=null, roomWet=null;
+const ROOMS={off:null,room:{secs:.55,wet:.16,decay:3.2},hall:{secs:2.2,wet:.24,decay:2.4}};
+function buildRoom(){
+  const R=ROOMS[snd.room]; if(roomWet){try{roomWet.disconnect()}catch(e){}} roomIn=roomWet=null; if(!R||!ac)return;
+  const len=Math.floor(ac.sampleRate*R.secs), ir=ac.createBuffer(2,len,ac.sampleRate);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,R.decay)}
+  const cv=ac.createConvolver(); cv.buffer=ir; roomIn=ac.createGain(); roomWet=ac.createGain(); roomWet.gain.value=R.wet;
+  const tone=ac.createBiquadFilter(); tone.type='lowpass'; tone.frequency.value=5200;
+  roomIn.connect(tone).connect(cv).connect(roomWet).connect(master);
+}
+// The rush: a whole board flipping at once is a dense wash of flaps, not separate clicks. A filtered noise bed swells with
+// the number of tiles moving each tick, under the individual clicks.
+let rush=null;
+function buildRush(){
+  const len=ac.sampleRate*2, b=ac.createBuffer(1,len,ac.sampleRate), d=b.getChannelData(0); for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+  const src=ac.createBufferSource(); src.buffer=b; src.loop=true;
+  const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=2600; bp.Q.value=.8;
+  const g=ac.createGain(); g.gain.value=0;
+  src.connect(bp).connect(g).connect(master); src.start();
+  rush={bp,g};
+}
+function rushAt(n){
+  if(!rush||!['auto','real','sample'].includes(snd.style))return;
+  const M=mechNow(), t=ac.currentTime, hold=TICK/1000*1.3, lvl=Math.min(1,Math.max(0,(n-4)/50))*M.rushG;
+  rush.bp.frequency.setTargetAtTime(M.rushF*snd.pitch,t,.05);
+  rush.g.gain.cancelScheduledValues(t); rush.g.gain.setTargetAtTime(lvl,t,.02); rush.g.gain.setTargetAtTime(0,t+hold,.08);
 }
 const r=(a,b)=>a+Math.random()*(b-a);
 const STYLES={
@@ -1890,21 +2045,54 @@ const STYLES={
   marble:(t,k,p)=>{tone(t,{freq:r(1300,1700)*p,to:r(900,1100)*p,gain:0.25*k,dur:0.05});burst(t,{type:'bandpass',freq:3000*p,q:3,gain:0.4*k,dur:0.01})},
   blip:(t,k,p)=>{tone(t,{wave:'square',freq:660*p,to:440*p,gain:0.12*k,dur:0.04})},
   // Modelled from a real flap: plastic snap on the stop, a short ring, the case thump, then a tiny settling bounce
-  real:(t,k,p)=>{
-    const v=r(.94,1.06);
-    burst(t,{type:'bandpass',freq:3300*p*v,q:1.6,gain:1.5*k,dur:0.009});
-    burst(t,{type:'highpass',freq:6000*p,q:.7,gain:.55*k,dur:0.004});
-    tone(t,{freq:2150*p*v,gain:.1*k,dur:.03,attack:.0008});
-    tone(t,{freq:3420*p*v,gain:.06*k,dur:.022,attack:.0008});
-    burst(t,{type:'lowpass',freq:260*p,q:.7,gain:.9*k,dur:.035});
-    burst(t+r(.007,.013),{type:'bandpass',freq:2800*p*v,q:2,gain:.45*k,dur:.006});
-  },
+  real:(t,k,p)=>mechFlap(t,k,p,MECH.flap),
+  // Each board style gets the mechanism it would really have: a heavy station board, a little clock, card, wood, tile, a bus roll-sign
+  auto:(t,k,p)=>mechFlap(t,k,p,mechNow()),
   sample:(t,k,p)=>{
     if(!sampleBufs.length)return STYLES.real(t,k,p);
     const s=ac.createBufferSource(); s.buffer=sampleBufs[Math.random()*sampleBufs.length|0]; s.playbackRate.value=p*r(.97,1.03);
     const g=ac.createGain(); g.gain.value=Math.min(1.4,k*1.6); s.connect(g).connect(curDest||master); s.start(t);
   }
 };
+// Mechanisms. snap: the flap hitting its stop; ring: what the flap itself rings at; body: the case thump; knock: a woody or
+// stony resonance; bounce: the small second tap as it settles; flutter: several quick ticks (a roll-sign or card rack);
+// rushF/rushG: the color and level of the whole-board wash.
+const MECH={
+  flap:{snap:3300,snapQ:1.6,snapG:1.5,snapD:.009,air:.55,ring:[[2150,.1,.03],[3420,.06,.022]],body:260,bodyG:.9,bodyD:.035,bounce:.45,bounceF:2800,rushF:2600,rushG:.14},
+  heavy:{snap:2400,snapQ:1.3,snapG:1.7,snapD:.013,air:.4,ring:[[1550,.12,.05],[2700,.07,.04]],body:170,bodyG:1.3,bodyD:.06,knock:120,knockG:.35,bounce:.5,bounceF:2200,rushF:1800,rushG:.2},
+  clock:{snap:4600,snapQ:2,snapG:1,snapD:.006,air:.3,ring:[[3900,.05,.015]],body:420,bodyG:.3,bodyD:.02,bounce:.3,bounceF:4200,rushF:4200,rushG:.06},
+  card:{snap:2900,snapQ:.6,snapG:1.1,snapD:.028,air:.5,ring:[],body:520,bodyG:.4,bodyD:.03,bounce:.25,bounceF:3200,rushF:3000,rushG:.13},
+  wood:{snap:1000,snapQ:3,snapG:1.4,snapD:.03,air:.2,ring:[],body:300,bodyG:.6,bodyD:.04,knock:460,knockG:.5,bounce:.2,bounceF:950,rushF:1200,rushG:.12},
+  ceramic:{snap:3600,snapQ:2.5,snapG:1,snapD:.006,air:.35,ring:[[2850,.14,.09],[4150,.08,.07]],body:350,bodyG:.4,bodyD:.025,bounce:.4,bounceF:3800,rushF:3400,rushG:.1},
+  tin:{snap:3000,snapQ:1.8,snapG:1.2,snapD:.008,air:.45,ring:[[1900,.12,.08],[3100,.08,.06],[4700,.05,.05]],body:220,bodyG:.7,bodyD:.03,bounce:.4,bounceF:3000,rushF:2400,rushG:.14},
+  stone:{snap:1800,snapQ:1,snapG:1.5,snapD:.012,air:.3,ring:[],body:140,bodyG:1.2,bodyD:.05,knock:190,knockG:.3,bounce:.3,bounceF:1600,rushF:1400,rushG:.17},
+  soft:{snap:1400,snapQ:.7,snapG:1.2,snapD:.03,air:.15,ring:[],body:200,bodyG:.8,bodyD:.045,bounce:.15,bounceF:1200,rushF:1100,rushG:.1},
+  roll:{snap:2200,snapQ:1.2,snapG:.9,snapD:.008,air:.3,ring:[],body:200,bodyG:.5,bodyD:.03,flutter:3,bounce:0,bounceF:0,rushF:700,rushG:.22},
+  pixel:{pixel:true,rushF:5000,rushG:.03}
+};
+const STYLE_MECH={glow:'pixel',
+  solari:'heavy',pragotron:'heavy',patapata:'heavy',metropolitana:'heavy',standard:'heavy',doublearrow:'heavy',taipei:'heavy',oxblood:'heavy',foldalatti:'heavy',metro:'heavy',
+  cifra:'clock',caslon:'clock',
+  ticket:'card',graphite:'card',plakat:'card',kassak:'card',mexico68:'card',
+  butterfly:'wood',filete:'wood',
+  zsolnay:'ceramic',marinedrive:'ceramic',ekimei:'ceramic',
+  praguemetro:'tin',weltzeituhr:'tin',grille:'tin',jetage:'tin',
+  chandigarh:'stone',cubist:'stone',calcadao:'stone',
+  moquette:'soft',ikarus:'roll'};
+const mechNow=()=>{const b=$('board');return MECH[STYLE_MECH[b&&b.dataset.style]]||MECH.flap};
+function mechFlap(t,k,p,M){
+  if(M.pixel){tone(t,{wave:'square',freq:r(840,920)*p,to:640*p,gain:.06*k,dur:.025});return}
+  const v=r(.93,1.07), n=M.flutter||1;
+  for(let i=0;i<n;i++){
+    const ti=t+i*r(.007,.011), ki=k*(i?.6:1);
+    burst(ti,{type:'bandpass',freq:M.snap*p*v*r(.97,1.03),q:M.snapQ,gain:M.snapG*ki,dur:M.snapD});
+    if(M.air)burst(ti,{type:'highpass',freq:6000*p,q:.7,gain:M.air*ki,dur:.004});
+  }
+  M.ring.forEach(([f,g,d])=>tone(t,{freq:f*p*v,gain:g*k,dur:d,attack:.0008}));
+  burst(t,{type:'lowpass',freq:M.body*p,q:.7,gain:M.bodyG*k,dur:M.bodyD});
+  if(M.knock)tone(t,{wave:'sine',freq:M.knock*p*v,to:M.knock*.7*p,gain:M.knockG*k,dur:.06});
+  if(M.bounce)burst(t+r(.007,.013),{type:'bandpass',freq:M.bounceF*p*v,q:2,gain:M.bounce*k,dur:.006});
+}
 const CHIMES={
   two:[[880,0,0.9],[1318.5,0.12,0.9]],
   airport:[[698.5,0,1.2],[880,0.35,1.2],[1046.5,0.7,1.6]],
@@ -1912,6 +2100,24 @@ const CHIMES={
   marimba:[[523.3,0,0.4],[659.3,0.09,0.4],[784,0.18,0.4],[1046.5,0.27,0.7]],
   arcade:[[523.3,0,0.12],[784,0.08,0.12],[1046.5,0.16,0.25]]
 };
+// Warmer chimes, built from struck-bar and tube partials. Melodies are our own.
+const BELLS={
+  arrival:{notes:[[784,0],[1046.5,.42],[1318.5,.84]],partials:[[1,1,1],[2.76,.42,.55],[5.4,.2,.32],[8.93,.08,.2]],dur:2.6,gain:.22},
+  vibes:{notes:[[659.3,0],[830.6,.15],[987.8,.3],[1318.5,.45]],partials:[[1,1,1],[4,.22,.35],[10,.05,.12]],dur:2.2,gain:.2,trem:5.5},
+  departure:{notes:[[1046.5,0],[1318.5,.4],[880,.8],[1174.7,1.2]],partials:[[1,1,1],[2.76,.38,.5],[5.4,.16,.3]],dur:2.4,gain:.2},
+  tubular:{notes:[[392,0]],partials:[[1,1,1],[2.76,.5,.7],[5.4,.3,.45],[8.93,.16,.3],[13.34,.06,.2]],dur:4.5,gain:.26},
+  kalimba:{notes:[[1046.5,0],[1318.5,.11],[1568,.22],[2093,.4]],partials:[[1,1,1],[5.95,.18,.12]],dur:.9,gain:.24},
+  celesta:{notes:[[1568,0],[1975.5,.12],[2349.3,.24]],partials:[[1,1,1],[2,.3,.4],[3,.08,.2]],dur:1.3,gain:.16}
+};
+function bellNote(t,f,B){
+  B.partials.forEach(([m,g,dm])=>{
+    const o=ac.createOscillator(); o.frequency.value=f*m*r(.998,1.002);
+    const e=ac.createGain(), d=B.dur*dm; e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(B.gain*g,t+.004); e.gain.exponentialRampToValueAtTime(.0001,t+d);
+    let out=e;
+    if(B.trem&&m===1){const tr=ac.createGain(),lfo=ac.createOscillator(),dep=ac.createGain();tr.gain.value=.75;lfo.frequency.value=B.trem;dep.gain.value=.25;lfo.connect(dep).connect(tr.gain);lfo.start(t);lfo.stop(t+d+.05);e.connect(tr);out=tr}
+    o.connect(e); out.connect(master); if(roomIn)out.connect(roomIn); o.start(t); o.stop(t+d+.05);
+  });
+}
 function playClick(n,pan,when){
   try{
     curDest=null;
@@ -1924,6 +2130,7 @@ function click(n,cols){
   if(!snd.on||!ac||ac.state!=='running')return;
   clickCount++; if(clickCount%snd.rate)return;
   const now=performance.now(); if(now-lastClick<25)return; lastClick=now;
+  rushAt(n);
   const hits=snd.rate>2?1:Math.min(n,snd.rate===2?3:5), span=TICK/1000*0.8, t0=ac.currentTime+0.005;
   for(let i=0;i<hits;i++){
     const c=cols&&cols.length?cols[Math.random()*cols.length|0]:(COLS-1)/2;
@@ -1932,10 +2139,61 @@ function click(n,cols){
 }
 function playChime(){
   try{
-    const t=ac.currentTime+0.02, c=CHIMES[snd.chime]; if(!c)return;
+    const t=ac.currentTime+0.02, B=BELLS[snd.chime]; if(B){B.notes.forEach(([f,d])=>bellNote(t+d,f,B));return}
+    const c=CHIMES[snd.chime]; if(!c)return;
     if(c==='bell'){[[1,0.3],[2,0.12],[2.76,0.08],[5.4,0.04]].forEach(([m,gn])=>tone(t,{freq:660*m,gain:gn,dur:2.2,attack:0.004}));return}
     c.forEach(([f,d,len])=>tone(t+d,{wave:snd.chime==='arcade'?'square':snd.chime==='marimba'?'triangle':'sine',freq:f,gain:snd.chime==='arcade'?0.1:0.3,dur:len,attack:0.008}));
   }catch(e){}
+}
+// Ambient: a quiet background under the flaps, generated here rather than downloaded. Each one is a few layers of
+// shaped noise, with small sounds (rain drops, footsteps, cups, a far-off station chime) scattered at random.
+let amb=null;
+function noiseBuf(kind,secs){
+  const len=Math.floor(ac.sampleRate*secs), b=ac.createBuffer(2,len,ac.sampleRate);
+  for(let c=0;c<2;c++){const d=b.getChannelData(c);let last=0,b0=0,b1=0,b2=0;
+    for(let i=0;i<len;i++){const w=Math.random()*2-1;
+      if(kind==='brown'){last=(last+.02*w)/1.02;d[i]=last*3.5}
+      else{b0=.99765*b0+w*.099;b1=.963*b1+w*.2965;b2=.57*b2+w*1.0526;d[i]=(b0+b1+b2+w*.1848)*.2}}}
+  return b;
+}
+function ambientStart(){
+  ambientStop(); if(!ac||!snd.on||snd.ambient==='off')return;
+  const out=ac.createGain(), t0=ac.currentTime, A={out,srcs:[],timers:[]}; out.gain.value=.0001; out.connect(master);
+  out.gain.setTargetAtTime(snd.ambVol*.6,t0,1.2);
+  const bed=(kind,type,freq,q,gain,lfo)=>{
+    const s=ac.createBufferSource(); s.buffer=noiseBuf(kind,6); s.loop=true;
+    const f=ac.createBiquadFilter(); f.type=type; f.frequency.value=freq; f.Q.value=q;
+    const g=ac.createGain(); g.gain.value=gain; s.connect(f).connect(g).connect(out); s.start(); A.srcs.push(s);
+    if(lfo){const o=ac.createOscillator(),d=ac.createGain();o.frequency.value=lfo[0];d.gain.value=gain*lfo[1];o.connect(d).connect(g.gain);o.start();A.srcs.push(o)}
+  };
+  const every=(lo,hi,fn)=>{const go=()=>{try{fn(ac.currentTime+.02)}catch(e){}A.timers.push(setTimeout(go,r(lo,hi)))};A.timers.push(setTimeout(go,r(lo,hi)))};
+  const sub=(fn)=>{const keep=curDest;curDest=out;try{fn()}finally{curDest=keep}};
+  const k=snd.ambient;
+  if(k==='hall'){
+    bed('brown','lowpass',260,.7,.9);                       // the hall's low rumble
+    bed('pink','bandpass',520,.9,.22,[.21,.5]);             // a crowd's murmur, rising and falling
+    bed('pink','bandpass',1300,1.2,.06,[.13,.7]);
+    every(380,900,t=>sub(()=>burst(t,{type:'lowpass',freq:r(380,520),q:.8,gain:r(.05,.12),dur:.06})));            // footsteps
+    every(70e3,160e3,t=>sub(()=>{[[659.3,0],[523.3,.5]].forEach(([f,d])=>tone(t+d,{freq:f,gain:.035,dur:1.6,attack:.01}))})); // a far-off station chime
+  }else if(k==='rain'){
+    bed('pink','highpass',1400,.5,.42);
+    bed('brown','lowpass',180,.7,.5);
+    every(25,110,t=>sub(()=>burst(t,{type:'highpass',freq:r(3500,7000),q:.7,gain:r(.02,.09),dur:.006})));
+  }else if(k==='cafe'){
+    bed('brown','lowpass',200,.7,.45);
+    bed('pink','bandpass',600,.8,.25,[.17,.6]);
+    bed('pink','bandpass',1500,1,.08,[.29,.6]);
+    every(1800,6500,t=>sub(()=>{const f=r(2400,3600);tone(t,{freq:f,gain:.022,dur:.28,attack:.001});tone(t,{freq:f*2.7,gain:.008,dur:.15,attack:.001})}));
+  }else if(k==='room'){
+    bed('brown','lowpass',120,.7,.6);
+    bed('pink','highpass',6000,.5,.025);
+  }
+  amb=A;
+}
+function ambientStop(){
+  if(!amb)return; const A=amb; amb=null; A.timers.forEach(clearTimeout);
+  try{A.out.gain.cancelScheduledValues(ac.currentTime);A.out.gain.setTargetAtTime(.0001,ac.currentTime,.3)}catch(e){}
+  setTimeout(()=>{A.srcs.forEach(s=>{try{s.stop()}catch(e){}});try{A.out.disconnect()}catch(e){}},1500);
 }
 function landed(){if(snd.on&&snd.chime!=='none'&&ac&&ac.state==='running')playChime()}
 function renderSound(){
@@ -1943,9 +2201,10 @@ function renderSound(){
   $('vol').value=snd.vol; $('volOut').textContent=Math.round(snd.vol*100)+'%';
   $('pitch').value=snd.pitch; $('pitchOut').textContent=snd.pitch<0.95?'Lower':snd.pitch>1.05?'Higher':'Normal';
   $('sndStyle').value=snd.style; $('sndStereo').checked=!!snd.stereo; $('chimeStyle').value=snd.chime; $('sndRate').value=snd.rate; $('speed').value=snd.speed;
+  $('sndRoom').value=snd.room; $('sndAmb').value=snd.ambient; $('ambVol').value=snd.ambVol; $('ambVolOut').textContent=Math.round(snd.ambVol*100)+'%'; $('ambVolField').hidden=snd.ambient==='off';
 }
 const preview=(count,gap)=>{ensureAudio();setTimeout(()=>{for(let i=0;i<count;i++)setTimeout(()=>playClick(8),i*(gap||TICK))},60)};
-function toggleSound(){if(blockedBefore||audioBlocked()){blockedBefore=false;ensureAudio();setTimeout(checkAudio,200);return}snd.on=!snd.on;saveSnd();renderSound();if(snd.on)preview(1);checkAudio()}
+function toggleSound(){if(blockedBefore||audioBlocked()){blockedBefore=false;ensureAudio();setTimeout(checkAudio,200);return}snd.on=!snd.on;saveSnd();renderSound();if(snd.on){preview(1);ambientStart()}else ambientStop();checkAudio()}
 $('soundBtn').onclick=toggleSound; $('sndToggle').onclick=toggleSound;
 $('vol').oninput=()=>{snd.vol=+$('vol').value;saveSnd();renderSound();if(master)master.gain.value=snd.vol};
 $('vol').onchange=()=>preview(1);
@@ -1955,6 +2214,9 @@ $('sndStyle').onchange=()=>{snd.style=$('sndStyle').value;saveSnd();preview(5)};
 $('sndRate').onchange=()=>{snd.rate=+$('sndRate').value;saveSnd();preview(5,TICK*snd.rate)};
 $('chimeStyle').onchange=()=>{snd.chime=$('chimeStyle').value;saveSnd();ensureAudio();setTimeout(playChime,60)};
 $('speed').onchange=()=>{snd.speed=$('speed').value;saveSnd();applySpeed()};
+$('sndRoom').onchange=()=>{snd.room=$('sndRoom').value;saveSnd();ensureAudio();buildRoom();preview(4)};
+$('sndAmb').onchange=()=>{snd.ambient=$('sndAmb').value;saveSnd();renderSound();ensureAudio();ambientStart()};
+$('ambVol').oninput=()=>{snd.ambVol=+$('ambVol').value;saveSnd();renderSound();if(amb&&ac)amb.out.gain.setTargetAtTime(snd.ambVol*.6,ac.currentTime,.2)};
 ['pattern','motion','finish','frame','restyle','perf'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).value;if(k==='perf'){perfSlow=false;store.set('fb.perfSlow',false)}applyAnim();if(k==='pattern'||k==='motion')replay()}});
 ['boot','idle'].forEach(k=>{$('anim-'+k).onchange=()=>{anim[k]=$('anim-'+k).checked;applyAnim()}});
 applyAnim();
@@ -2903,7 +3165,7 @@ function rmShowing(){
 function rmState(link){
   const st=BOARD_STYLES.find(x=>x.id===styleId);
   frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,styleId,mode,art:artCur,section:news.section,plan:schedOn,
-    sound:{on:snd.on,vol:snd.vol,style:snd.style,chime:snd.chime,blocked:snd.on&&audioBlocked()},perf:anim.perf,lite:lite()}).catch(()=>{});
+    sound:{on:snd.on,vol:snd.vol,style:snd.style,chime:snd.chime,ambient:snd.ambient,blocked:snd.on&&audioBlocked()},perf:anim.perf,lite:lite()}).catch(()=>{});
 }
 // On the TV: carry out a command from a paired phone, then report back
 function rmRun(link,o){
@@ -2921,6 +3183,7 @@ function rmRun(link,o){
       if(typeof o.vol==='number'){snd.vol=Math.min(1,Math.max(0,o.vol));if(master)master.gain.value=snd.vol}
       if(o.style&&[...$('sndStyle').options].some(x=>x.value===o.style&&!x.disabled))snd.style=o.style;
       if(o.chime&&[...$('chimeStyle').options].some(x=>x.value===o.chime))snd.chime=o.chime;
+      if(o.ambient&&[...$('sndAmb').options].some(x=>x.value===o.ambient)){snd.ambient=o.ambient;ambientStart()}
       saveSnd(); renderSound(); checkAudio();
       if(o.test)$('testBtn').click();
     },
@@ -3096,6 +3359,7 @@ function raInit(){
   $('raSndStyle').innerHTML=$('rmSndStyle').innerHTML; $('raChime').innerHTML=$('rmChime').innerHTML;
   $('raSndStyle').onchange=()=>raCmd({action:'sound',style:$('raSndStyle').value,test:true},'Flap sound changed.');
   $('raChime').onchange=()=>raCmd({action:'sound',chime:$('raChime').value,test:true},'Chime changed.');
+  $('raAmb').innerHTML=$('sndAmb').innerHTML; $('raAmb').onchange=()=>raCmd({action:'sound',ambient:$('raAmb').value},'Background changed.');
   $('raPerf').onchange=()=>raCmd({action:'perf',perf:$('raPerf').value},'Animation setting changed.');
   $('raTv').onchange=()=>{$('rmTv').value=$('raTv').value;rmRender();raCmd({action:'ping'},'')};
   // Pairing, when no TV is paired yet (or the paired TV stopped answering)
@@ -3147,7 +3411,7 @@ function raRender(){
   document.querySelectorAll('#raStyles button').forEach(b=>b.classList.toggle('on',!!st&&b.dataset.id===st.styleId));
   const so=st&&st.sound;
   if(so){$('raMute').setAttribute('aria-pressed',String(!!so.on));$('raMute').textContent=so.on?'Sound on':'Sound off';$('raMute').classList.toggle('on',!!so.on);$('raVolOut').textContent=Math.round((raVolSet&&Date.now()-raVolSet.at<6e3?raVolSet.v:so.vol)*100)+'%';
-    if(so.style)$('raSndStyle').value=so.style;if(so.chime)$('raChime').value=so.chime}
+    if(so.style)$('raSndStyle').value=so.style;if(so.chime)$('raChime').value=so.chime;if(so.ambient)$('raAmb').value=so.ambient}
   if(st)$('raPerf').value=st.perf;
   if(so&&so.blocked)raNote('The TV is holding sound back. Press OK on the TV remote once.');
 }
@@ -3517,10 +3781,13 @@ const BOARD_STYLES=[
   {id:'cifra',group:'machines',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
   {id:'caslon',group:'machines',name:'Caslon 101',note:'Copal’s 1970s flip clock: serif letters, beige case, orange lamp.'},
   {id:'ticket',group:'machines',name:'Card ticket',note:'Edmondson card tickets, used by railways from Britain to India and Taiwan: green pasteboard in a wooden rack.'},
+  {id:'ikarus',group:'machines',name:'Ikarus',note:'Budapest’s blue Ikarus buses, 1970s and 80s: a black roll-sign with white letters, set in the blue body.'},
+  {id:'weltzeituhr',group:'machines',name:'Weltzeituhr',note:'East Berlin’s 1969 World Time Clock at Alexanderplatz: brushed aluminium and a ring of time-zone colors.'},
   {id:'metropolitana',group:'wayfinding',name:'Metropolitana',note:'Milan Metro by Albini and Noorda, 1964: matte black, ivory letters, a red band on top.'},
   {id:'standard',group:'wayfinding',name:'Standard',note:'New York subway standards: white flaps, black letters, line colors.'},
   {id:'doublearrow',group:'wayfinding',name:'Double Arrow',note:'British Rail: light flaps above, dark below, a red strip.'},
   {id:'oxblood',group:'wayfinding',name:'Oxblood',note:'Leslie Green’s 1906 tube stations: an oxblood glazed frame, cream tiles, green letters.'},
+  {id:'foldalatti',group:'wayfinding',name:'Földalatti',note:'Budapest’s 1896 Millennium Underground, the first on the continent: white glazed tiles, oxblood letters, a dark timber frame.'},
   {id:'ekimei',group:'wayfinding',name:'Ekimei',note:'Station name signs: rounded gothic letters, white flaps.'},
   {id:'taipei',group:'wayfinding',name:'Taipei Metro',note:'Taipei Metro signs, 1996: graphite flaps, white letters, the line colors along the foot.'},
   {id:'metro',group:'wayfinding',name:'Metro',note:'Mexico City Metro, 1969: line-pink flaps, white letters, soft corners.'},
@@ -3536,9 +3803,14 @@ const BOARD_STYLES=[
   {id:'marinedrive',group:'material',name:'Marine Drive',note:'Bombay’s 1930s seafront Art Deco: cream plaster, teal letters, a sunburst frame.'},
   {id:'filete',group:'material',name:'Filete',note:'Buenos Aires filete porteño: gold serif letters, red, gold and green borders.'},
   {id:'calcadao',group:'material',name:'Calçadão',note:'Copacabana promenade: a black-and-white wave frame, sand-white flaps.'},
+  {id:'zsolnay',group:'material',name:'Zsolnay',note:'Zsolnay ceramics from Pécs, on Ödön Lechner’s roofs: green and gold tiles with an iridescent eosin sheen.'},
+  {id:'praguemetro',group:'material',name:'Prague Metro',note:'Prague Metro’s Line A, 1978: dimpled anodized-aluminium walls in gold, dark flaps, the line colors.'},
+  {id:'cubist',group:'material',name:'Cubist',note:'Prague Cubism of the 1910s, like Gočár’s House of the Black Madonna: a faceted ochre frame, tall narrow letters.'},
   {id:'cinetica',group:'studio',name:'Cinética',note:'Venezuelan kinetic art: fine red, green and blue rods around a black board.'},
   {id:'tonfan',group:'studio',name:'Ton Fan',note:'After Ho Kan and Taipei’s Ton Fan painters, 1957: black flaps on cream, a red sun, a blue bar.'},
-  {id:'graphite',group:'studio',name:'Graphite',note:'After Nasreen Mohamedi’s ink and graphite grids: paper-white flaps, hairline letters, one long diagonal.'}
+  {id:'graphite',group:'studio',name:'Graphite',note:'After Nasreen Mohamedi’s ink and graphite grids: paper-white flaps, hairline letters, one long diagonal.'},
+  {id:'kassak',group:'studio',name:'Kassák',note:'After Lajos Kassák and his magazine MA: red and black blocks on paper, heavy letters.'},
+  {id:'plakat',group:'studio',name:'Plakat',note:'The Polish Poster School of Tomaszewski and Lenica: hand-drawn letters and painted color on paper.'},
 ];
 let styleId=store.get('fb.style','classic');
 // Worn used to be a style; it's now a finish that ages any style. A board that was Worn becomes Classic, worn.

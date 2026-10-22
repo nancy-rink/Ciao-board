@@ -12,6 +12,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Saved** — keep a list of messages and rotate through them.
 - **Clock** — time and date, with 12/24-hour, a second city, borders and accent tiles.
 - **News** — BBC headlines (top stories, world, UK, business, technology, science or sport), one at a time.
+- **Friends** — connect with a friend's board (you both have to agree) and send each other messages; the board asks before showing one. Needs a one-time Firebase setup: see [FRIENDS-SETUP.md](FRIENDS-SETUP.md).
 - **Day plan** — change what the board shows, and its style, at set times through the day.
 - **14 styles** — Classic, Departures, Daylight, Rail, Harbor, Glow, Neon, Mint, plus vintage Solari, Cifra clock, Worn, Game show, Euro rail and Brass.
 - **Animation** — realistic flaps that settle with a bounce, seven flip patterns (left to right, row by row, diagonal, center out, edges in, random, all at once), raised tiles with optional glass glare, and a choice of frames (brushed metal, walnut, matte black, white).

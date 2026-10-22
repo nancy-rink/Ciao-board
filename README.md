@@ -22,6 +22,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Wall display** — dims the board during the night hours you choose, and in full screen drifts it a few pixels over time to protect TV screens from burn-in.
 - **Sound** — a modelled mechanical flap with left-to-right stereo, a dozen other click styles, finish chimes, or upload your own recording.
 - **Full screen** — fills a TV, tablet or monitor and keeps the screen awake.
+- **Smooth mode** — on TVs and other slow screens the board drops its costliest effects and caps how many flaps each tile turns, so flips stay fluid. It's on automatically in TV mode, or when the board notices flips running slowly; choose it yourself in Settings → Motion.
 
 Settings are kept in each person's own browser.
 
@@ -51,7 +52,7 @@ BBC's feeds can't be read straight from a web page, so a GitHub Action (`.github
 2. The board flips to show a pairing code, with a QR code in the corner. Scan the QR code with your phone's camera, or open the board on your phone, go to **What to show → Remote** and type the code.
 3. Tap **Connect**. From then on the Remote tab on your phone controls the TV, and shows what the TV is displaying.
 
-A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
+The Remote tab also controls the TV's sound (on or off, volume, flap sound, chime, a test click) and its animation quality. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
 
 ## How Friends works
 

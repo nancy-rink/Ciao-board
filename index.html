@@ -627,14 +627,17 @@ body.remotemode .wrap,body.remotemode .sheet,body.remotemode .scrim,body.remotem
 .ra-out{color:var(--muted);font-size:15px;padding:10px 4px}
 #raPair h1{font-size:24px;margin:8px 0}
 #raPair ol{padding-left:20px;color:var(--muted);line-height:1.5}
+.ra-tip{font-size:14px;color:var(--muted);margin:0 0 14px}
+#raPairBack{width:100%;margin-top:12px}
+.ra-stale{display:flex;flex-direction:column;gap:10px;padding:14px;margin-bottom:14px;border-radius:14px;border:1px solid var(--accent);font-size:15px}
+.ra-stale[hidden]{display:none}
 .ra-row{display:flex;gap:8px}
 .ra-row input{flex:1;font-size:20px;letter-spacing:.08em;text-transform:uppercase;min-height:54px}
-.ra-ask{display:flex;flex-direction:column;gap:10px;margin-top:12px;padding:14px;border:1px solid var(--accent);border-radius:12px}
 .ra-note{color:var(--muted);font-size:14px;margin:0;min-height:1.4em}
 .ra-compose{display:flex;flex-direction:column;gap:8px}
 .ra-compose textarea{font-size:20px;min-height:110px}
 #remoteApp button{min-height:54px;font-size:17px}
-#raSend,#raLook,#raAccept{font-size:18px}
+#raSend,#raLook{font-size:18px}
 .ra-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .ra-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:84px!important;border-radius:14px;background:var(--panel-2);font-weight:600}
 .ra-grid button i{width:16px;height:21px;border-radius:3px;background:var(--fc);box-shadow:inset 0 -1px 0 #0003;position:relative}
@@ -661,25 +664,31 @@ body.remotemode .wrap,body.remotemode .sheet,body.remotemode .scrim,body.remotem
 .ra-more p{font-size:14px;color:var(--muted)}
 #tvStart{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#000a}
 #tvStart[hidden]{display:none}
-.tvcard{display:flex;flex-direction:column;align-items:center;gap:2.4vh;text-align:center;padding:5vh 6vw;border-radius:20px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;font:clamp(16px,2vw,30px)/1.4 "Barlow",system-ui,sans-serif}
+.tvcard{display:flex;align-items:center;gap:5vw;padding:5vh 5vw;border-radius:20px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;font:clamp(16px,2vw,30px)/1.4 "Barlow",system-ui,sans-serif}
 .tvcard h1{margin:0;font:600 clamp(30px,4.6vw,72px)/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase}
-.tvcard p{margin:0;color:#a39a8b;max-width:34ch}
+.tvmain{display:flex;flex-direction:column;align-items:center;gap:2.4vh;text-align:center}
+.tvcard p{margin:0;color:#a39a8b;max-width:30ch}
+.tvpair{display:flex;flex-direction:column;align-items:center;gap:2vh;text-align:center;font-size:clamp(14px,1.4vw,22px);border-left:1px solid #2e2a24;padding-left:5vw}
+.tvpair[hidden]{display:none}
+.tvpair b{color:#f1ece2}
+.tvcode{display:block;margin-top:.4em;font-size:1.8em;letter-spacing:.12em;white-space:nowrap}
+.tvqr{background:#fff;border-radius:12px;padding:10px;line-height:0}
+.tvqr svg{width:min(42vh,30vw);height:auto}
+@media (max-aspect-ratio:1/1){.tvcard{flex-direction:column}.tvpair{border-left:0;padding-left:0}}
 #tvGo{font-size:clamp(18px,2.6vw,38px);padding:.6em 1.5em;border-radius:14px;background:#e8a33d;border-color:#e8a33d;color:#1a1307}
 #tvGo:focus{outline:5px solid #f1ece2;outline-offset:5px}
 body.tvmode #fsExit{display:none}
-#tvPair{font-size:clamp(15px,1.7vw,26px);padding:.5em 1.2em;border-radius:12px;background:transparent;color:#f1ece2;border-color:#4a4238}
-#tvPair:focus{outline:5px solid #f1ece2;outline-offset:5px}
 /* Pairing a phone: the code flips up on the board; this card in the corner has the QR code */
-#rmPairCard{position:fixed;right:max(16px,3vw);bottom:max(16px,5vh);z-index:50;width:min(340px,80vw);display:flex;flex-direction:column;align-items:center;gap:12px;padding:18px;border-radius:16px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;text-align:center;font-size:clamp(14px,1.3vw,20px);box-shadow:0 20px 60px -20px #000}
+#rmPairCard{position:fixed;right:max(16px,3vw);bottom:max(16px,5vh);z-index:50;width:min(400px,80vw);display:flex;flex-direction:column;align-items:center;gap:12px;padding:18px;border-radius:16px;background:#16130fee;border:1px solid #2e2a24;color:#f1ece2;text-align:center;font-size:clamp(14px,1.3vw,20px);box-shadow:0 20px 60px -20px #000}
 #rmPairCard[hidden]{display:none}
 /* While pairing, the board makes room for the card so the code stays readable */
-body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
-@media (min-width:900px){body.pairing:not(.fs) .wrap{padding-right:calc(min(340px,80vw) + 24px)}}
+body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
+@media (min-width:900px){body.pairing:not(.fs) .wrap{padding-right:calc(min(400px,80vw) + 24px)}}
 #rmPairCard p{margin:0;color:#c9bfae}
 #rmPairCard b{color:#f1ece2;letter-spacing:.06em}
 #rmQr{background:#fff;border-radius:10px;padding:8px;line-height:0}
 #rmQr[hidden]{display:none}
-#rmQr svg{width:min(220px,26vh);height:auto}
+#rmQr svg{width:min(340px,40vh);height:auto}
 #rmPairCancel:focus{outline:4px solid #f1ece2;outline-offset:3px}
 .ra-open{display:block;text-align:center;padding:14px;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:600;text-decoration:none}
 .ra-open[hidden]{display:none}
@@ -724,14 +733,16 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
   <section id="raPair" hidden>
     <h1>Pair with your TV</h1>
     <ol>
-      <li>On the TV, open Ciao Board and choose <b>Pair a phone as a remote</b>.</li>
-      <li>Scan the QR code on the TV with this phone's camera, or type the code below.</li>
+      <li>Open Ciao Board on the TV (<b>is.gd/ciaoboard</b>). Its start screen shows a QR code and a pairing code.</li>
+      <li>Scan the QR code with this phone's camera, or type the code below.</li>
     </ol>
+    <p class="ra-tip">Already past the start screen? Press <b>OK</b> on the TV remote, open <b>What to show → Remote</b> and choose <b>Pair a phone</b>.</p>
     <div class="ra-row"><input type="text" id="raCode" placeholder="Pairing code" aria-label="Pairing code from the TV" autocomplete="off" maxlength="12"><button class="primary" id="raLook" type="button">Find</button></div>
-    <div class="ra-ask" id="raAsk" hidden><span id="raAskMsg"></span><button class="primary" id="raAccept" type="button">Connect</button></div>
-    <p class="ra-note" id="raPairNote"></p>
+    <p class="ra-note" id="raPairNote" aria-live="polite"></p>
+    <button type="button" id="raPairBack" hidden>Back to the remote</button>
   </section>
   <section id="raMain" hidden>
+    <div class="ra-stale" id="raStale" hidden><span>The TV isn't answering. Check Ciao Board is open on the TV. If it still doesn't answer, pair again.</span><button type="button" id="raRepair">Pair again</button></div>
     <div class="ra-compose">
       <textarea id="raMsg" rows="3" spellcheck="false" placeholder="Type a message for the TV" aria-label="Message for the TV"></textarea>
       <button class="primary" id="raSend" type="button">Show on TV</button>
@@ -767,10 +778,15 @@ body.fs.pairing .board{padding-right:calc(min(340px,80vw) + 6vw)}
 </div>
 <div id="tvStart" hidden>
   <div class="tvcard">
-    <h1>Ciao Board</h1>
-    <button class="primary" id="tvGo" type="button">Press OK to start</button>
-    <button id="tvPair" type="button">Pair a phone as a remote</button>
-    <p>Goes full screen and keeps the TV awake. Press OK again any time to show or hide the controls.</p>
+    <div class="tvmain">
+      <h1>Ciao Board</h1>
+      <button class="primary" id="tvGo" type="button">Press OK to start</button>
+      <p>Goes full screen and keeps the TV awake. Press OK again any time to show or hide the controls.</p>
+    </div>
+    <div class="tvpair" id="tvPairBox" hidden>
+      <div class="tvqr" id="tvQr" aria-hidden="true"></div>
+      <p><b>Use your phone as the remote.</b> Scan this with the phone's camera, or open <b id="tvRemoteUrl">nancy-rink.github.io/Ciao-board/remote</b> and type <b class="tvcode" id="tvCode"></b></p>
+    </div>
   </div>
 </div>
 <div id="rmPairCard" hidden>
@@ -2463,10 +2479,35 @@ async function frShared(priv,pubRaw){
   return b64u.enc(await crypto.subtle.digest('SHA-256',await crypto.subtle.deriveBits({name:'ECDH',public:pub},priv,256)));
 }
 function frListen(){
+  frPollSoon();
+  if(frES&&frES.readyState===2){frES.close();frES=null}
   if(frES||(!fr.links.length&&!fr.invites.length))return;
   frES=new EventSource(NTFY+fr.inbox+'/sse?since='+encodeURIComponent(fr.since||'12h'));
   frES.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='message')frReceive(m)}catch(x){}};
+  frES.onerror=()=>{if(frES&&frES.readyState===2)setTimeout(frListen,5000)};
 }
+// The stream can stall (phones pause it in the background, some TV browsers drop it), and a missed handshake
+// leaves pairing stuck. While one is in progress, also ask the relay for anything new every few seconds.
+let frPollT=null, frPolling=false;
+const frHandshaking=()=>fr.links.some(l=>l.pending)||fr.invites.some(i=>Date.now()-i.made<15*60e3);
+async function frPoll(){
+  if(frPolling||(!fr.links.length&&!fr.invites.length))return; frPolling=true;
+  try{
+    const r=await fetch(NTFY+fr.inbox+'/json?poll=1&since='+encodeURIComponent(fr.since||'12h'));
+    if(r.ok)for(const l of (await r.text()).split('\n').filter(Boolean)){try{const m=JSON.parse(l);if(m.event==='message')await frReceive(m)}catch(x){}}
+  }catch(e){}finally{frPolling=false}
+}
+function frNudge(){
+  const now=Date.now(); let drop=false;
+  fr.links.filter(l=>l.pending&&l.hello).forEach(l=>{
+    if(now-l.at>15*60e3){drop=true;return}
+    if(now-l.at>10e3&&now-(l.sentAt||l.at)>10e3){l.sentAt=now;frPostSealed(l.topic,l.id,l.ikey,l.hello).catch(()=>{})}
+  });
+  if(drop){fr.links=fr.links.filter(l=>!(l.pending&&now-l.at>15*60e3));saveFr();frRender();rmRender()}
+}
+function frPollSoon(){clearTimeout(frPollT);if(frHandshaking())frPollT=setTimeout(async()=>{frNudge();await frPoll();frPollSoon()},3000)}
+function frWake(){if(document.visibilityState!=='visible')return;frListen();frPoll();frPollSoon()}
+document.addEventListener('visibilitychange',frWake); addEventListener('online',frWake); addEventListener('pageshow',frWake);
 async function frReceive(m){
   if(fr.seen.includes(m.id))return;
   fr.seen=[...fr.seen.slice(-299),m.id]; fr.since=m.id; saveFr();
@@ -2475,25 +2516,33 @@ async function frReceive(m){
   // Handshake messages are sealed with the invite's key; everything after with the pair's own key
   const link=frLink(id), inv=fr.invites.find(i=>i.id===id), raw=link?(link.pending?link.ikey:link.key):inv?inv.key:null;
   if(!raw)return;
-  let o; try{o=await frOpen(await frKey(raw),sealed)}catch(e){return}
+  let o; try{o=await frOpen(await frKey(raw),sealed)}catch(e){
+    // A TV that just paired may get the phone's hello again, still sealed with the invite's key
+    if(!(link&&!link.pending&&link.ikey))return; try{o=await frOpen(await frKey(link.ikey),sealed)}catch(x){return}}
   let fresh=false;
-  if(o.type==='hello'&&inv&&!link&&typeof o.topic==='string'&&typeof o.pub==='string'){
+  if(o.type==='hello'&&link&&!link.pending&&link.wpub&&o.topic===link.topic){
+    await frPostSealed(link.topic,id,link.ikey,{type:'welcome',pub:link.wpub}).catch(()=>{}); return;
+  }else if(o.type==='hello'&&inv&&!link&&typeof o.topic==='string'&&typeof o.pub==='string'){
     // Our invite was accepted: the first acceptance wins and the invite is spent
     fr.invites=fr.invites.filter(i=>i.id!==id); saveFr();
     const name=String(o.name||'A friend').slice(0,40), kp=await frEcdh();
     const key=await frShared(kp.privateKey,o.pub);
-    const link={id,name,topic:o.topic,key}; if(inv.kind==='tv')link.kind='remote';
+    const link={id,name,topic:o.topic,key}; if(inv.kind==='tv'){link.kind='remote';link.ikey=inv.key;link.wpub=await frPub(kp)}
     fr.links.push(link); saveFr();
-    await frPostSealed(o.topic,id,inv.key,{type:'welcome',pub:await frPub(kp)}).catch(()=>{});
+    await frPostSealed(o.topic,id,inv.key,{type:'welcome',pub:link.wpub||await frPub(kp)}).catch(()=>{});
     if(link.kind==='remote')rmPaired(link);
     else{if($('frInviteOut').dataset.id===id)$('frInviteOut').hidden=true;toast('Connected with '+name);frSay('Connected with '+name+'.')}
   }else if(o.type==='welcome'&&link&&link.pending&&!link.busy&&typeof o.pub==='string'){
     link.busy=true; // the first welcome wins
     const priv=await crypto.subtle.importKey('jwk',link.priv,ECDH,false,['deriveBits']);
-    link.key=await frShared(priv,o.pub); delete link.pending; delete link.priv; delete link.ikey; delete link.busy;
-    if(link.kind==='tv'){toast('Connected to '+link.name);rmSay('Connected to '+link.name+'.');frSend(link,{type:'cmd',action:'ping'}).catch(()=>{})}
+    link.key=await frShared(priv,o.pub); delete link.pending; delete link.priv; delete link.ikey; delete link.busy; delete link.hello; delete link.at;
+    if(link.kind==='tv'){
+      fr.links.filter(l=>l.kind==='tv'&&l!==link&&l.name===link.name).forEach(old=>{frSend(old,{type:'bye'}).catch(()=>{});fr.links=fr.links.filter(l=>l!==old)});
+      raRepair=false; rmRender(); $('rmTv').value=link.id;
+      toast('Connected to '+link.name);rmSay('Connected to '+link.name+'.');frSend(link,{type:'cmd',action:'ping'}).catch(()=>{})}
     else{toast('Connected with '+link.name);frSay('Connected with '+link.name+'.')}
   }else if(o.type==='cmd'&&link&&!link.pending&&link.kind==='remote'){
+    if(link.wpub){delete link.wpub;delete link.ikey}
     rmRun(link,o);
   }else if(o.type==='state'&&link&&!link.pending&&link.kind==='tv'){
     link.state={showing:String(o.showing||'').slice(0,80),style:String(o.style||''),styleId:String(o.styleId||''),mode:String(o.mode||''),art:String(o.art||''),section:String(o.section||''),plan:!!o.plan,sound:o.sound&&typeof o.sound==='object'?o.sound:null,perf:String(o.perf||'auto'),lite:!!o.lite,at:Date.now()};
@@ -2606,7 +2655,8 @@ async function frConnect(inv,kind,name){
   const link={id:String(inv.id),name:String(inv.name||'A friend').slice(0,40),topic:String(inv.topic),ikey:String(inv.key),pending:true,priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};
   if(kind)link.kind=kind;
   fr.links.push(link); saveFr(); frListen();
-  try{await frPostSealed(link.topic,link.id,link.ikey,{type:'hello',name,topic:fr.inbox,pub:await frPub(kp)})}
+  link.hello={type:'hello',name,topic:fr.inbox,pub:await frPub(kp)}; link.at=Date.now();
+  try{await frPostSealed(link.topic,link.id,link.ikey,link.hello)}
   catch(e){fr.links=fr.links.filter(l=>l!==link);saveFr();throw e}
   return link;
 }
@@ -2719,13 +2769,13 @@ async function rmShowCode(){
     $('rmPairCode').textContent=frCodeFmt(code); $('rmPairCard').hidden=false; $('rmPairCancel').focus();
     document.body.classList.add('pairing'); requestAnimationFrame(fitFill);
     clearTimeout(rmPairT); rmPairT=setTimeout(()=>rmEndPairing(true),10*60e3);
-    const url=location.origin+location.pathname+'?remote#pair='+code;
-    rmQr(url).catch(()=>{$('rmQr').hidden=true});
+    rmQr(rmPairUrl(code)).catch(()=>{$('rmQr').hidden=true});
   }catch(e){toast('Couldn\'t make a pairing code. Check the connection and try again.')}
   finally{$('rmPairBtn').disabled=false}
 }
-function rmQr(url){
-  const draw=()=>{const q=qrcode(0,'M');q.addData(url);q.make();$('rmQr').innerHTML=q.createSvgTag({cellSize:6,margin:2,scalable:true});$('rmQr').hidden=false};
+function rmQr(url,box){
+  box=box||'rmQr';
+  const draw=()=>{const q=qrcode(0,'M');q.addData(url);q.make();$(box).innerHTML=q.createSvgTag({cellSize:6,margin:2,scalable:true});$(box).hidden=false};
   if(window.qrcode){draw();return Promise.resolve()}
   return new Promise((ok,no)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';sc.onload=()=>{try{draw();ok()}catch(e){no(e)}};sc.onerror=no;document.head.appendChild(sc)});
 }
@@ -2738,10 +2788,21 @@ function rmEndPairing(cancel){
 }
 function rmPaired(link){
   if(rmPairing&&rmPairing.id===link.id)rmEndPairing(false);
+  if(tvInvite===link.id){tvInvite=null;$('tvStart').hidden=true;requestAnimationFrame(fitFill)}
   toast('Phone connected: '+link.name); rmSay(link.name+' can now control this board.');
   setTimeout(()=>rmState(link),800);
 }
-$('rmPairBtn').onclick=rmShowCode; $('tvPair').onclick=()=>{try{ensureAudio()}catch(e){}$('tvStart').hidden=true;enterFs();rmShowCode()};
+const rmPairUrl=code=>location.origin+location.pathname+'?remote#pair='+code;
+// TV mode: the start screen carries a pairing code, so a phone can pair without touching the TV's remote
+let tvInvite=null;
+async function tvStartPair(){
+  try{
+    const {code,id}=await frMakeInvite('tv',fr.name||'TV'); tvInvite=id;
+    $('tvCode').textContent=frCodeFmt(code); $('tvRemoteUrl').textContent=location.host+location.pathname.replace(/[^/]*$/,'')+'remote'; $('tvPairBox').hidden=false;
+    rmQr(rmPairUrl(code),'tvQr').catch(()=>{$('tvQr').hidden=true});
+  }catch(e){}
+}
+$('rmPairBtn').onclick=rmShowCode;
 $('rmPairCancel').onclick=()=>rmEndPairing(true);
 // On the phone: find the TV's code and connect
 let rmPending=null;
@@ -2808,10 +2869,12 @@ function buildRemote(){
 }
 // Remote mode: the full-screen remote. It reuses the remote's pairing and commands; this is only a bigger, simpler face for them.
 const remoteMode=new URLSearchParams(location.search).has('remote');
-let raOpen=null, raT=null;
+let raOpen=null, raT=null, raRepair=false, raAsked=0, raAskT=null;
 function raNote(t){const n=$('raNote');n.textContent=t;clearTimeout(raT);if(t)raT=setTimeout(()=>{n.textContent=''},4000)}
 async function raCmd(o,done){const tv=rmTv();if(!tv){raNote('The TV isn\'t connected yet.');return}
-  try{await frSend(tv,Object.assign({type:'cmd'},o));raNote(done||'Sent.')}catch(e){raNote('Couldn\'t reach '+tv.name+'. Check the connection.')}}
+  try{await frSend(tv,Object.assign({type:'cmd'},o));raNote(done||'Sent.');raExpect()}catch(e){raNote('Couldn\'t reach '+tv.name+'. Check the connection.')}}
+// After each command the TV reports back; if it doesn't, it's probably off, closed, or has forgotten this phone
+function raExpect(){if(raAsked&&Date.now()-raAsked<9e3)return;raAsked=Date.now();clearTimeout(raAskT);raAskT=setTimeout(raRender,9e3)}
 function raChips(box,items,cur,act){
   box.innerHTML='';
   items.forEach(([v,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.classList.toggle('on',v===cur);b.onclick=()=>act(v,label);box.appendChild(b)});
@@ -2850,30 +2913,42 @@ function raInit(){
   $('raChime').onchange=()=>raCmd({action:'sound',chime:$('raChime').value,test:true},'Chime changed.');
   $('raPerf').onchange=()=>raCmd({action:'perf',perf:$('raPerf').value},'Animation setting changed.');
   $('raTv').onchange=()=>{$('rmTv').value=$('raTv').value;rmRender();raCmd({action:'ping'},'')};
-  // Pairing, when no TV is paired yet
-  let pending=null;
+  // Pairing, when no TV is paired yet (or the paired TV stopped answering)
+  const say=t=>{$('raPairNote').textContent=t};
   const look=async raw=>{
-    const code=frCodeNorm(raw); $('raAsk').hidden=true; pending=null;
-    if(code.length!==8){$('raPairNote').textContent='Pairing codes have 8 letters and numbers, like K7Q4-MX2P.';return}
-    $('raPairNote').textContent='Looking up the code…';
+    const code=frCodeNorm(raw);
+    if(code.length!==8){say('Pairing codes have 8 letters and numbers, like K7Q4-MX2P.');return}
+    say('Looking up the code…'); $('raLook').disabled=true;
     try{
-      const inv=await frFetchInvite(code);
-      if(!inv||inv.kind!=='tv'){$('raPairNote').textContent='That code doesn\'t match a TV. Check it on the TV, or choose Pair a phone again.';return}
-      if(frLink(inv.id)){$('raPairNote').textContent='Already paired with '+inv.name+'.';return}
-      pending=inv; $('raAskMsg').textContent='Control '+inv.name+' from this phone?'; $('raAsk').hidden=false; $('raPairNote').textContent='';
-    }catch(e){$('raPairNote').textContent='Couldn\'t look up that code. Check the connection and try again.'}
+      // The relay can take a moment to have a brand-new code, so look twice before giving up
+      let inv=await frFetchInvite(code); if(!inv){await new Promise(r=>setTimeout(r,2500));inv=await frFetchInvite(code)}
+      if(!inv||inv.kind!=='tv'){say('That code doesn\'t match a TV. Check the code on the TV and try again.');return}
+      const old=frLink(inv.id);
+      if(old&&!old.pending){raRepair=false;$('rmTv').value=old.id;raRender();return}
+      if(old){old.at=Date.now();old.sentAt=Date.now();await frPostSealed(old.topic,old.id,old.ikey,old.hello);say('Connecting to '+inv.name+'…');return}
+      await frConnect(inv,'tv',fr.name||'Phone'); say('Connecting to '+inv.name+'…'); rmRender();
+    }catch(e){say('Couldn\'t reach the relay. Check the phone\'s connection and try again.')}
+    finally{$('raLook').disabled=false}
   };
   $('raLook').onclick=()=>look($('raCode').value);
   $('raCode').onkeydown=e=>{if(e.key==='Enter')look($('raCode').value)};
-  $('raAccept').onclick=async()=>{if(!pending)return;try{await frConnect(pending,'tv',fr.name||'Phone');pending=null;$('raAsk').hidden=true;$('raPairNote').textContent='Waiting for the TV to confirm…';rmRender()}catch(e){$('raPairNote').textContent='Couldn\'t connect. Check the connection and try again.'}};
+  $('raRepair').onclick=()=>{raRepair=true;say('');$('raCode').value='';raRender()};
+  $('raPairBack').onclick=()=>{raRepair=false;say('');raRender()};
+  setInterval(()=>{if(rmTvs().some(l=>l.pending))raRender()},4000);
   const m=location.hash.match(/^#pair=([A-Za-z0-9-]+)/);
   if(m){history.replaceState(null,'',location.pathname+location.search);$('raCode').value=frCodeFmt(frCodeNorm(m[1]));look(m[1])}
-  const tv=rmTv(); if(tv)frSend(tv,{type:'cmd',action:'ping'}).catch(()=>{});
+  const tv=rmTv(); if(tv){frSend(tv,{type:'cmd',action:'ping'}).catch(()=>{});raExpect()}
+  document.addEventListener('visibilitychange',()=>{const t=rmTv();if(document.visibilityState==='visible'&&t){raAsked=0;frSend(t,{type:'cmd',action:'ping'}).catch(()=>{});raExpect()}});
 }
 function raRender(){
   if(!remoteMode)return;
   const live=rmTvs().filter(l=>!l.pending), tv=rmTv(), st=tv&&tv.state;
-  $('raPair').hidden=!!live.length; $('raMain').hidden=!live.length;
+  const pairing=!live.length||raRepair;
+  $('raPair').hidden=!pairing; $('raMain').hidden=pairing; $('raPairBack').hidden=!live.length;
+  const wait=rmTvs().find(l=>l.pending);
+  if(pairing&&wait&&!$('raLook').disabled)$('raPairNote').textContent=Date.now()-wait.at<20e3?'Connecting to '+wait.name+'…':'Still connecting. Make sure the code is still showing on the TV; if it isn\'t, choose Pair a phone on the TV and scan the new code.';
+  const quiet=!!tv&&raAsked&&Date.now()-raAsked>=9e3&&!(st&&st.at>=raAsked);
+  $('raStale').hidden=!quiet;
   $('raTv').hidden=live.length<2; $('raTvName').hidden=live.length>=2;
   if(live.length>=2){$('raTv').innerHTML=$('rmTv').innerHTML;$('raTv').value=$('rmTv').value}
   $('raTvName').textContent=tv?tv.name:'Ciao Board remote';
@@ -3165,7 +3240,7 @@ function exitFs(){
 $('fsBtn').onclick=enterFs; $('fsExit').onclick=exitFs;
 if(tvMode){
   document.body.classList.add('tvmode','fs'); fsLayout='fill'; applyFsLayout(); keepAwake();
-  $('tvStart').hidden=false; setTimeout(()=>$('tvGo').focus(),300);
+  $('tvStart').hidden=false; setTimeout(()=>$('tvGo').focus(),300); setTimeout(tvStartPair,400);
   $('tvGo').onclick=()=>{try{ensureAudio()}catch(e){}$('tvStart').hidden=true;$('tvGo').blur();enterFs()};
   // OK on the remote (Enter) with nothing selected shows or hides the controls
   document.addEventListener('keydown',e=>{

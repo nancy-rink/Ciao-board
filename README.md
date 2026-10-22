@@ -48,12 +48,14 @@ BBC's feeds can't be read straight from a web page, so a GitHub Action (`.github
 
 ## Use your phone as a TV remote
 
-1. On the TV, open the board (for example at **is.gd/ciaoboard**) and choose **Pair a phone as a remote** on the start screen. (Or press **OK** for the controls, open **What to show → Remote** and choose **Pair a phone**.)
-2. The board flips to show a pairing code, with a QR code in the corner. Scan the QR code with your phone's camera; it opens the remote. (Or open **nancy-rink.github.io/Ciao-board/remote** on your phone and type the code.)
-3. Tap **Connect**. Your phone is now a full-screen remote: type a message and tap **Show on TV**, tap big buttons for the clock, news, art, saved messages, the day plan or a clear board, swipe through styles, and mute or turn the volume up and down. **More** has the flap sound, chime and animation quality. The top line shows what the TV is displaying.
+1. On the TV, open the board (for example at **is.gd/ciaoboard**). Its start screen shows a big QR code and a pairing code. (Past the start screen? Press **OK** for the controls, open **What to show → Remote** and choose **Pair a phone**.)
+2. Scan the QR code with your phone's camera. It opens the remote and connects by itself, and the TV's start screen closes when it's done. (Or open **nancy-rink.github.io/Ciao-board/remote** on your phone and type the code.)
+3. Your phone is now a full-screen remote: type a message and tap **Show on TV**, tap big buttons for the clock, news, art, saved messages, the day plan or a clear board, swipe through styles, and mute or turn the volume up and down. **More** has the flap sound, chime and animation quality. The top line shows what the TV is displaying.
 4. Add the remote to your home screen (in Safari, **Share → Add to Home Screen**) so it opens like an app.
 
-The same controls are also on the board itself, under **What to show → Remote**. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
+The same controls are also on the board itself, under **What to show → Remote**.
+
+If the TV stops answering (it was switched off, or its browser data was cleared), the remote says so and offers **Pair again**: scan the code on the TV's start screen and the new pairing replaces the old one. A home-screen remote on iPhone keeps its own storage, separate from Safari, so pair once from the home-screen remote itself by typing the code. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
 
 ## How Friends works
 

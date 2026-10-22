@@ -1,0 +1,168 @@
+/* The board: design tokens, the six Everyday colorways, the flaps, their motion and depth. */
+/* Layout: a wall-mounted 6×22 split-flap board; beneath it a tabbed control deck. Each board style re-skins the whole wall. Kiosk mode hides everything but the board. */
+:root,[data-style]{
+  --bevel:0 0 0 transparent; --frame-r:10px; --frame-pad:2.2cqw; --flap-r:2px; --pin-c:transparent; --pin-s:0; --gloss:transparent;
+  --wear:0; --grain:none; --scuff-c:transparent; --tile-stretch:100%; --tile-w:600; --route:transparent; --tile-k:1; --frame-img:none;
+  --wall:#16130f; --frame:#0b0b0b; --frame-edge:#2a2a2a;
+  --tile:#1c1c1c; --tile-hi:#252525; --ink:#f1ece2; --seam:#000; --glow:none;
+  --ui:#f1ece2; --muted:#a39a8b; --line:#2e2a24; --panel:#1f1b16; --panel-2:#26211b;
+  --accent:#e8a33d; --accent-ink:#1a1307; --ok:#3fa66b; --warn:#ff7b66;
+  --c-r:#d8432e; --c-o:#ee8a2b; --c-y:#f2c94c; --c-g:#3fa66b; --c-b:#2f7fd1; --c-v:#7d55c7; --c-w:#f1ece2;
+  --f-tile:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --tile-size:3.1cqw;
+  --f-ui:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+[data-style="daylight"]{
+  --wall:#e6e2d9; --frame:#f7f5f0; --frame-edge:#ffffff;
+  --tile:#fbfaf6; --tile-hi:#ffffff; --ink:#1b1a17; --seam:#d3cdc0;
+  --ui:#1b1a17; --muted:#6b655a; --line:#d2cbbd; --panel:#f4f1ea; --panel-2:#ebe7dd;
+  --accent:#a8461a; --accent-ink:#ffffff; --c-w:#1b1a17; --ok:#1b6e3e; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="rail"]{
+  --wall:#0f1a15; --frame:#08110d; --frame-edge:#1c2c24;
+  --tile:#1d4a35; --tile-hi:#24583f; --ink:#f4f1e6; --seam:#0a1f15;
+  --ui:#eef0e8; --muted:#93a99a; --line:#24402f; --panel:#142820; --panel-2:#1a3228;
+  --accent:#e9d36a; --accent-ink:#1d1a05; --c-g:#7cc47f; --ok:#7cc47f;
+  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-size:2.8cqw;
+}
+[data-style="harbor"]{
+  --wall:#0d1a2b; --frame:#081220; --frame-edge:#1b2b44;
+  --tile:#14294a; --tile-hi:#1a3359; --ink:#f0dfbd; --seam:#06101f;
+  --ui:#eef2f8; --muted:#8fa1bb; --line:#22385a; --panel:#12233c; --panel-2:#182c49;
+  --accent:#f0a868; --accent-ink:#2a1606; --c-b:#5aa6ee;
+}
+[data-style="glow"]{
+  --wall:#0a0807; --frame:#040303; --frame-edge:#1c1612;
+  --tile:#120e0c; --tile-hi:#1a1411; --ink:#ff9a3c; --seam:#000; --glow:0 0 .55cqw #ff7a1a99;
+  --ui:#f3e6d8; --muted:#a08a76; --line:#2b211a; --panel:#15100d; --panel-2:#1d1612;
+  --accent:#ff9a3c; --accent-ink:#1d0d00;
+  --f-tile:"VT323",ui-monospace,Menlo,monospace; --tile-size:3.9cqw;
+}
+/* Vintage styles: they change the flaps themselves (pins, gloss, wear, shape), not only the colors */
+[data-style="solari"]{
+  --wall:#121417; --frame:#050607; --frame-edge:#24272b;
+  --tile:#141516; --tile-hi:#202224; --ink:#f4f4f0; --seam:#000;
+  --ui:#eceeef; --muted:#9aa0a6; --line:#2a2d31; --panel:#17191c; --panel-2:#1e2125;
+  --accent:#f2f2ee; --accent-ink:#111214; --ok:#4fb67a;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-stretch:68%; --tile-w:600; --tile-size:3.15cqw;
+  --pin-c:#8b9097; --pin-s:.3; --gloss:rgba(255,255,255,.07); --flap-r:1.5px;
+}
+[data-style="cifra"]{
+  --wall:#2b1d14; --frame:#3a2416; --frame-edge:#6b4729;
+  --tile:#e9e2d0; --tile-hi:#f6f1e4; --ink:#1d1a16; --seam:#8f8576;
+  --ui:#f3e9da; --muted:#c2ad94; --line:#4a3424; --panel:#301f15; --panel-2:#3a271b;
+  --accent:#e8a860; --accent-ink:#2a1606; --ok:#7cc47f; --warn:#ff8a75; --c-w:#1d1a16;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:100%; --tile-w:800; --tile-size:3.2cqw;
+  --gloss:rgba(255,255,255,.45); --flap-r:.9cqw; --frame-r:2.4cqw; --frame-pad:2.8cqw;
+  --bevel:inset 0 2px 0 #7a5233,inset 0 -3px 0 #24150c;
+}
+/* Worn: any style, aged. Scuffs take a little of the letter color so they read on light and dark flaps alike. */
+.board[data-aged],[data-aged] .board,.pv[data-aged]{--wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:color-mix(in srgb,var(--ink) 13%,transparent)}
+[data-style="pragotron"]{
+  --wall:#181b1e; --frame:#0c0e10; --frame-edge:#262b30;
+  --tile:#2a2e33; --tile-hi:#33383e; --ink:#e8ebee; --seam:#0a0b0c;
+  --ui:#e6e9ec; --muted:#9aa3ad; --line:#2d3238; --panel:#1a1e22; --panel-2:#22272c;
+  --accent:#ff6a5c; --accent-ink:#1a0705; --ok:#4fb67a; --warn:#ff8a7d;
+  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-w:500; --tile-size:2.8cqw; --tile-k:.92;
+  --route:#c23b2a; --pin-c:#6b737c; --pin-s:.24;
+}
+[data-style="mint"]{
+  --wall:#dfeee8; --frame:#f6fbf9; --frame-edge:#ffffff;
+  --tile:#cfe9df; --tile-hi:#dcf1e9; --ink:#10443a; --seam:#a7cfc1;
+  --ui:#10443a; --muted:#4a7369; --line:#b9d8cc; --panel:#ecf6f2; --panel-2:#e1efe9;
+  --accent:#c2453f; --accent-ink:#ffffff; --c-w:#10443a; --ok:#1b6e3e; --warn:#b3261e;
+  color-scheme:light;
+}
+/* Frame materials from Settings override the style's own frame */
+body[data-frame="metal"],body[data-frame="metal"] .board{--frame:#7d8288;--frame-edge:#d4d8dc;--frame-img:linear-gradient(170deg,#a9aeb4 0%,#6c7177 35%,#b9bec3 55%,#5f646a 100%),repeating-linear-gradient(90deg,#ffffff08 0 1px,#0000 1px 3px);--bevel:inset 0 2px 0 #e2e6ea,inset 0 -3px 0 #3a3e42}
+body[data-frame="walnut"],body[data-frame="walnut"] .board{--frame:#4a2e1b;--frame-edge:#8a5a36;--frame-img:repeating-linear-gradient(92deg,#ffffff06 0 2px,#0000 2px 9px,#00000014 9px 11px,#0000 11px 17px),linear-gradient(175deg,#6b4428,#3f2716 60%,#5a381f);--bevel:inset 0 2px 0 #8f6040,inset 0 -3px 0 #22140a}
+body[data-frame="black"],body[data-frame="black"] .board{--frame:#0a0a0a;--frame-edge:#1f1f1f;--frame-img:none;--bevel:0 0 0 transparent}
+body[data-frame="white"],body[data-frame="white"] .board{--frame:#f4f2ee;--frame-edge:#ffffff;--frame-img:none;--bevel:inset 0 -2px 0 #d9d5cc}
+html,body{background:var(--wall);color:var(--ui)}
+body{font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px;min-height:100%;transition:background-color .4s,color .4s}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+/* Board */
+.board{container-type:inline-size;position:relative;background:var(--frame);background-image:var(--frame-img,none);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
+.grid{display:grid;grid-template-columns:repeat(22,1fr);gap:.45cqw}
+.t{position:relative;aspect-ratio:.82;max-width:100%;perspective:300px;font-family:var(--f-tile);font-weight:600;font-size:var(--tile-size);color:var(--ink);text-shadow:var(--glow)}
+[data-style="rail"] .t{font-weight:500}
+[data-style="glow"] .t{font-weight:400}
+.h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile)}
+.h.u{top:0;border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile))}
+.h.d{bottom:0;border-radius:0 0 var(--flap-r,2px) var(--flap-r,2px)}
+.h span{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center}
+.h.u span,.f span{top:0}
+.h.d span{bottom:0}
+.t::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--seam);opacity:.85;z-index:3}
+.f,.g{position:absolute;left:0;right:0;height:50%;overflow:hidden;z-index:2;visibility:hidden;backface-visibility:hidden}
+.f{top:0;transform-origin:50% 100%;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile));border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0}
+.g{bottom:0;transform-origin:50% 0;background:var(--tile);border-radius:0 0 var(--flap-r,2px) var(--flap-r,2px)}
+.f span,.g span{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center}
+.g span{bottom:0}
+.t{--dur:calc(var(--half,35ms) * var(--spd,1))}
+.f.a{visibility:visible;animation:fA var(--dur) ease-in forwards}
+.f.b{visibility:visible;animation:fB var(--dur) ease-in forwards}
+.g.a{visibility:visible;animation:gA var(--dur) ease-out var(--dur) both}
+.g.b{visibility:visible;animation:gB var(--dur) ease-out var(--dur) both}
+/* Realistic motion: the flap keeps gathering speed as it falls, each tile runs a touch fast or slow, and the last flap settles with a bounce */
+body.real .t{--spd:var(--spd-r,1)}
+body.real .f.a,body.real .f.b{animation-timing-function:cubic-bezier(.55,0,.9,.55)}
+body.real .g.a,body.real .g.b{animation-timing-function:cubic-bezier(.35,.4,.75,1)}
+body.real .g.a.land{animation:gLandA calc(var(--dur) * 2.6) linear var(--dur) both}
+body.real .g.b.land{animation:gLandB calc(var(--dur) * 2.6) linear var(--dur) both}
+@keyframes gLandA{0%{transform:rotateX(90deg);animation-timing-function:cubic-bezier(.35,.4,.75,1)}38%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}56%{transform:rotateX(16deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}74%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}84%{transform:rotateX(4deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}93%,100%{transform:rotateX(0)}}
+@keyframes gLandB{0%{transform:rotateX(90deg);animation-timing-function:cubic-bezier(.35,.4,.75,1)}38%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}56%{transform:rotateX(16deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}74%{transform:rotateX(0);animation-timing-function:cubic-bezier(.2,.7,.5,1)}84%{transform:rotateX(4deg);animation-timing-function:cubic-bezier(.5,0,.8,.4)}93%,100%{transform:rotateX(0)}}
+@keyframes fA{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
+@keyframes fB{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
+/* Shading rides on opacity overlays, which the compositor handles cheaply */
+.f::before,.g::before{content:"";position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none}
+.f::before{background:#000}
+.g::before{background:#fff}
+.f.a::before,.f.b::before{animation:shadeIn var(--dur) ease-in forwards}
+.g.a::before,.g.b::before{animation:shadeOut var(--dur) ease-out var(--dur) both}
+/* A flap's free edge catches the light as it turns, so it reads as a card with thickness */
+.f::after,.g::after{content:"";position:absolute;left:0;right:0;height:max(1px,.16cqw);z-index:2;pointer-events:none;background:color-mix(in srgb,var(--tile) 55%,var(--ink) 45%);opacity:.85}
+.f::after{top:0}.g::after{bottom:0}
+/* Style change: the tile turns edge-on (the new style swaps in out of sight) and back */
+.t.restyle{animation:restyleFlip var(--restyle,240ms) ease-in-out}
+@keyframes restyleFlip{0%{transform:perspective(40cqw) rotateX(0)}50%{transform:perspective(40cqw) rotateX(-90deg)}100%{transform:perspective(40cqw) rotateX(0)}}
+/* Idle twitch: the top flap lifts a little and drops back with a small bounce */
+.t.twitch .h.u{transform-origin:50% 100%;animation:twitch .7s cubic-bezier(.3,.7,.4,1)}
+@keyframes twitch{0%{transform:rotateX(0)}22%{transform:rotateX(-28deg)}48%{transform:rotateX(6deg)}66%{transform:rotateX(-8deg)}82%{transform:rotateX(2deg)}100%{transform:rotateX(0)}}
+/* Smooth mode: keep the flap motion, drop the effects that cost the most to draw on slow screens */
+body.lite .t,body.lite .h.u,body.lite .h.d,body.lite .g{box-shadow:none!important}
+body.lite .board::after,body.lite .t::before,body.lite .f::before,body.lite .g::before,body.lite .f::after,body.lite .g::after{display:none}
+body.lite .t span{text-shadow:none}
+body.lite .t{contain:layout paint style}
+/* Smooth mode's canvas sits exactly over the grid, which stays in place (invisible) to give the layout */
+#gridCanvas{position:absolute;pointer-events:none}
+#gridCanvas[hidden]{display:none}
+.grid.canvas{visibility:hidden}
+body.lite .f.a,body.lite .f.b{animation-timing-function:ease-in}
+body.lite .g.a,body.lite .g.a.land{animation:gA var(--dur) ease-out var(--dur) both}
+body.lite .g.b,body.lite .g.b.land{animation:gB var(--dur) ease-out var(--dur) both}
+/* Depth: tiles sit proud of the frame, shaded toward the split, with soft glare across the glass */
+body.depth .t{border-radius:var(--flap-r,2px);box-shadow:0 .22cqw .3cqw -.08cqw #0009}
+body.depth .h.u{box-shadow:inset 0 -.4cqw .35cqw -.25cqw #0005,inset 0 1px 0 #ffffff12}
+body.depth .h.d{box-shadow:inset 0 .45cqw .4cqw -.25cqw #0006,inset 0 -1px 0 #0000002e}
+body.depth .g{box-shadow:0 .3cqw .5cqw -.1cqw #0007}
+body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;background:linear-gradient(112deg,#ffffff00 14%,#ffffff1f 27%,#ffffff0a 40%,#ffffff00 50%,#ffffff00 66%,#ffffff12 75%,#ffffff00 84%),linear-gradient(180deg,#ffffff0d,#ffffff00 35%)}
+@keyframes shadeIn{from{opacity:0}to{opacity:.45}}
+@keyframes shadeOut{from{opacity:.22}to{opacity:0}}
+.f,.g{will-change:auto}
+[data-style="glow"] .f span,[data-style="glow"] .g span{text-shadow:none}
+.t{font-stretch:var(--tile-stretch,100%)}
+[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="pragotron"] .t{font-weight:var(--tile-w,600)}
+/* Off-center silkscreen printing and faded letters, scaled by the style's --wear */
+.t span{translate:calc(var(--jx,0) * var(--wear,0) * var(--u,1) * 1cqw) calc(var(--jy,0) * var(--wear,0) * var(--u,1) * 1cqw);opacity:calc(1 - var(--fd,0) * var(--wear,0))}
+/* Hinge pins, a scuff and grain, sitting over the resting flaps and under the moving ones */
+.t::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:var(--flap-r,2px);
+  background:
+    radial-gradient(circle at 0 50%,var(--pin-c,transparent) 0 calc(var(--pin-s,0) * var(--u,1) * 1cqw),transparent calc(var(--pin-s,0) * var(--u,1) * 1cqw + .15cqw)),
+    radial-gradient(circle at 100% 50%,var(--pin-c,transparent) 0 calc(var(--pin-s,0) * var(--u,1) * 1cqw),transparent calc(var(--pin-s,0) * var(--u,1) * 1cqw + .15cqw)),
+    radial-gradient(calc(var(--sw,1) * var(--u,1) * 1cqw) calc(var(--sh,1) * var(--u,1) * 1cqw) at var(--sx,50%) var(--sy,50%),var(--scuff-c,transparent),transparent 70%),
+    var(--grain,none)}
+[data-style="pragotron"] .t.edge .h{box-shadow:inset .32cqw 0 0 var(--route)}

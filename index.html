@@ -686,7 +686,7 @@ low tide 1:12 pm</textarea>
       <div class="pane-head">
         <div><h2>Friends</h2><p class="sub" id="frStatus">Connect with a friend's Ciao Board and send messages to each other. You both have to agree before anything can be sent.</p></div>
       </div>
-      <div id="frBody" hidden>
+      <div id="frBody">
         <div class="fields">
           <label class="field" for="frName"><span>Name your friends see</span><input type="text" id="frName" maxlength="40" placeholder="For example: Nancy's kitchen" autocomplete="off"></label>
           <label class="field" for="frHold"><span>Show a friend's message for</span>
@@ -722,7 +722,7 @@ low tide 1:12 pm</textarea>
         <h3 class="fr-h">Connect a board</h3>
         <div class="fields">
           <div class="field wide">
-            <div class="row"><button id="frInvite" type="button">Create an invite</button><span class="hint">Gives you a code and a link to send your friend. It works once, for 24 hours.</span></div>
+            <div class="row"><button id="frInvite" type="button">Create an invite</button><span class="hint">Gives you a code and a link to send your friend. It works once, for 12 hours.</span></div>
             <div class="fr-code" id="frInviteOut" hidden><b id="frCode"></b><input type="text" id="frLink" readonly aria-label="Invite link"><button id="frCopy" type="button">Copy link</button></div>
           </div>
           <div class="field wide">
@@ -1800,88 +1800,98 @@ $('newsBtn').onclick=()=>{if(mode==='news')stopModes();else startNews()};
 $('newsSection').value=news.section; $('newsEvery').value=String(news.every); $('newsCount').value=String(news.count);
 [['newsSection','section'],['newsEvery','every'],['newsCount','count']].forEach(([id,k])=>{$(id).onchange=()=>{news[k]=k==='section'?$(id).value:+$(id).value;saveNews();startNews()}});
 
-// Friends: send messages between boards whose owners have both agreed, through the site owner's Firebase project.
-// Each board signs in anonymously; a one-time invite code pairs two boards. Rules live in firestore.rules; setup in FRIENDS-SETUP.md.
-const FIREBASE_CONFIG=null; // paste the config object from the Firebase console here
-const FB_SDK='https://www.gstatic.com/firebasejs/10.12.2/';
-const fr=Object.assign({name:'',allow:true,hold:5,on:false,invites:[]},store.get('fb.friends',{}));
-let fbP=null, frLinks=new Map(), frInbox=new Map(), frMsgSubs=new Map(), frLinkSub=null, frHoldT=null, frPending=null, frNoteShownFor='';
+// Friends: send messages between boards whose owners have both agreed, through the free ntfy.sh relay (no account or setup).
+// Each board listens on its own unguessable inbox topic. The invite (found with its code) carries the inviter's topic and a one-time key
+// for the handshake; on accepting, the two boards run an ECDH key exchange, so only those two boards hold the key their messages are sealed
+// with, even if someone else saw the code. The relay only ever carries sealed messages; ntfy.sh keeps them 12 hours.
+const NTFY='https://ntfy.sh/';
+function frRand(n){const A='abcdefghijkmnopqrstuvwxyz23456789',r=crypto.getRandomValues(new Uint32Array(n));return [...r].map(x=>A[x%A.length]).join('')}
+const fr=Object.assign({name:'',allow:true,hold:5,inbox:'',links:[],invites:[],waiting:[],seen:[],since:''},store.get('fb.friends',{}));
+if(!fr.inbox)fr.inbox='cb'+frRand(30);
+let frES=null, frHoldT=null, frPending=null, frNoteShownFor='';
 function saveFr(){store.set('fb.friends',fr)}
+saveFr();
 function frSay(t){$('frStatus').textContent=t}
-// window.__ciaoFirebase lets a test point the board at a local Firebase emulator
-function frSetup(){return window.__ciaoFirebase||(FIREBASE_CONFIG&&{config:FIREBASE_CONFIG})}
-function fbInit(){
-  if(fbP)return fbP;
-  const setup=frSetup(); if(!setup)return Promise.resolve(null);
-  fbP=(async()=>{
-    const [app,auth,fs]=await Promise.all(['firebase-app','firebase-auth','firebase-firestore'].map(m=>import(FB_SDK+m+'.js')));
-    const a=app.initializeApp(setup.config), au=auth.getAuth(a), db=fs.getFirestore(a);
-    if(setup.emulator){auth.connectAuthEmulator(au,setup.emulator.auth,{disableWarnings:true});fs.connectFirestoreEmulator(db,setup.emulator.host,setup.emulator.port)}
-    const cred=await auth.signInAnonymously(au);
-    return {db,fs,uid:cred.user.uid};
-  })().catch(e=>{fbP=null;throw e});
-  return fbP;
-}
-const frCodeFmt=c=>c.slice(0,3)+'-'+c.slice(3);
+const b64u={enc:b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))};
+const te=new TextEncoder(), td=new TextDecoder(), frKeys=new Map();
+function frKey(raw){if(!frKeys.has(raw))frKeys.set(raw,crypto.subtle.importKey('raw',b64u.dec(raw),'AES-GCM',false,['encrypt','decrypt']));return frKeys.get(raw)}
+async function frSeal(key,obj){const iv=crypto.getRandomValues(new Uint8Array(12));return b64u.enc(iv)+'.'+b64u.enc(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,te.encode(JSON.stringify(obj))))}
+async function frOpen(key,s){const [iv,ct]=String(s).split('.');return JSON.parse(td.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u.dec(iv)},key,b64u.dec(ct))))}
+// An invite code names a hidden topic and unlocks what's posted there; the code itself never reaches the relay
+async function frInviteTopic(code){const h=new Uint8Array(await crypto.subtle.digest('SHA-256',te.encode('ciao-board-invite:'+code)));return 'cbi'+[...h.slice(0,20)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+async function frInviteKey(code){const k=await crypto.subtle.importKey('raw',te.encode(code),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:te.encode('ciao-board-invite'),iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+const frCodeFmt=c=>c.slice(0,4)+'-'+c.slice(4);
 const frCodeNorm=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-function frNewCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint32Array(6));return [...r].map(n=>A[n%A.length]).join('')}
-function frOther(l,uid){return l.members.find(m=>m!==uid)}
-async function frStart(){
-  let f; try{f=await fbInit()}catch(e){frSay('Couldn\'t reach the messaging service. Check the internet connection and reload.');return}
-  if(!f)return;
-  fr.on=true; saveFr();
-  if(frLinkSub)return;
-  const {db,fs,uid}=f;
-  // Metadata changes too, so a link this board just created is picked up once the server has saved it
-  frLinkSub=fs.onSnapshot(fs.query(fs.collection(db,'links'),fs.where('members','array-contains',uid)),{includeMetadataChanges:true},snap=>{
-    const seen=new Set();
-    snap.forEach(d=>{
-      if(d.metadata.hasPendingWrites){seen.add(d.id);return}
-      const l=d.data(); seen.add(d.id); const other=frOther(l,uid);
-      frLinks.set(d.id,{code:d.id,uid:other,name:(l.names&&l.names[other])||'A friend'});
-      // An invite of ours has been used: tidy it away
-      if(fr.invites.includes(d.id)){fr.invites=fr.invites.filter(c=>c!==d.id);saveFr();fs.deleteDoc(fs.doc(db,'invites',d.id)).catch(()=>{});if($('frCode').textContent===frCodeFmt(d.id))$('frInviteOut').hidden=true;toast('Connected with '+((l.names&&l.names[other])||'a friend'))}
-      if(!frMsgSubs.has(d.id))frListen(d.id);
-    });
-    [...frLinks.keys()].forEach(c=>{if(!seen.has(c)){frLinks.delete(c);const u=frMsgSubs.get(c);if(u)u();frMsgSubs.delete(c);[...frInbox.keys()].forEach(k=>{if(frInbox.get(k).code===c)frInbox.delete(k)})}});
-    frRender(); frNotify();
-  },()=>frSay('Couldn\'t load your connected boards. Reload to try again.'));
+function frNewCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint32Array(8));return [...r].map(n=>A[n%A.length]).join('')}
+async function frPost(topic,body){const r=await fetch(NTFY+topic,{method:'POST',body});if(!r.ok)throw new Error('HTTP '+r.status)}
+// Everything a board sends a friend goes to the friend's inbox as "ciao1 <link id> <sealed>"
+async function frPostSealed(topic,id,raw,obj){await frPost(topic,'ciao1 '+id+' '+await frSeal(await frKey(raw),obj))}
+async function frSend(link,obj){await frPostSealed(link.topic,link.id,link.key,obj)}
+const frLink=id=>fr.links.find(l=>l.id===id);
+const frLive=id=>{const l=frLink(id);return l&&!l.pending?l:null};
+const ECDH={name:'ECDH',namedCurve:'P-256'};
+const frEcdh=()=>crypto.subtle.generateKey(ECDH,true,['deriveBits']);
+const frPub=async kp=>b64u.enc(await crypto.subtle.exportKey('raw',kp.publicKey));
+async function frShared(priv,pubRaw){
+  const pub=await crypto.subtle.importKey('raw',b64u.dec(pubRaw),ECDH,false,[]);
+  return b64u.enc(await crypto.subtle.digest('SHA-256',await crypto.subtle.deriveBits({name:'ECDH',public:pub},priv,256)));
 }
-function frListen(code){
-  fbInit().then(({db,fs,uid})=>{
-    frMsgSubs.set(code,fs.onSnapshot(fs.query(fs.collection(db,'links',code,'messages'),fs.where('to','==',uid)),snap=>{
-      let fresh=false;
-      snap.docChanges().forEach(ch=>{
-        const k=code+'/'+ch.doc.id;
-        if(ch.type==='removed'){frInbox.delete(k);return}
-        const m=ch.doc.data();
-        if(!frInbox.has(k))fresh=true;
-        frInbox.set(k,{key:k,code,id:ch.doc.id,text:m.text,sent:m.sent?m.sent.toMillis():Date.now()});
-      });
-      frRender(); frNotify(fresh);
-    },()=>{frMsgSubs.delete(code);setTimeout(()=>{if(frLinks.has(code)&&!frMsgSubs.has(code))frListen(code)},5000)}));
-  });
+function frListen(){
+  if(frES||(!fr.links.length&&!fr.invites.length))return;
+  frES=new EventSource(NTFY+fr.inbox+'/sse?since='+encodeURIComponent(fr.since||'12h'));
+  frES.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='message')frReceive(m)}catch(x){}};
 }
-const frName=code=>(frLinks.get(code)||{}).name||'A friend';
-function frQueue(){return [...frInbox.values()].filter(m=>frLinks.has(m.code)).sort((a,b)=>a.sent-b.sent)}
+async function frReceive(m){
+  if(fr.seen.includes(m.id))return;
+  fr.seen=[...fr.seen.slice(-299),m.id]; fr.since=m.id; saveFr();
+  const [tag,id,sealed]=String(m.message||'').split(' ');
+  if(tag!=='ciao1')return;
+  // Handshake messages are sealed with the invite's key; everything after with the pair's own key
+  const link=frLink(id), inv=fr.invites.find(i=>i.id===id), raw=link?(link.pending?link.ikey:link.key):inv?inv.key:null;
+  if(!raw)return;
+  let o; try{o=await frOpen(await frKey(raw),sealed)}catch(e){return}
+  let fresh=false;
+  if(o.type==='hello'&&inv&&!link&&typeof o.topic==='string'&&typeof o.pub==='string'){
+    // Our invite was accepted: the first acceptance wins and the invite is spent
+    fr.invites=fr.invites.filter(i=>i.id!==id); saveFr();
+    const name=String(o.name||'A friend').slice(0,40), kp=await frEcdh();
+    const key=await frShared(kp.privateKey,o.pub);
+    fr.links.push({id,name,topic:o.topic,key}); saveFr();
+    await frPostSealed(o.topic,id,inv.key,{type:'welcome',pub:await frPub(kp)}).catch(()=>{});
+    if($('frInviteOut').dataset.id===id)$('frInviteOut').hidden=true;
+    toast('Connected with '+name); frSay('Connected with '+name+'.');
+  }else if(o.type==='welcome'&&link&&link.pending&&!link.busy&&typeof o.pub==='string'){
+    link.busy=true; // the first welcome wins
+    const priv=await crypto.subtle.importKey('jwk',link.priv,ECDH,false,['deriveBits']);
+    link.key=await frShared(priv,o.pub); delete link.pending; delete link.priv; delete link.ikey; delete link.busy;
+    toast('Connected with '+link.name); frSay('Connected with '+link.name+'.');
+  }else if(o.type==='msg'&&link&&!link.pending&&typeof o.text==='string'){
+    fr.waiting.push({key:m.id,id,text:o.text.slice(0,300),sent:(m.time||0)*1000}); fresh=true;
+  }else if(o.type==='bye'&&link&&!link.pending){
+    fr.links=fr.links.filter(l=>l.id!==id); fr.waiting=fr.waiting.filter(w=>w.id!==id);
+  }else return;
+  saveFr(); frRender(); frNotify(fresh);
+}
+const frName=id=>(frLink(id)||{}).name||'A friend';
+function frQueue(){return fr.waiting.filter(m=>frLive(m.id)).sort((a,b)=>a.sent-b.sent)}
 // Ask first: a note under the board says who it's from; nothing flips until someone taps Show
 function frNotify(fresh){
   const q=frQueue(), n=$('fnote');
   if(!fr.allow||!q.length){n.hidden=true;return}
   const m=q[0], key=m.key+'|'+q.length;
-  $('fnoteMsg').textContent=q.length>1?q.length+' messages waiting, first from '+frName(m.code):'New message from '+frName(m.code);
+  $('fnoteMsg').textContent=q.length>1?q.length+' messages waiting, first from '+frName(m.id):'New message from '+frName(m.id);
   if(fresh||frNoteShownFor!==key){n.hidden=false;frNoteShownFor=key}
   if(fresh){try{if(snd.on&&!audioBlocked())playChime()}catch(e){}if(document.body.classList.contains('fs'))poke()}
 }
 $('fnoteShow').onclick=()=>{const m=frQueue()[0];if(m)frShow(m);else $('fnote').hidden=true};
 $('fnoteLater').onclick=()=>{$('fnote').hidden=true};
+function frDrop(key){fr.waiting=fr.waiting.filter(w=>w.key!==key);saveFr()}
 function frShow(m){
   const prev={mode,text:lastSent,sched:schedOn};
   clearTimeout(frHoldT);
   schedDriving=true; try{stopModes()}finally{schedDriving=false}
   send(m.text); $('fnote').hidden=true;
-  frInbox.delete(m.key); frRender();
-  fbInit().then(({db,fs})=>fs.deleteDoc(fs.doc(db,'links',m.code,'messages',m.id))).catch(()=>{});
+  frDrop(m.key); frRender();
   if(fr.hold>0)frHoldT=setTimeout(()=>{if(mode===''&&lastSent===m.text)frResume(prev)},fr.hold*60000);
   if(frQueue().length)setTimeout(()=>frNotify(),400);
 }
@@ -1893,30 +1903,35 @@ function frResume(p){
 }
 function frRender(){
   const fl=$('frList'); fl.innerHTML='';
-  if(!frLinks.size)fl.innerHTML='<li class="hint">No connected boards yet. Create an invite below, or type a friend\'s code.</li>';
-  frLinks.forEach(l=>{
+  if(!fr.links.length)fl.innerHTML='<li class="hint">No connected boards yet. Create an invite below, or type a friend\'s code.</li>';
+  fr.links.forEach(l=>{
     const li=document.createElement('li');
-    const t=document.createElement('span'); t.className='txt'; t.textContent=l.name;
-    const w=document.createElement('button'); w.type='button'; w.className='show'; w.textContent='Message';
-    w.onclick=()=>{$('frTo').value=l.code;$('frMsg').focus()};
+    const t=document.createElement('span'); t.className='txt'; t.textContent=l.name+(l.pending?' (waiting for their board to confirm)':'');
+    const w=document.createElement('button'); w.type='button'; w.className='show'; w.textContent='Message'; w.hidden=!!l.pending;
+    w.onclick=()=>{$('frTo').value=l.id;$('frMsg').focus()};
     const x=document.createElement('button'); x.type='button'; x.className='x'; x.textContent='Disconnect'; x.setAttribute('aria-label','Disconnect from '+l.name);
-    x.onclick=async()=>{if(!confirm('Disconnect from '+l.name+'? Neither board will be able to message the other until you connect again.'))return;try{const {db,fs}=await fbInit();await fs.deleteDoc(fs.doc(db,'links',l.code))}catch(e){toast('Couldn\'t disconnect. Try again.')}};
+    x.onclick=()=>{
+      if(!confirm('Disconnect from '+l.name+'? Neither board will be able to message the other until you connect again.'))return;
+      if(!l.pending)frSend(l,{type:'bye'}).catch(()=>{});
+      fr.links=fr.links.filter(k=>k.id!==l.id); fr.waiting=fr.waiting.filter(w=>w.id!==l.id); saveFr(); frRender(); frNotify();
+    };
     li.append(t,w,x); fl.appendChild(li);
   });
   const ib=$('frInbox'); ib.innerHTML=''; const q=frQueue();
   if(!q.length)ib.innerHTML='<li class="hint">Nothing waiting.</li>';
   q.forEach(m=>{
     const li=document.createElement('li');
-    const t=document.createElement('span'); t.className='txt'; tokenSpans(t,frName(m.code)+': '+m.text.replace(/\n/g,' / ').toUpperCase());
+    const t=document.createElement('span'); t.className='txt'; tokenSpans(t,frName(m.id)+': '+m.text.replace(/\n/g,' / ').toUpperCase());
     const sh=document.createElement('button'); sh.type='button'; sh.className='show'; sh.textContent='Show'; sh.onclick=()=>frShow(m);
-    const x=document.createElement('button'); x.type='button'; x.className='x'; x.textContent='Delete'; x.setAttribute('aria-label','Delete message from '+frName(m.code));
-    x.onclick=()=>{frInbox.delete(m.key);frRender();frNotify();fbInit().then(({db,fs})=>fs.deleteDoc(fs.doc(db,'links',m.code,'messages',m.id))).catch(()=>{})};
+    const x=document.createElement('button'); x.type='button'; x.className='x'; x.textContent='Delete'; x.setAttribute('aria-label','Delete message from '+frName(m.id));
+    x.onclick=()=>{frDrop(m.key);frRender();frNotify()};
     li.append(t,sh,x); ib.appendChild(li);
   });
   const to=$('frTo'), keep=to.value; to.innerHTML='';
-  frLinks.forEach(l=>{const o=document.createElement('option');o.value=l.code;o.textContent=l.name;to.appendChild(o)});
-  if(frLinks.has(keep))to.value=keep;
-  $('frSendBox').hidden=!frLinks.size;
+  const live=fr.links.filter(l=>!l.pending);
+  live.forEach(l=>{const o=document.createElement('option');o.value=l.id;o.textContent=l.name;to.appendChild(o)});
+  if(frLive(keep))to.value=keep;
+  $('frSendBox').hidden=!live.length;
   try{updateSubs()}catch(e){}
 }
 function frMsgText(){return fromEmoji($('frMsg').value)}
@@ -1927,11 +1942,11 @@ document.querySelectorAll('#pane-friends .chip').forEach(b=>b.onclick=()=>{
   el.value=el.value.slice(0,s0)+tok+el.value.slice(e0); el.focus(); el.selectionStart=el.selectionEnd=s0+tok.length; frCount();
 });
 $('frSend').onclick=async()=>{
-  const code=$('frTo').value, l=frLinks.get(code), text=frMsgText().trim();
+  const l=frLive($('frTo').value), text=frMsgText().trim();
   if(!l||!text)return;
   if(layout(text).length>ROWS||text.length>300){frCount();toast('That won\'t fit on the board. Make it shorter.');return}
   $('frSend').disabled=true;
-  try{const {db,fs,uid}=await fbInit();await fs.addDoc(fs.collection(db,'links',code,'messages'),{from:uid,to:l.uid,text,sent:fs.serverTimestamp()});$('frMsg').value='';frCount();toast('Sent to '+l.name)}
+  try{await frSend(l,{type:'msg',text});$('frMsg').value='';frCount();toast('Sent to '+l.name)}
   catch(e){toast('Couldn\'t send. Check the connection and try again.')}
   finally{$('frSend').disabled=false}
 };
@@ -1943,11 +1958,11 @@ $('frInvite').onclick=async()=>{
   if(frNeedName())return;
   $('frInvite').disabled=true;
   try{
-    const {db,fs,uid}=await fbInit(); await frStart();
-    let code='';
-    for(let i=0;i<4&&!code;i++){const c=frNewCode();try{await fs.setDoc(fs.doc(db,'invites',c),{from:uid,name:fr.name,expires:fs.Timestamp.fromMillis(Date.now()+864e5)});code=c}catch(e){if(i===3)throw e}}
-    fr.invites=[...fr.invites.slice(-9),code]; saveFr();
-    $('frCode').textContent=frCodeFmt(code); $('frLink').value=location.origin+location.pathname+'#invite='+code; $('frInviteOut').hidden=false;
+    const code=frNewCode(), id=frRand(12), key=b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
+    await frPost(await frInviteTopic(code),await frSeal(await frInviteKey(code),{v:1,id,name:fr.name,topic:fr.inbox,key}));
+    fr.invites=[...fr.invites.filter(i=>Date.now()-i.made<432e5).slice(-9),{id,key,made:Date.now()}]; saveFr(); frListen();
+    $('frCode').textContent=frCodeFmt(code); $('frLink').value=location.origin+location.pathname+'#invite='+code;
+    $('frInviteOut').dataset.id=id; $('frInviteOut').hidden=false;
     frSay('Send the code or the link to your friend. When they accept, their board appears under Connected boards.');
   }catch(e){frSay('Couldn\'t create an invite. Check the connection and try again.')}
   finally{$('frInvite').disabled=false}
@@ -1955,15 +1970,18 @@ $('frInvite').onclick=async()=>{
 $('frCopy').onclick=async()=>{try{await navigator.clipboard.writeText($('frLink').value);toast('Link copied')}catch(e){$('frLink').select()}};
 async function frLookup(raw){
   const code=frCodeNorm(raw); $('frAsk').hidden=true; frPending=null;
-  if(code.length!==6){frSay('Invite codes have 6 letters and numbers, like K7Q-4MX.');return}
+  if(code.length!==8){frSay('Invite codes have 8 letters and numbers, like K7Q4-MX2P.');return}
+  frSay('Looking up the invite…');
   try{
-    const {db,fs,uid}=await fbInit();
-    const snap=await fs.getDoc(fs.doc(db,'invites',code));
-    if(!snap.exists()){frSay('That code doesn\'t match an invite. It may have been used already or mistyped.');return}
-    const inv=snap.data();
-    if(inv.from===uid){frSay('That\'s your own invite. Send it to your friend instead.');return}
-    if(inv.expires.toMillis()<Date.now()){frSay('That invite has expired. Ask your friend for a new one.');return}
-    frPending={code,inv}; $('frAskMsg').textContent='Connect with '+inv.name+'? You\'ll be able to send each other messages, and you\'re asked before any message is shown.'; $('frAsk').hidden=false;
+    const r=await fetch(NTFY+await frInviteTopic(code)+'/json?poll=1&since=12h'); if(!r.ok)throw new Error('HTTP '+r.status);
+    const posts=(await r.text()).split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(m=>m.event==='message');
+    const key=await frInviteKey(code); let inv=null;
+    for(const p of posts.reverse()){try{inv=await frOpen(key,p.message);break}catch(e){}}
+    if(!inv){frSay('That code doesn\'t match an invite. It may have expired (invites last 12 hours) or been mistyped.');return}
+    if(inv.topic===fr.inbox){frSay('That\'s your own invite. Send it to your friend instead.');return}
+    if(frLink(inv.id)){frSay('You\'re already connected with '+inv.name+'.');return}
+    frPending=inv; $('frAskMsg').textContent='Connect with '+inv.name+'? You\'ll be able to send each other messages, and you\'re asked before any message is shown.'; $('frAsk').hidden=false;
+    frSay('Found an invite from '+inv.name+'.');
   }catch(e){frSay('Couldn\'t look up that code. Check the connection and try again.')}
 }
 $('frLook').onclick=()=>frLookup($('frCodeIn').value);
@@ -1971,26 +1989,26 @@ $('frCodeIn').onkeydown=e=>{if(e.key==='Enter')frLookup($('frCodeIn').value)};
 $('frDecline').onclick=()=>{frPending=null;$('frAsk').hidden=true;$('frCodeIn').value='';frSay('Declined. Nothing was connected.')};
 $('frAccept').onclick=async()=>{
   if(!frPending||frNeedName())return;
-  const {code,inv}=frPending;
+  const inv=frPending, kp=await frEcdh();
+  const link={id:String(inv.id),name:String(inv.name||'A friend').slice(0,40),topic:String(inv.topic),ikey:String(inv.key),pending:true,priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};
   $('frAccept').disabled=true;
   try{
-    const {db,fs,uid}=await fbInit(); await frStart();
-    await fs.setDoc(fs.doc(db,'links',code),{members:[inv.from,uid],names:{[inv.from]:inv.name,[uid]:fr.name},created:fs.serverTimestamp()});
-    frPending=null; $('frAsk').hidden=true; $('frCodeIn').value=''; frSay('Connected with '+inv.name+'.');
-  }catch(e){frSay('Couldn\'t connect. The invite may have been used already; ask your friend for a new one.')}
+    fr.links.push(link); saveFr(); frListen();
+    await frPostSealed(link.topic,link.id,link.ikey,{type:'hello',name:fr.name,topic:fr.inbox,pub:await frPub(kp)});
+    frPending=null; $('frAsk').hidden=true; $('frCodeIn').value=''; frRender();
+    frSay('Waiting for '+link.name+'\'s board to confirm. That happens as soon as it\'s online.');
+  }catch(e){fr.links=fr.links.filter(l=>l!==link);saveFr();frRender();frSay('Couldn\'t connect. Check the connection and try again.')}
   finally{$('frAccept').disabled=false}
 };
 function frBoot(){
-  if(!frSetup()){frSay('Friends needs a one-time setup by whoever runs this site (see FRIENDS-SETUP.md in the project).');return}
-  $('frBody').hidden=false; frRender(); frCount();
-  if(!frHash()&&fr.on)frStart();
-  addEventListener('hashchange',frHash);
+  frRender(); frCount(); frListen(); frNotify();
+  frHash(); addEventListener('hashchange',frHash);
 }
 // An invite link (#invite=CODE) opens the Friends tab and asks whether to connect
 function frHash(){
   const m=location.hash.match(/^#invite=([A-Za-z0-9-]+)/); if(!m)return false;
   history.replaceState(null,'',location.pathname+location.search);
-  openTab('friends'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frStart().then(()=>frLookup(m[1]));
+  openTab('friends'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frLookup(m[1]);
   return true;
 }
 setTimeout(frBoot,0);
@@ -2098,7 +2116,7 @@ function updateSubs(){
   const m=surfData.malibu; set('surf',m&&m.quality?'Malibu, '+String(m.quality).toLowerCase()+(m.height?', '+m.height:''):'Malibu and Venice');
   let c='Google Calendar'; if(calEvents){const now=new Date(),ev=calEvents.find(e=>!e.allDay&&e.end>now);c=ev?'Next: '+ev.title:'Nothing coming up'} set('calendar',c);
   set('news',newsData&&newsData.sections[news.section]?(newsData.sections[news.section].name==='Top stories'?'BBC top stories':'BBC '+newsData.sections[news.section].name.toLowerCase()):'BBC headlines');
-  set('friends',frSetup()?(frQueue().length?frQueue().length+' waiting':frLinks.size?frLinks.size+' connected':'Message a friend\'s board'):'Not set up');
+  set('friends',frQueue().length?frQueue().length+' waiting':fr.links.some(l=>!l.pending)?fr.links.filter(l=>!l.pending).length+' connected':'Message a friend\'s board');
   set('schedule',schedOn?'Next: '+schedNextLabel():'Tap to run');
 }
 setInterval(()=>{try{updateSubs()}catch(e){}},20000);

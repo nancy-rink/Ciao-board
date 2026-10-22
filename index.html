@@ -1,0 +1,1784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Ciao Board: a split-flap message board for your wall, with messages, a clock, a day plan, eleven vintage and modern styles, and real flap sounds.">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+</head>
+<body>
+<title>Ciao Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&display=swap">
+<style>
+/* Layout: a wall-mounted 6×22 split-flap board; beneath it a tabbed control deck. Each board style re-skins the whole wall. Kiosk mode hides everything but the board. */
+:root,[data-style="classic"]{
+  --wall:#16130f; --frame:#0b0b0b; --frame-edge:#2a2a2a;
+  --tile:#1c1c1c; --tile-hi:#252525; --ink:#f1ece2; --seam:#000; --glow:none;
+  --ui:#f1ece2; --muted:#a39a8b; --line:#2e2a24; --panel:#1f1b16; --panel-2:#26211b;
+  --accent:#e8a33d; --accent-ink:#1a1307; --ok:#3fa66b; --warn:#ff7b66;
+  --c-r:#d8432e; --c-o:#ee8a2b; --c-y:#f2c94c; --c-g:#3fa66b; --c-b:#2f7fd1; --c-v:#7d55c7; --c-w:#f1ece2;
+  --f-tile:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --tile-size:3.1cqw;
+  --f-ui:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+[data-style="departures"]{
+  --wall:#10151d; --frame:#070a0f; --frame-edge:#1e2632;
+  --tile:#161c26; --tile-hi:#1f2733; --ink:#ffc94a; --seam:#05070a;
+  --ui:#e9eef5; --muted:#8d99ab; --line:#283244; --panel:#161d28; --panel-2:#1c2533;
+  --accent:#ffc94a; --accent-ink:#1b1400;
+  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-size:2.8cqw;
+}
+[data-style="daylight"]{
+  --wall:#e6e2d9; --frame:#f7f5f0; --frame-edge:#ffffff;
+  --tile:#fbfaf6; --tile-hi:#ffffff; --ink:#1b1a17; --seam:#d3cdc0;
+  --ui:#1b1a17; --muted:#6b655a; --line:#d2cbbd; --panel:#f4f1ea; --panel-2:#ebe7dd;
+  --accent:#a8461a; --accent-ink:#ffffff; --c-w:#1b1a17; --ok:#1b6e3e; --warn:#b3261e;
+  color-scheme:light;
+}
+[data-style="rail"]{
+  --wall:#0f1a15; --frame:#08110d; --frame-edge:#1c2c24;
+  --tile:#1d4a35; --tile-hi:#24583f; --ink:#f4f1e6; --seam:#0a1f15;
+  --ui:#eef0e8; --muted:#93a99a; --line:#24402f; --panel:#142820; --panel-2:#1a3228;
+  --accent:#e9d36a; --accent-ink:#1d1a05; --c-g:#7cc47f; --ok:#7cc47f;
+  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-size:2.8cqw;
+}
+[data-style="harbor"]{
+  --wall:#0d1a2b; --frame:#081220; --frame-edge:#1b2b44;
+  --tile:#14294a; --tile-hi:#1a3359; --ink:#f0dfbd; --seam:#06101f;
+  --ui:#eef2f8; --muted:#8fa1bb; --line:#22385a; --panel:#12233c; --panel-2:#182c49;
+  --accent:#f0a868; --accent-ink:#2a1606; --c-b:#5aa6ee;
+}
+[data-style="glow"]{
+  --wall:#0a0807; --frame:#040303; --frame-edge:#1c1612;
+  --tile:#120e0c; --tile-hi:#1a1411; --ink:#ff9a3c; --seam:#000; --glow:0 0 .55cqw #ff7a1a99;
+  --ui:#f3e6d8; --muted:#a08a76; --line:#2b211a; --panel:#15100d; --panel-2:#1d1612;
+  --accent:#ff9a3c; --accent-ink:#1d0d00;
+  --f-tile:"VT323",ui-monospace,Menlo,monospace; --tile-size:3.9cqw;
+}
+/* Vintage styles: they change the flaps themselves (pins, gloss, wear, shape), not only the colors */
+[data-style="solari"]{
+  --wall:#121417; --frame:#050607; --frame-edge:#24272b;
+  --tile:#141516; --tile-hi:#202224; --ink:#f4f4f0; --seam:#000;
+  --ui:#eceeef; --muted:#9aa0a6; --line:#2a2d31; --panel:#17191c; --panel-2:#1e2125;
+  --accent:#f2f2ee; --accent-ink:#111214; --ok:#4fb67a;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-stretch:68%; --tile-w:600; --tile-size:3.15cqw;
+  --pin-c:#8b9097; --pin-s:.3; --gloss:rgba(255,255,255,.07); --flap-r:1.5px;
+}
+[data-style="cifra"]{
+  --wall:#2b1d14; --frame:#3a2416; --frame-edge:#6b4729;
+  --tile:#e9e2d0; --tile-hi:#f6f1e4; --ink:#1d1a16; --seam:#8f8576;
+  --ui:#f3e9da; --muted:#c2ad94; --line:#4a3424; --panel:#301f15; --panel-2:#3a271b;
+  --accent:#e8a860; --accent-ink:#2a1606; --ok:#7cc47f; --warn:#ff8a75; --c-w:#1d1a16;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-stretch:100%; --tile-w:800; --tile-size:3.2cqw;
+  --gloss:rgba(255,255,255,.45); --flap-r:.9cqw; --frame-r:2.4cqw; --frame-pad:2.8cqw;
+  --bevel:inset 0 2px 0 #7a5233,inset 0 -3px 0 #24150c;
+}
+[data-style="worn"]{
+  --wall:#17140f; --frame:#0e0c09; --frame-edge:#2a251e;
+  --tile:#23201b; --tile-hi:#2c2822; --ink:#e6d8b8; --seam:#050403;
+  --ui:#ece2cc; --muted:#a69a84; --line:#322c24; --panel:#1d1914; --panel-2:#25201a;
+  --accent:#d9a441; --accent-ink:#1a1205; --ok:#5cb87f;
+  --wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:rgba(255,236,200,.11); --pin-c:#4f483d; --pin-s:.26;
+}
+[data-style="gameshow"]{
+  --wall:#24140c; --frame:#3b1f10; --frame-edge:#7a4520;
+  --tile:#4a2814; --tile-hi:#5a3219; --ink:#ff8c2a; --seam:#1d0f07;
+  --ui:#f8e6d2; --muted:#d2ad8d; --line:#5a3420; --panel:#2e1a0f; --panel-2:#3a2214;
+  --accent:#ff8c2a; --accent-ink:#2a1100; --ok:#7cc47f; --warn:#ff9a85;
+  --f-tile:"Bungee",Impact,sans-serif; --tile-w:400; --tile-size:2.75cqw;
+  --gloss:rgba(255,200,150,.08); --flap-r:.55cqw; --frame-r:3.4cqw; --frame-pad:3.4cqw;
+  --bevel:inset 0 3px 0 #8a5228,inset 0 -4px 0 #1f0f06;
+}
+[data-style="pragotron"]{
+  --wall:#181b1e; --frame:#0c0e10; --frame-edge:#262b30;
+  --tile:#2a2e33; --tile-hi:#33383e; --ink:#e8ebee; --seam:#0a0b0c;
+  --ui:#e6e9ec; --muted:#9aa3ad; --line:#2d3238; --panel:#1a1e22; --panel-2:#22272c;
+  --accent:#ff6a5c; --accent-ink:#1a0705; --ok:#4fb67a; --warn:#ff8a7d;
+  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-w:500; --tile-size:2.8cqw; --tile-k:.92;
+  --route:#c23b2a; --pin-c:#6b737c; --pin-s:.24;
+}
+html,body{background:var(--wall);color:var(--ui)}
+body{font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px;min-height:100%;transition:background-color .4s,color .4s}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+/* Board */
+.board{container-type:inline-size;background:var(--frame);border-radius:var(--frame-r,10px);padding:var(--frame-pad,2.2cqw);box-shadow:var(--bevel,0 0 0 transparent),0 1px 0 var(--frame-edge) inset,0 30px 60px -24px #0009,0 0 0 1px #0004;transition:background-color .4s;max-width:100%}
+.grid{display:grid;grid-template-columns:repeat(22,1fr);gap:.45cqw}
+.t{position:relative;aspect-ratio:.82;max-width:100%;perspective:300px;font-family:var(--f-tile);font-weight:600;font-size:var(--tile-size);color:var(--ink);text-shadow:var(--glow)}
+body[data-style="departures"] .t,body[data-style="rail"] .t{font-weight:500}
+body[data-style="glow"] .t{font-weight:400}
+.h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile)}
+.h.u{top:0;border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile))}
+.h.d{bottom:0;border-radius:0 0 var(--flap-r,2px) var(--flap-r,2px)}
+.h span{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center}
+.h.u span,.f span{top:0}
+.h.d span{bottom:0}
+.t::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--seam);opacity:.85;z-index:3}
+.f,.g{position:absolute;left:0;right:0;height:50%;overflow:hidden;z-index:2;visibility:hidden;backface-visibility:hidden}
+.f{top:0;transform-origin:50% 100%;background:linear-gradient(180deg,var(--gloss,transparent),transparent 55%),linear-gradient(var(--tile-hi),var(--tile));border-radius:var(--flap-r,2px) var(--flap-r,2px) 0 0}
+.g{bottom:0;transform-origin:50% 0;background:var(--tile);border-radius:0 0 var(--flap-r,2px) var(--flap-r,2px)}
+.f span,.g span{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center}
+.g span{bottom:0}
+.f.a{visibility:visible;animation:fA var(--half,35ms) ease-in forwards}
+.f.b{visibility:visible;animation:fB var(--half,35ms) ease-in forwards}
+.g.a{visibility:visible;animation:gA var(--half,35ms) ease-out var(--half,35ms) both}
+.g.b{visibility:visible;animation:gB var(--half,35ms) ease-out var(--half,35ms) both}
+@keyframes fA{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
+@keyframes fB{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
+/* Shading rides on opacity overlays, which the compositor handles cheaply */
+.f::before,.g::before{content:"";position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none}
+.f::before{background:#000}
+.g::before{background:#fff}
+.f.a::before,.f.b::before{animation:shadeIn var(--half,35ms) ease-in forwards}
+.g.a::before,.g.b::before{animation:shadeOut var(--half,35ms) ease-out var(--half,35ms) both}
+@keyframes shadeIn{from{opacity:0}to{opacity:.45}}
+@keyframes shadeOut{from{opacity:.22}to{opacity:0}}
+.f,.g{will-change:auto}
+[data-style="glow"] .f span,[data-style="glow"] .g span{text-shadow:none}
+.t{font-stretch:var(--tile-stretch,100%)}
+[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="gameshow"] .t,[data-style="pragotron"] .t{font-weight:var(--tile-w,600)}
+/* Off-center silkscreen printing and faded letters, scaled by the style's --wear */
+.t span{translate:calc(var(--jx,0) * var(--wear,0) * var(--u,1) * 1cqw) calc(var(--jy,0) * var(--wear,0) * var(--u,1) * 1cqw);opacity:calc(1 - var(--fd,0) * var(--wear,0))}
+/* Hinge pins, a scuff and grain, sitting over the resting flaps and under the moving ones */
+.t::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:var(--flap-r,2px);
+  background:
+    radial-gradient(circle at 0 50%,var(--pin-c,transparent) 0 calc(var(--pin-s,0) * var(--u,1) * 1cqw),transparent calc(var(--pin-s,0) * var(--u,1) * 1cqw + .15cqw)),
+    radial-gradient(circle at 100% 50%,var(--pin-c,transparent) 0 calc(var(--pin-s,0) * var(--u,1) * 1cqw),transparent calc(var(--pin-s,0) * var(--u,1) * 1cqw + .15cqw)),
+    radial-gradient(calc(var(--sw,1) * var(--u,1) * 1cqw) calc(var(--sh,1) * var(--u,1) * 1cqw) at var(--sx,50%) var(--sy,50%),var(--scuff-c,transparent),transparent 70%),
+    var(--grain,none)}
+[data-style="pragotron"] .t.edge .h{box-shadow:inset .32cqw 0 0 var(--route)}
+@keyframes gA{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+@keyframes gB{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+
+/* Bar under the board */
+.boardbar{display:flex;justify-content:space-between;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.status{display:inline-flex;align-items:center;gap:4px 8px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);padding:6px 12px 6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.status b{color:var(--ui);font-weight:600}
+.status .nxt{color:var(--muted)}
+.status .nxt::before{content:"·";margin-right:8px}
+.status .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.status.flipping .dot{background:var(--accent);animation:pulse .7s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.3}}
+.bar-r{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stylestep{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:8px;background:var(--panel);overflow:hidden}
+.stylestep button{border:0;border-radius:0;background:transparent;padding:7px 11px;font-size:16px;line-height:1}
+.stylestep .nm{display:flex;align-items:center;gap:8px;padding:0 12px;font-size:13.5px;font-weight:600;min-width:11ch;justify-content:center;border-inline:1px solid var(--line);color:var(--ui)}
+.stylestep .nm:hover{background:var(--panel-2)}
+.stylestep .nm[aria-expanded="true"]{background:var(--panel-2);color:var(--accent)}
+.stylestep .chev{width:12px;height:12px;transition:transform .15s}
+.stylestep .nm[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.stylestep .sw{width:12px;height:12px;border-radius:3px;background:var(--tile);box-shadow:inset 0 0 0 2px var(--ink)}
+
+/* Shared controls */
+button,select{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--ui);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;transition:border-color .15s,background-color .15s,color .15s}
+select{padding-right:10px;max-width:100%;min-width:0}
+button:hover{border-color:var(--muted)}
+button:disabled{opacity:.5;cursor:default}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.primary:hover{filter:brightness(1.08)}
+button.on{border-color:var(--accent);color:var(--accent)}
+:is(button,select,textarea,input):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+textarea{width:100%;box-sizing:border-box;min-height:150px;resize:vertical;background:var(--panel-2);color:var(--ui);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-family:var(--f-tile);font-size:21px;letter-spacing:.05em;text-transform:uppercase;line-height:1.4}
+input[type=text]{font-family:var(--f-ui);font-size:14px;color:var(--ui);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 11px;min-width:0;width:100%;box-sizing:border-box}
+input[type=range]{accent-color:var(--accent);width:100%;min-width:0}
+input[type=checkbox]{accent-color:var(--accent);width:18px;height:18px;margin:0;flex:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hint{color:var(--muted);font-size:13px;margin:0;max-width:65ch}
+.hint code{font-family:var(--f-mono);font-size:12px;color:var(--ui);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+.num{font-variant-numeric:tabular-nums;color:var(--ui);min-width:4ch;text-align:right}
+
+/* Deck: tabs + panels */
+.deck{min-width:0;border-top:1px solid var(--line);padding-top:16px}
+.pane{padding:22px 2px 8px;display:flex;flex-direction:column;gap:18px;min-width:0;animation:paneIn .18s ease-out}
+@keyframes paneIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.pane:not(#pane-style) .pane-head h2{display:none}
+.pane:not(#pane-style) .pane-head .sub{font-size:14.5px;color:var(--ui);margin:0}
+kbd{white-space:nowrap;font-family:var(--f-mono);font-size:11.5px;color:var(--ui);background:var(--panel-2);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 16px;border-radius:10px;background:var(--ui);color:var(--wall);font-size:14px;box-shadow:0 10px 30px -10px #000a;max-width:calc(100vw - 32px);box-sizing:border-box}
+#toast button{background:transparent;border:0;color:var(--wall);font-weight:700;padding:6px 10px;text-decoration:underline;text-underline-offset:3px}
+ul.list .show{font-weight:600}
+ul.list .x{border-color:transparent}
+ul.list .x:hover{color:var(--warn);border-color:transparent}
+@media (pointer:coarse){
+  .chip{width:44px;height:44px}
+  button,select,input[type=text],input[type=time],input[type=date]{min-height:44px}
+  .stylestep button{min-width:44px}
+  ul.list button{padding:8px 14px}
+  .checks .check,.check{min-height:44px}
+  #toast button{min-height:44px;padding:6px 14px}
+}
+@media (max-width:560px){
+  .board{padding:1.4cqw;border-radius:8px}
+  .grid{gap:.3cqw}
+  .t{font-size:calc(var(--tile-size) * 1.2)}
+}
+@media (max-width:560px){.bar-r{width:100%}.stylestep{flex:1 1 auto}.stylestep .nm{flex:1}}
+@media (prefers-reduced-motion:reduce){.pane,.tray{animation:none}}
+.pane-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pane-head h2{margin:0 0 2px;font-size:17px;letter-spacing:-.005em;color:var(--ui);font-weight:600;text-wrap:balance}
+.pane-head .sub{margin:2px 0 0;font-size:13px;color:var(--muted)}
+
+/* Mode start/stop buttons swap their label by state */
+.go .when-on{display:none}
+.go.on{background:transparent;color:var(--accent);border-color:var(--accent)}
+.go.on .when-on{display:inline}
+.go.on .when-off{display:none}
+.go.on::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:8px;vertical-align:1px}
+
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px 18px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>span:first-child{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.field.wide{grid-column:1/-1}
+.check{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ui);cursor:pointer}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks .check{padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2)}
+.slider{display:flex;align-items:center;gap:10px;min-width:0}
+.slider input{flex:1 1 auto;min-width:0}
+.slider .num{flex:none;min-width:6ch}
+
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{width:30px;height:30px;padding:0;border-radius:5px;border:1px solid #0005;box-shadow:inset 0 -2px 0 #0003}
+.chip:hover{transform:translateY(-1px)}
+.count{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums;margin-left:auto}
+.count.over{color:var(--warn);font-weight:600}
+
+ul.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+ul.list li{display:flex;gap:10px;align-items:center;padding:9px 12px;background:var(--panel-2)}
+ul.list li+li{border-top:1px solid var(--line)}
+ul.list .txt{flex:1;min-width:0;font-family:var(--f-tile);font-size:17px;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ul.list button{padding:5px 11px;font-size:13px}
+ul.list .x{color:var(--muted);background:transparent}
+ul.list li.hint{display:block}
+
+/* Style gallery */
+.tray{display:flex;flex-direction:column;gap:16px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);animation:paneIn .18s ease-out}
+.tray-group{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tray h3{margin:0;font-size:13px;font-weight:600;color:var(--muted)}
+.swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.swatches{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.swatch{flex:0 0 148px;scroll-snap-align:start}}
+.swatch{position:relative;display:flex;flex-direction:column;gap:8px;padding:8px 8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);text-align:left;color:var(--ui);min-width:0}
+.swatch:hover{border-color:var(--muted)}
+.swatch[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.swatch .nm2{font-size:13.5px;font-weight:600;padding:0 2px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.swatch .tick{width:16px;height:16px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:none;align-items:center;justify-content:center}
+.swatch[aria-pressed="true"] .tick{display:inline-flex}
+/* The preview is a real miniature board: same tiles, same tokens, scaled with --u */
+.minib{display:block;container-type:inline-size;--u:3.4;background:var(--frame);border-radius:min(var(--frame-r,6px),10px);padding:7%;box-shadow:var(--bevel,0 0 0 transparent);pointer-events:none}
+.minib .g6{display:grid;grid-template-columns:repeat(6,1fr);gap:2.4cqw}
+.minib .t{font-size:calc(var(--tile-size) * 3.3 * var(--tile-k,1))}
+.tray-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tray-foot .hint{min-height:1.5em}
+
+input[type=time],input[type=date]{font-family:var(--f-ui);font-size:14px;color:var(--ui);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+/* Day plan rows */
+ul.slots{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.slot{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px 12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2)}
+.slot.now{border-color:var(--accent)}
+.slot .when{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.slot .badge{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--accent-ink);background:var(--accent);border-radius:4px;padding:1px 6px}
+.slot .what{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.slot .what select{flex:1 1 140px}
+.slot textarea{min-height:0;height:auto;font-size:17px;padding:8px 10px;flex-basis:100%}
+.slot .x{color:var(--muted);background:transparent;padding:6px 10px;font-size:13px}
+@media (max-width:560px){.slot{grid-template-columns:minmax(0,1fr) auto}.slot .what{grid-column:1/-1;grid-row:2}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+::selection{background:var(--accent);color:var(--accent-ink)}
+textarea,input{caret-color:var(--accent)}
+html{scrollbar-color:var(--line) var(--wall)}
+.pane[hidden],ul.list[hidden],#tapSound[hidden],#toast[hidden]{display:none}
+body:not(.fs) #tapSound{display:none}
+/* Sound button: one control for on, off and "needs a tap" */
+#soundBtn.needs{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);animation:pulse 1.1s ease-in-out infinite alternate}
+.setbtn.on{border-color:var(--accent);color:var(--accent)}
+/* Mode cards */
+.card[hidden]{display:none}
+.modecards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0}
+@media (max-width:900px){.modecards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:560px){.modecards{display:flex;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}.modecards::-webkit-scrollbar{display:none}.modecards .card{flex:0 0 40%;scroll-snap-align:start}}
+.card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px 11px;border-radius:9px;background:var(--panel-2);border:1px solid var(--line);color:var(--ui);min-width:0}
+.card:hover{border-color:var(--muted)}
+.card[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.card .flap{width:13px;height:17px;border-radius:2px;background:var(--fc);position:relative;margin-bottom:6px;box-shadow:inset 0 -1px 0 #0003}
+.card .flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#0006}
+.card .nm{font-weight:600;font-size:14px}
+.card .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.card .onb{position:absolute;top:9px;right:10px;display:none;align-items:center;gap:5px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ok);font-weight:600}
+.card .onb::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.card.running .onb{display:inline-flex}
+/* Composer with live preview */
+.composer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+@media (max-width:760px){.composer{grid-template-columns:minmax(0,1fr)}}
+.cmp-edit,.cmp-prev{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pv-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.pv-head .count{text-transform:none;letter-spacing:0;font-weight:500;font-size:12.5px;margin:0}
+.pv{container-type:inline-size;display:grid;grid-template-columns:repeat(22,1fr);gap:.6cqw;padding:2.4cqw;background:var(--frame);border-radius:8px;box-shadow:0 0 0 1px var(--line)}
+.pv i{font-style:normal;aspect-ratio:.82;display:flex;align-items:center;justify-content:center;background:var(--tile);color:var(--ink);font-family:var(--f-tile);font-size:calc(3.3cqw * var(--tile-k,1));border-radius:1.5px;line-height:1;text-shadow:var(--glow);overflow:hidden}
+.sq{display:inline-block;width:.75em;height:.75em;border-radius:2px;vertical-align:-.04em;margin:0 1px}
+#tapSound{animation:pulse 1.1s ease-in-out infinite alternate}
+/* Kiosk */
+body.kiosk{padding-block:0;display:flex;align-items:center;min-height:100vh}
+body.kiosk .wrap{width:100%}
+body.kiosk .deck,body.kiosk .bar-r > :not(#showBtn),body.kiosk .status{display:none}
+body.kiosk .boardbar{justify-content:flex-end}
+body:not(.kiosk) #showBtn{display:none}
+/* Full screen: the page goes full screen and the board scales to fit the device, edge to edge */
+body.fs{overflow:hidden;background:var(--frame)}
+body.fs .wrap{position:fixed;inset:0;z-index:5;max-width:none;display:flex;align-items:center;justify-content:center;gap:0;background:var(--frame);padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+body.fs .deck,body.fs .tray,body.kiosk .tray{display:none}
+body.fs .board{width:min(97vw,calc(94vh * 2.55));width:min(97vw,calc(94dvh * 2.55));padding:1.2cqw;border-radius:0;box-shadow:none}
+body.fs .boardbar{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));justify-content:center;z-index:20}
+body.fs .boardbar > :not(#tapSound){display:none}
+/* Fill layout: taller flaps stretch the grid over a 16:9 screen, like a Vestaboard */
+body.fs.fill .board{width:100%;height:100%;box-sizing:border-box;padding:4.5vh 3vw;padding:4.5dvh 3vw;display:flex;align-items:center;justify-content:center}
+body.fs.fill .grid{width:100%;gap:var(--fill-gap,.45cqw)}
+body.fs.fill .t{aspect-ratio:var(--tile-ar,.82);font-size:calc(var(--fill-font,3.1cqw) * var(--tile-k,1))}
+[data-style="departures"],[data-style="rail"]{--tile-k:.92}
+[data-style="glow"]{--tile-k:1.18}
+#fsExit{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:30;display:none;transition:opacity .4s;background:color-mix(in srgb,var(--panel) 85%,transparent)}
+body.fs #fsExit{display:block}
+body.fs.idle #fsExit{opacity:0;pointer-events:none}
+body.fs.idle{cursor:none}
+#fsNote{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:30;max-width:min(92vw,460px);box-sizing:border-box;padding:10px 14px;border-radius:10px;background:var(--panel);color:var(--ui);border:1px solid var(--line);font-size:14px;text-align:center;transition:opacity .5s}
+#fsNote.gone{opacity:0;pointer-events:none}
+@media (max-width:560px){.pane{padding:18px 0 8px}.stylestep .nm{min-width:0}}
+@media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}
+</style>
+
+<div class="wrap">
+  <main class="board" id="board" aria-label="Split-flap board"><div class="grid" id="grid" aria-hidden="true"></div><p class="sr-only" id="boardText" aria-live="polite"></p></main>
+
+  <div class="boardbar">
+    <span class="status" id="status"><i class="dot"></i><span>Getting the board ready</span></span>
+    <button class="primary" id="tapSound" type="button" hidden>Tap to turn on sound</button>
+    <button id="fsExit" type="button">Exit full screen</button>
+    <div id="fsNote" role="status" hidden></div>
+    <div id="toast" role="status" hidden><span id="toastMsg"></span><button id="toastUndo" type="button">Undo</button></div>
+    <div class="bar-r">
+      <div class="stylestep" role="group" aria-label="Board style">
+        <button id="stylePrev" type="button" aria-label="Previous style">‹</button>
+        <button class="nm" id="styleOpen" type="button" aria-expanded="false" aria-controls="styleTray"><i class="sw"></i><span id="styleName">Classic</span><svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button id="styleNext" type="button" aria-label="Next style">›</button>
+      </div>
+      <button id="soundBtn" type="button">Sound on</button>
+      <button id="fsBtn" type="button">Full screen</button>
+      <button class="setbtn" id="tab-style" data-tab="style" aria-controls="pane-style" aria-expanded="false" type="button">Settings</button>
+      <button id="showBtn" type="button">Show controls</button>
+    </div>
+  </div>
+
+  <section class="tray" id="styleTray" aria-label="Board styles" hidden>
+    <div class="tray-group"><h3 id="trayModern">Modern</h3><div class="swatches" id="swModern" role="group" aria-labelledby="trayModern"></div></div>
+    <div class="tray-group"><h3 id="trayVintage">Vintage</h3><div class="swatches" id="swVintage" role="group" aria-labelledby="trayVintage"></div></div>
+    <div class="tray-foot"><p class="hint" id="styleNote"></p><button class="primary" id="trayDone" type="button">Done</button></div>
+  </section>
+
+  <div class="deck">
+    <div class="modecards" role="tablist" aria-label="What the board shows">
+      <button class="card" role="tab" data-tab="message" id="tab-message" aria-controls="pane-message" type="button"><i class="flap" style="--fc:var(--c-y)"></i><span class="nm">Message</span><span class="sub" data-sub="message">Write your own</span><span class="onb">On board</span></button>
+      <button class="card" role="tab" data-tab="saved" id="tab-saved" aria-controls="pane-saved" type="button"><i class="flap" style="--fc:var(--c-o)"></i><span class="nm">Saved</span><span class="sub" data-sub="saved">Your saved messages</span><span class="onb">On board</span></button>
+      <button class="card" role="tab" data-tab="clock" id="tab-clock" aria-controls="pane-clock" type="button"><i class="flap" style="--fc:var(--c-w)"></i><span class="nm">Clock</span><span class="sub" data-sub="clock">Time and date</span><span class="onb">On board</span></button>
+      <button class="card" hidden role="tab" data-tab="weather" id="tab-weather" aria-controls="pane-weather" type="button"><i class="flap" style="--fc:var(--c-b)"></i><span class="nm">Weather</span><span class="sub" data-sub="weather">AccuWeather</span><span class="onb">On board</span></button>
+      <button class="card" hidden role="tab" data-tab="surf" id="tab-surf" aria-controls="pane-surf" type="button"><i class="flap" style="--fc:var(--c-g)"></i><span class="nm">Surf</span><span class="sub" data-sub="surf">Malibu and Venice</span><span class="onb">On board</span></button>
+      <button class="card" hidden role="tab" data-tab="calendar" id="tab-calendar" aria-controls="pane-calendar" type="button"><i class="flap" style="--fc:var(--c-r)"></i><span class="nm">Calendar</span><span class="sub" data-sub="calendar">Google Calendar</span><span class="onb">On board</span></button>
+      <button class="card" role="tab" data-tab="schedule" id="tab-schedule" aria-controls="pane-schedule" type="button"><i class="flap" style="--fc:var(--c-v)"></i><span class="nm">Day plan</span><span class="sub" data-sub="schedule">Tap to run</span><span class="onb">Running</span></button>
+    </div>
+
+    <section class="pane" role="tabpanel" id="pane-message" aria-labelledby="tab-message">
+      <div class="composer">
+        <div class="cmp-edit">
+          <textarea id="msgBox" spellcheck="false" aria-label="Message for the board">{g}{g} surf report {g}{g}
+malibu - fair
+3-4 ft
+swell 3 ft 15s ssw
+wind 6 mph offshore
+low tide 1:12 pm</textarea>
+          <div class="chips" aria-label="Add a color tile">
+            <button class="chip" style="background:var(--c-r)" data-c="r" type="button" aria-label="Add a red tile"></button>
+            <button class="chip" style="background:var(--c-o)" data-c="o" type="button" aria-label="Add an orange tile"></button>
+            <button class="chip" style="background:var(--c-y)" data-c="y" type="button" aria-label="Add a yellow tile"></button>
+            <button class="chip" style="background:var(--c-g)" data-c="g" type="button" aria-label="Add a green tile"></button>
+            <button class="chip" style="background:var(--c-b)" data-c="b" type="button" aria-label="Add a blue tile"></button>
+            <button class="chip" style="background:var(--c-v)" data-c="v" type="button" aria-label="Add a violet tile"></button>
+            <button class="chip" style="background:var(--c-w)" data-c="w" type="button" aria-label="Add a white tile"></button>
+          </div>
+          <div class="row">
+            <button class="primary" id="sendBtn" type="button">Send to board</button>
+            <button id="saveBtn" type="button">Save message</button>
+            <button id="clearBtn" type="button">Clear board</button>
+          </div>
+          <p class="hint">Words wrap and center on their own. Enter starts a new line; <kbd>⌘/Ctrl</kbd> + <kbd>Enter</kbd> sends. Tap a color to drop in a color tile.</p>
+        </div>
+        <div class="cmp-prev">
+          <div class="pv-head"><span>Preview</span><span class="count" id="count">3 of 6 lines</span></div>
+          <div class="pv" id="pv" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-saved" aria-labelledby="tab-saved" hidden>
+      <div class="pane-head">
+        <div><h2>Saved messages</h2><p class="sub">These are examples of what the board can show. Tap Show to put one up, rotate through them, or swap in your own.</p></div>
+        <div class="row">
+          <label class="field" style="flex-direction:row;align-items:center;gap:8px" for="rotateEvery"><span>Every</span>
+            <select id="rotateEvery">
+              <option value="30">30 sec</option>
+              <option value="60" selected>1 min</option>
+              <option value="300">5 min</option>
+              <option value="900">15 min</option>
+            </select>
+          </label>
+          <button class="go primary" id="rotateBtn" type="button"><span class="when-off">Rotate saved</span><span class="when-on">Stop rotating</span></button>
+        </div>
+      </div>
+      <ul class="list" id="saved"></ul>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-clock" aria-labelledby="tab-clock" hidden>
+      <div class="pane-head">
+        <div><h2>Clock</h2><p class="sub">Updates each minute. Changes apply right away.</p></div>
+        <button class="go primary" id="clockBtn" type="button"><span class="when-off">Show clock</span><span class="when-on">Stop clock</span></button>
+      </div>
+      <div class="fields">
+        <label class="field" for="clkHours"><span>Hours</span>
+          <select id="clkHours"><option value="12">12-hour</option><option value="24">24-hour</option></select>
+        </label>
+        <label class="field" for="clkDate"><span>Date</span>
+          <select id="clkDate">
+            <option value="long">Wednesday Oct 21</option>
+            <option value="full">October 21, 2026</option>
+            <option value="short">Wed 10/21</option>
+            <option value="day">Day only</option>
+            <option value="none">No date</option>
+          </select>
+        </label>
+        <label class="field" for="clkOrder"><span>Order</span>
+          <select id="clkOrder"><option value="time">Time on top</option><option value="date">Date on top</option></select>
+        </label>
+        <label class="field" for="clkTz"><span>Second city</span>
+          <select id="clkTz">
+            <option value="">None</option>
+            <option value="America/New_York">New York</option><option value="America/Chicago">Chicago</option><option value="America/Denver">Denver</option>
+            <option value="America/Los_Angeles">Los Angeles</option><option value="Pacific/Honolulu">Honolulu</option><option value="Europe/London">London</option>
+            <option value="Europe/Paris">Paris</option><option value="Europe/Berlin">Berlin</option><option value="Asia/Dubai">Dubai</option>
+            <option value="Asia/Kolkata">Mumbai</option><option value="Asia/Tokyo">Tokyo</option><option value="Australia/Sydney">Sydney</option>
+          </select>
+        </label>
+        <label class="field" for="clkBorder"><span>Border</span>
+          <select id="clkBorder">
+            <option value="none">None</option>
+            <option value="w">White</option><option value="r">Red</option><option value="o">Orange</option><option value="y">Yellow</option>
+            <option value="g">Green</option><option value="b">Blue</option><option value="v">Violet</option>
+          </select>
+        </label>
+        <label class="field" for="clkAccent"><span>Tiles beside the time</span>
+          <select id="clkAccent">
+            <option value="none">None</option>
+            <option value="w">White</option><option value="r">Red</option><option value="o">Orange</option><option value="y">Yellow</option>
+            <option value="g">Green</option><option value="b">Blue</option><option value="v">Violet</option>
+          </select>
+        </label>
+        <label class="field" for="clkLabel"><span>Extra line</span>
+          <input type="text" id="clkLabel" maxlength="22" placeholder="e.g. Have a good day">
+        </label>
+        <div class="field"><span>Options</span>
+          <label class="check" for="clkAmpm"><input type="checkbox" id="clkAmpm"> Show AM/PM</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-weather" aria-labelledby="tab-weather" hidden>
+      <div class="pane-head">
+        <div><h2>Weather</h2><p class="sub" id="wxStatus">Live conditions from AccuWeather.</p></div>
+        <button class="go primary" id="wxBtn" type="button"><span class="when-off">Show weather</span><span class="when-on">Stop weather</span></button>
+      </div>
+      <div class="fields">
+        <label class="field" for="wxCity"><span>Show</span><select id="wxCity"></select></label>
+        <label class="field" for="wxEvery"><span>Switch cities every</span>
+          <select id="wxEvery"><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
+        </label>
+        <label class="field" for="wxUnit"><span>Units</span>
+          <select id="wxUnit"><option value="imperial">°F</option><option value="metric">°C</option></select>
+        </label>
+        <label class="field" for="wxDetail"><span>Bottom line</span>
+          <select id="wxDetail">
+            <option value="rain">Chance of rain</option>
+            <option value="feels">Feels like</option>
+            <option value="wind">Wind</option>
+            <option value="tomorrow">Tomorrow's forecast</option>
+            <option value="none">Nothing</option>
+          </select>
+        </label>
+        <div class="field wide"><label class="check" for="wxTile"><input type="checkbox" id="wxTile"> Color tile for the conditions</label></div>
+        <div class="field wide"><span>Cities</span>
+          <ul class="list" id="wxCities"></ul>
+        </div>
+        <div class="field wide">
+          <div class="row" style="flex-wrap:nowrap">
+            <input type="text" id="wxQuery" placeholder="Add a city or ZIP code" aria-label="City or ZIP code to add">
+            <button id="wxFind" type="button">Find</button>
+          </div>
+          <ul class="list" id="wxResults" hidden></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-surf" aria-labelledby="tab-surf" hidden>
+      <div class="pane-head">
+        <div><h2>Surf</h2><p class="sub" id="surfStatus">Reports update every 2 hours, 5am to 7pm.</p></div>
+        <button class="go primary" id="surfBtn" type="button"><span class="when-off">Show surf</span><span class="when-on">Stop surf</span></button>
+      </div>
+      <div class="fields">
+        <label class="field" for="surfSpot"><span>Show</span>
+          <select id="surfSpot">
+            <option value="all">Malibu and Venice, one at a time</option>
+            <option value="malibu">Malibu</option>
+            <option value="venice">Venice</option>
+          </select>
+        </label>
+        <label class="field" for="surfEvery"><span>Switch spots every</span>
+          <select id="surfEvery"><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option></select>
+        </label>
+        <div class="field wide"><span>Lines to show</span>
+          <div class="checks">
+            <label class="check" for="surfSwell"><input type="checkbox" id="surfSwell"> Swell</label>
+            <label class="check" for="surfWind"><input type="checkbox" id="surfWind"> Wind</label>
+            <label class="check" for="surfWater"><input type="checkbox" id="surfWater"> Water temp</label>
+            <label class="check" for="surfTide"><input type="checkbox" id="surfTide"> Next tide</label>
+            <label class="check" for="surfTile"><input type="checkbox" id="surfTile"> Color tile for the rating</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-calendar" aria-labelledby="tab-calendar" hidden>
+      <div class="pane-head">
+        <div><h2>Calendar</h2><p class="sub" id="calStatus">Your Google Calendar: what's next, today's plan, and countdowns.</p></div>
+        <button class="go primary" id="calBtn" type="button"><span class="when-off">Show calendar</span><span class="when-on">Stop calendar</span></button>
+      </div>
+      <div class="fields">
+        <div class="field wide"><span>Screens to show</span>
+          <div class="checks">
+            <label class="check" for="calNext"><input type="checkbox" id="calNext"> Next up, with countdown</label>
+            <label class="check" for="calToday"><input type="checkbox" id="calToday"> Today's events</label>
+            <label class="check" for="calTomorrow"><input type="checkbox" id="calTomorrow"> Tomorrow after 6pm</label>
+            <label class="check" for="calCount"><input type="checkbox" id="calCount"> Countdowns</label>
+          </div>
+        </div>
+        <label class="field" for="calEvery"><span>Switch screens every</span>
+          <select id="calEvery"><option value="20">20 sec</option><option value="30">30 sec</option><option value="60">1 min</option><option value="120">2 min</option></select>
+        </label>
+        <div class="field"><span>Options</span>
+          <label class="check" for="calAllDay"><input type="checkbox" id="calAllDay"> Include all-day events</label>
+        </div>
+        <div class="field wide"><span>Countdowns</span>
+          <ul class="list" id="cdList"></ul>
+          <div class="row" style="flex-wrap:nowrap">
+            <input type="text" id="cdName" maxlength="14" placeholder="What, e.g. Maui" aria-label="Countdown name">
+            <input type="date" id="cdDate" aria-label="Countdown date">
+            <button id="cdAdd" type="button">Add</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-schedule" aria-labelledby="tab-schedule" hidden>
+      <div class="pane-head">
+        <div><h2>Day plan</h2><p class="sub" id="schedStatus">The board changes what it shows, and how it looks, through the day.</p></div>
+        <button class="go primary" id="schedBtn" type="button"><span class="when-off">Run day plan</span><span class="when-on">Stop day plan</span></button>
+      </div>
+      <ul class="slots" id="slots"></ul>
+      <div class="row"><button id="slotAdd" type="button">Add a time</button><p class="hint">Each time runs until the next one. Tapping another mode or sending a message pauses the plan.</p></div>
+    </section>
+
+    <section class="pane" role="tabpanel" id="pane-style" aria-labelledby="tab-style" hidden>
+      <div class="pane-head">
+        <div><h2>Look</h2><p class="sub">Pick a style with the style button under the board. The ‹ › arrows, or <kbd>S</kbd>, step through them one at a time.</p></div>
+        <button id="openTrayFromSettings" type="button">Choose a style</button>
+      </div>
+      <div class="fields">
+        <label class="field" for="styleAuto"><span>Change style on its own</span>
+          <select id="styleAuto">
+            <option value="0">Off</option>
+            <option value="300">Every 5 min</option>
+            <option value="900">Every 15 min</option>
+            <option value="3600">Every hour</option>
+          </select>
+        </label>
+        <label class="field" for="fsLayout"><span>Full screen layout</span>
+          <select id="fsLayout">
+            <option value="fill">Fill the screen</option>
+            <option value="shape">Keep board shape</option>
+          </select>
+        </label>
+        <div class="field"><span>Keyboard</span>
+          <label class="check" for="keysOn"><input type="checkbox" id="keysOn" checked> Shortcuts: S for style, H to hide controls</label>
+        </div>
+        <label class="field" for="speed"><span>Flip speed</span>
+          <select id="speed">
+            <option value="fast">Fast</option>
+            <option value="normal">Normal</option>
+            <option value="relaxed">Relaxed</option>
+            <option value="slow">Slow</option>
+            <option value="lazy">Very slow</option>
+          </select>
+        </label>
+      </div>
+      <div class="pane-head" style="border-top:1px solid var(--line);padding-top:18px">
+        <div><h2>Sound</h2><p class="sub">No sound on an iPhone or iPad? Flip the ringer switch off silent and turn up the media volume.</p></div>
+        <div class="row">
+          <button id="testBtn" type="button">Play test</button>
+          <button id="sndToggle" type="button">Sound off</button>
+        </div>
+      </div>
+      <div class="fields">
+        <label class="field" for="sndStyle"><span>Flap sound</span>
+          <select id="sndStyle">
+            <option value="real">Real flap (modelled)</option>
+            <option value="sample" id="optSample" disabled>Your recording</option>
+            <option value="clack">Classic clack</option>
+            <option value="station">Train station</option>
+            <option value="soft">Soft thud</option>
+            <option value="wood">Wooden block</option>
+            <option value="typewriter">Typewriter</option>
+            <option value="tick">Light tick</option>
+            <option value="paper">Paper shuffle</option>
+            <option value="rattle">Busy rattle</option>
+            <option value="rain">Rain on glass</option>
+            <option value="glass">Glass ping</option>
+            <option value="marble">Marbles</option>
+            <option value="blip">Retro blip</option>
+          </select>
+        </label>
+        <label class="field" for="chimeStyle"><span>Finish chime</span>
+          <select id="chimeStyle">
+            <option value="two">Two-note ding</option>
+            <option value="airport">Airport announcement</option>
+            <option value="bell">Bell</option>
+            <option value="marimba">Marimba</option>
+            <option value="arcade">Arcade</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+        <label class="field" for="sndRate"><span>Clicks</span>
+          <select id="sndRate">
+            <option value="1">Every flip</option>
+            <option value="2">Every other flip</option>
+            <option value="3">Sparse</option>
+            <option value="6">Very sparse</option>
+          </select>
+        </label>
+        <label class="field" for="vol"><span>Volume</span>
+          <span class="slider"><input type="range" id="vol" min="0" max="1" step="0.05" value="0.7"><span id="volOut" class="num">70%</span></span>
+        </label>
+        <label class="field" for="pitch"><span>Pitch</span>
+          <span class="slider"><input type="range" id="pitch" min="0.6" max="1.5" step="0.05" value="1"><span id="pitchOut" class="num">Normal</span></span>
+        </label>
+        <div class="field"><span>Stereo</span>
+          <label class="check" for="sndStereo"><input type="checkbox" id="sndStereo" checked> Spread clicks left to right</label>
+        </div>
+        <div class="field wide"><span>Your own recording</span>
+          <div class="row">
+            <button id="sampleBtn" type="button">Upload a recording</button>
+            <button id="sampleClear" class="x" type="button" hidden>Remove recording</button>
+            <input type="file" id="sampleFile" accept="audio/*" class="sr-only" tabindex="-1" aria-hidden="true">
+          </div>
+          <p class="hint" id="sampleStatus">Record a flip clock or a split-flap board (a phone voice memo works), or download a recording from a sound library. The board finds each clack and plays them as the tiles flip.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+const COLS=22, ROWS=6; let TICK=110;
+const COLORS={r:'--c-r',o:'--c-o',y:'--c-y',g:'--c-g',b:'--c-b',v:'--c-v',w:'--c-w'};
+const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
+const IDX=new Map(CHARS.map((c,i)=>[c,i]));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem('beta2.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('beta2.'+k,JSON.stringify(v))}catch(e){}}};
+
+// Build tiles
+const grid=$('grid'); const tiles=[];
+for(let i=0;i<COLS*ROWS;i++){
+  const t=document.createElement('div'); t.className='t';
+  t.innerHTML='<div class="h u"><span></span></div><div class="h d"><span></span></div><div class="f"><span></span></div><div class="g"><span></span></div>';
+  const [u,d,f,g]=t.children;
+  const col=i%COLS, row=Math.floor(i/COLS), rnd=Math.random;
+  t.style.cssText='--jx:'+((rnd()-.5)*.5).toFixed(3)+';--jy:'+((rnd()-.5)*.35).toFixed(3)+';--fd:'+(rnd()*.35).toFixed(3)+';--sx:'+(rnd()*100|0)+'%;--sy:'+([10,50,50,90][rnd()*4|0]+((rnd()-.5)*12|0))+'%;--sw:'+(1+rnd()*2.2).toFixed(2)+';--sh:'+(.5+rnd()*1.2).toFixed(2);
+  if(col===0&&row%2===0)t.classList.add('edge');
+  const tile={el:t,u,d,f,g,col,row,cur:0,target:0,delay:0,flip:false};
+  f.addEventListener('animationend',()=>{f.className='f'});
+  g.addEventListener('animationend',()=>{paint(tile.d,tile.cur);g.className='g'});
+  grid.appendChild(t); tiles.push(tile);
+}
+function paint(face,idx){
+  const c=CHARS[idx]; const span=face.firstChild;
+  if(c.length===3){face.style.background='var('+COLORS[c[1]]+')';span.textContent=''}
+  else{face.style.background='';span.textContent=c}
+}
+function step(tile){
+  const old=tile.cur; tile.cur=(tile.cur+1)%CHARS.length;
+  paint(tile.u,tile.cur);
+  if(reduce){paint(tile.d,tile.cur);return}
+  paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);
+  tile.flip=!tile.flip; const k=tile.flip?'a':'b';
+  tile.f.className='f '+k; tile.g.className='g '+k;
+}
+
+// Parse + layout
+function tokenize(str){
+  const out=[]; const s=str.toUpperCase(); let i=0;
+  while(i<s.length){
+    const m=s.slice(i).match(/^\{([ROYGBVW])\}/);
+    if(m){out.push('{'+m[1].toLowerCase()+'}');i+=3;continue}
+    let ch=s[i]; if(ch==='\n'){out.push('\n');i++;continue}
+    if(ch==='’'||ch==='‘')ch="'"; if(ch==='“'||ch==='”')ch='"';
+    out.push(IDX.has(ch)?ch:' '); i++;
+  }
+  return out;
+}
+function layout(str){
+  const toks=tokenize(str); const lines=[];
+  let para=[];
+  const flush=()=>{
+    const words=[]; let w=[];
+    for(const t of para){ if(t===' '){ if(w.length){words.push(w);w=[]} } else w.push(t) }
+    if(w.length)words.push(w);
+    if(!words.length){lines.push([]);return}
+    let line=[];
+    for(let word of words){
+      while(word.length>COLS){ if(line.length){lines.push(line);line=[]} lines.push(word.slice(0,COLS)); word=word.slice(COLS) }
+      if(!word.length)continue;
+      const need=line.length?line.length+1+word.length:word.length;
+      if(need>COLS){lines.push(line);line=[...word]}
+      else line=line.length?[...line,' ',...word]:[...word];
+    }
+    if(line.length)lines.push(line);
+  };
+  for(const t of toks){ if(t==='\n'){flush();para=[]} else para.push(t) }
+  flush();
+  while(lines.length&&!lines[lines.length-1].length)lines.pop();
+  return lines;
+}
+function toTargets(str){
+  const lines=layout(str); const used=lines.length; const shown=lines.slice(0,ROWS);
+  const top=Math.floor((ROWS-shown.length)/2);
+  const cells=new Array(COLS*ROWS).fill(0);
+  shown.forEach((ln,r)=>{const left=Math.floor((COLS-ln.length)/2); ln.forEach((t,c)=>{cells[(top+r)*COLS+left+c]=IDX.get(t)??0})});
+  return {cells,used};
+}
+
+// Engine
+let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null;
+function send(str){
+  lastSent=str;
+  const {cells}=toTargets(str);
+  tiles.forEach((t,i)=>{
+    t.target=cells[i];
+    if(reduce){t.cur=t.target;paint(t.u,t.cur);paint(t.d,t.cur);return}
+    t.delay=(i%COLS)*0.6+Math.floor(i/COLS)*1.2|0;
+  });
+  setStatus('Flipping');
+  if(!busy){busy=true;requestAnimationFrame(loop)}
+}
+function loop(ts){
+  if(!last)last=ts; acc+=ts-last; last=ts;
+  let moving=false, flipped=0; const cols=[];
+  while(acc>=TICK){
+    acc-=TICK; moving=false;
+    for(const t of tiles){
+      if(t.cur===t.target)continue;
+      moving=true;
+      if(t.delay>0){t.delay--;continue}
+      step(t); flipped++; if(cols.length<24)cols.push(t.col);
+    }
+    if(!moving)break;
+  }
+  if(flipped){click(flipped,cols);movedThisRun=true}
+  if(tiles.some(t=>t.cur!==t.target)){requestAnimationFrame(loop)}
+  else{busy=false;last=0;acc=0;setStatus('Showing');if(movedThisRun)landed();movedThisRun=false;speakBoard()}
+}
+const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar'};
+let schedDriving=false, schedOn=false;
+const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar'};
+const COLOR_WORD={r:'red',o:'orange',y:'yellow',g:'green',b:'blue',v:'violet',w:'white'};
+let lastSpoken='';
+function speakBoard(){
+  const lines=layout(lastSent||'').slice(0,ROWS).map(l=>l.filter(t=>t.length!==3).join('').trim()).filter(Boolean);
+  const text=lines.length?lines.join('. ')+'.':'The board is blank.';
+  if(text===lastSpoken)return; lastSpoken=text; $('boardText').textContent=text;
+}
+function setStatus(word){
+  const st=$('status'), f=word==='Flipping';
+  const what=mode===''&&lastSent===''?'a blank board':(MODE_NAME[mode]||'your message');
+  let h='<i class="dot"></i><span>Showing <b>'+what+'</b></span>';
+  if(schedOn){try{const n=schedNextLabel();if(n)h+='<span class="nxt">Day plan, next: '+n+'</span>'}catch(e){}}
+  if(st.dataset.h!==h){st.innerHTML=h;st.dataset.h=h} st.classList.toggle('flipping',f);
+  document.querySelectorAll('.card').forEach(b=>{const t=b.dataset.tab;b.classList.toggle('running',t==='schedule'?schedOn:t==='message'?mode==='':MODE_TAB[mode]===t)});
+  try{updateSubs()}catch(e){}
+}
+
+// Sound + speed settings
+const SPEEDS={fast:70,normal:110,relaxed:170,slow:260,lazy:400};
+const snd=Object.assign({on:false,vol:0.7,style:'real',chime:'two',rate:1,pitch:1,speed:'normal',stereo:true},store.get('fb.snd',{}));
+if(snd.chime===true)snd.chime='two'; if(snd.chime===false)snd.chime='none';
+if(!snd.realV1){if(snd.style==='clack')snd.style='real';snd.realV1=true}
+snd.on=true; // Sound always starts on; the Sound button only mutes until the page is reopened.
+const saveSnd=()=>store.set('fb.snd',snd);
+function applySpeed(){TICK=SPEEDS[snd.speed]||110;document.documentElement.style.setProperty('--half',Math.round(TICK*0.45)+'ms')}
+applySpeed();
+let ac=null, master=null, noise=null, lastClick=0, clickCount=0, curDest=null, sampleBufs=[], sampleDoc=null;
+function ensureAudio(){
+  try{
+    if(navigator.audioSession){try{navigator.audioSession.type='playback'}catch(e){}}
+    if(!ac){
+      ac=new (window.AudioContext||window.webkitAudioContext)();
+      master=ac.createGain(); master.connect(ac.destination);
+      noise=ac.createBuffer(1,Math.floor(ac.sampleRate*0.3),ac.sampleRate);
+      const d=noise.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    }
+    master.gain.value=snd.vol;
+    if(ac.state!=='running')ac.resume();
+  }catch(e){}
+}
+// Browsers only allow audio after a tap or key press, so unlock on any interaction.
+let blockedBefore=false;
+['pointerdown','keydown','touchend'].forEach(ev=>addEventListener(ev,()=>{blockedBefore=audioBlocked();if(snd.on){ensureAudio();setTimeout(checkAudio,150)}},{passive:true,capture:true}));
+addEventListener('click',()=>{if(snd.on){ensureAudio();setTimeout(checkAudio,150)}},{passive:true,capture:true});
+function audioBlocked(){return snd.on&&(!ac||ac.state!=='running')}
+function renderSoundBtn(){const b=$('soundBtn'),bl=audioBlocked();b.textContent=!snd.on?'Sound off':bl?'Tap for sound':'Sound on';b.classList.toggle('on',snd.on&&!bl);b.classList.toggle('needs',bl);b.setAttribute('aria-pressed',String(snd.on))}
+function checkAudio(){$('tapSound').hidden=!audioBlocked();renderSoundBtn()}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ac&&snd.on){try{ac.resume()}catch(e){}setTimeout(checkAudio,300)}});
+setInterval(checkAudio,2000);
+function burst(t,o){
+  const s=ac.createBufferSource(); s.buffer=noise;
+  const f=ac.createBiquadFilter(); f.type=o.type; f.frequency.value=o.freq; f.Q.value=o.q||1;
+  const g=ac.createGain(); g.gain.setValueAtTime(o.gain,t); g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);
+  s.connect(f).connect(g).connect(curDest||master); s.start(t,Math.random()*0.2,o.dur+0.02);
+}
+function tone(t,o){
+  const osc=ac.createOscillator(); osc.type=o.wave||'sine';
+  osc.frequency.setValueAtTime(o.freq,t); if(o.to)osc.frequency.exponentialRampToValueAtTime(o.to,t+o.dur);
+  const g=ac.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(o.gain,t+(o.attack||0.002)); g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);
+  osc.connect(g).connect(curDest||master); osc.start(t); osc.stop(t+o.dur+0.03);
+}
+const r=(a,b)=>a+Math.random()*(b-a);
+const STYLES={
+  clack:(t,k,p)=>{burst(t,{type:'bandpass',freq:r(1800,2700)*p,q:1.1,gain:1.2*k,dur:0.035});tone(t,{wave:'triangle',freq:150*p,to:75*p,gain:0.6*k,dur:0.04})},
+  tick:(t,k,p)=>{burst(t,{type:'highpass',freq:4200*p,q:0.7,gain:1.0*k,dur:0.015})},
+  soft:(t,k,p)=>{burst(t,{type:'lowpass',freq:1100*p,q:0.5,gain:1.3*k,dur:0.05});tone(t,{wave:'triangle',freq:110*p,to:55*p,gain:0.45*k,dur:0.05})},
+  station:(t,k,p)=>{burst(t,{type:'lowpass',freq:700*p,q:0.8,gain:1.5*k,dur:0.07});tone(t,{wave:'triangle',freq:90*p,to:45*p,gain:0.8*k,dur:0.08});burst(t+0.012,{type:'bandpass',freq:2000*p,q:2,gain:0.5*k,dur:0.02})},
+  wood:(t,k,p)=>{burst(t,{type:'bandpass',freq:r(850,1050)*p,q:3,gain:1.6*k,dur:0.03});tone(t,{wave:'sine',freq:r(420,480)*p,to:300*p,gain:0.5*k,dur:0.05})},
+  typewriter:(t,k,p)=>{burst(t,{type:'highpass',freq:2500*p,q:0.8,gain:1.1*k,dur:0.02});burst(t+0.009,{type:'bandpass',freq:1200*p,q:4,gain:0.9*k,dur:0.018})},
+  rattle:(t,k,p)=>{for(let i=0;i<3;i++)burst(t+i*0.012+r(0,0.006),{type:'bandpass',freq:r(2400,4000)*p,q:2,gain:0.9*k,dur:0.02})},
+  paper:(t,k,p)=>{burst(t,{type:'bandpass',freq:r(2800,3400)*p,q:0.5,gain:0.9*k,dur:0.045})},
+  rain:(t,k,p)=>{for(let i=0;i<4;i++)burst(t+r(0,0.05),{type:'highpass',freq:r(3000,6000)*p,q:0.6,gain:0.6*k,dur:0.008})},
+  glass:(t,k,p)=>{tone(t,{freq:r(2300,2500)*p,gain:0.18*k,dur:0.09});tone(t,{freq:r(3500,3700)*p,gain:0.1*k,dur:0.06});burst(t,{type:'highpass',freq:5000,q:0.7,gain:0.3*k,dur:0.008})},
+  marble:(t,k,p)=>{tone(t,{freq:r(1300,1700)*p,to:r(900,1100)*p,gain:0.25*k,dur:0.05});burst(t,{type:'bandpass',freq:3000*p,q:3,gain:0.4*k,dur:0.01})},
+  blip:(t,k,p)=>{tone(t,{wave:'square',freq:660*p,to:440*p,gain:0.12*k,dur:0.04})},
+  // Modelled from a real flap: plastic snap on the stop, a short ring, the case thump, then a tiny settling bounce
+  real:(t,k,p)=>{
+    const v=r(.94,1.06);
+    burst(t,{type:'bandpass',freq:3300*p*v,q:1.6,gain:1.5*k,dur:0.009});
+    burst(t,{type:'highpass',freq:6000*p,q:.7,gain:.55*k,dur:0.004});
+    tone(t,{freq:2150*p*v,gain:.1*k,dur:.03,attack:.0008});
+    tone(t,{freq:3420*p*v,gain:.06*k,dur:.022,attack:.0008});
+    burst(t,{type:'lowpass',freq:260*p,q:.7,gain:.9*k,dur:.035});
+    burst(t+r(.007,.013),{type:'bandpass',freq:2800*p*v,q:2,gain:.45*k,dur:.006});
+  },
+  sample:(t,k,p)=>{
+    if(!sampleBufs.length)return STYLES.real(t,k,p);
+    const s=ac.createBufferSource(); s.buffer=sampleBufs[Math.random()*sampleBufs.length|0]; s.playbackRate.value=p*r(.97,1.03);
+    const g=ac.createGain(); g.gain.value=Math.min(1.4,k*1.6); s.connect(g).connect(curDest||master); s.start(t);
+  }
+};
+const CHIMES={
+  two:[[880,0,0.9],[1318.5,0.12,0.9]],
+  airport:[[698.5,0,1.2],[880,0.35,1.2],[1046.5,0.7,1.6]],
+  bell:'bell',
+  marimba:[[523.3,0,0.4],[659.3,0.09,0.4],[784,0.18,0.4],[1046.5,0.27,0.7]],
+  arcade:[[523.3,0,0.12],[784,0.08,0.12],[1046.5,0.16,0.25]]
+};
+function playClick(n,pan,when){
+  try{
+    curDest=null;
+    if(snd.stereo&&pan!=null&&ac.createStereoPanner){curDest=ac.createStereoPanner();curDest.pan.value=pan;curDest.connect(master)}
+    (STYLES[snd.style]||STYLES.real)(when||ac.currentTime+0.005,Math.min(1,0.45+Math.log2(1+n)*0.09),snd.pitch);
+  }catch(e){}finally{curDest=null}
+}
+// Many flaps land a few milliseconds apart: spread each tick into a short cascade, panned by column
+function click(n,cols){
+  if(!snd.on||!ac||ac.state!=='running')return;
+  clickCount++; if(clickCount%snd.rate)return;
+  const now=performance.now(); if(now-lastClick<25)return; lastClick=now;
+  const hits=snd.rate>2?1:Math.min(n,snd.rate===2?3:5), span=TICK/1000*0.8, t0=ac.currentTime+0.005;
+  for(let i=0;i<hits;i++){
+    const c=cols&&cols.length?cols[Math.random()*cols.length|0]:(COLS-1)/2;
+    playClick(Math.max(1,n/hits),(c/(COLS-1))*1.6-0.8,t0+(i/hits)*span+r(0,span/hits*0.6));
+  }
+}
+function playChime(){
+  try{
+    const t=ac.currentTime+0.02, c=CHIMES[snd.chime]; if(!c)return;
+    if(c==='bell'){[[1,0.3],[2,0.12],[2.76,0.08],[5.4,0.04]].forEach(([m,gn])=>tone(t,{freq:660*m,gain:gn,dur:2.2,attack:0.004}));return}
+    c.forEach(([f,d,len])=>tone(t+d,{wave:snd.chime==='arcade'?'square':snd.chime==='marimba'?'triangle':'sine',freq:f,gain:snd.chime==='arcade'?0.1:0.3,dur:len,attack:0.008}));
+  }catch(e){}
+}
+function landed(){if(snd.on&&snd.chime!=='none'&&ac&&ac.state==='running')playChime()}
+function renderSound(){
+  $('sndToggle').textContent=snd.on?'Sound on':'Sound off'; $('sndToggle').classList.toggle('on',snd.on); renderSoundBtn();
+  $('vol').value=snd.vol; $('volOut').textContent=Math.round(snd.vol*100)+'%';
+  $('pitch').value=snd.pitch; $('pitchOut').textContent=snd.pitch<0.95?'Lower':snd.pitch>1.05?'Higher':'Normal';
+  $('sndStyle').value=snd.style; $('sndStereo').checked=!!snd.stereo; $('chimeStyle').value=snd.chime; $('sndRate').value=snd.rate; $('speed').value=snd.speed;
+}
+const preview=(count,gap)=>{ensureAudio();setTimeout(()=>{for(let i=0;i<count;i++)setTimeout(()=>playClick(8),i*(gap||TICK))},60)};
+function toggleSound(){if(blockedBefore||audioBlocked()){blockedBefore=false;ensureAudio();setTimeout(checkAudio,200);return}snd.on=!snd.on;saveSnd();renderSound();if(snd.on)preview(1);checkAudio()}
+$('soundBtn').onclick=toggleSound; $('sndToggle').onclick=toggleSound;
+$('vol').oninput=()=>{snd.vol=+$('vol').value;saveSnd();renderSound();if(master)master.gain.value=snd.vol};
+$('vol').onchange=()=>preview(1);
+$('pitch').oninput=()=>{snd.pitch=+$('pitch').value;saveSnd();renderSound()};
+$('pitch').onchange=()=>preview(3);
+$('sndStyle').onchange=()=>{snd.style=$('sndStyle').value;saveSnd();preview(5)};
+$('sndRate').onchange=()=>{snd.rate=+$('sndRate').value;saveSnd();preview(5,TICK*snd.rate)};
+$('chimeStyle').onchange=()=>{snd.chime=$('chimeStyle').value;saveSnd();ensureAudio();setTimeout(playChime,60)};
+$('speed').onchange=()=>{snd.speed=$('speed').value;saveSnd();applySpeed()};
+$('testBtn').onclick=()=>{ensureAudio();setTimeout(()=>{const n=8;for(let i=0;i<n;i++)setTimeout(()=>playClick(10),i*TICK*snd.rate);setTimeout(playChime,n*TICK*snd.rate+200)},60)};
+renderSound(); checkAudio();
+$('sndStereo').onchange=()=>{snd.stereo=$('sndStereo').checked;saveSnd();preview(5)};
+
+// Your own recording: find the clacks, keep them as short 16-bit slices in the board's database
+function b64FromBytes(u8){let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)}
+function bytesFromB64(b){const s=atob(b),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+async function analyseRecording(file){
+  ensureAudio(); if(!ac)throw {code:'noaudio'};
+  const raw=await ac.decodeAudioData(await file.arrayBuffer());
+  const RATE=22050, dur=Math.min(raw.duration,60);
+  const off=new OfflineAudioContext(1,Math.max(1,Math.ceil(dur*RATE)),RATE);
+  const src=off.createBufferSource(); src.buffer=raw; src.connect(off.destination); src.start(0,0,dur);
+  const mono=(await off.startRendering()).getChannelData(0);
+  const W=Math.round(RATE*0.005), env=[];
+  for(let i=0;i<mono.length;i+=W){let q=0,e=Math.min(i+W,mono.length);for(let j=i;j<e;j++)q+=mono[j]*mono[j];env.push(Math.sqrt(q/W))}
+  const sorted=[...env].sort((a,b)=>a-b), med=sorted[sorted.length>>1]||0, peak=sorted[sorted.length-1]||0;
+  if(peak<0.003)return null;
+  const th=Math.max(peak*0.18,med*4); let onsets=[], lastOn=-1e9;
+  for(let i=1;i<env.length;i++){if(env[i]>=th&&env[i-1]<th&&i-lastOn>=8){onsets.push(i*W);lastOn=i}}
+  if(!onsets.length)onsets=[env.indexOf(peak)*W];
+  if(onsets.length>16){const st=onsets.length/16;onsets=Array.from({length:16},(_,k)=>onsets[Math.floor(k*st)])}
+  const LEN=Math.round(RATE*0.11), PRE=Math.round(RATE*0.002), FADE=Math.round(RATE*0.025);
+  const slices=onsets.map(o=>{
+    const a=Math.max(0,o-PRE), sl=mono.slice(a,a+LEN); let m=0; for(const v of sl)m=Math.max(m,Math.abs(v));
+    const g=m?0.9/m:1, out=new Int16Array(sl.length);
+    for(let i=0;i<sl.length;i++){let v=sl[i]*g;if(i>sl.length-FADE)v*=(sl.length-i)/FADE;out[i]=Math.max(-32767,Math.min(32767,Math.round(v*32767)))}
+    return out;
+  });
+  const total=slices.reduce((n,a)=>n+a.length,0), all=new Int16Array(total); let o=0;
+  const lens=slices.map(a=>{all.set(a,o);o+=a.length;return a.length});
+  return {rate:RATE,lens,pcm:b64FromBytes(new Uint8Array(all.buffer)),name:String(file.name||'Recording').slice(0,80),clacks:slices.length,updatedAt:new Date().toISOString()};
+}
+function buildSampleBufs(doc){
+  sampleBufs=[];
+  try{
+    if(!doc||!doc.pcm||!Array.isArray(doc.lens))return;
+    const u8=bytesFromB64(String(doc.pcm)), pcm=new Int16Array(u8.buffer,0,u8.byteLength>>1); let o=0;
+    for(const len of doc.lens){
+      const n=Math.max(1,Math.min(len|0,pcm.length-o)); if(n<=1)break;
+      const b=new AudioBuffer({length:n,sampleRate:+doc.rate||22050,numberOfChannels:1}), ch=b.getChannelData(0);
+      for(let i=0;i<n;i++)ch[i]=pcm[o+i]/32767; o+=n; sampleBufs.push(b);
+    }
+  }catch(e){sampleBufs=[]}
+}
+function renderSample(note){
+  $('optSample').disabled=!sampleBufs.length; $('sampleClear').hidden=!sampleDoc&&!sampleBufs.length;
+  $('sampleBtn').textContent=sampleBufs.length?'Replace recording':'Upload a recording';
+  if(note){$('sampleStatus').textContent=note;return}
+  if(sampleDoc&&sampleBufs.length)$('sampleStatus').textContent='Using '+sampleBufs.length+' clacks from “'+(sampleDoc.name||'your recording')+'”. Choose “Your recording” under Flap sound to hear it.';
+  if(snd.style==='sample'&&!sampleBufs.length){snd.style='real';saveSnd();renderSound()}
+}
+let sampleRef=null;
+(async()=>{
+  const db=await useCap('db'); if(!db)return;
+  sampleRef=db.doc('sound/sample');
+  sampleRef.onSnapshot(snap=>{sampleDoc=snap.exists?snap.data():null;buildSampleBufs(sampleDoc);renderSample()},()=>{});
+})();
+$('sampleBtn').onclick=()=>$('sampleFile').click();
+$('sampleFile').onchange=async()=>{
+  const file=$('sampleFile').files&&$('sampleFile').files[0]; $('sampleFile').value=''; if(!file)return;
+  renderSample('Listening for clacks in “'+file.name+'”…');
+  let doc;
+  try{doc=await analyseRecording(file)}catch(e){renderSample('Couldn’t read that file. Try an MP3, WAV or M4A recording.');return}
+  if(!doc){renderSample('That recording is too quiet. Try one with the flaps closer to the microphone.');return}
+  sampleDoc=doc; buildSampleBufs(doc); snd.style='sample'; saveSnd(); renderSound(); preview(6);
+  if(!sampleRef){renderSample('Found '+doc.clacks+' clacks. They’ll play on this screen until you reload; open the board in Claude to save them for every screen.');return}
+  try{await sampleRef.set(doc);renderSample('Found '+doc.clacks+' clacks in “'+doc.name+'”. Saved, so every screen showing this board uses them.')}
+  catch(e){renderSample('Found '+doc.clacks+' clacks. They play on this screen, but couldn’t be saved for other screens: only the board’s owner can save a recording.')}
+};
+$('sampleClear').onclick=async()=>{
+  const prev=sampleDoc; sampleDoc=null; sampleBufs=[]; if(snd.style==='sample'){snd.style='real';saveSnd();renderSound()}
+  renderSample('Recording removed. The board is back to the modelled flap sound.');
+  if(sampleRef){try{await sampleRef.delete()}catch(e){}}
+  toast('Recording removed',prev?async()=>{sampleDoc=prev;buildSampleBufs(prev);renderSample();if(sampleRef){try{await sampleRef.set(prev)}catch(e){}}}:null);
+};
+renderSample();
+
+// Message input
+const msg=$('msgBox');
+// Color tiles show as colored squares while typing; stored and sent as {y} tokens.
+const EMO={r:'🟥',o:'🟧',y:'🟨',g:'🟩',b:'🟦',v:'🟪',w:'⬜'};
+const REV=Object.fromEntries(Object.entries(EMO).map(([k,v])=>[v,k]));
+const EMO_RE=/(🟥|🟧|🟨|🟩|🟦|🟪|⬜)\uFE0F?/gu;
+const toEmoji=t=>String(t).replace(/\{([roygbvw])\}/gi,(m,c)=>EMO[c.toLowerCase()]);
+const fromEmoji=t=>String(t).replace(EMO_RE,(m,e)=>'{'+REV[e]+'}');
+const getMsg=()=>fromEmoji(msg.value);
+function liveTokens(el){
+  if(!/\{[roygbvw]\}/i.test(el.value))return;
+  const p=el.selectionStart??el.value.length, before=toEmoji(el.value.slice(0,p));
+  el.value=before+toEmoji(el.value.slice(p)); el.selectionStart=el.selectionEnd=before.length;
+}
+function tokenSpans(el,text){
+  el.textContent='';
+  String(text).split(/(\{[roygbvw]\})/i).forEach(part=>{
+    const m=part.match(/^\{([roygbvw])\}$/i);
+    if(m){const q=document.createElement('span');q.className='sq';q.style.background='var(--c-'+m[1].toLowerCase()+')';el.appendChild(q)}
+    else if(part)el.appendChild(document.createTextNode(part));
+  });
+}
+const draft=store.get('fb.draft',null); msg.value=toEmoji(draft!=null?draft:msg.value);
+const pvCells=[]; for(let i=0;i<COLS*ROWS;i++){const c=document.createElement('i');$('pv').appendChild(c);pvCells.push(c)}
+function renderPreview(){
+  const {cells}=toTargets(getMsg());
+  cells.forEach((idx,i)=>{const ch=CHARS[idx],c=pvCells[i];if(ch.length===3){c.style.background='var('+COLORS[ch[1]]+')';c.textContent=''}else{c.style.background='';c.textContent=ch===' '?'':ch}});
+}
+function updateCount(){
+  const n=layout(getMsg()).length, over=n-ROWS;
+  $('count').textContent=over>0?n+' lines, '+over+' won’t fit':n+' of 6 lines';
+  $('count').classList.toggle('over',over>0); renderPreview();
+}
+msg.addEventListener('input',()=>{liveTokens(msg);store.set('fb.draft',getMsg());updateCount()});
+msg.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();manualSend()}});
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+  const tok=EMO[b.dataset.c]; const s=msg.selectionStart??msg.value.length, e=msg.selectionEnd??s;
+  msg.value=msg.value.slice(0,s)+tok+msg.value.slice(e); msg.focus(); msg.selectionStart=msg.selectionEnd=s+tok.length;
+  store.set('fb.draft',getMsg()); updateCount();
+});
+function manualSend(){stopModes();send(getMsg())}
+$('sendBtn').onclick=manualSend;
+$('clearBtn').onclick=()=>{stopModes();send('')};
+
+// Toast with undo
+let toastT=null;
+function toast(text,undo){
+  const t=$('toast'); $('toastMsg').textContent=text; t.hidden=false;
+  $('toastUndo').hidden=!undo; $('toastUndo').onclick=()=>{t.hidden=true;clearTimeout(toastT);if(undo)undo()};
+  clearTimeout(toastT); toastT=setTimeout(()=>{t.hidden=true},5000);
+}
+
+// Saved messages
+const DEFAULTS=['{g}{g} SURF REPORT {g}{g}\nMALIBU - FAIR\n3-4 FT\nSWELL 3 FT 15S SSW\nWIND 6 MPH OFFSHORE\nLOW TIDE 1:12 PM','NEXT UP\n\nSCHOOL PICKUP\nTODAY 3:15 PM\nIN 45 MIN','TODAY\n\n9:30AM DENTIST\n12PM LUNCH WITH JO\n5PM SOCCER PRACTICE','{b} DAWN PATROL {b}\nVENICE BREAKWATER\nWHEELS UP 6:15 AM','COUNTING DOWN\n\n12 DAYS TO MAUI\n3 DAYS TO SURF CAMP','{v}{v} GOODNIGHT {v}{v}\nHIGH TIDE 6:45 AM\nGLASSY AT DAWN'];
+let saved=store.get('fb.saved',DEFAULTS);
+function renderSaved(){
+  const ul=$('saved'); ul.innerHTML='';
+  if(!saved.length){ul.innerHTML='<li class="hint">No saved messages yet. Write one and tap Save message.</li>';return}
+  saved.forEach((m,i)=>{
+    const li=document.createElement('li');
+    const txt=document.createElement('span'); txt.className='txt'; tokenSpans(txt,m.replace(/\n/g,' / ').toUpperCase());
+    const show=document.createElement('button'); show.type='button'; show.className='show'; show.textContent='Show';
+    show.onclick=()=>{stopModes();msg.value=toEmoji(m);store.set('fb.draft',m);updateCount();send(m)};
+    const del=document.createElement('button'); del.type='button'; del.className='x'; del.textContent='Delete'; del.setAttribute('aria-label','Delete saved message');
+    del.onclick=()=>{const gone=saved.splice(i,1)[0];store.set('fb.saved',saved);renderSaved();try{updateSubs()}catch(e){}toast('Message deleted',()=>{saved.splice(i,0,gone);store.set('fb.saved',saved);renderSaved()})};
+    li.append(txt,show,del); ul.appendChild(li);
+  });
+}
+$('saveBtn').onclick=()=>{const v=getMsg().trim();if(!v)return;if(saved.includes(v)){$('saveBtn').textContent='Already saved';setTimeout(()=>$('saveBtn').textContent='Save message',1400);return}saved.unshift(v);store.set('fb.saved',saved);renderSaved();$('saveBtn').textContent='Saved';setTimeout(()=>$('saveBtn').textContent='Save message',1200)};
+renderSaved();
+
+// Modes
+let mode='', timer=null, rotIdx=0, lastClock='';
+function stopModes(){clearInterval(timer);timer=null;mode='';store.set('fb.mode','');$('rotateBtn').classList.remove('on');$('clockBtn').classList.remove('on');const wb=document.getElementById('wxBtn');if(wb)wb.classList.remove('on');const sb=document.getElementById('surfBtn');if(sb)sb.classList.remove('on');const cb=document.getElementById('calBtn');if(cb)cb.classList.remove('on');if(typeof calStop==='function')calStop();if(!schedDriving&&typeof schedOff==='function')schedOff();setStatus(busy?'Flipping':'Showing')}
+$('rotateBtn').onclick=()=>{
+  if(mode==='rotating'){stopModes();return}
+  if(!saved.length)return;
+  stopModes(); mode='rotating'; store.set('fb.mode','rotating'); $('rotateBtn').classList.add('on');
+  const go=()=>{send(saved[rotIdx%saved.length]);rotIdx++};
+  go(); timer=setInterval(go,+$('rotateEvery').value*1000);
+};
+$('rotateEvery').onchange=()=>{if(mode==='rotating'){mode='';$('rotateBtn').click()}};
+const clk=Object.assign({hours:'12',ampm:true,date:'long',border:'none',accent:'none',tz:'',label:'',order:'time'},store.get('fb.clock',{}));
+const TZ_NAMES={'America/New_York':'NEW YORK','America/Chicago':'CHICAGO','America/Denver':'DENVER','America/Los_Angeles':'LOS ANGELES','Pacific/Honolulu':'HONOLULU','Europe/London':'LONDON','Europe/Paris':'PARIS','Europe/Berlin':'BERLIN','Asia/Dubai':'DUBAI','Asia/Kolkata':'MUMBAI','Asia/Tokyo':'TOKYO','Australia/Sydney':'SYDNEY'};
+function hm(d,tz){
+  if(!tz)return [d.getHours(),d.getMinutes()];
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(d);
+  const get=t=>+((parts.find(x=>x.type===t)||{}).value||0);
+  return [get('hour')%24,get('minute')];
+}
+function fmtTime(d,tz){
+  const [h,m]=hm(d,tz); const mm=String(m).padStart(2,'0');
+  if(clk.hours==='24')return String(h).padStart(2,'0')+':'+mm;
+  return (h%12||12)+':'+mm+(clk.ampm?(h<12?' AM':' PM'):'');
+}
+function clockText(){
+  const d=new Date();
+  const dot=clk.accent!=='none'?'{'+clk.accent+'} ':'';
+  const time=dot+fmtTime(d)+(dot?' '+dot.trim():'');
+  let date='';
+  if(clk.date==='long')date=d.toLocaleDateString('en-US',{weekday:'long'})+' '+d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  else if(clk.date==='full')date=d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  else if(clk.date==='short')date=d.toLocaleDateString('en-US',{weekday:'short'})+' '+(d.getMonth()+1)+'/'+d.getDate();
+  else if(clk.date==='day')date=d.toLocaleDateString('en-US',{weekday:'long'});
+  const extra=[];
+  if(clk.label.trim())extra.push(clk.label.trim());
+  if(clk.tz)extra.push(TZ_NAMES[clk.tz]+' '+fmtTime(d,clk.tz));
+  let core=clk.order==='date'&&date?[date,time]:[time].concat(date?[date]:[]);
+  core=core.concat(extra);
+  const bordered=clk.border!=='none';
+  if(core.length>1&&core.length+(bordered?2:0)<=5)core.splice(1,0,'');
+  if(bordered&&core.length+2<=ROWS){const row='{'+clk.border+'}';const full=Array(COLS).fill(row).join('');core=[full,...core,full]}
+  return core.join('\n');
+}
+let goClock=null;
+function renderClock(){
+  $('clkHours').value=clk.hours; $('clkAmpm').checked=clk.ampm; $('clkAmpm').disabled=clk.hours==='24';
+  $('clkDate').value=clk.date; $('clkBorder').value=clk.border; $('clkAccent').value=clk.accent;
+  $('clkTz').value=clk.tz; $('clkLabel').value=clk.label; $('clkOrder').value=clk.order;
+}
+function clockChanged(){store.set('fb.clock',clk);renderClock();if(mode==='clock'&&goClock){lastClock='';goClock()}else startClock()}
+[['clkHours','hours'],['clkDate','date'],['clkBorder','border'],['clkAccent','accent'],['clkTz','tz'],['clkOrder','order']].forEach(([id,k])=>{$(id).onchange=()=>{clk[k]=$(id).value;clockChanged()}});
+$('clkAmpm').onchange=()=>{clk.ampm=$('clkAmpm').checked;clockChanged()};
+$('clkLabel').oninput=()=>{clk.label=$('clkLabel').value.slice(0,22);store.set('fb.clock',clk)};
+$('clkLabel').onchange=clockChanged;
+renderClock();
+function startClock(){
+  stopModes(); mode='clock'; store.set('fb.mode','clock'); $('clockBtn').classList.add('on'); lastClock='';
+  goClock=()=>{const c=clockText();if(c!==lastClock){lastClock=c;send(c)}};
+  goClock(); timer=setInterval(goClock,5000); setStatus(busy?'Flipping':'Showing');
+}
+$('clockBtn').onclick=()=>{if(mode==='clock')stopModes();else startClock()};
+
+// Weather (AccuWeather connector)
+const WX='AccuWeather';
+const wx=Object.assign({cities:[{name:'Santa Monica, CA',key:'337241'}],show:'all',every:60,unit:'imperial',detail:'rain',tile:false},store.get('fb.wx',{}));
+const saveWx=()=>store.set('fb.wx',wx);
+let mcpP=null, wxIdx=0, wxRefresh=null, wxShownOnce=false;
+// The viewer may attach window.claude a moment after the page starts, so wait for it.
+async function useCap(name){
+  for(let i=0;i<80&&!(window.claude&&typeof window.claude.use==='function');i++)await new Promise(r=>setTimeout(r,100));
+  if(!(window.claude&&typeof window.claude.use==='function'))return null;
+  try{return await window.claude.use(name)}catch(e){return null}
+}
+function getMcp(){
+  if(!mcpP)mcpP=useCap('mcp').then(m=>{if(!m)mcpP=null;return m});
+  return mcpP;
+}
+getMcp();
+async function wxCall(tool,q){
+  const mcp=await getMcp(); if(!mcp)throw {code:'unavailable'};
+  const r=await mcp.callTool(WX,tool,{queryParams:q},{cache:{staleTime:600000,gcTime:3600000}});
+  return r.payload||{};
+}
+function wxError(e){
+  const c=(e&&e.code)||'upstream_error';
+  const msgs={
+    unavailable:'Weather works when this board is open in Claude (the app or claude.ai).',
+    server_not_connected:'Add AccuWeather in claude.ai Settings → Connectors, then tap Weather again.',
+    selection_required:'Choose which AccuWeather connection to use, then tap Weather again.',
+    needs_reauth:'Reconnect AccuWeather in claude.ai Settings → Connectors.',
+    not_in_manifest:'Weather is turned off for this board. Allow AccuWeather in the board’s permissions, then tap Weather again.',
+    approval_required:'Tap Weather again and allow AccuWeather when Claude asks.',
+    consent_required:'Tap Weather again and allow AccuWeather when Claude asks.',
+    blocked_by_policy:'Your organization blocks AccuWeather here.',
+    tool_error:'AccuWeather couldn’t load that city. Try removing and re-adding it.',
+    server_unavailable:'AccuWeather didn’t answer. The board will try again at the next update.'
+  };
+  return msgs[c]||'AccuWeather didn’t answer. The board will try again at the next update.';
+}
+function wxSetStatus(t){$('wxStatus').textContent=t}
+const num=v=>{const n=parseFloat(String(v).replace(/[^\d.-]/g,''));return isNaN(n)?null:Math.round(n)};
+async function wxFetch(city){
+  const q={locationKey:city.key,unit:wx.unit};
+  const [cur,daily]=await Promise.all([wxCall('widgets-current-claude',q),wxCall('widgets-daily-claude',q)]);
+  const cc=cur.currentConditions||{}; const d0=(daily.dailyForecast||[])[0]||{}; const d1=(daily.dailyForecast||[])[1]||{};
+  return {
+    name:((cur.location&&cur.location.localizedName)||city.name.split(',')[0]),
+    temp:num(cc.temperatureValue??cc.temperature), phrase:cc.phrase||(d0.day&&d0.day.phrase)||'',
+    icon:+(cc.iconCode||(d0.day&&d0.day.icon)||0), feels:num(cc.realFeelValue??cc.realFeel),
+    wind:(cc.extended&&cc.extended.wind)||'', hi:num(d0.day&&d0.day.temperature), lo:num(d0.night&&d0.night.temperature),
+    rain:num(d0.day&&(d0.day.rainProbabilityValue??d0.day.precip)),
+    tHi:num(d1.day&&d1.day.temperature), tPhrase:(d1.day&&d1.day.phrase)||''
+  };
+}
+function wxTileFor(icon){
+  if(!wx.tile||!icon)return '';
+  let c='w';
+  if(icon<=5||icon===30)c=icon===30?'r':'y';
+  else if([15,16,17,41,42].includes(icon))c='v';
+  else if([12,13,14,18,26,29,39,40].includes(icon))c='b';
+  else if(icon===31)c='b'; else if(icon===32)c='g';
+  else if(icon>=33)c='v';
+  return '{'+c+'} ';
+}
+function fit(t,n){t=String(t||'').trim();if(t.length<=n)return t;const cut=t.slice(0,n+1).lastIndexOf(' ');let r=(cut>n*0.5?t.slice(0,cut):t.slice(0,n)).trim();for(let i=0;i<2;i++)r=r.replace(/\s+(w\/|and|with|a|of|the|then)$/i,'');return r}
+function wxText(d){
+  const lines=[fit(d.name,COLS),''];
+  const t=d.temp!=null?d.temp+'°':'';
+  const main=wxTileFor(d.icon)+t;
+  if((t+' '+d.phrase).length<=COLS-(wx.tile?2:0))lines.push(main+' '+d.phrase); else{lines.push(main);lines.push(fit(d.phrase,COLS))}
+  if(d.hi!=null&&d.lo!=null)lines.push('HI '+d.hi+'°  LO '+d.lo+'°');
+  if(wx.detail==='rain'&&d.rain!=null)lines.push('RAIN '+d.rain+'%');
+  else if(wx.detail==='feels'&&d.feels!=null)lines.push('FEELS LIKE '+d.feels+'°');
+  else if(wx.detail==='wind'&&d.wind)lines.push(fit('WIND '+d.wind,COLS));
+  else if(wx.detail==='tomorrow'&&d.tHi!=null)lines.push(fit('TMRW '+d.tHi+'° '+d.tPhrase,COLS));
+  while(lines.length>ROWS&&lines.includes(''))lines.splice(lines.indexOf(''),1);
+  return lines.slice(0,ROWS).join('\n');
+}
+function wxCurrentList(){return wx.show==='all'?wx.cities:wx.cities.filter(c=>c.key===wx.show)}
+async function wxShowNext(){
+  const list=wxCurrentList(); if(!list.length){wxSetStatus('Add a city below to show its weather.');return}
+  const city=list[wxIdx%list.length]; wxIdx++;
+  wxSetStatus('Loading '+city.name+'…');
+  if(!wxShownOnce)send('WEATHER\n\nLOADING\n'+fit(city.name.split(',')[0],COLS));
+  try{
+    const d=await wxFetch(city);
+    if(mode!=='weather')return;
+    send(wxText(d)); wxShownOnce=true;
+    wxSetStatus('Showing '+city.name+' · updated '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}));
+  }catch(e){ if(mode==='weather'){wxSetStatus(wxError(e));if(!wxShownOnce)send('WEATHER\n\nCOULDN\'T LOAD\nSEE NOTE BELOW BOARD')} }
+}
+function startWeather(){
+  stopModes(); mode='weather'; store.set('fb.mode','weather'); $('wxBtn').classList.add('on'); setStatus(busy?'Flipping':'Showing');
+  wxIdx=0; wxShownOnce=false; wxShowNext();
+  const list=wxCurrentList();
+  timer=setInterval(wxShowNext,(list.length>1?wx.every:600)*1000);
+}
+function restartWeather(){if(mode==='weather')startWeather()}
+$('wxBtn').onclick=()=>{if(mode==='weather')stopModes();else startWeather()};
+function renderWx(){
+  const sel=$('wxCity'); sel.innerHTML='';
+  const all=document.createElement('option'); all.value='all'; all.textContent=wx.cities.length>1?'All cities, one at a time':'All cities'; sel.appendChild(all);
+  wx.cities.forEach(c=>{const o=document.createElement('option');o.value=c.key;o.textContent=c.name;sel.appendChild(o)});
+  if(wx.show!=='all'&&!wx.cities.some(c=>c.key===wx.show))wx.show='all';
+  sel.value=wx.show; $('wxEvery').value=wx.every; $('wxUnit').value=wx.unit; $('wxDetail').value=wx.detail; $('wxTile').checked=wx.tile;
+  const ul=$('wxCities'); ul.innerHTML='';
+  if(!wx.cities.length){ul.innerHTML='<li class="hint">No cities yet. Search for one below.</li>'}
+  wx.cities.forEach((c,i)=>{
+    const li=document.createElement('li');
+    const t=document.createElement('span'); t.className='txt'; t.textContent=c.name.toUpperCase();
+    const del=document.createElement('button'); del.type='button'; del.className='x'; del.textContent='Remove';
+    del.onclick=()=>{wx.cities.splice(i,1);saveWx();renderWx();restartWeather()};
+    li.append(t,del); ul.appendChild(li);
+  });
+}
+[['wxCity','show'],['wxEvery','every'],['wxUnit','unit'],['wxDetail','detail']].forEach(([id,k])=>{$(id).onchange=()=>{wx[k]=k==='every'?+$(id).value:$(id).value;saveWx();if(mode==='weather')restartWeather();else startWeather()}});
+$('wxTile').onchange=()=>{wx.tile=$('wxTile').checked;saveWx();if(mode==='weather')restartWeather();else startWeather()};
+async function wxSearch(){
+  const q=$('wxQuery').value.trim(); if(!q)return;
+  const ul=$('wxResults'); ul.hidden=false; ul.innerHTML='<li class="hint">Searching…</li>';
+  try{
+    const p=await wxCall('widgets-search-claude',{query:q});
+    const res=(p.results||[]).filter(r=>r&&r.locationKey);
+    ul.innerHTML='';
+    if(!res.length){ul.innerHTML='<li class="hint">No places found for that search. Try a city name with its state or country.</li>';return}
+    res.slice(0,8).forEach(r=>{
+      const li=document.createElement('li');
+      const t=document.createElement('span'); t.className='txt'; t.textContent=String(r.name||'').toUpperCase();
+      const add=document.createElement('button'); add.type='button';
+      const have=wx.cities.some(c=>c.key===String(r.locationKey));
+      add.textContent=have?'Added':'Add'; add.disabled=have;
+      add.onclick=()=>{wx.cities.push({name:String(r.name||'City'),key:String(r.locationKey)});saveWx();renderWx();ul.hidden=true;$('wxQuery').value='';restartWeather()};
+      li.append(t,add); ul.appendChild(li);
+    });
+  }catch(e){ul.innerHTML='';const li=document.createElement('li');li.className='hint';li.textContent=wxError(e);ul.appendChild(li)}
+}
+$('wxFind').onclick=wxSearch;
+$('wxQuery').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();wxSearch()}});
+renderWx();
+
+// Surf (reports written to the board's database by a scheduled task)
+const surf=Object.assign({spot:'all',every:60,swell:true,wind:true,water:true,tide:true,tile:false},store.get('fb.surf',{}));
+const saveSurf=()=>store.set('fb.surf',surf);
+const SPOTS=['malibu','venice'];
+const surfData={}; let surfPlaceholder=false, surfIdx=0, surfListening=false, surfDbState='loading';
+function surfSetStatus(t){$('surfStatus').textContent=t}
+function surfAge(r){
+  const t=Date.parse(r&&r.updatedAt); if(isNaN(t))return '';
+  return new Date(t).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+}
+async function surfListen(){
+  if(surfListening)return; surfListening=true;
+  const db=await useCap('db');
+  if(!db){surfDbState='none';surfListening=false;if(mode==='surf')send('SURF\n\nCOULDN\'T LOAD\nSEE NOTE BELOW BOARD');if(mode==='surf')surfSetStatus('Surf reports show when this board is open in Claude (the app or claude.ai).');return}
+  db.collection('surf').onSnapshot(snap=>{
+    snap.docs.forEach(d=>{if(d.exists)surfData[d.id]=d.data()});
+    surfDbState='ready';
+    if(mode==='surf'){if(surfLastShown&&surfData[surfLastShown])showSurf(surfLastShown,true);else if(!surfLastShown)surfNext()}
+  },e=>{surfDbState='error';surfListening=false;if(mode==='surf')surfSetStatus('Surf reports couldn’t load. Tap Surf to try again.')});
+}
+surfListen();
+const RATING_TILE={flat:'w',poor:'r','poor to fair':'o',fair:'y','fair to good':'g',good:'g',epic:'v'};
+let surfLastShown='', surfLastText='';
+function surfText(r){
+  const lines=[];
+  const q=String(r.quality||'').toUpperCase();
+  const tile=surf.tile?((RATING_TILE[String(r.quality||'').toLowerCase()]&&'{'+RATING_TILE[String(r.quality||'').toLowerCase()]+'} ')||''):'';
+  lines.push(fit(tile+String(r.name||'').toUpperCase()+(q?' - '+q:''),COLS+(tile?2:0)));
+  lines.push(fit(String(r.height||'').toUpperCase(),COLS));
+  if(surf.swell&&r.swell)lines.push(fit('SWELL '+r.swell,COLS));
+  if(surf.wind&&r.wind)lines.push(fit('WIND '+r.wind,COLS));
+  if(surf.water&&r.water)lines.push(fit('WATER '+r.water,COLS));
+  if(surf.tide&&r.tide)lines.push(fit(r.tide,COLS));
+  if(lines.length<=4)lines.splice(1,0,'');
+  return lines.slice(0,ROWS).join('\n');
+}
+function showSurf(id,quiet){
+  const r=surfData[id]; if(!r)return false;
+  const t=surfText(r); surfLastShown=id;
+  if(t!==surfLastText||!quiet){surfLastText=t;send(t)}
+  const age=surfAge(r);
+  const old=Date.now()-Date.parse(r.updatedAt)>6*3600*1000;
+  surfSetStatus('Showing '+(r.name||id)+(age?' · report from '+age:'')+(old?'. This report is more than 6 hours old.':''));
+  return true;
+}
+function surfNext(){
+  const ids=surf.spot==='all'?SPOTS:[surf.spot];
+  if(surfDbState==='none'){surfSetStatus('Surf reports show when this board is open in Claude (the app or claude.ai).');return}
+  for(let i=0;i<ids.length;i++){
+    const id=ids[surfIdx%ids.length]; surfIdx++;
+    if(showSurf(id))return;
+  }
+  surfSetStatus(surfDbState==='loading'?'Loading surf reports…':'No surf report yet. The next update will fill it in.');
+  if(!surfLastShown&&surfDbState==='loading'&&!surfPlaceholder){surfPlaceholder=true;send('SURF\n\nLOADING REPORTS')}
+}
+function startSurf(){
+  stopModes(); mode='surf'; store.set('fb.mode','surf'); $('surfBtn').classList.add('on'); setStatus(busy?'Flipping':'Showing');
+  surfIdx=0; surfLastText=''; surfLastShown=''; surfPlaceholder=false; if(!surfListening)surfListen();
+  surfNext();
+  const ids=surf.spot==='all'?SPOTS:[surf.spot];
+  timer=setInterval(()=>{if(ids.length>1)surfNext();else if(!surfLastShown)surfNext()},(ids.length>1?surf.every:20)*1000);
+}
+$('surfBtn').onclick=()=>{if(mode==='surf')stopModes();else startSurf()};
+function renderSurf(){
+  $('surfSpot').value=surf.spot; $('surfEvery').value=surf.every;
+  ['swell','wind','water','tide','tile'].forEach(k=>{$('surf'+k[0].toUpperCase()+k.slice(1)).checked=surf[k]});
+}
+$('surfSpot').onchange=()=>{surf.spot=$('surfSpot').value;saveSurf();startSurf()};
+$('surfEvery').onchange=()=>{surf.every=+$('surfEvery').value;saveSurf();startSurf()};
+['swell','wind','water','tide','tile'].forEach(k=>{const el=$('surf'+k[0].toUpperCase()+k.slice(1));el.onchange=()=>{surf[k]=el.checked;saveSurf();startSurf()}});
+renderSurf();
+
+// Calendar (Google Calendar connector)
+const GC='Google Calendar';
+const cal=Object.assign({next:true,today:true,tomorrow:true,count:true,every:30,allDay:true,countdowns:[]},store.get('fb.cal',{}));
+const saveCal=()=>store.set('fb.cal',cal);
+let calEvents=null, calFetchedAt=0, calErr=null, calViewIdx=0, calTick=null, calRotate=null, calLastText='', calLoading=false;
+const pad2=n=>String(n).padStart(2,'0');
+const localIso=d=>d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+'T'+pad2(d.getHours())+':'+pad2(d.getMinutes())+':00';
+const dayStart=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+function calSetStatus(t){$('calStatus').textContent=t}
+function calError(e){
+  const c=(e&&e.code)||'upstream_error';
+  const msgs={
+    unavailable:'The calendar works when this board is open in Claude (the app or claude.ai).',
+    not_granted:'The calendar works when this board is open in Claude (the app or claude.ai).',
+    capability_disabled:'The calendar works when this board is open in Claude (the app or claude.ai).',
+    server_not_connected:'Add Google Calendar in claude.ai Settings → Connectors, then tap Show calendar again.',
+    selection_required:'Choose which Google Calendar connection to use, then tap Show calendar again.',
+    needs_reauth:'Reconnect Google Calendar in claude.ai Settings → Connectors.',
+    not_in_manifest:'Google Calendar is turned off for this board. Allow it in the board’s permissions, then tap Show calendar again.',
+    approval_required:'Tap Show calendar and allow Google Calendar when Claude asks.',
+    consent_required:'Tap Show calendar and allow Google Calendar when Claude asks.',
+    blocked_by_policy:'Your organization blocks Google Calendar here.',
+    tool_error:'Google Calendar couldn’t read your events. The board will try again in a few minutes.',
+    server_unavailable:'Google Calendar didn’t answer. The board will try again in a few minutes.'
+  };
+  return msgs[c]||'Google Calendar didn’t answer. The board will try again in a few minutes.';
+}
+function parseEvent(ev){
+  const title=String(ev.summary||'Busy'); const st=ev.start||{}, en=ev.end||{};
+  if(st.dateTime){const s=new Date(st.dateTime); if(isNaN(s))return null; const e=en.dateTime?new Date(en.dateTime):new Date(s.getTime()+3600000); return {title,start:s,end:e,allDay:false}}
+  if(st.date){const ymd=v=>{const [y,m,d]=String(v).slice(0,10).split('-').map(Number);return new Date(y,m-1,d)}; const s=ymd(st.date); if(isNaN(s))return null; const e=en.date?ymd(en.date):addDays(s,1); return {title,start:s,end:e,allDay:true}}
+  return null;
+}
+async function calLoad(force){
+  if(calLoading)return; calLoading=true;
+  try{
+    const mcp=await getMcp(); if(!mcp){calErr={code:'unavailable'};return}
+    const s=dayStart(new Date());
+    const r=await mcp.callTool(GC,'list_events',{startTime:localIso(s),endTime:localIso(addDays(s,8)),orderBy:'startTime',pageSize:100},{cache:force?{staleTime:0,gcTime:3600000,refresh:true}:{staleTime:240000,gcTime:3600000}});
+    const p=r.payload||{};
+    calEvents=(Array.isArray(p.events)?p.events:[])
+      .filter(ev=>ev&&ev.status!=='cancelled'&&!(ev.attendees||[]).some(a=>a&&a.self&&a.responseStatus==='declined'))
+      .map(parseEvent).filter(Boolean).sort((a,b)=>a.start-b.start);
+    calFetchedAt=(r.cache&&r.cache.storedAt)||Date.now(); calErr=null;
+  }catch(err){
+    calErr=err||{code:'upstream_error'};
+    if(['needs_reauth','server_not_connected','not_in_manifest','blocked_by_policy','approval_required','consent_required','selection_required'].includes(calErr.code))calEvents=null;
+  }finally{calLoading=false}
+}
+const UP=s=>String(s).toUpperCase();
+function fmtCompact(d){
+  const h=d.getHours(), m=d.getMinutes();
+  if(clk.hours==='24')return pad2(h)+':'+pad2(m);
+  return (h%12||12)+(m?':'+pad2(m):'')+(h<12?'AM':'PM');
+}
+function dayWord(d){
+  const diff=Math.round((dayStart(d)-dayStart(new Date()))/86400000);
+  if(diff===0)return 'TODAY'; if(diff===1)return 'TOMORROW';
+  return UP(d.toLocaleDateString('en-US',{weekday:'long'}));
+}
+function untilText(ms){
+  const mins=Math.round(ms/60000);
+  if(mins<1)return 'STARTING NOW';
+  if(mins<60)return 'IN '+mins+' MIN';
+  const h=Math.floor(mins/60), m=mins%60;
+  if(h<36)return 'IN '+h+' HR'+(m&&h<10?' '+m+' MIN':'');
+  return 'IN '+Math.round(ms/86400000)+' DAYS';
+}
+const CAL_FAIL='CALENDAR\n\nCOULDN\'T LOAD\nSEE NOTE BELOW BOARD';
+function needEvents(){if(calEvents)return null;return calErr?CAL_FAIL:'CALENDAR\n\nLOADING'}
+function viewNext(){
+  const w=needEvents(); if(w)return w;
+  const now=new Date();
+  const ev=calEvents.find(e=>!e.allDay&&e.end>now);
+  if(!ev)return 'NEXT UP\n\nNOTHING SCHEDULED\nTHIS WEEK';
+  const title=UP(ev.title); const two=layout(title).length>1;
+  const lines=ev.start<=now
+    ?['HAPPENING NOW',...(two?[]:['']),title,'UNTIL '+fmtTime(ev.end)]
+    :['NEXT UP',...(two?[]:['']),title,dayWord(ev.start)+' '+fmtTime(ev.start),untilText(ev.start-now)];
+  return lines.join('\n');
+}
+function dayList(offset){
+  const now=new Date(), s=addDays(dayStart(now),offset), e=addDays(s,1);
+  return calEvents.filter(ev=>ev.start<e&&ev.end>s&&(cal.allDay||!ev.allDay)&&(offset>0||ev.allDay||ev.end>now));
+}
+function listLines(evs,max){
+  const out=[];
+  const all=evs.filter(e=>e.allDay), timed=evs.filter(e=>!e.allDay);
+  [...all,...timed].forEach(ev=>out.push(fit(ev.allDay?UP(ev.title):fmtCompact(ev.start)+' '+UP(ev.title),COLS)));
+  if(out.length>max){const more=out.length-(max-1);out.splice(max-1);out.push('+'+more+' MORE')}
+  return out;
+}
+function viewToday(){
+  const w=needEvents(); if(w)return w;
+  const d=new Date(); const head=UP(d.toLocaleDateString('en-US',{weekday:'long'}))+' '+UP(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));
+  const evs=dayList(0);
+  if(!evs.length)return head+'\n\nNOTHING ELSE\nON THE CALENDAR';
+  const lines=listLines(evs,5);
+  return [head,...(lines.length<=3?['']:[]),...lines].join('\n');
+}
+function viewTomorrow(){
+  const w=needEvents(); if(w)return w;
+  const evs=dayList(1);
+  if(!evs.length)return 'TOMORROW\n\nNOTHING ON\nTHE CALENDAR';
+  const lines=listLines(evs,5);
+  return ['TOMORROW',...(lines.length<=3?['']:[]),...lines].join('\n');
+}
+function cdDays(c){const [y,m,d]=String(c.date).split('-').map(Number);return Math.round((new Date(y,m-1,d)-dayStart(new Date()))/86400000)}
+function cdUpcoming(){return cal.countdowns.filter(c=>cdDays(c)>=0).sort((a,b)=>cdDays(a)-cdDays(b))}
+function viewCount(){
+  const lines=cdUpcoming().slice(0,5).map(c=>{const n=cdDays(c),nm=UP(c.name);return fit(n===0?'TODAY: '+nm:n===1?'TOMORROW: '+nm:n+' DAYS TO '+nm,COLS)});
+  if(!lines.length)return 'COUNTDOWNS\n\nADD ONE IN THE\nCALENDAR TAB';
+  return (lines.length<=3?['COUNTING DOWN','',...lines]:lines.length===4?['COUNTING DOWN',...lines]:lines).join('\n');
+}
+function calViews(){
+  const v=[];
+  if(cal.next)v.push(['next up',viewNext]);
+  if(cal.today)v.push(['today',viewToday]);
+  if(cal.tomorrow&&new Date().getHours()>=18)v.push(['tomorrow',viewTomorrow]);
+  if(cal.count&&cdUpcoming().length)v.push(['countdowns',viewCount]);
+  if(!v.length)v.push(['next up',viewNext]);
+  return v;
+}
+function calRender(){
+  if(mode!=='calendar')return;
+  const views=calViews(); const [name,fn]=views[calViewIdx%views.length];
+  const text=fn(); if(text!==calLastText){calLastText=text;send(text)}
+  if(calErr)calSetStatus(calError(calErr)+(calEvents?' Showing the last events it loaded.':''));
+  else if(calEvents)calSetStatus('Showing '+name+' · updated '+new Date(calFetchedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}));
+  else calSetStatus('Loading your calendar…');
+}
+function calStop(){clearInterval(calTick);clearInterval(calRotate);calTick=calRotate=null}
+function startCalendar(){
+  stopModes(); mode='calendar'; store.set('fb.mode','calendar'); $('calBtn').classList.add('on'); setStatus(busy?'Flipping':'Showing');
+  calViewIdx=0; calLastText=''; calRender();
+  calLoad(false).then(calRender);
+  calRotate=setInterval(()=>{calViewIdx++;calRender()},cal.every*1000);
+  calTick=setInterval(()=>{if(Date.now()-calFetchedAt>300000&&!calLoading)calLoad(false).then(calRender);else calRender()},30000);
+}
+$('calBtn').onclick=()=>{if(mode==='calendar')stopModes();else startCalendar()};
+function renderCal(){
+  $('calNext').checked=cal.next; $('calToday').checked=cal.today; $('calTomorrow').checked=cal.tomorrow; $('calCount').checked=cal.count;
+  $('calAllDay').checked=cal.allDay; $('calEvery').value=String(cal.every);
+  const ul=$('cdList'); ul.innerHTML='';
+  if(!cal.countdowns.length){ul.innerHTML='<li class="hint">No countdowns yet. Add a trip, a birthday or anything you’re looking forward to.</li>'}
+  cal.countdowns.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).forEach(c=>{
+    const li=document.createElement('li');
+    const t=document.createElement('span'); t.className='txt';
+    const n=cdDays(c); t.textContent=UP(c.name)+' · '+(n<0?'passed':n===0?'today':n===1?'tomorrow':n+' days');
+    const del=document.createElement('button'); del.type='button'; del.className='x'; del.textContent='Remove';
+    del.onclick=()=>{cal.countdowns=cal.countdowns.filter(x=>x!==c);saveCal();renderCal();if(mode==='calendar')calRender()};
+    li.append(t,del); ul.appendChild(li);
+  });
+}
+[['calNext','next'],['calToday','today'],['calTomorrow','tomorrow'],['calCount','count'],['calAllDay','allDay']].forEach(([id,k])=>{$(id).onchange=()=>{cal[k]=$(id).checked;saveCal();if(mode==='calendar'){calLastText='';calRender()}}});
+$('calEvery').onchange=()=>{cal.every=+$('calEvery').value;saveCal();if(mode==='calendar')startCalendar()};
+$('cdAdd').onclick=()=>{
+  const name=$('cdName').value.trim().slice(0,14), date=$('cdDate').value;
+  if(!name){$('cdName').focus();return} if(!date){$('cdDate').focus();return}
+  cal.countdowns.push({name,date}); saveCal(); $('cdName').value=''; $('cdDate').value=''; renderCal();
+  if(mode==='calendar'){calLastText='';calRender()}
+};
+renderCal();
+
+// Day plan: what the board shows, and its style, by time of day
+const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages']];
+const sched=Object.assign({on:false,slots:[
+  {t:'06:30',show:'message',text:'{y} DAWN PATROL {y}\nMALIBU 3-4 FT FAIR\nOFFSHORE TILL 10',style:'daylight'},
+  {t:'08:00',show:'clock',text:'',style:'keep'},
+  {t:'12:00',show:'saved',text:'',style:'harbor'},
+  {t:'17:00',show:'message',text:'NEXT UP\n\nSOCCER PRACTICE\n5:30 PM',style:'classic'},
+  {t:'21:30',show:'message',text:'{v} TOMORROW {v}\n\nHIGH TIDE 6:45 AM\nDENTIST 9:30 AM',style:'glow'}
+]},store.get('fb.sched',{}));
+const saveSched=()=>store.set('fb.sched',sched);
+let schedTimer=null, schedKey='';
+const sortSlots=()=>sched.slots.sort((a,b)=>a.t.localeCompare(b.t));
+function currentSlotIdx(){
+  if(!sched.slots.length)return -1;
+  const d=new Date(), now=pad2(d.getHours())+':'+pad2(d.getMinutes());
+  let idx=sched.slots.length-1;
+  sched.slots.forEach((s,i)=>{if(s.t<=now)idx=i});
+  return idx;
+}
+const fmtSlotTime=t=>{const [h,m]=t.split(':').map(Number);return clk.hours==='24'?t:(h%12||12)+':'+pad2(m)+(h<12?' AM':' PM')};
+function schedApply(){
+  const i=currentSlotIdx(); if(i<0){$('schedStatus').textContent='Add a time to start the plan.';return}
+  const s=sched.slots[i]; const key=[i,s.t,s.show,s.text,s.style].join('|');
+  const next=sched.slots[(i+1)%sched.slots.length];
+  const label=(SHOW_OPTS.find(o=>o[0]===s.show)||['',s.show])[1];
+  $('schedStatus').textContent='Running. '+label+' until '+fmtSlotTime(next.t)+'.';
+  document.querySelectorAll('.slot').forEach(li=>li.classList.toggle('now',+li.dataset.i===i));
+  if(key===schedKey)return; schedKey=key;
+  schedDriving=true;
+  try{
+    if(s.style&&s.style!=='keep'&&BOARD_STYLES.some(x=>x.id===s.style))applyStyle(s.style);
+    if(s.show==='message'){stopModes();send(s.text||'')}
+    else if(s.show==='calendar')startCalendar();
+    else if(s.show==='clock')startClock();
+    else if(s.show==='weather')startWeather();
+    else if(s.show==='surf')startSurf();
+    else if(s.show==='saved'){if(mode!=='rotating'){mode='';$('rotateBtn').click()}}
+  }finally{schedDriving=false}
+  setStatus(busy?'Flipping':'Showing');
+}
+function startSchedule(){
+  schedOn=true; sched.on=true; saveSched(); $('schedBtn').classList.add('on'); schedKey='';
+  clearInterval(schedTimer); schedApply(); schedTimer=setInterval(schedApply,15000); renderSlots(); setStatus(busy?'Flipping':'Showing');
+}
+function schedOff(){
+  if(!schedOn)return;
+  schedOn=false; sched.on=false; saveSched(); clearInterval(schedTimer); schedTimer=null; $('schedBtn').classList.remove('on');
+  $('schedStatus').textContent='Paused. Tap Run day plan to pick it back up.';
+  document.querySelectorAll('.slot').forEach(li=>li.classList.remove('now'));
+}
+$('schedBtn').onclick=()=>{if(schedOn){schedOff();stopModes()}else startSchedule()};
+function schedEdited(){saveSched();if(schedOn)schedApply()}
+function renderSlots(){
+  const ul=$('slots'); ul.innerHTML='';
+  if(!sched.slots.length){ul.innerHTML='<li class="hint">No times yet. Tap Add a time.</li>';return}
+  const cur=schedOn?currentSlotIdx():-1;
+  sched.slots.forEach((s,i)=>{
+    const li=document.createElement('li'); li.className='slot'+(i===cur?' now':''); li.dataset.i=i;
+    const when=document.createElement('div'); when.className='when';
+    const t=document.createElement('input'); t.type='time'; t.id='slot-t-'+i; t.value=s.t; t.setAttribute('aria-label','Start time');
+    t.onchange=()=>{if(!t.value)return;s.t=t.value;sortSlots();renderSlots();schedEdited()};
+    when.appendChild(t);
+    if(i===cur){const b=document.createElement('span');b.className='badge';b.textContent='Now';when.appendChild(b)}
+    const what=document.createElement('div'); what.className='what';
+    const sel=document.createElement('select'); sel.id='slot-s-'+i; sel.setAttribute('aria-label','What to show');
+    SHOW_OPTS.forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;sel.appendChild(o)}); sel.value=s.show;
+    sel.onchange=()=>{s.show=sel.value;renderSlots();schedEdited()};
+    const sty=document.createElement('select'); sty.id='slot-y-'+i; sty.setAttribute('aria-label','Board style');
+    [['keep','Keep current style'],...BOARD_STYLES.map(x=>[x.id,x.name+' style'])].forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;sty.appendChild(o)}); sty.value=s.style||'keep';
+    sty.onchange=()=>{s.style=sty.value;schedEdited()};
+    what.append(sel,sty);
+    if(s.show==='message'){
+      const ta=document.createElement('textarea'); ta.id='slot-m-'+i; ta.rows=2; ta.spellcheck=false; ta.value=toEmoji(s.text||''); ta.setAttribute('aria-label','Message for this time');
+      ta.oninput=()=>{liveTokens(ta);s.text=fromEmoji(ta.value);saveSched()}; ta.onchange=schedEdited;
+      what.appendChild(ta);
+    }
+    const del=document.createElement('button'); del.type='button'; del.className='x'; del.textContent='Remove';
+    del.onclick=()=>{const gone=sched.slots.splice(i,1)[0];renderSlots();schedEdited();toast('Time removed',()=>{sched.slots.push(gone);sortSlots();renderSlots();schedEdited()})};
+    li.append(when,what,del); ul.appendChild(li);
+  });
+}
+$('slotAdd').onclick=()=>{
+  const last=sched.slots.length?sched.slots[sched.slots.length-1].t:'08:00';
+  const h=Math.min(23,+last.split(':')[0]+1);
+  sched.slots.push({t:pad2(h)+':00',show:'clock',text:'',style:'keep'}); sortSlots(); renderSlots(); schedEdited();
+};
+sortSlots();
+
+function schedNextLabel(){
+  const i=currentSlotIdx(); if(i<0)return '';
+  const n=sched.slots[(i+1)%sched.slots.length];
+  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages'};
+  return (SHORT[n.show]||n.show)+' at '+fmtSlotTime(n.t).replace(':00','');
+}
+function updateSubs(){
+  const set=(k,t)=>{const el=document.querySelector('[data-sub="'+k+'"]');if(el&&el.textContent!==t)el.textContent=t};
+  set('saved',saved.length+' saved'+(mode==='rotating'?', rotating':''));
+  set('clock',fmtTime(new Date()));
+  set('weather',wx.cities.length?wx.cities[0].name.split(',')[0]+(wx.cities.length>1?' +'+(wx.cities.length-1):''):'Add a city');
+  const m=surfData.malibu; set('surf',m&&m.quality?'Malibu, '+String(m.quality).toLowerCase()+(m.height?', '+m.height:''):'Malibu and Venice');
+  let c='Google Calendar'; if(calEvents){const now=new Date(),ev=calEvents.find(e=>!e.allDay&&e.end>now);c=ev?'Next: '+ev.title:'Nothing coming up'} set('calendar',c);
+  set('schedule',schedOn?'Next: '+schedNextLabel():'Tap to run');
+}
+setInterval(()=>{try{updateSubs()}catch(e){}},20000);
+
+// Kiosk + fullscreen + wake lock
+let wake=null;
+async function keepAwake(){try{if('wakeLock' in navigator)wake=await navigator.wakeLock.request('screen')}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(document.body.classList.contains('kiosk')||document.body.classList.contains('fs')))keepAwake()});
+$('showBtn').onclick=()=>{document.body.classList.remove('kiosk')};
+const inNativeFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+let idleT=null, noteT=null;
+function poke(){if(!document.body.classList.contains('fs'))return;document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>document.body.classList.add('idle'),2500)}
+['pointermove','pointerdown','touchstart'].forEach(ev=>addEventListener(ev,poke,{passive:true}));
+function fsNote(t){const n=$('fsNote');n.textContent=t;n.hidden=false;n.classList.remove('gone');clearTimeout(noteT);noteT=setTimeout(()=>n.classList.add('gone'),6000)}
+function fitFill(){
+  const b=$('board'); if(!document.body.classList.contains('fs')||!document.body.classList.contains('fill'))return;
+  const cs=getComputedStyle(b);
+  const W=b.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  const H=b.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+  if(W<=0||H<=0)return;
+  const g=Math.max(2,W*0.0045), colW=(W-21*g)/22, rowH=(H-5*g)/6;
+  const ar=Math.max(.42,Math.min(.82,colW/rowH)), tileH=colW/ar;
+  b.style.setProperty('--tile-ar',ar.toFixed(4)); b.style.setProperty('--fill-gap',g.toFixed(1)+'px');
+  b.style.setProperty('--fill-font',Math.min(colW*0.95,tileH*0.6).toFixed(1)+'px');
+}
+let fsLayout=store.get('fb.fsLayout','fill');
+let keysOn=store.get('fb.keys',true);
+$('keysOn').checked=keysOn; $('keysOn').onchange=()=>{keysOn=$('keysOn').checked;store.set('fb.keys',keysOn)};
+function applyFsLayout(){document.body.classList.toggle('fill',fsLayout==='fill');$('fsLayout').value=fsLayout;requestAnimationFrame(fitFill)}
+$('fsLayout').onchange=()=>{fsLayout=$('fsLayout').value;store.set('fb.fsLayout',fsLayout);applyFsLayout()};
+applyFsLayout();
+addEventListener('resize',()=>requestAnimationFrame(fitFill));
+async function enterFs(){
+  document.body.classList.add('fs'); keepAwake(); poke(); requestAnimationFrame(fitFill);
+  const el=document.documentElement;
+  try{
+    if(el.requestFullscreen)await el.requestFullscreen({navigationUI:'hide'});
+    else if(el.webkitRequestFullscreen)await el.webkitRequestFullscreen();
+    else throw new Error('none');
+    try{await screen.orientation.lock('landscape')}catch(e){}
+  }catch(e){
+    fsNote('This screen won’t let the board take over completely, so it fills the window instead. Turn your device sideways for the biggest board.');
+  }
+}
+function exitFs(){
+  document.body.classList.remove('fs','idle'); $('fsNote').hidden=true;
+  if(inNativeFs()){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}}
+}
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{requestAnimationFrame(fitFill);if(!inNativeFs()){document.body.classList.remove('fs','idle');$('fsNote').hidden=true}}));
+$('fsBtn').onclick=enterFs; $('fsExit').onclick=exitFs;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs'))exitFs()});
+$('board').addEventListener('dblclick',()=>{document.body.classList.contains('fs')?exitFs():enterFs()});
+document.addEventListener('keydown',e=>{if(!keysOn||e.target===msg||['SELECT','INPUT'].includes(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='h'||e.key==='H')document.body.classList.toggle('kiosk');else if(e.key==='s')stepStyle(1);else if(e.key==='S')stepStyle(-1)});
+
+// Mode cards: tap to open a mode's settings; live modes also go up on the board right away
+const PANES=['message','saved','clock','schedule','style'];
+const CARDS=[...document.querySelectorAll('.card')];
+let lastCard=store.get('fb.card','message');
+function openTab(id){
+  if(!PANES.includes(id))id='message';
+  CARDS.forEach(b=>{const on=b.dataset.tab===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on||(id==='style'&&b.dataset.tab===lastCard)?0:-1});
+  const sb=$('tab-style'); sb.setAttribute('aria-expanded',String(id==='style')); sb.classList.toggle('on',id==='style');
+  PANES.forEach(p=>{$('pane-'+p).hidden=p!==id});
+  if(id!=='style'){lastCard=id;store.set('fb.card',id)}
+  store.set('fb.tab',id);
+}
+const START={clock:()=>{if(mode!=='clock')startClock()},weather:()=>{if(mode!=='weather')startWeather()},surf:()=>{if(mode!=='surf')startSurf()},calendar:()=>{if(mode!=='calendar')startCalendar()},schedule:()=>{if(!schedOn)startSchedule()}};
+CARDS.forEach((b,i)=>{
+  b.onclick=()=>{openTab(b.dataset.tab);if(START[b.dataset.tab])START[b.dataset.tab]()};
+  b.onkeydown=e=>{const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();const n=CARDS[(i+d+CARDS.length)%CARDS.length];openTab(n.dataset.tab);n.focus()};
+});
+$('tab-style').onclick=()=>openTab($('pane-style').hidden?'style':lastCard);
+openTab(store.get('fb.tab','message'));
+
+// Board styles
+const BOARD_STYLES=[
+  {id:'classic',group:'modern',name:'Classic',note:'Black flaps, cream letters.'},
+  {id:'departures',group:'modern',name:'Departures',note:'Amber on blue-black, like an airport board.'},
+  {id:'daylight',group:'modern',name:'Daylight',note:'White flaps for a bright room.'},
+  {id:'rail',group:'modern',name:'Rail',note:'Green flaps, white letters.'},
+  {id:'harbor',group:'modern',name:'Harbor',note:'Navy flaps, sand letters.'},
+  {id:'glow',group:'modern',name:'Glow',note:'Glowing amber pixels.'},
+  {id:'solari',group:'vintage',name:'Solari',note:'Station board: matte black, hinge pins, crisp white letters.'},
+  {id:'cifra',group:'vintage',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
+  {id:'worn',group:'vintage',name:'Worn',note:'A ticket-hall board: scuffed, faded, printed a little off-center.'},
+  {id:'gameshow',group:'vintage',name:'Game show',note:'1970s burnt orange on chocolate brown.'},
+  {id:'pragotron',group:'vintage',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'}
+];
+let styleId=store.get('fb.style','classic'); if(!BOARD_STYLES.some(s=>s.id===styleId))styleId='classic';
+function applyStyle(id){
+  styleId=id; store.set('fb.style',id);
+  if(id==='classic')delete document.body.dataset.style; else document.body.dataset.style=id;
+  const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
+  document.querySelectorAll('.swatch').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===id)));
+  if(!$('styleTray').hidden)noteFor(id,true);
+}
+function stepStyle(d){const i=BOARD_STYLES.findIndex(s=>s.id===styleId);applyStyle(BOARD_STYLES[(i+d+BOARD_STYLES.length)%BOARD_STYLES.length].id)}
+const SW_CELLS=[' ','F','L','A','P',' ','{y}','6',':','4','5','{b}'];
+function miniTile(c){
+  const t=document.createElement('div'); t.className='t';
+  t.style.cssText='--jx:'+((Math.random()-.5)*.5).toFixed(2)+';--jy:'+((Math.random()-.5)*.3).toFixed(2)+';--fd:'+(Math.random()*.35).toFixed(2)+';--sx:'+(Math.random()*100|0)+'%;--sy:'+(Math.random()*100|0)+'%';
+  const color=c.length===3?'var(--c-'+c[1]+')':'';
+  t.innerHTML='<div class="h u"><span></span></div><div class="h d"><span></span></div>';
+  t.querySelectorAll('.h').forEach(h=>{if(color)h.style.background=color;else h.firstChild.textContent=c.trim()});
+  return t;
+}
+(function buildStyles(){
+  BOARD_STYLES.forEach(s=>{
+    const b=document.createElement('button'); b.type='button'; b.className='swatch'; b.dataset.id=s.id; b.setAttribute('aria-pressed','false');
+    b.setAttribute('aria-label',s.name+'. '+s.note);
+    const mb=document.createElement('span'); mb.className='minib'; mb.dataset.style=s.id; mb.setAttribute('aria-hidden','true');
+    const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(s.id==='pragotron'&&i===0)t.classList.add('edge');g.appendChild(t)}); mb.appendChild(g);
+    const nm=document.createElement('span'); nm.className='nm2'; nm.innerHTML='<span></span><i class="tick"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.2 5 8.5 9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>'; nm.firstChild.textContent=s.name;
+    b.append(mb,nm);
+    b.onclick=()=>{applyStyle(s.id);previewStyle(null);noteFor(s.id,true)};
+    b.onmouseenter=()=>{previewStyle(s.id);noteFor(s.id)}; b.onfocus=()=>{previewStyle(s.id);noteFor(s.id)};
+    $(s.group==='vintage'?'swVintage':'swModern').appendChild(b);
+  });
+})();
+// Hovering or focusing a swatch previews it on the board only; tapping keeps it
+function previewStyle(id){const bd=$('board');if(id&&id!==styleId)bd.dataset.style=id;else delete bd.dataset.style;requestAnimationFrame(fitFill)}
+function noteFor(id,chosen){const s=BOARD_STYLES.find(x=>x.id===id);$('styleNote').textContent=s?(chosen||id===styleId?'Showing '+s.name+'. ':'Previewing '+s.name+'. ')+s.note:''}
+function openTray(){const t=$('styleTray');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');noteFor(styleId,true);const cur=t.querySelector('.swatch[aria-pressed="true"]');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
+function closeTray(){const t=$('styleTray');if(t.hidden)return;t.hidden=true;previewStyle(null);$('styleOpen').setAttribute('aria-expanded','false')}
+$('styleOpen').onclick=()=>{$('styleTray').hidden?openTray():closeTray()};
+$('trayDone').onclick=()=>{closeTray();$('styleOpen').focus()};
+$('openTrayFromSettings').onclick=()=>{openTray();$('styleTray').scrollIntoView({block:'nearest',behavior:'smooth'})};
+$('styleTray').addEventListener('mouseleave',()=>previewStyle(null));
+$('styleTray').addEventListener('focusout',e=>{if(!$('styleTray').contains(e.relatedTarget))previewStyle(null)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('styleTray').hidden){closeTray();$('styleOpen').focus()}});
+document.addEventListener('pointerdown',e=>{if(!$('styleTray').hidden&&!$('styleTray').contains(e.target)&&!e.target.closest('.stylestep'))closeTray()});
+$('stylePrev').onclick=()=>stepStyle(-1); $('styleNext').onclick=()=>stepStyle(1);
+let styleTimer=null;
+function setStyleAuto(sec){clearInterval(styleTimer);styleTimer=sec?setInterval(()=>stepStyle(1),sec*1000):null;$('styleAuto').value=String(sec);store.set('fb.styleAuto',sec)}
+$('styleAuto').onchange=()=>setStyleAuto(+$('styleAuto').value);
+applyStyle(styleId); setStyleAuto(+store.get('fb.styleAuto',0)||0);
+renderSlots();
+
+// Start: blank board, then flip in the current message
+tiles.forEach(t=>{paint(t.u,0);paint(t.d,0)});
+updateCount();
+setTimeout(()=>{const m=store.get('fb.mode','');if(sched.on)startSchedule();else if(m==='calendar')startCalendar();else if(m==='clock')startClock();else if(m==='weather')startWeather();else if(m==='surf')startSurf();else if(m==='rotating'&&saved.length)$('rotateBtn').click();else send(getMsg())},300);
+})();
+</script>
+
+</body>
+
+</html>

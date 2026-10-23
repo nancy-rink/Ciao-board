@@ -26,10 +26,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&family=Cabin:wght@600;700&family=Stardos+Stencil:wght@700&family=Josefin+Sans:wght@600&family=Jost:wght@300&family=Permanent+Marker&family=Cinzel:wght@700&family=Grenze+Gotisch:wght@600&family=Uncial+Antiqua&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&family=Cabin:wght@600;700&family=Stardos+Stencil:wght@700&family=Josefin+Sans:wght@600&family=Jost:wght@300&family=Permanent+Marker&family=Cinzel:wght@700&family=Grenze+Gotisch:wght@600&family=Uncial+Antiqua&family=Overpass:wght@700&family=Righteous&family=Rozha+One&display=swap">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <link rel="stylesheet" href="css/board.css?v=42c7e34e3e">
-<link rel="stylesheet" href="css/styles.css?v=4f1cf5a090">
+<link rel="stylesheet" href="css/styles.css?v=efe23db0a0">
 <link rel="stylesheet" href="css/app.css?v=7b205af7f9">
 <link rel="stylesheet" href="css/tv-remote.css?v=2e03c710c8">
 </head>
@@ -315,7 +315,7 @@
     <section class="tray" id="styleTray" aria-label="Board styles">
       <div class="tray-top" id="trayTop">
                 <div class="tray-tools">
-          <div class="tray-jump" id="trayJump" role="toolbar" aria-label="Jump to a group"><button type="button" data-g="fav" id="chip-fav" hidden>★ Favorites</button><button type="button" data-g="everyday">Everyday</button><button type="button" data-g="machines">Machines</button><button type="button" data-g="wayfinding">Wayfinding</button><button type="button" data-g="identity">Identities</button><button type="button" data-g="material">Materials</button><button type="button" data-g="studio">Studio</button><button type="button" data-g="museum">Museum</button></div>
+          <div class="tray-jump" id="trayJump" role="toolbar" aria-label="Jump to a group"><button type="button" data-g="fav" id="chip-fav" hidden>★ Favorites</button><button type="button" data-g="everyday">Everyday</button><button type="button" data-g="machines">Machines</button><button type="button" data-g="wayfinding">Wayfinding</button><button type="button" data-g="identity">Identities</button><button type="button" data-g="material">Materials</button><button type="button" data-g="studio">Studio</button><button type="button" data-g="museum">Museum</button><button type="button" data-g="la">Los Angeles</button><button type="button" data-g="quito">Quito</button><button type="button" data-g="istanbul">Istanbul</button><button type="button" data-g="jaipur">Jaipur</button></div>
           <div class="tray-filter"><div class="seg" id="trayTone" role="group" aria-label="Show"><button type="button" data-tone="all" aria-pressed="true">All</button><button type="button" data-tone="light" aria-pressed="false">Light</button><button type="button" data-tone="dark" aria-pressed="false">Dark</button></div>
           <label class="check" for="agedTray"><input type="checkbox" id="agedTray"> Worn</label></div>
         </div>
@@ -328,6 +328,10 @@
       <div class="tray-group" id="grp-material"><h3 id="tray-material"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-material">Materials <span>Furniture, fabric, iron, concrete, plaster and paving</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-material" role="group" aria-labelledby="tray-material"></div></div>
       <div class="tray-group" id="grp-studio"><h3 id="tray-studio"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-studio">Studio <span>After painters who worked in lines and color</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-studio" role="group" aria-labelledby="tray-studio"></div></div>
       <div class="tray-group" id="grp-museum"><h3 id="tray-museum"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-museum">Museum <span>Medieval pieces and favorites from the Met</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-museum" role="group" aria-labelledby="tray-museum"></div></div>
+      <div class="tray-group" id="grp-la"><h3 id="tray-la"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-la">Los Angeles <span>Freeway signs, coffee shops, glass houses and a pool</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-la" role="group" aria-labelledby="tray-la"></div></div>
+      <div class="tray-group" id="grp-quito"><h3 id="tray-quito"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-quito">Quito <span>Gold altars, white walls, painters and weavers</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-quito" role="group" aria-labelledby="tray-quito"></div></div>
+      <div class="tray-group" id="grp-istanbul"><h3 id="tray-istanbul"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-istanbul">Istanbul <span>Marbled paper, trams, mosaics and ferries</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-istanbul" role="group" aria-labelledby="tray-istanbul"></div></div>
+      <div class="tray-group" id="grp-jaipur"><h3 id="tray-jaipur"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-jaipur">Jaipur <span>The Pink City, its prints, pottery and stars</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-jaipur" role="group" aria-labelledby="tray-jaipur"></div></div>
       <div class="tray-foot"><p class="hint">Tap a group to open it, and a style to try it on the board, then <b>Use this style</b>. <b>About</b> tells you what each style is drawn from. Tap ☆ to add a favorite; with two or more, the board can cycle through just those.</p></div>
     </section>
     <section class="look-more">
@@ -725,15 +729,15 @@
 </dialog>
 <script src="js/core.js?v=5a08526348"></script>
 <script src="js/engine.js?v=938eebadda"></script>
-<script src="js/sound.js?v=e9b577f6b8"></script>
+<script src="js/sound.js?v=6fe0fdd7dc"></script>
 <script src="js/modes.js?v=492062cd1e"></script>
 <script src="js/friends.js?v=9daab5fd8a"></script>
 <script src="js/remote.js?v=5a2032790a"></script>
 <script src="js/art.js?v=9ebef47f0f"></script>
 <script src="js/wall.js?v=585eace2fe"></script>
 <script src="js/ui.js?v=72c616ee6b"></script>
-<script src="js/about.js?v=6107dc6a16"></script>
-<script src="js/styles.js?v=833665fccb"></script>
+<script src="js/about.js?v=7e798ccfb0"></script>
+<script src="js/styles.js?v=82f3f6ac7f"></script>
 <script src="js/start.js?v=ce8ae50515"></script>
 
 </body>

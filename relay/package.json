@@ -1,0 +1,12 @@
+{
+  "name": "ciao-relay",
+  "private": true,
+  "description": "Ciao Board's own relay on Cloudflare Workers: the same small API the board uses on ntfy.sh, without its daily message cap.",
+  "scripts": {
+    "dev": "wrangler dev --ip 127.0.0.1 --port 8792",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.2"
+  }
+}

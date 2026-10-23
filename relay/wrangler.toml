@@ -1,0 +1,14 @@
+# Ciao Board's relay. Deployed by .github/workflows/relay.yml to https://ciao-relay.nancyrink.workers.dev
+name = "ciao-relay"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+# One Durable Object per topic (an inbox or an invite). SQLite-backed objects are available on the free plan.
+[[durable_objects.bindings]]
+name = "TOPIC"
+class_name = "Topic"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Topic"]

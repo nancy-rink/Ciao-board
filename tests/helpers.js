@@ -1,11 +1,12 @@
 const {expect}=require('@playwright/test');
-const RELAY='http://127.0.0.1:8790/';
-// A device: its own browser storage, pointed at the local relay, collecting page errors
-async function device(browser,{width=1280,height=900,phone=false,relay=RELAY,storage,noStream=false}={}){
+const RELAY='http://127.0.0.1:8790/', CF='http://127.0.0.1:8792/';
+// A device: its own browser storage, pointed at the local relays, collecting page errors.
+// relay: the ntfy.sh stand-in; cf: our own relay ('' for a board from before it existed); noStream: no live connections at all.
+async function device(browser,{width=1280,height=900,phone=false,relay=RELAY,cf=CF,storage,noStream=false}={}){
   const ctx=await browser.newContext({viewport:{width,height},isMobile:phone,hasTouch:phone});
-  await ctx.addInitScript(r=>{window.__ciaoNtfy=r},relay);
+  await ctx.addInitScript(([r,c])=>{window.__ciaoNtfy=r;window.__ciaoRelay=c},[relay,cf]);
   if(storage)await ctx.addInitScript(s=>{if(!sessionStorage.getItem('seeded')){for(const[k,v]of Object.entries(s))localStorage.setItem(k,v);sessionStorage.setItem('seeded','1')}},storage);
-  if(noStream)await ctx.route(/\/sse/,r=>r.abort());
+  if(noStream){await ctx.route(/\/sse/,r=>r.abort());await ctx.routeWebSocket(/\/ws/,ws=>ws.close())}
   const page=await ctx.newPage();
   page.errors=[]; page.on('pageerror',e=>page.errors.push(e.message));
   return page;
@@ -28,4 +29,4 @@ async function pairedTvAndPhone(browser,opts={}){
   return {tv,phone,code};
 }
 const noErrors=(...pages)=>pages.forEach(p=>expect(p.errors,'page errors').toEqual([]));
-module.exports={device,stored,snd,openCard,sendMessage,tvCode,pairedTvAndPhone,noErrors,RELAY};
+module.exports={device,stored,snd,openCard,sendMessage,tvCode,pairedTvAndPhone,noErrors,RELAY,CF};

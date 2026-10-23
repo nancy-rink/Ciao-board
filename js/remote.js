@@ -235,7 +235,7 @@ function raInit(){
       if(!inv||inv.kind!=='tv'){say('That code doesn\'t match a TV. Check the code on the TV and try again.');return}
       const old=frLink(inv.id);
       if(old&&!old.pending){raRepair=false;$('rmTv').value=old.id;raRender();return}
-      if(old){old.at=Date.now();old.sentAt=Date.now();await frPostSealed(old.topic,old.id,old.ikey,old.hello);say('Connecting to '+inv.name+'…');return}
+      if(old){old.at=Date.now();old.sentAt=Date.now();await frPostSealed(old.topic,old.id,old.ikey,old.hello,old.cf);say('Connecting to '+inv.name+'…');return}
       await frConnect(inv,'tv',fr.name||'Phone'); say('Connecting to '+inv.name+'…'); rmRender();
     }catch(e){say(e.limit?frLimitMsg():'Couldn\'t reach the relay. Check the phone\'s connection and try again.')}
     finally{$('raLook').disabled=false}

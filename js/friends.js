@@ -2,12 +2,16 @@
 // Friends: send messages between boards whose owners have both agreed, through the free ntfy.sh relay (no account or setup).
 // Each board listens on its own unguessable inbox topic. The invite (found with its code) carries the inviter's topic and a one-time key
 // for the handshake; on accepting, the two boards run an ECDH key exchange, so only those two boards hold the key their messages are sealed
-// with, even if someone else saw the code. The relay only ever carries sealed messages; ntfy.sh keeps them 12 hours.
-const NTFY=window.__ciaoNtfy||'https://ntfy.sh/'; // a test can point the board at a local relay
+// with, even if someone else saw the code. The relay only ever carries sealed messages; both relays keep them 12 hours.
+// Two relays: our own on Cloudflare (relay/), with no daily cap, and ntfy.sh. Every board listens on both. A link moves to
+// ours once the other board shows it listens there too (its messages carry cf:1), and falls back to ntfy.sh if ours can't
+// be reached; links with a board that hasn't updated yet stay on ntfy.sh.
+const NTFY=window.__ciaoNtfy||'https://ntfy.sh/'; // tests point the board at local stand-ins
+const CF=window.__ciaoRelay!==undefined?window.__ciaoRelay:'https://ciao-relay.nancyrink.workers.dev/'; // '' turns it off
 function frRand(n){const A='abcdefghijkmnopqrstuvwxyz23456789',r=crypto.getRandomValues(new Uint32Array(n));return [...r].map(x=>A[x%A.length]).join('')}
 const fr=Object.assign({name:'',allow:true,hold:5,inbox:'',links:[],invites:[],waiting:[],seen:[],since:''},store.get('fb.friends',{}));
 if(!fr.inbox)fr.inbox='cb'+frRand(30);
-let frES=null, frHoldT=null, frPending=null, frNoteShownFor='';
+let frES=null, frWS=null, frWSOpen=false, frWSTries=0, frHoldT=null, frPending=null, frNoteShownFor='';
 function saveFr(){store.set('fb.friends',fr)}
 saveFr();
 function frSay(t){$('frStatus').textContent=t}
@@ -35,7 +39,9 @@ const frIsLimited=()=>Date.now()-frLimited<(frDaily?10*60e3:45e3);
 const FR_DAILY_MSG='The free relay\'s daily message limit for your home network is used up, so the TV and phone can\'t talk for now. It refills through the day; try again in an hour or so.';
 const FR_BUSY_MSG='The free relay is asking your home network to slow down. Give it a minute.';
 const frLimitMsg=()=>frDaily?FR_DAILY_MSG:FR_BUSY_MSG;
-async function frPost(topic,body){
+// Posts to our relay when the link is on it, and to ntfy.sh if that fails or the link isn't
+async function frPost(topic,body,cf){
+  if(cf&&CF){try{const r=await fetch(CF+topic,{method:'POST',body});if(r.ok)return}catch(e){}}
   const r=await fetch(NTFY+topic,{method:'POST',body});
   if(r.status===429){
     let j={}; try{j=await r.json()}catch(x){}
@@ -45,8 +51,9 @@ async function frPost(topic,body){
   if(!r.ok)throw new Error('HTTP '+r.status);
 }
 // Everything a board sends a friend goes to the friend's inbox as "ciao1 <link id> <sealed>"
-async function frPostSealed(topic,id,raw,obj){await frPost(topic,'ciao1 '+id+' '+await frSeal(await frKey(raw),obj))}
-async function frSend(link,obj){await frPostSealed(link.topic,link.id,link.key,obj)}
+// cf:1 inside the sealed message tells the other board this one listens on our relay
+async function frPostSealed(topic,id,raw,obj,cf){await frPost(topic,'ciao1 '+id+' '+await frSeal(await frKey(raw),CF?Object.assign({cf:1},obj):obj),cf)}
+async function frSend(link,obj){await frPostSealed(link.topic,link.id,link.key,obj,link.cf)}
 const frLink=id=>fr.links.find(l=>l.id===id);
 const frLive=id=>{const l=frLink(id);return l&&!l.pending?l:null};
 const ECDH={name:'ECDH',namedCurve:'P-256'};
@@ -63,6 +70,18 @@ function frListen(){
   frES=new EventSource(NTFY+fr.inbox+'/sse?since='+encodeURIComponent(fr.since||'12h'));
   frES.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='message')frReceive(m)}catch(x){}};
   frES.onerror=()=>{if(frES&&frES.readyState===2)setTimeout(frListen,5000);if(!frPollT)frPollSoon()};
+  frListenCf();
+}
+// Our relay's live connection is a WebSocket (it costs nothing while idle, so a TV can hold one all day). A ping every
+// 30 seconds keeps routers from dropping it; if it closes, it reconnects with a growing pause, and polling covers the gap.
+function frListenCf(){
+  if(!CF||frWS||(!fr.links.length&&!fr.invites.length))return;
+  let ws, ping=null;
+  try{ws=new WebSocket(CF.replace(/^http/,'ws')+fr.inbox+'/ws?since='+encodeURIComponent(fr.sinceCf||'12h'))}catch(e){return}
+  frWS=ws;
+  ws.onopen=()=>{frWSOpen=true;frWSTries=0;ping=setInterval(()=>{try{ws.send('ping')}catch(e){}},30000)};
+  ws.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.event==='message')frReceive(m,'cf')}catch(x){}};
+  ws.onclose=()=>{clearInterval(ping);if(frWS===ws){frWS=null;frWSOpen=false}frWSTries=Math.min(frWSTries+1,6);setTimeout(frListenCf,1000*2**frWSTries);if(!frPollT)frPollSoon()};
 }
 // The stream can stall (phones pause it in the background, some TV browsers drop it), and a missed handshake
 // leaves pairing stuck. While one is in progress, also ask the relay for anything new every few seconds.
@@ -70,31 +89,34 @@ let frPollT=null, frPolling=false;
 const frHandshaking=()=>fr.links.some(l=>l.pending)||fr.invites.some(i=>Date.now()-i.made<15*60e3);
 async function frPoll(force){
   if(frPolling||(!fr.links.length&&!fr.invites.length))return;
-  if(!force&&(frIsLimited()||(frES&&frES.readyState===1)))return; // the open stream already delivers everything
   frPolling=true;
-  try{
-    const r=await fetch(NTFY+fr.inbox+'/json?poll=1&since='+encodeURIComponent(fr.since||'12h'));
-    if(r.status===429)frLimited=Date.now();
-    if(r.ok)for(const l of (await r.text()).split('\n').filter(Boolean)){try{const m=JSON.parse(l);if(m.event==='message')await frReceive(m)}catch(x){}}
-  }catch(e){}finally{frPolling=false}
+  const pull=async(base,since,via)=>{
+    const r=await fetch(base+fr.inbox+'/json?poll=1&since='+encodeURIComponent(since||'12h'));
+    if(r.status===429&&base===NTFY)frLimited=Date.now();
+    if(r.ok)for(const l of (await r.text()).split('\n').filter(Boolean)){try{const m=JSON.parse(l);if(m.event==='message')await frReceive(m,via)}catch(x){}}
+  };
+  // an open live connection already delivers everything from that relay
+  try{if(CF&&(force||!frWSOpen))await pull(CF,fr.sinceCf,'cf')}catch(e){}
+  try{if(force||!(frIsLimited()||(frES&&frES.readyState===1)))await pull(NTFY,fr.since,'ntfy')}catch(e){}
+  frPolling=false;
 }
 function frNudge(){
   const now=Date.now(); let drop=false;
   fr.links.filter(l=>l.pending&&l.hello).forEach(l=>{
     if(now-l.at>15*60e3){drop=true;return}
-    if((l.tries||0)<3&&!frIsLimited()&&now-l.at>12e3&&now-(l.sentAt||l.at)>15e3){l.sentAt=now;l.tries=(l.tries||0)+1;frPostSealed(l.topic,l.id,l.ikey,l.hello).catch(()=>{})}
+    if((l.tries||0)<3&&(l.cf||!frIsLimited())&&now-l.at>12e3&&now-(l.sentAt||l.at)>15e3){l.sentAt=now;l.tries=(l.tries||0)+1;frPostSealed(l.topic,l.id,l.ikey,l.hello,l.cf).catch(()=>{})}
   });
   if(drop){fr.links=fr.links.filter(l=>!(l.pending&&now-l.at>15*60e3));saveFr();frRender();rmRender()}
 }
 // While pairing, check every 6 seconds. After that, keep checking every 15 seconds for as long as the live stream is down,
 // so a TV whose browser keeps dropping the stream still gets the remote's commands.
-const frStreamDown=()=>(fr.links.length||fr.invites.length)&&!(frES&&frES.readyState===1);
+const frStreamDown=()=>(fr.links.length||fr.invites.length)&&(!(frES&&frES.readyState===1)||(CF&&!frWSOpen));
 function frPollSoon(){clearTimeout(frPollT);frPollT=null;const hs=frHandshaking();if(hs||frStreamDown())frPollT=setTimeout(async()=>{frNudge();await frPoll();frPollSoon()},hs?6000:15000)}
 function frWake(){if(document.visibilityState!=='visible')return;frListen();frPoll(true);frPollSoon()}
 document.addEventListener('visibilitychange',frWake); addEventListener('online',frWake); addEventListener('pageshow',frWake);
-async function frReceive(m){
+async function frReceive(m,via){
   if(fr.seen.includes(m.id))return;
-  fr.seen=[...fr.seen.slice(-299),m.id]; fr.since=m.id; saveFr();
+  fr.seen=[...fr.seen.slice(-299),m.id]; if(via==='cf')fr.sinceCf=m.id;else fr.since=m.id; saveFr();
   const [tag,id,sealed]=String(m.message||'').split(' ');
   if(tag!=='ciao1')return;
   // Handshake messages are sealed with the invite's key; everything after with the pair's own key
@@ -104,16 +126,17 @@ async function frReceive(m){
     // A TV that just paired may get the phone's hello again, still sealed with the invite's key
     if(!(link&&!link.pending&&link.ikey))return; try{o=await frOpen(await frKey(link.ikey),sealed)}catch(x){return}}
   let fresh=false;
+  if(o.cf&&link&&!link.cf){link.cf=true;saveFr()} // the other board listens on our relay: use it from now on
   if(o.type==='hello'&&link&&!link.pending&&link.wpub&&o.topic===link.topic){
-    await frPostSealed(link.topic,id,link.ikey,{type:'welcome',pub:link.wpub}).catch(()=>{}); return;
+    await frPostSealed(link.topic,id,link.ikey,{type:'welcome',pub:link.wpub},link.cf).catch(()=>{}); return;
   }else if(o.type==='hello'&&inv&&!link&&typeof o.topic==='string'&&typeof o.pub==='string'){
     // Our invite was accepted: the first acceptance wins and the invite is spent
     fr.invites=fr.invites.filter(i=>i.id!==id); saveFr();
     const name=String(o.name||'A friend').slice(0,40), kp=await frEcdh();
     const key=await frShared(kp.privateKey,o.pub);
-    const link={id,name,topic:o.topic,key}; if(inv.kind==='tv'){link.kind='remote';link.ikey=inv.key;link.wpub=await frPub(kp)}
+    const link={id,name,topic:o.topic,key}; if(o.cf)link.cf=true; if(inv.kind==='tv'){link.kind='remote';link.ikey=inv.key;link.wpub=await frPub(kp)}
     fr.links.push(link); saveFr();
-    await frPostSealed(o.topic,id,inv.key,{type:'welcome',pub:link.wpub||await frPub(kp)}).catch(()=>{});
+    await frPostSealed(o.topic,id,inv.key,{type:'welcome',pub:link.wpub||await frPub(kp)},link.cf).catch(()=>{});
     if(link.kind==='remote')rmPaired(link);
     else{if($('frInviteOut').dataset.id===id)$('frInviteOut').hidden=true;toast('Connected with '+name);frSay('Connected with '+name+'.')}
   }else if(o.type==='welcome'&&link&&link.pending&&!link.busy&&typeof o.pub==='string'){
@@ -222,27 +245,36 @@ $('frHold').value=String(fr.hold); $('frHold').onchange=()=>{fr.hold=+$('frHold'
 // Invites, shared by Friends and Remote. kind 'tv' marks a TV asking for a phone remote.
 async function frMakeInvite(kind,name){
   const code=frNewCode(kind), id=frRand(12), key=b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
-  await frPost(await frInviteTopic(code),await frSeal(await frInviteKey(code),{v:1,id,name,topic:fr.inbox,key,kind}));
+  // Posted to both relays, so a board that hasn't updated yet can still find it; either one is enough
+  const topic=await frInviteTopic(code), body=await frSeal(await frInviteKey(code),CF?{v:1,id,name,topic:fr.inbox,key,kind,cf:1}:{v:1,id,name,topic:fr.inbox,key,kind});
+  const sent=await Promise.allSettled([CF?fetch(CF+topic,{method:'POST',body}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status)}):Promise.reject(new Error('off')),frPost(topic,body)]);
+  if(!sent.some(x=>x.status==='fulfilled'))throw sent[1].reason;
   // Keep the last few invites for 12 hours, always including the TV start screen's
   const keepId=(store.get('fb.tvInvite',null)||{}).id, fresh=fr.invites.filter(i=>Date.now()-i.made<432e5);
   fr.invites=[...fresh.filter(i=>i.id===keepId),...fresh.filter(i=>i.id!==keepId).slice(-8),{id,key,kind,made:Date.now()}]; saveFr(); frListen();
   return {code,id};
 }
 async function frFetchInvite(code){
-  const r=await fetch(NTFY+await frInviteTopic(code)+'/json?poll=1&since=12h'); if(!r.ok)throw new Error('HTTP '+r.status);
-  const posts=(await r.text()).split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(m=>m.event==='message');
-  const key=await frInviteKey(code);
-  for(const p of posts.reverse()){try{return await frOpen(key,p.message)}catch(e){}}
+  // Our relay first, then ntfy.sh (where a board that hasn't updated yet posts its invites)
+  const topic=await frInviteTopic(code), key=await frInviteKey(code); let err=null, reached=false;
+  for(const base of CF?[CF,NTFY]:[NTFY]){
+    try{
+      const r=await fetch(base+topic+'/json?poll=1&since=12h'); if(!r.ok)throw new Error('HTTP '+r.status); reached=true;
+      const posts=(await r.text()).split('\n').filter(Boolean).map(l=>JSON.parse(l)).filter(m=>m.event==='message');
+      for(const p of posts.reverse()){try{return await frOpen(key,p.message)}catch(e){}}
+    }catch(e){err=e}
+  }
+  if(!reached)throw err;
   return null;
 }
 // Accept an invite: the link waits as pending until the other board answers the key exchange
 async function frConnect(inv,kind,name){
   const kp=await frEcdh();
   const link={id:String(inv.id),name:String(inv.name||'A friend').slice(0,40),topic:String(inv.topic),ikey:String(inv.key),pending:true,priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};
-  if(kind)link.kind=kind;
+  if(kind)link.kind=kind; if(inv.cf&&CF)link.cf=true;
   fr.links.push(link); saveFr(); frListen();
   link.hello={type:'hello',name,topic:fr.inbox,pub:await frPub(kp)}; link.at=Date.now();
-  try{await frPostSealed(link.topic,link.id,link.ikey,link.hello)}
+  try{await frPostSealed(link.topic,link.id,link.ikey,link.hello,link.cf)}
   catch(e){fr.links=fr.links.filter(l=>l!==link);saveFr();throw e}
   return link;
 }

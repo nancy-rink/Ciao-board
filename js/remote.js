@@ -24,6 +24,7 @@ function rmRun(link,o){
     clear:()=>{stopModes();send('')},
     style:()=>{if(BOARD_STYLES.some(s=>s.id===o.id))applyStyle(o.id)},
     clock:()=>startClock(),
+    book:()=>startBook(),
     news:()=>{if(NEWS_HEAD[o.section]){news.section=o.section;saveNews();$('newsSection').value=o.section}startNews()},
     art:()=>{const a=ART_BY[o.id];if(a)a.frame?startArt(o.id):showArt(o.id)},
     saved:()=>{if(mode!=='rotating'&&saved.length){mode='';$('rotateBtn').click()}},
@@ -193,6 +194,7 @@ function raInit(){
     raOpen=null;
     if(k==='clock')raCmd({action:'clock'},'Showing the clock.');
     else if(k==='saved')raCmd({action:'saved'},'Rotating the TV\'s saved messages.');
+    else if(k==='book')raCmd({action:'book'},'Reading Moby-Dick on the TV.');
     else if(k==='clear')raCmd({action:'clear'},'Cleared.');
     else if(k==='plan')raCmd({action:'plan',on:!st.plan},st.plan?'Day plan stopped.':'Day plan running.');
     raRender();
@@ -266,7 +268,7 @@ function raRender(){
   $('raTvName').textContent=tv?tv.name:'Ciao Board remote';
   $('raState').textContent=!tv?(rmTvs().length?'Waiting for the TV to confirm…':'Not paired yet'):st?st.showing+' · '+st.style:'Asking the TV what it\'s showing…';
   const mode=st?st.mode:'';
-  document.querySelectorAll('.ra-grid button').forEach(b=>{const k=b.dataset.ra;b.classList.toggle('on',k==='plan'?!!(st&&st.plan):k===({clock:'clock',news:'news',art:'art',rotating:'saved'}[mode])||raOpen===k)});
+  document.querySelectorAll('.ra-grid button').forEach(b=>{const k=b.dataset.ra;b.classList.toggle('on',k==='plan'?!!(st&&st.plan):k===({clock:'clock',news:'news',art:'art',rotating:'saved',book:'book'}[mode])||raOpen===k)});
   $('raPlanLbl').textContent=st&&st.plan?'Stop day plan':'Day plan';
   $('raNewsChips').hidden=raOpen!=='news'; $('raArtChips').hidden=raOpen!=='art';
   if(raOpen==='news')raChips($('raNewsChips'),[...$('newsSection').options].map(o=>[o.value,o.textContent]),mode==='news'?st.section:'',(v,l)=>{raCmd({action:'news',section:v},'BBC '+l.toLowerCase()+' on the TV.');raOpen=null;raRender()});

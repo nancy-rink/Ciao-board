@@ -265,6 +265,18 @@
           </div>
         </div>
       </section>
+      <section class="pane" id="pane-book" hidden>
+        <div class="pane-head">
+          <div><h2>Book</h2><p class="sub" id="bookStatus">Moby-Dick, one chapter a day: its pages turn evenly through your reading hours.</p></div>
+          <button class="go primary" id="bookBtn" type="button"><span class="when-off">Read on the board</span><span class="when-on">Stop reading</span></button>
+        </div>
+        <div class="fields">
+          <label class="field" for="bookFrom"><span>Reading starts</span><input type="time" id="bookFrom" value="08:00"></label>
+          <label class="field" for="bookTo"><span>Reading ends</span><input type="time" id="bookTo" value="22:00"></label>
+          <label class="field wide" for="bookDay"><span>Today's reading</span><select id="bookDay"><option>Loading…</option></select></label>
+        </div>
+        <p class="hint">The next chapter comes up each morning; very short chapters share a day with the next one, so the whole book takes about three and a half months. Boards that start on the same day show the same page at the same time.</p>
+      </section>
       <section class="pane" id="pane-news" hidden>
         <div class="pane-head">
           <div><h2>News</h2><p class="sub" id="newsStatus">Headlines from BBC News, refreshed every 20 minutes.</p></div>
@@ -671,6 +683,7 @@
       <button type="button" data-ra="news"><i style="--fc:var(--c-r)"></i>News</button>
       <button type="button" data-ra="art"><i style="--fc:var(--c-b)"></i>Art</button>
       <button type="button" data-ra="saved"><i style="--fc:var(--c-o)"></i>Saved</button>
+      <button type="button" data-ra="book"><i style="--fc:var(--c-y)"></i>Book</button>
       <button type="button" data-ra="plan"><i style="--fc:var(--c-v)"></i><span id="raPlanLbl">Day plan</span></button>
       <button type="button" data-ra="clear"><i style="--fc:var(--c-g)"></i>Clear</button>
     </div>
@@ -728,17 +741,18 @@
   <div class="ab-acts"><a class="ab-link" id="abLink" href="#" target="_blank" rel="noopener" hidden>See it on metmuseum.org ↗</a><button type="button" class="primary" id="abTry">Try this style</button></div>
 </dialog>
 <script src="js/core.js?v=5a08526348"></script>
-<script src="js/engine.js?v=938eebadda"></script>
+<script src="js/engine.js?v=1f6722cef8"></script>
 <script src="js/sound.js?v=6fe0fdd7dc"></script>
-<script src="js/modes.js?v=492062cd1e"></script>
-<script src="js/friends.js?v=9daab5fd8a"></script>
-<script src="js/remote.js?v=5a2032790a"></script>
+<script src="js/modes.js?v=f6468f0a1c"></script>
+<script src="js/friends.js?v=e96cce8ab8"></script>
+<script src="js/remote.js?v=cd48e2942d"></script>
 <script src="js/art.js?v=9ebef47f0f"></script>
-<script src="js/wall.js?v=585eace2fe"></script>
-<script src="js/ui.js?v=72c616ee6b"></script>
+<script src="js/book.js?v=df70b6ac58"></script>
+<script src="js/wall.js?v=66f7074bee"></script>
+<script src="js/ui.js?v=baaf2b7525"></script>
 <script src="js/about.js?v=7e798ccfb0"></script>
 <script src="js/styles.js?v=82f3f6ac7f"></script>
-<script src="js/start.js?v=ce8ae50515"></script>
+<script src="js/start.js?v=7bbf2313a2"></script>
 
 </body>
 

@@ -67,7 +67,7 @@ Both relays keep messages for 12 hours, so a board that's switched off longer th
 
 ### Our relay
 
-`relay/src/index.js` is a small Cloudflare Worker with one Durable Object per inbox, speaking the part of ntfy's API the board uses (post, poll, and a live WebSocket). Idle connections hibernate, so a TV left on all day costs nothing. `.github/workflows/relay.yml` deploys it when `relay/` changes on main, using the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. To run it locally: `npm --prefix relay install` and `npm --prefix relay run dev`. In your own copy, change `CF` in `js/friends.js` to your Worker's address.
+`relay/src/index.js` is a small Cloudflare Worker with one Durable Object per inbox, speaking the part of ntfy's API the board uses (post, poll, and a live WebSocket). Idle connections hibernate, so a TV left on all day costs nothing. Cloudflare deploys it itself whenever `relay/` changes on main (Workers & Pages → ciao-relay, connected to this repository with the root directory `/relay`). To run it locally: `npm --prefix relay install` and `npm --prefix relay run dev`. In your own copy, change `CF` in `js/friends.js` to your Worker's address.
 
 ## How the code is laid out
 

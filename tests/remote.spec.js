@@ -22,6 +22,16 @@ test('the phone remote pairs from the QR link and controls the TV',async({browse
   const id=await phone.$eval('#raStyles button:nth-child(4)',b=>b.dataset.id);
   await phone.click('#raStyles button:nth-child(4)');
   await expect(tv.locator('#board')).toHaveAttribute('data-style',id);
+  await expect(phone.locator('#raStyles button:not([hidden])')).toHaveCount(6);  // only the open group shows: Everyday
+  await phone.click('#raGroups button[data-g="museum"]');
+  await expect(phone.locator('#raStyles button[data-id="william"]')).toBeVisible();
+  await expect(phone.locator('#raStyles button[data-id="classic"]')).toBeHidden();
+  await phone.click('#raStyles button[data-id="william"]');
+  await expect(tv.locator('#board')).toHaveAttribute('data-style','william');
+  await expect(phone.locator('#raStyleName')).toHaveText('William');
+  await phone.click('#raNext');                                                  // › steps the TV to the next style
+  await expect(tv.locator('#board')).not.toHaveAttribute('data-style','william');
+  await expect(phone.locator('#raStyleName')).not.toHaveText('William');
 
   const before=(await snd(tv)).vol??0.7;                 // a fresh TV hasn't saved its sound settings yet
   await phone.click('#raVolDown'); await phone.click('#raVolDown');          // quick taps go out as one command

@@ -43,6 +43,13 @@ const BOARD_STYLES=[
   {id:'graphite',group:'studio',name:'Graphite',note:'After Nasreen Mohamedi’s ink and graphite grids: paper-white flaps, hairline letters, one long diagonal.'},
   {id:'kassak',group:'studio',name:'Kassák',note:'After Lajos Kassák and his magazine MA: red and black blocks on paper, heavy letters.'},
   {id:'plakat',group:'studio',name:'Plakat',note:'The Polish Poster School of Tomaszewski and Lenica: hand-drawn letters and painted color on paper.'},
+  {id:'tapestry',group:'museum',name:'Unicorn Tapestry',note:'The Unicorn Tapestries at the Met Cloisters: a millefleur field of tiny flowers, cream wool letters.'},
+  {id:'belles',group:'museum',name:'Belles Heures',note:'The Limbourg brothers’ prayer book for the Duke of Berry: vellum flaps, gothic letters, gold between.'},
+  {id:'boppard',group:'museum',name:'Cloister Glass',note:'The Boppard windows at the Met Cloisters: clear glass flaps in a lead lattice of ruby, blue and gold.'},
+  {id:'william',group:'museum',name:'William',note:'The Met’s faience hippo: glazed turquoise flaps, black-painted letters.'},
+  {id:'iznik',group:'museum',name:'Iznik',note:'Ottoman tiles from Iznik: white flaps, cobalt letters, a border of rosettes.'},
+  {id:'tiffany',group:'museum',name:'Tiffany',note:'Tiffany Studios’ Autumn Landscape window: opalescent flaps and a sunset of leaded glass.'},
+  {id:'rose',group:'museum',name:'Rose Window',note:'A Gothic rose window like Chartres: deep blue glass, glowing gold letters, ruby petals.'},
 ];
 let styleId=store.get('fb.style','classic');
 // Worn used to be a style; it's now a finish that ages any style. A board that was Worn becomes Classic, worn.
@@ -106,6 +113,10 @@ function styleCard(id,family){
   main.onmouseenter=e=>{if(hoverPreview(e))previewStyle(c.dataset.id)};
   const fav=document.createElement('button'); fav.type='button'; fav.className='sw-fav'; fav.innerHTML=STAR;
   fav.onclick=()=>toggleFav(c.dataset.id);
+  // About: what the style is drawn from, with the source on the card
+  const ab=document.createElement('button'); ab.type='button'; ab.className='sw-about';
+  ab.innerHTML='<i aria-hidden="true">i</i><span></span>'; ab.onclick=()=>openAbout(c.dataset.id);
+  aboutTag(ab,id);
   c.append(main,fav);
   if(family){
     const dots=document.createElement('div'); dots.className='sw-dots'; dots.setAttribute('role','group'); dots.setAttribute('aria-label','Everyday colors');
@@ -113,11 +124,17 @@ function styleCard(id,family){
       d.onclick=()=>{setFamily(c,eid);tryStyle(eid)};d.onmouseenter=e=>{if(hoverPreview(e))previewStyle(eid)};dots.appendChild(d)});
     c.appendChild(dots);
   }
+  c.appendChild(ab);
   return c;
 }
 function setFamily(card,id){
   card.dataset.id=id; const mb=card.querySelector('.minib'); mb.replaceWith(miniBoard(id));
   card.querySelector('.nm2 span').textContent='Everyday · '+BOARD_STYLES.find(x=>x.id===id).name;
+  aboutTag(card.querySelector('.sw-about'),id);
+}
+function aboutTag(ab,id){
+  ab.lastChild.textContent=(STYLE_ART[id]||{}).tag||'About';
+  ab.setAttribute('aria-label','About '+BOARD_STYLES.find(x=>x.id===id).name);
 }
 function buildStyles(){
   document.querySelectorAll('#styleTray .swatches').forEach(b=>b.innerHTML='');
@@ -129,8 +146,17 @@ function buildStyles(){
   $('grp-fav').hidden=!favStyles.length; $('chip-fav').hidden=!favStyles.length;
   // Light or dark, from each style's own flap color
   document.querySelectorAll('#styleTray .swatch').forEach(c=>{c.dataset.tone=styleTone(c.dataset.id)});
+  document.querySelectorAll('#styleTray .tray-group').forEach(g=>{const n=g.querySelector('.grp-n');if(n){const k=BOARD_STYLES.filter(s=>'grp-'+s.group===g.id).length;n.textContent=k+(g.id==='grp-everyday'?' colors':' styles')}});
   filterStyles(); markSwatches();
 }
+// Groups start closed, except the one with the board's style; Favorites is always open
+const groupOf=id=>(BOARD_STYLES.find(s=>s.id===id)||{}).group;
+function setGroupOpen(g,on){
+  const el=$('grp-'+g); if(!el)return; el.classList.toggle('open',on);
+  const b=el.querySelector('.grp-toggle'); if(b)b.setAttribute('aria-expanded',String(on));
+}
+document.querySelectorAll('#styleTray .grp-toggle').forEach(b=>b.onclick=()=>{const g=b.closest('.tray-group');setGroupOpen(g.id.slice(4),!g.classList.contains('open'))});
+setGroupOpen('fav',true); setGroupOpen(groupOf(styleId),true);
 const toneCache={};
 function styleTone(id){
   if(toneCache[id])return toneCache[id];
@@ -180,7 +206,7 @@ function filterStyles(){
 }
 document.querySelectorAll('#trayTone button').forEach(b=>b.onclick=()=>{toneFilter=b.dataset.tone;filterStyles()});
 document.querySelectorAll('#trayJump button').forEach(b=>b.onclick=()=>{
-  const g=$('grp-'+b.dataset.g); if(!g||g.hidden)return;
+  const g=$('grp-'+b.dataset.g); if(!g||g.hidden)return; setGroupOpen(b.dataset.g,true);
   g.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 });
 // Worn: scuffs, faded letters and off-center printing, over any style

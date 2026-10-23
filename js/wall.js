@@ -136,7 +136,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 $('showBtn').onclick=()=>{document.body.classList.remove('kiosk')};
 const inNativeFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
 let idleT=null, noteT=null;
-function poke(){if(!document.body.classList.contains('fs'))return;document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>document.body.classList.add('idle'),2500)}
+function poke(){if(!document.body.classList.contains('fs'))return;document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>document.body.classList.add('idle'),4000)}
 ['pointermove','pointerdown','touchstart'].forEach(ev=>addEventListener(ev,poke,{passive:true}));
 function fsNote(t){const n=$('fsNote');n.textContent=t;n.hidden=false;n.classList.remove('gone');clearTimeout(noteT);noteT=setTimeout(()=>n.classList.add('gone'),6000)}
 function fitFill(){
@@ -171,8 +171,10 @@ async function enterFs(){
     else throw new Error('none');
     try{await screen.orientation.lock('landscape')}catch(e){}
   }catch(e){
-    if(!tvMode)fsNote('This screen won’t let the board take over completely, so it fills the window instead. Turn your device sideways for the biggest board.');
+    if(!tvMode)fsNote('This screen won’t let the board take over completely, so it fills the window instead. Turn your device sideways for the biggest board. Double-tap the board to come back.');
+    return;
   }
+  if(!tvMode&&matchMedia('(pointer:coarse)').matches)fsNote('Double-tap the board, or tap Exit full screen, to come back.');
 }
 function exitFs(){
   document.body.classList.remove('idle'); if(!tvMode)document.body.classList.remove('fs'); $('fsNote').hidden=true;
@@ -192,6 +194,12 @@ if(tvMode){
   });
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs'))exitFs()});
-$('board').addEventListener('dblclick',()=>{document.body.classList.contains('fs')?exitFs():enterFs()});
+// Double-tap (or double-click) the board to go in or out. Phones don't reliably send dblclick, so taps are timed here.
+let lastTap=0, lastTouch=0;
+$('board').addEventListener('dblclick',()=>{if(Date.now()-lastTouch<800)return;document.body.classList.contains('fs')?exitFs():enterFs()});
+$('board').addEventListener('pointerup',e=>{
+  if(e.pointerType!=='touch'||tvMode)return; const now=Date.now(); lastTouch=now;
+  if(now-lastTap<400){lastTap=0;document.body.classList.contains('fs')?exitFs():enterFs()}else lastTap=now;
+});
 document.addEventListener('keydown',e=>{if(!keysOn||e.target===msg||['SELECT','INPUT'].includes(e.target.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='h'||e.key==='H')document.body.classList.toggle('kiosk');else if(e.key==='s')stepStyle(1);else if(e.key==='S')stepStyle(-1)});
 

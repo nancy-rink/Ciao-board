@@ -359,3 +359,106 @@
 @keyframes gA{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 @keyframes gB{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 
+/* Museum: medieval pieces and favorites from the Met */
+[data-style="tapestry"]{
+  --frame:#1f3a2e; --frame-edge:#2c4d3c; --frame-r:.4cqw; --frame-pad:3.4cqw;
+  --bevel:inset 0 0 0 .45cqw #8a2a24,inset 0 0 0 .75cqw #d9b45a;
+  --tile:#25402f; --tile-hi:#2c4a37; --ink:#efe3c4; --seam:#13241b; --flap-r:.2cqw; --c-w:#efe3c4;
+  --c-r:#b0352c; --c-o:#c9733a; --c-y:#d9b45a; --c-g:#6a9450; --c-b:#4a6a9a; --c-v:#7a4a6e;
+  --f-tile:"Cinzel",Georgia,serif; --tile-w:700; --tile-size:2.7cqw;
+  --wall:#14211a; --ui:#f1e8d2; --muted:#a9b39c; --line:#26392d; --panel:#182a20; --panel-2:#1f3428;
+  --accent:#d9b45a; --accent-ink:#1d1603; --ok:#8fcf8a; --warn:#ff9a85;
+}
+[data-style="belles"]{
+  --frame:#efe4c9; --frame-edge:#f6eed8; --frame-r:.3cqw; --frame-pad:3.4cqw;
+  --bevel:inset 0 0 0 .35cqw #c9a13a,inset 0 0 0 .6cqw #efe4c9,inset 0 0 0 .8cqw #2b4aa0;
+  --tile:#f3ead2; --tile-hi:#f8f1de; --ink:#2a1d14; --seam:#c9b88f; --flap-r:.15cqw; --c-w:#2a1d14;
+  --c-r:#c23b22; --c-o:#d9772a; --c-y:#c9a13a; --c-g:#4f7a3a; --c-b:#2b4aa0; --c-v:#6a3f8a;
+  --f-tile:"Grenze Gotisch",Georgia,serif; --tile-w:600; --tile-size:3.5cqw;
+  --wall:#e9dfc6; --ui:#2a1d14; --muted:#6a5a44; --line:#d6c9a8; --panel:#f6efdc; --panel-2:#ece2c8;
+  --accent:#c23b22; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="boppard"]{
+  --frame:#2b2b2b; --frame-edge:#2b2b2b; --frame-r:.2cqw; --frame-pad:3.2cqw;
+  --tile:#e3e6d0; --tile-hi:#eef0de; --ink:#2b2118; --seam:#2b2b2b; --flap-r:0px; --gloss:rgba(255,255,255,.22); --c-w:#2b2118;
+  --c-r:#9c1f2a; --c-o:#c9702a; --c-y:#d1a72e; --c-g:#2f6b3e; --c-b:#1e3f8c; --c-v:#5a2f7a;
+  --f-tile:"Uncial Antiqua",Georgia,serif; --tile-w:400; --tile-size:2.75cqw;
+  --wall:#141414; --ui:#efece2; --muted:#a8a69c; --line:#2e2e2c; --panel:#1b1b1a; --panel-2:#242422;
+  --accent:#d1a72e; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="william"]{
+  --frame:#1f8093; --frame-edge:#4fb7c4; --frame-r:2.2cqw; --frame-pad:3cqw;
+  --bevel:inset 0 .35cqw 0 #6cc6d1,inset 0 -.45cqw 0 #135a68;
+  --tile:#3aa5b4; --tile-hi:#55b8c5; --ink:#102020; --seam:#16606e; --flap-r:.55cqw; --gloss:rgba(255,255,255,.35); --c-w:#102020;
+  --c-r:#b84a3a; --c-o:#d98a3a; --c-y:#e0bc4a; --c-g:#2f7a5a; --c-b:#24468f; --c-v:#5a3f86;
+  --f-tile:"M PLUS Rounded 1c",Arial,sans-serif; --tile-w:700; --tile-size:2.85cqw;
+  --wall:#0e2a30; --ui:#e8f4f5; --muted:#9cc0c4; --line:#1c4148; --panel:#123238; --panel-2:#173c43;
+  --accent:#e0bc4a; --accent-ink:#1d1600; --ok:#7cd09a; --warn:#ff9a85;
+}
+[data-style="iznik"]{
+  --frame:#1d3c8f; --frame-edge:#2a4fa8; --frame-r:.3cqw; --frame-pad:3.2cqw;
+  --tile:#f7f5ef; --tile-hi:#fcfbf7; --ink:#1d3c8f; --seam:#d6d2c6; --flap-r:.2cqw; --gloss:rgba(255,255,255,.4); --c-w:#1d3c8f;
+  --c-r:#c4372b; --c-o:#d9772a; --c-y:#d9a83a; --c-g:#2e8a5a; --c-b:#2a9bb0; --c-v:#5a4a9a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:600; --tile-size:2.85cqw;
+  --wall:#f1efe8; --ui:#14285e; --muted:#5a6280; --line:#d9d6cc; --panel:#faf9f5; --panel-2:#eeece4;
+  --accent:#c4372b; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="tiffany"]{
+  --frame:#3a2a1a; --frame-edge:#5a4128; --frame-r:.5cqw; --frame-pad:3.4cqw;
+  --tile:#efe6cf; --tile-hi:#f6efdc; --ink:#3b2550; --seam:#3a2a1a; --flap-r:.25cqw; --gloss:rgba(255,255,255,.3); --c-w:#3b2550;
+  --c-r:#c4566a; --c-o:#d98a2a; --c-y:#e3b54a; --c-g:#5f8a4a; --c-b:#3f6fa8; --c-v:#6a4a9a;
+  --f-tile:"Josefin Sans","Futura",Arial,sans-serif; --tile-w:600; --tile-size:2.9cqw;
+  --wall:#1e1610; --ui:#f3eadb; --muted:#bca58e; --line:#3a2b1e; --panel:#261c14; --panel-2:#30241a;
+  --accent:#e3b54a; --accent-ink:#231a04; --ok:#8fcf8a; --warn:#ff9a85;
+}
+[data-style="rose"]{
+  --frame:#3a3a40; --frame-edge:#5a5650; --frame-r:.3cqw; --frame-pad:3.4cqw;
+  --bevel:inset 0 0 0 .5cqw #6a655c,inset 0 0 0 .7cqw #2a2a30;
+  --tile:#142a6e; --tile-hi:#1b3584; --ink:#f6e7b0; --seam:#0a0f20; --flap-r:.1cqw; --gloss:rgba(255,255,255,.12); --glow:0 0 .5cqw #ffd77a66;
+  --c-w:#f6e7b0; --c-r:#b3202f; --c-o:#d9702a; --c-y:#e3b54a; --c-g:#2f8a5a; --c-b:#3f6fd8; --c-v:#7a3aa8;
+  --f-tile:"Cinzel",Georgia,serif; --tile-w:700; --tile-size:2.7cqw;
+  --wall:#0b1024; --ui:#eef0f8; --muted:#a0a8c8; --line:#1e2648; --panel:#111836; --panel-2:#172044;
+  --accent:#e3b54a; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;
+}
+/* Millefleur: a dark green field of small flowers */
+[data-style="tapestry"].board,[data-style="tapestry"] .board,.minib[data-style="tapestry"]{
+  background:radial-gradient(circle,#efe3c4 0 1.4px,transparent 1.9px) 0 0/13px 11px,radial-gradient(circle,#c8433a 0 1.6px,transparent 2.1px) 6px 5px/17px 14px,
+             radial-gradient(circle,#d9b45a 0 1.2px,transparent 1.7px) 3px 8px/11px 15px,radial-gradient(circle,#8aa6cf 0 1.2px,transparent 1.7px) 9px 2px/19px 12px,
+             radial-gradient(ellipse 3px 1.3px,#5f8a4a 0 85%,transparent 100%) 2px 3px/9px 10px,#1f3a2e}
+/* A manuscript border: gold dots and blue and red ivy leaves on vellum */
+[data-style="belles"].board,[data-style="belles"] .board,.minib[data-style="belles"]{
+  background:radial-gradient(circle,#c9a13a 0 1.5px,transparent 2px) 0 0/14px 14px,radial-gradient(ellipse 2.6px 1.6px,#2b4aa0 0 85%,transparent 100%) 7px 7px/14px 14px,
+             radial-gradient(ellipse 2.6px 1.6px,#c23b22 0 85%,transparent 100%) 3px 10px/28px 28px,repeating-linear-gradient(45deg,transparent 0 9px,#5f7a3a40 9px 10px),#efe4c9}
+/* Pot-metal glass quarries in a lead lattice */
+[data-style="boppard"].board,[data-style="boppard"] .board,.minib[data-style="boppard"]{
+  background:radial-gradient(ellipse at 50% 30%,#ffffff2a,transparent 70%),linear-gradient(90deg,#2b2b2b 0 2px,transparent 2px) 0 0/16px 22px,linear-gradient(#2b2b2b 0 2px,transparent 2px) 0 0/16px 22px,
+             conic-gradient(#9c1f2a 0 25%,#1e3f8c 0 50%,#d1a72e 0 75%,#2f6b3e 0) 0 0/32px 44px}
+/* Turquoise faience with black-painted lotus buds, under a glaze shine */
+[data-style="william"].board,[data-style="william"] .board,.minib[data-style="william"]{
+  background:linear-gradient(160deg,#ffffff38,transparent 40%),radial-gradient(ellipse 2.5px 5px at 50% 60%,#102020 0 80%,transparent 100%) 0 0/18px 20px,
+             radial-gradient(circle,#102020 0 1px,transparent 1.5px) 9px 10px/18px 20px,#2a92a3}
+/* Cobalt tiles with white rosettes, red centers and turquoise between */
+[data-style="iznik"].board,[data-style="iznik"] .board,.minib[data-style="iznik"]{
+  background:linear-gradient(90deg,#e8e4da 0 1px,transparent 1px) 0 0/44px 44px,linear-gradient(#e8e4da 0 1px,transparent 1px) 0 0/44px 44px,
+             radial-gradient(circle,#c4372b 0 2.5px,transparent 3px) 0 0/22px 22px,radial-gradient(circle,#f7f5ef 0 5px,transparent 5.5px) 0 0/22px 22px,
+             radial-gradient(circle,#2a9bb0 0 3px,transparent 3.5px) 11px 11px/22px 22px,#1d3c8f}
+/* Opalescent glass: sky, autumn trees and river, with copper-foil lines */
+[data-style="tiffany"].board,[data-style="tiffany"] .board,.minib[data-style="tiffany"]{
+  background:repeating-linear-gradient(72deg,transparent 0 23px,#3a2a1a 23px 25px),repeating-linear-gradient(-18deg,transparent 0 31px,#3a2a1a 31px 33px),
+             radial-gradient(circle at 22% 62%,#e3b54a 0 8%,transparent 26%),radial-gradient(circle at 78% 40%,#c4566a 0 6%,transparent 22%),
+             linear-gradient(180deg,#9fb8d8 0%,#c9b0d8 28%,#e8a860 52%,#c2582a 72%,#5f7a3a 88%,#3f6fa8 100%)}
+/* A rose window: ruby and blue petals radiating from the center, ringed with lead */
+[data-style="rose"].board,[data-style="rose"] .board,.minib[data-style="rose"]{
+  background:radial-gradient(circle at 50% 50%,#ffffff1f,transparent 60%),repeating-radial-gradient(circle at 50% 50%,transparent 0 18px,#2a2a30 18px 20px),
+             repeating-conic-gradient(from 0deg at 50% 50%,#1b2f7a 0 7deg,#2a2a30 7deg 8deg,#9c1c2b 8deg 15deg,#2a2a30 15deg 16deg)}
+[data-style="tapestry"] .grid{background:#13241b;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
+[data-style="belles"] .grid{background:linear-gradient(135deg,#e6c25a,#b8902c 50%,#e9cf7a);padding:.5cqw;box-sizing:border-box}
+[data-style="boppard"] .grid{background:#2b2b2b;padding:.5cqw;box-sizing:border-box}
+[data-style="william"] .grid{background:#16606e;padding:.6cqw;border-radius:1cqw;box-sizing:border-box}
+[data-style="iznik"] .grid{background:#1d3c8f;padding:.5cqw;box-sizing:border-box}
+[data-style="tiffany"] .grid{background:#3a2a1a;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
+[data-style="rose"] .grid{background:#0a0f20;padding:.5cqw;box-sizing:border-box}
+.minib[data-style="tapestry"] .g6{background:#13241b}.minib[data-style="belles"] .g6{background:linear-gradient(135deg,#e6c25a,#b8902c 50%,#e9cf7a)}.minib[data-style="boppard"] .g6{background:#2b2b2b}
+.minib[data-style="william"] .g6{background:#16606e}.minib[data-style="iznik"] .g6{background:#1d3c8f}.minib[data-style="tiffany"] .g6{background:#3a2a1a}.minib[data-style="rose"] .g6{background:#0a0f20}
+.minib[data-style="tapestry"] .g6,.minib[data-style="belles"] .g6,.minib[data-style="boppard"] .g6,.minib[data-style="william"] .g6,.minib[data-style="iznik"] .g6,.minib[data-style="tiffany"] .g6,.minib[data-style="rose"] .g6{padding:2.4cqw;border-radius:1.5cqw}
+[data-style="tapestry"] .t,[data-style="belles"] .t,[data-style="boppard"] .t,[data-style="william"] .t,[data-style="iznik"] .t,[data-style="tiffany"] .t,[data-style="rose"] .t{font-weight:var(--tile-w,600)}

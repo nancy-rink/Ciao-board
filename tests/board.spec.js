@@ -11,6 +11,20 @@ test('a message flips onto the board, with accents and fallbacks',async({browser
   noErrors(page);
 });
 
+test('full screen on a phone is easy to leave: the faded Exit still works, and so does a double-tap',async({browser})=>{
+  const page=await device(browser,{width:844,height:390,phone:true}); await page.goto('/');
+  const fs=()=>page.evaluate(()=>document.body.classList.contains('fs'));
+  await page.tap('#fsBtn'); expect(await fs()).toBe(true);
+  await expect(page.locator('#fsNote')).toContainText('Double-tap');
+  await expect(page.locator('body')).toHaveClass(/idle/,{timeout:8000});  // the Exit button fades
+  await page.tap('#fsExit',{force:true}); expect(await fs()).toBe(false);  // and one tap still leaves
+  await page.tap('#fsBtn'); expect(await fs()).toBe(true);
+  const b=await page.locator('#board').boundingBox(), x=b.x+b.width/2, y=b.y+b.height/2;
+  await page.touchscreen.tap(x,y); await page.touchscreen.tap(x,y);
+  expect(await fs()).toBe(false);
+  noErrors(page);
+});
+
 test('no sideways scroll on a phone',async({browser})=>{
   const page=await device(browser,{width:360,height:780,phone:true}); await page.goto('/');
   await page.waitForTimeout(800);

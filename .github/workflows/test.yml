@@ -17,9 +17,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            relay/package-lock.json
       - name: Check the css/ and js/ version stamps in index.html
         run: python3 scripts/stamp.py --check
       - run: npm ci
+      - run: npm ci --prefix relay
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
       - uses: actions/upload-artifact@v4

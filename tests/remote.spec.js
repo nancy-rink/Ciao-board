@@ -5,6 +5,8 @@ const relay=require('./relay');
 test('the phone remote pairs from the QR link and controls the TV',async({browser})=>{
   const {tv,phone}=await pairedTvAndPhone(browser);
   await expect(tv.locator('#tvStart')).toBeHidden();                       // the start screen closes once a phone connects
+  expect((await stored(tv,'friends')).links[0].cf).toBe(true);             // both ends moved the link to our relay
+  expect((await stored(phone,'friends')).links[0].cf).toBe(true);
 
   await phone.click('[data-ra="clock"]');
   await expect(phone.locator('#raState')).toContainText('the clock');
@@ -79,7 +81,7 @@ test('the TV start screen keeps its code across reloads and makes a new one once
 test('the TV says so when the relay\'s daily limit is used up',async({browser})=>{
   const server=await relay.start(8791,{limit:0});
   try{
-    const tv=await device(browser,{width:1920,height:1080,relay:'http://127.0.0.1:8791/'}); await tv.goto('?tv');
+    const tv=await device(browser,{width:1920,height:1080,relay:'http://127.0.0.1:8791/',cf:''}); await tv.goto('?tv');
     await expect(tv.locator('#tvPairBox')).toContainText('daily message limit');
   }finally{server.close()}
 });
@@ -95,4 +97,23 @@ test('the remote fits phone widths from 320 to 430',async({browser})=>{
       return kids.slice(1).filter((r,i)=>r.top<kids[i].bottom-1).length});
     expect(overlaps,'overlapping sections at '+w).toBe(0);
   }
+});
+
+test('with ntfy.sh refusing everything, the remote pairs and works over our relay',async({browser})=>{
+  const server=await relay.start(8793,{limit:0});
+  try{
+    const ntfy='http://127.0.0.1:8793/';
+    const {tv,phone}=await pairedTvAndPhone(browser,{tv:{relay:ntfy},phone:{relay:ntfy}});
+    await phone.click('[data-ra="clock"]'); await expect(phone.locator('#raState')).toContainText('the clock');
+    expect((await stored(tv,'friends')).links[0].cf).toBe(true);
+    expect((await stored(phone,'friends')).links[0].cf).toBe(true);
+    noErrors(tv,phone);
+  }finally{server.close()}
+});
+
+test('a board from before our relay still pairs with an updated one, over ntfy.sh',async({browser})=>{
+  const {tv,phone}=await pairedTvAndPhone(browser,{phone:{cf:''}});
+  await phone.click('[data-ra="clock"]'); await expect(phone.locator('#raState')).toContainText('the clock');
+  expect((await stored(tv,'friends')).links[0].cf).toBeFalsy();               // the TV keeps that link on ntfy.sh
+  noErrors(tv,phone);
 });

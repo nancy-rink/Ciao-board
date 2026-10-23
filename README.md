@@ -59,9 +59,15 @@ If the TV is switched off, the remote says it can't reach it, and reconnects by 
 
 ## How Friends works
 
-Messages travel through [ntfy.sh](https://ntfy.sh), a free public relay, so there's nothing to set up. Each board listens on its own random inbox. An invite code lets one friend find your board; when they accept, the two boards run a key exchange, and from then on every message is encrypted with a key only those two boards hold. The relay never sees what's written, and a board ignores anything not encrypted by a connected friend. Share invite codes only with the person you're connecting with.
+Messages travel through a relay, so there's nothing to set up. Each board listens on its own random inbox. An invite code lets one friend find your board; when they accept, the two boards run a key exchange, and from then on every message is encrypted with a key only those two boards hold. A relay never sees what's written, and a board ignores anything not encrypted by a connected friend. Share invite codes only with the person you're connecting with.
 
-ntfy.sh's free tier allows 250 messages a day per internet connection, shared by every board and phone at home. A tap on the remote uses about two, so a very busy day can use them up; the board then says so, and the allowance refills through the day. ntfy.sh keeps messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
+There are two relays. Ours (`relay/`) runs on Cloudflare Workers' free plan at `ciao-relay.nancyrink.workers.dev` and has no daily message cap; [ntfy.sh](https://ntfy.sh), a free public relay, is the fallback. Every board listens on both. Two boards move their link to ours as soon as each sees the other listens there, and use ntfy.sh if ours can't be reached or the other board hasn't updated yet. ntfy.sh allows 250 messages a day per internet connection.
+
+Both relays keep messages for 12 hours, so a board that's switched off longer than that misses them. A board's connections live in its browser: clearing browser data or switching browsers means connecting again.
+
+### Our relay
+
+`relay/src/index.js` is a small Cloudflare Worker with one Durable Object per inbox, speaking the part of ntfy's API the board uses (post, poll, and a live WebSocket). Idle connections hibernate, so a TV left on all day costs nothing. `.github/workflows/relay.yml` deploys it when `relay/` changes on main, using the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. To run it locally: `npm --prefix relay install` and `npm --prefix relay run dev`. In your own copy, change `CF` in `js/friends.js` to your Worker's address.
 
 ## How the code is laid out
 
@@ -72,10 +78,11 @@ ntfy.sh's free tier allows 250 messages a day per internet connection, shared by
 
 ## Tests
 
-The board has no build step; the tests are the only thing that needs installing. They open the board in Chromium against a local copy of the site and a local stand-in for ntfy.sh, so they never touch the real relay.
+The board has no build step; the tests are the only thing that needs installing. They open the board in Chromium against a local copy of the site, a local stand-in for ntfy.sh, and our relay running locally, so they never touch the real relays.
 
 ```sh
 npm install
+npm install --prefix relay
 npx playwright install chromium   # once
 npm test
 ```

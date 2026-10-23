@@ -26,11 +26,11 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&family=Cabin:wght@600;700&family=Stardos+Stencil:wght@700&family=Josefin+Sans:wght@600&family=Jost:wght@300&family=Permanent+Marker&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Oswald:wght@500&family=VT323&family=Archivo:wdth,wght@62..125,500..800&family=Bungee&family=M+PLUS+Rounded+1c:wght@700&family=Libre+Caslon+Text&family=Playfair+Display:wght@800&family=Cabin:wght@600;700&family=Stardos+Stencil:wght@700&family=Josefin+Sans:wght@600&family=Jost:wght@300&family=Permanent+Marker&family=Cinzel:wght@700&family=Grenze+Gotisch:wght@600&family=Uncial+Antiqua&display=swap">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <link rel="stylesheet" href="css/board.css?v=42c7e34e3e">
-<link rel="stylesheet" href="css/styles.css?v=abeb7f1be9">
-<link rel="stylesheet" href="css/app.css?v=2ded8e9a2e">
+<link rel="stylesheet" href="css/styles.css?v=8b7a3a91fe">
+<link rel="stylesheet" href="css/app.css?v=5174a956b8">
 <link rel="stylesheet" href="css/tv-remote.css?v=2e03c710c8">
 </head>
 <body>
@@ -315,19 +315,20 @@
     <section class="tray" id="styleTray" aria-label="Board styles">
       <div class="tray-top" id="trayTop">
                 <div class="tray-tools">
-          <div class="tray-jump" id="trayJump" role="toolbar" aria-label="Jump to a group"><button type="button" data-g="fav" id="chip-fav" hidden>★ Favorites</button><button type="button" data-g="everyday">Everyday</button><button type="button" data-g="machines">Machines</button><button type="button" data-g="wayfinding">Wayfinding</button><button type="button" data-g="identity">Identities</button><button type="button" data-g="material">Materials</button><button type="button" data-g="studio">Studio</button></div>
+          <div class="tray-jump" id="trayJump" role="toolbar" aria-label="Jump to a group"><button type="button" data-g="fav" id="chip-fav" hidden>★ Favorites</button><button type="button" data-g="everyday">Everyday</button><button type="button" data-g="machines">Machines</button><button type="button" data-g="wayfinding">Wayfinding</button><button type="button" data-g="identity">Identities</button><button type="button" data-g="material">Materials</button><button type="button" data-g="studio">Studio</button><button type="button" data-g="museum">Museum</button></div>
           <div class="tray-filter"><div class="seg" id="trayTone" role="group" aria-label="Show"><button type="button" data-tone="all" aria-pressed="true">All</button><button type="button" data-tone="light" aria-pressed="false">Light</button><button type="button" data-tone="dark" aria-pressed="false">Dark</button></div>
           <label class="check" for="agedTray"><input type="checkbox" id="agedTray"> Worn</label></div>
         </div>
       </div>
       <div class="tray-group" id="grp-fav" hidden><h3 id="tray-fav">Favorites <span>Your picks. <kbd>S</kbd> and the automatic style change step through just these.</span></h3><div class="swatches" id="sw-fav" role="group" aria-labelledby="tray-fav"></div></div>
-      <div class="tray-group" id="grp-everyday"><h3 id="tray-everyday">Everyday <span>Clean colors for any room</span></h3><div class="swatches" id="sw-everyday" role="group" aria-labelledby="tray-everyday"></div></div>
-      <div class="tray-group" id="grp-machines"><h3 id="tray-machines">Machines <span>Station boards, clocks and tickets you could hold</span></h3><div class="swatches" id="sw-machines" role="group" aria-labelledby="tray-machines"></div></div>
-      <div class="tray-group" id="grp-wayfinding"><h3 id="tray-wayfinding">Wayfinding <span>Signs that got people to the right platform</span></h3><div class="swatches" id="sw-wayfinding" role="group" aria-labelledby="tray-wayfinding"></div></div>
-      <div class="tray-group" id="grp-identity"><h3 id="tray-identity">Identities <span>Airlines, trains and Olympic Games</span></h3><div class="swatches" id="sw-identity" role="group" aria-labelledby="tray-identity"></div></div>
-      <div class="tray-group" id="grp-material"><h3 id="tray-material">Materials <span>Furniture, fabric, iron, concrete, plaster and paving</span></h3><div class="swatches" id="sw-material" role="group" aria-labelledby="tray-material"></div></div>
-      <div class="tray-group" id="grp-studio"><h3 id="tray-studio">Studio <span>After painters who worked in lines and color</span></h3><div class="swatches" id="sw-studio" role="group" aria-labelledby="tray-studio"></div></div>
-      <div class="tray-foot"><p class="hint">Tap a style to try it on the board, then <b>Use this style</b>. Tap ☆ to add a favorite; with two or more, the board can cycle through just those.</p></div>
+      <div class="tray-group" id="grp-everyday"><h3 id="tray-everyday"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-everyday">Everyday <span>Clean colors for any room</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-everyday" role="group" aria-labelledby="tray-everyday"></div></div>
+      <div class="tray-group" id="grp-machines"><h3 id="tray-machines"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-machines">Machines <span>Station boards, clocks and tickets you could hold</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-machines" role="group" aria-labelledby="tray-machines"></div></div>
+      <div class="tray-group" id="grp-wayfinding"><h3 id="tray-wayfinding"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-wayfinding">Wayfinding <span>Signs that got people to the right platform</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-wayfinding" role="group" aria-labelledby="tray-wayfinding"></div></div>
+      <div class="tray-group" id="grp-identity"><h3 id="tray-identity"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-identity">Identities <span>Airlines, trains and Olympic Games</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-identity" role="group" aria-labelledby="tray-identity"></div></div>
+      <div class="tray-group" id="grp-material"><h3 id="tray-material"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-material">Materials <span>Furniture, fabric, iron, concrete, plaster and paving</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-material" role="group" aria-labelledby="tray-material"></div></div>
+      <div class="tray-group" id="grp-studio"><h3 id="tray-studio"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-studio">Studio <span>After painters who worked in lines and color</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-studio" role="group" aria-labelledby="tray-studio"></div></div>
+      <div class="tray-group" id="grp-museum"><h3 id="tray-museum"><button type="button" class="grp-toggle" aria-expanded="false" aria-controls="sw-museum">Museum <span>Medieval pieces and favorites from the Met</span><em class="grp-n"></em></button></h3><div class="swatches" id="sw-museum" role="group" aria-labelledby="tray-museum"></div></div>
+      <div class="tray-foot"><p class="hint">Tap a group to open it, and a style to try it on the board, then <b>Use this style</b>. <b>About</b> tells you what each style is drawn from. Tap ☆ to add a favorite; with two or more, the board can cycle through just those.</p></div>
     </section>
     <section class="look-more">
       <div class="pane-head"><div><h2>How the board is built</h2><p class="sub">Frame, finish and how styles change. <kbd>S</kbd> steps through styles, or through just your favorites once you've starred two or more.</p></div></div>
@@ -711,16 +712,28 @@
 </div>
 
 <!-- Plain scripts, in order; they share one scope, as if they were one file. -->
+<dialog class="about" id="aboutDlg" aria-labelledby="abName">
+  <div class="ab-head"><div><p class="ab-kicker">About this style</p><h2 id="abName"></h2></div><button type="button" class="ab-x" id="abClose" aria-label="Close">✕</button></div>
+  <figure class="ab-pic" id="abPic" hidden><img alt="" loading="lazy" decoding="async"><figcaption>Photo: The Metropolitan Museum of Art, public domain</figcaption></figure>
+  <p class="ab-nopic" id="abNoPic" hidden></p>
+  <h3 class="ab-work" id="abWork"></h3>
+  <p class="ab-meta" id="abMeta"></p>
+  <p class="ab-text" id="abText"></p>
+  <p class="ab-see" id="abSee" hidden><b>Where to see it </b><span></span></p>
+  <p class="ab-style" id="abNote"></p>
+  <div class="ab-acts"><a class="ab-link" id="abLink" href="#" target="_blank" rel="noopener" hidden>See it on metmuseum.org ↗</a><button type="button" class="primary" id="abTry">Try this style</button></div>
+</dialog>
 <script src="js/core.js?v=5a08526348"></script>
 <script src="js/engine.js?v=938eebadda"></script>
-<script src="js/sound.js?v=46b26fa4c4"></script>
+<script src="js/sound.js?v=d79f218f95"></script>
 <script src="js/modes.js?v=492062cd1e"></script>
 <script src="js/friends.js?v=9daab5fd8a"></script>
 <script src="js/remote.js?v=5a2032790a"></script>
 <script src="js/art.js?v=9ebef47f0f"></script>
 <script src="js/wall.js?v=e4313030db"></script>
 <script src="js/ui.js?v=72c616ee6b"></script>
-<script src="js/styles.js?v=958bdd712e"></script>
+<script src="js/about.js?v=cd910b7376"></script>
+<script src="js/styles.js?v=88a39b0353"></script>
 <script src="js/start.js?v=ce8ae50515"></script>
 
 </body>

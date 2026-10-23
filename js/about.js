@@ -1,0 +1,116 @@
+// What each style is drawn from: the work, who made it, when and where, a few lines on it, and where to see it.
+// Met pieces add the museum's public-domain photo and a link to its collection page.
+const MET='https://www.metmuseum.org/art/collection/search/', MET_IMG='https://images.metmuseum.org/CRDImages/';
+const HOUSE={work:'A Ciao Board colorway',when:'',tag:'House colors',text:'Not drawn from one work: a plain colorway for everyday use, chosen to read well across a room.'};
+const STYLE_ART={
+  classic:{work:'The split-flap board',by:'Solari di Udine and others',when:'1950s onward',where:'Italy and everywhere',tag:'Station boards, 1950s',
+    text:'Split-flap boards spread through stations and airports from the late 1950s. Each flap is a printed card that drops into place, which is where the clatter comes from.'},
+  daylight:HOUSE, mint:HOUSE, rail:HOUSE, harbor:HOUSE,
+  glow:{work:'Dot-matrix and LED signs',when:'1980s onward',tag:'LED signs, 1980s',
+    text:'Amber dot-matrix and LED signs replaced many flap boards from the 1980s: no moving parts, and no clatter.'},
+  solari:{work:'Departure boards',by:'Solari di Udine',when:'1956 onward',where:'Udine, Italy',tag:'Solari, 1956',
+    text:'Solari, a clockmaker from Friuli, installed its first split-flap departure board at Liège-Guillemins station in Belgium in 1956. Its boards went on to stations and airports around the world.'},
+  pragotron:{work:'Train indicator boards',by:'Pragotron and others',when:'1960s–90s',where:'Prague and Central Europe',tag:'Central European rail',
+    text:'Pragotron of Prague made flap clocks and train indicators for railways across Central and Eastern Europe. Each line of a board often carried a colored stripe for the route.'},
+  patapata:{work:'Station departure boards',when:'1960s–2000s',where:'Japan',tag:'Japanese stations',
+    text:'In Japan these boards are nicknamed patapata, after the sound they make. Rows were set flush left, with the train type, time and destination each on their own flaps.'},
+  cifra:{work:'Cifra 3 clock',by:'Gino Valle for Solari',when:'1966',where:'Udine, Italy',tag:'Gino Valle, 1966',see:'MoMA, New York, holds one in its design collection.',
+    text:'Gino Valle shrank the station board into a desk clock with a round body and a single row of flaps. It stayed in production for decades.'},
+  caslon:{work:'Caslon flip clocks',by:'Copal',when:'1970s',where:'Japan',tag:'Copal, 1970s',
+    text:'Copal made flip clocks in Japan through the 1970s for homes around the world. The Caslon models set their numerals in a serif face, in a rounded case.'},
+  ticket:{work:'Edmondson railway ticket',by:'Thomas Edmondson',when:'around 1840',where:'England',tag:'Edmondson, c. 1840',
+    text:'Thomas Edmondson, a station master in the north of England, devised numbered pasteboard tickets and a press to date them. The 57 by 30 mm card stayed in use on railways for well over a century.'},
+  ikarus:{work:'Ikarus 260 and 280 buses',by:'Ikarus',when:'1970s–80s',where:'Budapest and Székesfehérvár, Hungary',tag:'Ikarus, Budapest',
+    text:'Ikarus was one of the largest bus makers in the world in the 1980s. Its blue buses, with a roll-sign over the windscreen, ran from Budapest to Havana.'},
+  weltzeituhr:{work:'Weltzeituhr (World Time Clock)',by:'Erich John',when:'1969',where:'East Berlin',tag:'Erich John, 1969',see:'Alexanderplatz, Berlin.',
+    text:'Built for the rebuilt Alexanderplatz, the clock names cities in each of 24 time zones on a turning drum, under a small model of the solar system.'},
+  metropolitana:{work:'Milan Metro Line 1',by:'Franco Albini, Franca Helg and Bob Noorda',when:'1964',where:'Milan, Italy',tag:'Albini & Noorda, 1964',see:'Line 1 (red) stations, Milan.',
+    text:'Noorda drew a typeface and a red band that runs along every station wall at eye level, with the name repeated so you can read it from the train. The project won the Compasso d’Oro.'},
+  standard:{work:'NYC Transit Authority Graphics Standards Manual',by:'Massimo Vignelli and Bob Noorda (Unimark)',when:'1970',where:'New York',tag:'Vignelli & Noorda, 1970',see:'Every New York subway station.',
+    text:'The manual set out one sign system for a subway that had three. It first called for black letters on white panels, with a colored disc for each line.'},
+  doublearrow:{work:'British Rail identity',by:'Design Research Unit; Jock Kinneir and Margaret Calvert',when:'1965',where:'Britain',tag:'British Rail, 1965',
+    text:'Gerald Barney’s double-arrow symbol and the Rail Alphabet lettering gave every station, train and timetable the same voice. The symbol still marks stations today.'},
+  oxblood:{work:'Underground stations',by:'Leslie Green',when:'1906–07',where:'London',tag:'Leslie Green, 1906',see:'Covent Garden, Russell Square and other Piccadilly line stations.',
+    text:'Leslie Green faced more than fifty stations in oxblood glazed terracotta, and tiled each platform in its own pattern so regulars knew their stop.'},
+  foldalatti:{work:'Millennium Underground (M1)',when:'1896',where:'Budapest',tag:'Budapest, 1896',see:'Line M1, Budapest, and the Underground Railway Museum at Deák Ferenc tér.',
+    text:'Opened for Hungary’s millennium, it was the first underground railway on the European continent. Its shallow stations keep their white tiles and wooden fittings.'},
+  ekimei:{work:'Station name signs (ekimeihyō)',where:'Japan',tag:'Japanese station signs',
+    text:'Japanese platform signs name the station in large letters, with the stations either side and the direction of travel below.'},
+  taipei:{work:'Taipei Metro signs',when:'1996',where:'Taipei',tag:'Taipei, 1996',see:'Any Taipei Metro station.',
+    text:'The system opened in 1996, and each line has its own color: brown, red, green, orange and blue, carried through maps, signs and platforms.'},
+  metro:{work:'Mexico City Metro identity',by:'Lance Wyman',when:'1969',where:'Mexico City',tag:'Lance Wyman, 1969',
+    text:'Wyman gave each station a small picture as well as a name, so riders who couldn’t read could still find their stop. Line 1 is pink.'},
+  ulm:{work:'Lufthansa identity',by:'Otl Aicher and the Ulm School of Design',when:'1962',where:'Ulm, Germany',tag:'Otl Aicher, 1962',
+    text:'Aicher’s group built the airline’s look on a strict grid: yellow and navy, the crane in a circle, and one typeface for everything.'},
+  olympia:{work:'Munich 1972 Olympic Games',by:'Otl Aicher',when:'1972',where:'Munich',tag:'Otl Aicher, 1972',
+    text:'Aicher banned red and black and dressed the Games in light blue, green and silver, with pictograms for every sport.'},
+  mexico68:{work:'Mexico 1968 Olympic Games',by:'Lance Wyman, Eduardo Terrazas and Pedro Ramírez Vázquez',when:'1968',where:'Mexico City',tag:'Wyman & Terrazas, 1968',
+    text:'The logo’s rings grew into op-art stripes that ran across posters, tickets and uniforms.'},
+  jetage:{work:'TWA Flight Center',by:'Eero Saarinen',when:'1962',where:'JFK Airport, New York',tag:'Eero Saarinen, 1962',see:'TWA Hotel, JFK Airport, New York.',
+    text:'A concrete terminal shaped like a bird lifting off, with red carpets and curving white surfaces inside. It reopened as a hotel in 2019.'},
+  dangan:{work:'Shinkansen 0 Series',when:'1964',where:'Japan',tag:'Tōkaidō Shinkansen, 1964',
+    text:'The first bullet train, nicknamed dangan ressha, opened between Tokyo and Osaka just before the 1964 Olympics, in ivory with a blue stripe and a rounded nose.'},
+  butterfly:{work:'Butterfly Stool',by:'Sori Yanagi',when:'1954',where:'Japan',tag:'Sori Yanagi, 1954',see:'MoMA, New York; still made by Tendo Mokko.',
+    text:'Two identical pieces of bent plywood, joined by a brass rod and two screws. It looks like a butterfly, or a torii gate.'},
+  moquette:{work:'Seat fabrics for London Transport',by:'Enid Marx',when:'1930s',where:'London',tag:'Enid Marx, 1930s',see:'London Transport Museum.',
+    text:'Marx designed small, hard-wearing patterns that hid the dirt and still looked good under a tube train’s lights.'},
+  grille:{work:'Iron window grilles (tiechuanghua)',when:'1960s–80s',where:'Taiwan',tag:'Taiwanese homes',
+    text:'Welders bent iron into flowers, lattices and lucky symbols for the windows of new apartments, often painted green or blue.'},
+  chandigarh:{work:'Chandigarh',by:'Le Corbusier and Pierre Jeanneret',when:'1950s',where:'Chandigarh, India',tag:'Le Corbusier, 1950s',see:'The Capitol Complex, Chandigarh.',
+    text:'A new capital for Punjab, built in board-marked concrete with blocks of enamel color. The Capitol Complex became a World Heritage site in 2016.'},
+  marinedrive:{work:'Marine Drive’s Art Deco',when:'1930s',where:'Mumbai',tag:'Mumbai, 1930s',see:'Marine Drive and Oval Maidan, Mumbai.',
+    text:'A seafront of cream plaster apartment blocks with sunbursts, ship railings and rounded corners, now a World Heritage site.'},
+  filete:{work:'Filete porteño',where:'Buenos Aires',when:'early 1900s',tag:'Buenos Aires',
+    text:'Painted first on horse carts, then on buses and shop signs: gold lettering, scrolls and flowers in bright borders. UNESCO lists it as intangible heritage.'},
+  calcadao:{work:'Copacabana promenade',by:'Roberto Burle Marx',when:'1970',where:'Rio de Janeiro',tag:'Burle Marx, 1970',see:'Avenida Atlântica, Rio de Janeiro.',
+    text:'Black and white Portuguese stone paving in waves along the beach. Burle Marx kept the waves when he redesigned the promenade in 1970.'},
+  zsolnay:{work:'Zsolnay ceramics',by:'Zsolnay Manufactory',when:'1890s',where:'Pécs, Hungary',tag:'Zsolnay, 1890s',see:'The roof of the Museum of Applied Arts, Budapest; the Zsolnay Quarter, Pécs.',
+    text:'Zsolnay’s frost-proof tiles roof Ödön Lechner’s buildings in green and gold. Its eosin glaze shimmers like a beetle’s wing.'},
+  praguemetro:{work:'Prague Metro Line A',when:'1978',where:'Prague',tag:'Prague, 1978',see:'Line A stations such as Malostranská and Staroměstská.',
+    text:'Station walls are clad in dimpled panels of anodized aluminium, a different color on each station.'},
+  cubist:{work:'House of the Black Madonna',by:'Josef Gočár',when:'1912',where:'Prague',tag:'Josef Gočár, 1912',see:'House of the Black Madonna, Prague.',
+    text:'Prague architects turned Cubism into buildings, furniture and cups, all faceted planes. Gočár’s house still has its Cubist café upstairs.'},
+  cinetica:{work:'Kinetic art',by:'Jesús Rafael Soto and Carlos Cruz-Diez',when:'1950s–70s',where:'Venezuela and Paris',tag:'Soto & Cruz-Diez',see:'Museo de Arte Moderno Jesús Soto, Ciudad Bolívar.',
+    text:'Fine colored lines and rods that seem to move and change color as you walk past.'},
+  tonfan:{work:'Ton Fan Art Group',by:'Ho Kan and others',when:'1957',where:'Taipei',tag:'Ton Fan, 1957',
+    text:'Eight young painters founded the group and showed abstract work in Taipei from 1957. Ho Kan’s pictures are a few colored shapes and lines on a wide pale ground.'},
+  graphite:{work:'Drawings',by:'Nasreen Mohamedi',when:'1960s–80s',where:'Mumbai and Baroda, India',tag:'Nasreen Mohamedi',see:'The Met Breuer held her retrospective in 2016.',
+    text:'Mohamedi drew grids and diagonals in ink and graphite with a ruler, quiet and exact, on small sheets of paper.'},
+  kassak:{work:'MA magazine',by:'Lajos Kassák',when:'1916–25',where:'Budapest and Vienna',tag:'Lajos Kassák, 1920s',see:'Kassák Museum, Budapest.',
+    text:'Kassák, a poet and painter, ran the avant-garde magazine MA (Today) and built pictures and pages from red and black blocks and heavy type.'},
+  plakat:{work:'Polish Poster School',by:'Henryk Tomaszewski, Jan Lenica and others',when:'1950s–60s',where:'Warsaw',tag:'Polish posters, 1950s',see:'Poster Museum at Wilanów, Warsaw.',
+    text:'Film and theater posters painted and lettered by hand, witty and loose. Warsaw opened the first museum of posters in 1968.'},
+  tapestry:{work:'The Unicorn Rests in a Garden',from:'the Unicorn Tapestries',when:'1495–1505',where:'South Netherlands',tag:'The Met Cloisters, 1495',met:467642,img:'cl/web-large/DP118991.jpg',see:'The Met Cloisters, New York, Gallery 017.',
+    text:'The best known of the seven Unicorn Tapestries, woven in wool, silk and metal thread. The unicorn rests under a pomegranate tree inside a little fence, in a field of a thousand flowers that botanists have mostly been able to name.'},
+  belles:{work:'The Belles Heures of Jean de France, duc de Berry',by:'The Limbourg Brothers',when:'1405–1409',where:'Paris',tag:'The Met Cloisters, 1405',met:470306,img:'cl/web-large/DP253014.jpg',see:'The Met Cloisters, New York, a few leaves at a time.',
+    text:'A small prayer book painted for the Duke of Berry, one of the great collectors of his day. The three Limbourg brothers, still young, gave its pages gold, blue and red ivy borders.'},
+  boppard:{work:'The Virgin Mary and Five Standing Saints',from:'windows from the Carmelite church at Boppard',when:'1440–46',where:'Boppard on the Rhine, Germany',tag:'The Met Cloisters, 1440',met:473007,img:'cl/web-large/h1_37.52.1-6.jpg',see:'The Met Cloisters, New York, Gallery 016.',
+    text:'Six tall lancets made for a Carmelite church on the Rhine. The glass was colored in the melt, details were painted on in brown-black, and the pieces were joined with lead.'},
+  william:{work:'Hippopotamus (“William”)',when:'ca. 1961–1878 B.C.',where:'Meir, Egypt, Middle Kingdom',tag:'The Met, ca. 1900 B.C.',met:544227,img:'eg/web-large/DP248993.jpg',see:'The Met, New York, Gallery 111.',
+    text:'A faience hippo from the tomb of the official Senbi II, painted with the river plants he lived among. A 1931 magazine article named him William, and he has been the Met’s unofficial mascot ever since.'},
+  iznik:{work:'Tile Panel',when:'second half of the 16th century',where:'Iznik, Turkey',tag:'The Met, 16th century',met:447013,img:'is/web-large/DT11978.jpg',see:'The Met, New York, Gallery 460.',
+    text:'Iznik potters painted cobalt, turquoise and green on white stonepaste, and from the 1550s a bright tomato red. Tiles like these lined the mosques and palaces of Ottoman Istanbul.'},
+  tiffany:{work:'Autumn Landscape',by:'Tiffany Studios, attributed to Agnes F. Northrop',when:'1923–24',where:'New York',tag:'The Met, 1923',met:282,see:'The Met, New York, the American Wing, Gallery 700.',nopic:'The Met’s photo of this window isn’t in the public domain; see it on the Met’s site.',
+    text:'A window eleven feet tall: a river winds through autumn trees toward the mountains. Tiffany’s opalescent glass carries its color and texture in the sheet itself, rippled and layered, so little needs painting.'},
+  rose:{work:'Gothic rose windows',when:'13th century onward',where:'France',tag:'Chartres, 13th century',see:'Chartres Cathedral; Notre-Dame and the Sainte-Chapelle, Paris.',
+    text:'Gothic builders set great wheels of colored glass in cathedral fronts, with stone tracery radiating from the center. Chartres keeps most of its 13th-century glass, and its deep blue was famous even then.'},
+};
+// The About sheet: opened from a style card, with Try this style at the foot
+let aboutId=null;
+function openAbout(id){
+  const s=BOARD_STYLES.find(x=>x.id===id), a=STYLE_ART[id]; if(!s||!a)return; aboutId=id;
+  $('abName').textContent=s.name; $('abNote').textContent=s.note;
+  $('abWork').textContent=a.work+(a.from?', from '+a.from:'');
+  $('abMeta').textContent=[a.by,a.when,a.where].filter(Boolean).join(' · ');
+  $('abText').textContent=a.text;
+  $('abSee').hidden=!a.see; $('abSee').lastChild.textContent=a.see||'';
+  const pic=$('abPic'), img=pic.querySelector('img');
+  pic.hidden=!a.img; img.removeAttribute('src'); if(a.img){img.src=MET_IMG+a.img;img.alt=a.work}
+  $('abNoPic').hidden=!a.nopic; $('abNoPic').textContent=a.nopic||'';
+  $('abLink').hidden=!a.met; if(a.met)$('abLink').href=MET+a.met;
+  $('abTry').textContent=id===styleId?'On the board':'Try this style'; $('abTry').disabled=id===styleId;
+  const d=$('aboutDlg'); if(!d.open)d.showModal();
+}
+$('abClose').onclick=()=>$('aboutDlg').close();
+$('abTry').onclick=()=>{const id=aboutId;$('aboutDlg').close();tryStyle(id)};
+$('aboutDlg').addEventListener('click',e=>{if(e.target===$('aboutDlg'))$('aboutDlg').close()}); // a tap outside the sheet

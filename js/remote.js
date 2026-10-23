@@ -205,7 +205,8 @@ function raInit(){
     raCmd({action:'text',text:t},'Sent to the TV.');$('raMsg').blur()};
   $('raMsg').addEventListener('input',()=>liveTokens($('raMsg')));
   // Styles: step through them with ‹ ›, or open a group and pick one. Only the open group's thumbnails show.
-  BOARD_STYLES.forEach(st=>{
+  BOARD_STYLES.forEach((st,i)=>{
+    if(st.city&&(BOARD_STYLES[i-1]||{}).city!==st.city){const h=document.createElement('div');h.className='ra-city';h.dataset.g=st.group;h.textContent=st.city;h.hidden=true;$('raStyles').appendChild(h)}
     const b=document.createElement('button'); b.type='button'; b.dataset.id=st.id; b.dataset.g=st.group; b.hidden=true;
     b.appendChild(miniBoard(st.id));
     b.append(st.name); b.onclick=()=>raCmd({action:'style',id:st.id},st.name+' style on the TV.'); $('raStyles').appendChild(b);
@@ -299,6 +300,7 @@ function raStyles(st){
   if(box.dataset.k!==key){box.dataset.k=key;box.innerHTML='';groups.forEach(([g,label])=>{const b=document.createElement('button');b.type='button';b.dataset.g=g;b.textContent=label;b.onclick=()=>{raGroup=g;raRender();b.scrollIntoView({block:'nearest',inline:'center'})};box.appendChild(b)})}
   box.querySelectorAll('button').forEach(b=>{const on=b.dataset.g===open;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))});
   document.querySelectorAll('#raStyles button').forEach(b=>{b.hidden=open==='fav'?!favs.includes(b.dataset.id):b.dataset.g!==open;b.classList.toggle('on',!!st&&b.dataset.id===st.styleId)});
+  document.querySelectorAll('#raStyles .ra-city').forEach(h=>{h.hidden=h.dataset.g!==open});
 }
 function rmRender(){
   const tvs=rmTvs(), live=tvs.filter(l=>!l.pending), sel=$('rmTv'), keep=sel.value;

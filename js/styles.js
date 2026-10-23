@@ -58,27 +58,27 @@ const BOARD_STYLES=[
   {id:'tiffany',group:'museum',name:'Tiffany',note:'Tiffany Studios’ Autumn Landscape window: opalescent flaps and a sunset of leaded glass.'},
   {id:'wave',group:'museum',name:'Great Wave',note:'Hokusai’s Under the Wave off Kanagawa, at the Met: paper flaps, Prussian blue letters, a frame of wave crests.'},
   {id:'kente',group:'museum',name:'Kente',note:'Kente cloth from Ghana, at the Met: gold flaps and a frame of woven strips in green, red, black and blue.'},
-  {id:'buttoncopy',group:'la',name:'Button Copy',note:'Caltrans freeway signs: highway green, white letters set with reflector buttons, a white border and bolts.'},
-  {id:'googie',group:'la',name:'Googie',note:'Coffee-shop modern and the LAX Theme Building: turquoise, starbursts and boomerangs, rounded cream flaps.'},
-  {id:'eames',group:'la',name:'Eames House',note:'Charles and Ray Eames’s 1949 house: a black steel grid with red, blue, gold and white panels.'},
-  {id:'stahl',group:'la',name:'Stahl House',note:'Pierre Koenig’s glass house above the city: night flaps, a thin steel edge, city lights below.'},
-  {id:'watts',group:'la',name:'Watts Towers',note:'Simon Rodia’s towers: a frame of broken tile, glass and shell set in cement.'},
-  {id:'splash',group:'la',name:'A Bigger Splash',note:'After Hockney’s 1967 painting: pool-blue flaps, a pink wall, and a white splash.'},
-  {id:'ruscha',group:'la',name:'Ruscha Sunset',note:'After Ed Ruscha’s word paintings: tall white letters floating on an LA sunset.'},
-  {id:'urbanlight',group:'la',name:'Urban Light',note:'Chris Burden’s rows of old street lamps at LACMA: warm glowing letters on a night of lamp posts.'},
-  {id:'unionstation',group:'la',name:'Union Station',note:'LA’s 1939 Mission-style terminal: terracotta, Spanish tile, cream plaster flaps.'},
-  {id:'compania',group:'quito',name:'La Compañía',note:'Quito’s Jesuit church, covered in gold leaf: gold flaps, deep red letters, a carved gold frame.'},
-  {id:'laronda',group:'quito',name:'La Ronda',note:'Quito’s colonial street: whitewashed walls, blue balconies and red geraniums.'},
-  {id:'guayasamin',group:'quito',name:'Guayasamín',note:'After Oswaldo Guayasamín: ochre flaps, heavy black letters, angular strokes of red and brown.'},
-  {id:'otavalo',group:'quito',name:'Otavalo',note:'Andean weaving from the Otavalo market: black flaps, bright stripes and diamonds.'},
-  {id:'ebru',group:'istanbul',name:'Ebru',note:'Turkish paper marbling: cream flaps, a frame of floating rings of blue, red and gold.'},
-  {id:'tram',group:'istanbul',name:'İstiklal Tram',note:'The red nostalgic tram on İstiklal Avenue: a red body, a cream belt, cream flaps.'},
-  {id:'hagia',group:'istanbul',name:'Hagia Sophia',note:'Byzantine gold mosaic: deep blue flaps, gold letters, a frame of gold tesserae.'},
-  {id:'ferry',group:'istanbul',name:'Ferry',note:'The Bosphorus ferries: white flaps, a navy hull, a yellow band and the sea below.'},
-  {id:'hawamahal',group:'jaipur',name:'Hawa Mahal',note:'Jaipur’s Palace of Winds: Pink City flaps, white lime-wash letters, a frame of little windows.'},
-  {id:'blockprint',group:'jaipur',name:'Block Print',note:'Sanganeri hand block printing: white cotton flaps, indigo letters, little red flowers.'},
-  {id:'bluepottery',group:'jaipur',name:'Blue Pottery',note:'Jaipur blue pottery: glazed cobalt flaps, white letters, turquoise flowers on white.'},
-  {id:'jantar',group:'jaipur',name:'Jantar Mantar',note:'Jaipur’s 18th-century observatory: sandstone flaps and a frame marked with fine scales.'},
+  {id:'buttoncopy',group:'cities',city:'Los Angeles',name:'Button Copy',note:'Caltrans freeway signs: highway green, white letters set with reflector buttons, a white border and bolts.'},
+  {id:'googie',group:'cities',city:'Los Angeles',name:'Googie',note:'Coffee-shop modern and the LAX Theme Building: turquoise, starbursts and boomerangs, rounded cream flaps.'},
+  {id:'eames',group:'cities',city:'Los Angeles',name:'Eames House',note:'Charles and Ray Eames’s 1949 house: a black steel grid with red, blue, gold and white panels.'},
+  {id:'stahl',group:'cities',city:'Los Angeles',name:'Stahl House',note:'Pierre Koenig’s glass house above the city: night flaps, a thin steel edge, city lights below.'},
+  {id:'watts',group:'cities',city:'Los Angeles',name:'Watts Towers',note:'Simon Rodia’s towers: a frame of broken tile, glass and shell set in cement.'},
+  {id:'splash',group:'cities',city:'Los Angeles',name:'A Bigger Splash',note:'After Hockney’s 1967 painting: pool-blue flaps, a pink wall, and a white splash.'},
+  {id:'ruscha',group:'cities',city:'Los Angeles',name:'Ruscha Sunset',note:'After Ed Ruscha’s word paintings: tall white letters floating on an LA sunset.'},
+  {id:'urbanlight',group:'cities',city:'Los Angeles',name:'Urban Light',note:'Chris Burden’s rows of old street lamps at LACMA: warm glowing letters on a night of lamp posts.'},
+  {id:'unionstation',group:'cities',city:'Los Angeles',name:'Union Station',note:'LA’s 1939 Mission-style terminal: terracotta, Spanish tile, cream plaster flaps.'},
+  {id:'compania',group:'cities',city:'Quito',name:'La Compañía',note:'Quito’s Jesuit church, covered in gold leaf: gold flaps, deep red letters, a carved gold frame.'},
+  {id:'laronda',group:'cities',city:'Quito',name:'La Ronda',note:'Quito’s colonial street: whitewashed walls, blue balconies and red geraniums.'},
+  {id:'guayasamin',group:'cities',city:'Quito',name:'Guayasamín',note:'After Oswaldo Guayasamín: ochre flaps, heavy black letters, angular strokes of red and brown.'},
+  {id:'otavalo',group:'cities',city:'Quito',name:'Otavalo',note:'Andean weaving from the Otavalo market: black flaps, bright stripes and diamonds.'},
+  {id:'ebru',group:'cities',city:'Istanbul',name:'Ebru',note:'Turkish paper marbling: cream flaps, a frame of floating rings of blue, red and gold.'},
+  {id:'tram',group:'cities',city:'Istanbul',name:'İstiklal Tram',note:'The red nostalgic tram on İstiklal Avenue: a red body, a cream belt, cream flaps.'},
+  {id:'hagia',group:'cities',city:'Istanbul',name:'Hagia Sophia',note:'Byzantine gold mosaic: deep blue flaps, gold letters, a frame of gold tesserae.'},
+  {id:'ferry',group:'cities',city:'Istanbul',name:'Ferry',note:'The Bosphorus ferries: white flaps, a navy hull, a yellow band and the sea below.'},
+  {id:'hawamahal',group:'cities',city:'Jaipur',name:'Hawa Mahal',note:'Jaipur’s Palace of Winds: Pink City flaps, white lime-wash letters, a frame of little windows.'},
+  {id:'blockprint',group:'cities',city:'Jaipur',name:'Block Print',note:'Sanganeri hand block printing: white cotton flaps, indigo letters, little red flowers.'},
+  {id:'bluepottery',group:'cities',city:'Jaipur',name:'Blue Pottery',note:'Jaipur blue pottery: glazed cobalt flaps, white letters, turquoise flowers on white.'},
+  {id:'jantar',group:'cities',city:'Jaipur',name:'Jantar Mantar',note:'Jaipur’s 18th-century observatory: sandstone flaps and a frame marked with fine scales.'},
   {id:'rose',group:'museum',name:'Rose Window',note:'A Gothic rose window like Chartres: deep blue glass, glowing gold letters, ruby petals.'},
 ];
 let styleId=store.get('fb.style','classic');
@@ -170,7 +170,10 @@ function buildStyles(){
   document.querySelectorAll('#styleTray .swatches').forEach(b=>b.innerHTML='');
   BOARD_STYLES.forEach(s=>{
     if(s.group==='everyday'){if(s.id===EVERYDAY[0]){const c=styleCard(EVERYDAY.includes(styleId)?styleId:s.id,true);$('sw-everyday').appendChild(c);setFamily(c,c.dataset.id)}return}
-    ($('sw-'+s.group)||$('sw-everyday')).appendChild(styleCard(s.id));
+    const box=$('sw-'+s.group)||$('sw-everyday');
+    // In Cities, a small heading where each city starts
+    if(s.city&&box.lastElementChild?.dataset.city!==s.city){const h=document.createElement('div');h.className='sw-city';h.dataset.city=s.city;h.textContent=s.city;box.appendChild(h)}
+    const card=styleCard(s.id); if(s.city)card.dataset.city=s.city; box.appendChild(card);
   });
   favStyles.forEach(id=>$('sw-fav').appendChild(styleCard(id)));
   $('grp-fav').hidden=!favStyles.length; $('chip-fav').hidden=!favStyles.length;
@@ -231,6 +234,7 @@ function toggleFav(id){
 let toneFilter='all';
 function filterStyles(){
   document.querySelectorAll('#styleTray .swatch').forEach(c=>{c.hidden=toneFilter!=='all'&&!(c.dataset.family?EVERYDAY.some(e=>styleTone(e)===toneFilter):c.dataset.tone===toneFilter)});
+  document.querySelectorAll('#styleTray .sw-city').forEach(h=>{h.hidden=![...h.parentNode.querySelectorAll('.swatch[data-city="'+h.dataset.city+'"]')].some(c=>!c.hidden)});
   document.querySelectorAll('#styleTray .tray-group').forEach(g=>{if(g.id!=='grp-fav'||favStyles.length)g.hidden=![...g.querySelectorAll('.swatch')].some(c=>!c.hidden)});
   document.querySelectorAll('#trayTone button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tone===toneFilter)));
 }

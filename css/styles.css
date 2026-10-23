@@ -462,3 +462,134 @@
 .minib[data-style="william"] .g6{background:#16606e}.minib[data-style="iznik"] .g6{background:#1d3c8f}.minib[data-style="tiffany"] .g6{background:#3a2a1a}.minib[data-style="rose"] .g6{background:#0a0f20}
 .minib[data-style="tapestry"] .g6,.minib[data-style="belles"] .g6,.minib[data-style="boppard"] .g6,.minib[data-style="william"] .g6,.minib[data-style="iznik"] .g6,.minib[data-style="tiffany"] .g6,.minib[data-style="rose"] .g6{padding:2.4cqw;border-radius:1.5cqw}
 [data-style="tapestry"] .t,[data-style="belles"] .t,[data-style="boppard"] .t,[data-style="william"] .t,[data-style="iznik"] .t,[data-style="tiffany"] .t,[data-style="rose"] .t{font-weight:var(--tile-w,600)}
+/* More styles: Hungarian embroidery, Vienna, Warsaw neon, Hokusai, kente, bojagi, Hakka cloth, the Swiss rail clock, Barragán */
+[data-style="matyo"]{
+  --frame:#141414; --frame-edge:#262626; --frame-r:.5cqw; --frame-pad:3.4cqw;
+  --tile:#171515; --tile-hi:#201d1d; --ink:#f6efe4; --seam:#000; --flap-r:.25cqw;
+  --c-r:#d7263d; --c-o:#f08a24; --c-y:#f2c230; --c-g:#2e8b57; --c-b:#2f6fd8; --c-v:#e04a8a;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:88%; --tile-size:2.95cqw;
+  --wall:#0e0d0d; --ui:#f6efe4; --muted:#b0a69a; --line:#2a2626; --panel:#181616; --panel-2:#211e1e;
+  --accent:#e04a8a; --accent-ink:#ffffff; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="werkstatte"]{
+  --frame:#f7f6f2; --frame-edge:#ffffff; --frame-r:0px; --frame-pad:3.2cqw;
+  --bevel:inset 0 0 0 .3cqw #111,inset 0 0 0 .55cqw #f7f6f2,inset 0 0 0 .7cqw #b8923a;
+  --tile:#f7f6f2; --tile-hi:#ffffff; --ink:#111111; --seam:#d4d1c8; --flap-r:0px; --c-w:#111111;
+  --c-r:#a8322a; --c-o:#c9782a; --c-y:#c9a13a; --c-g:#3f6b4a; --c-b:#2b4a7a; --c-v:#5a3f6e;
+  --f-tile:"Josefin Sans","Futura",Arial,sans-serif; --tile-w:600; --tile-size:2.95cqw;
+  --wall:#ecebe6; --ui:#111111; --muted:#5f5d57; --line:#d8d6cf; --panel:#faf9f6; --panel-2:#efeee9;
+  --accent:#111111; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="neon"]{
+  --frame:#1b1517; --frame-edge:#2a2326; --frame-r:.4cqw; --frame-pad:3.2cqw;
+  --bevel:inset 0 0 0 .25cqw #3fd0ff66,inset 0 0 1.4cqw #3fd0ff33;
+  --tile:#0d0b10; --tile-hi:#141119; --ink:#ff5fae; --seam:#000; --flap-r:.2cqw; --glow:0 0 .35cqw #ff4fa3,0 0 1.1cqw #ff4fa399; --c-w:#ff5fae;
+  --c-r:#ff3b5c; --c-o:#ff9a3c; --c-y:#ffe14a; --c-g:#39ff9c; --c-b:#3fd0ff; --c-v:#b46bff;
+  --f-tile:"Cabin",Arial,sans-serif; --tile-w:600; --tile-size:2.9cqw;
+  --wall:#0c0a0d; --ui:#f6e9f2; --muted:#b39aaa; --line:#2a2128; --panel:#151116; --panel-2:#1d171e;
+  --accent:#ff5fae; --accent-ink:#1a0010; --ok:#39d98a; --warn:#ff8a7d;
+}
+[data-style="wave"]{
+  --frame:#1d3a6e; --frame-edge:#2c5aa0; --frame-r:.3cqw; --frame-pad:3.2cqw;
+  --tile:#efe9d8; --tile-hi:#f6f1e3; --ink:#1d3a6e; --seam:#cfc6ae; --flap-r:.15cqw; --c-w:#1d3a6e;
+  --c-r:#b8452e; --c-o:#d9883a; --c-y:#d9b25a; --c-g:#5f7a4a; --c-b:#2c5aa0; --c-v:#5a4a7a;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:90%; --tile-size:2.95cqw;
+  --wall:#e9e3d2; --ui:#14284e; --muted:#5a6680; --line:#d7d0bd; --panel:#f6f2e7; --panel-2:#ece6d6;
+  --accent:#1d3a6e; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="kente"]{
+  --frame:#141008; --frame-edge:#2a2214; --frame-r:.2cqw; --frame-pad:3.2cqw;
+  --tile:#e8b52c; --tile-hi:#f0c440; --ink:#141008; --seam:#8a6a14; --flap-r:.1cqw; --c-w:#141008;
+  --c-r:#c0272d; --c-o:#d9662a; --c-y:#f2d25a; --c-g:#1f7a3a; --c-b:#2a4f9a; --c-v:#6a3a7a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:800; --tile-size:2.85cqw;
+  --wall:#120e07; --ui:#f6ecd2; --muted:#bfae84; --line:#2e2614; --panel:#1a150b; --panel-2:#231c0f;
+  --accent:#e8b52c; --accent-ink:#141008; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="bojagi"]{
+  --frame:#efe7d6; --frame-edge:#f7f1e4; --frame-r:.4cqw; --frame-pad:3.4cqw;
+  --tile:#f4efe3; --tile-hi:#faf6ee; --ink:#4a2f45; --seam:#d9cfba; --flap-r:.3cqw; --gloss:rgba(255,255,255,.3); --c-w:#4a2f45;
+  --c-r:#d97a86; --c-o:#e6a46a; --c-y:#e9cf7a; --c-g:#8fbf9f; --c-b:#86aed6; --c-v:#a993cf;
+  --f-tile:"M PLUS Rounded 1c",Arial,sans-serif; --tile-w:700; --tile-size:2.8cqw;
+  --wall:#ece5d6; --ui:#3a2536; --muted:#7a6a72; --line:#ddd3c0; --panel:#f8f4ec; --panel-2:#eee7da;
+  --accent:#b85a7a; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="hakka"]{
+  --frame:#c8102e; --frame-edge:#e0304a; --frame-r:.4cqw; --frame-pad:3.4cqw;
+  --tile:#b5162b; --tile-hi:#c42036; --ink:#fff3e0; --seam:#7a0d1c; --flap-r:.25cqw; --c-w:#fff3e0;
+  --c-r:#f6a5c0; --c-o:#ffb35c; --c-y:#ffd166; --c-g:#3fa66a; --c-b:#3f8fd0; --c-v:#a46ad6;
+  --f-tile:"Cabin",Arial,sans-serif; --tile-w:700; --tile-size:2.9cqw;
+  --wall:#2a070d; --ui:#fff1e6; --muted:#d6a8a8; --line:#4a121c; --panel:#330a12; --panel-2:#3f0f18;
+  --accent:#ffd166; --accent-ink:#2a1a00; --ok:#7cd09a; --warn:#ffb3a5;
+}
+[data-style="sbb"]{
+  --frame:#f4f4f2; --frame-edge:#ffffff; --frame-r:1.6cqw; --frame-pad:3.6cqw;
+  --bevel:inset 0 0 0 .45cqw #111,inset 0 0 0 .7cqw #e6e6e3;
+  --tile:#fafafa; --tile-hi:#ffffff; --ink:#111111; --seam:#d0d0cc; --flap-r:.1cqw; --c-w:#111111;
+  --c-r:#eb0000; --c-o:#f08a24; --c-y:#f2c230; --c-g:#2e8b57; --c-b:#2d5fa8; --c-v:#6a4a9a;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:600; --tile-size:2.95cqw;
+  --wall:#efefec; --ui:#111111; --muted:#5f5f5c; --line:#d9d9d5; --panel:#fafaf8; --panel-2:#efefec;
+  --accent:#eb0000; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="barragan"]{
+  --frame:#f3ece2; --frame-edge:#f3ece2; --frame-r:0px; --frame-pad:3.6cqw 2.6cqw 3.6cqw 6.6cqw;
+  --tile:#d94f86; --tile-hi:#e15f93; --ink:#fff6ee; --seam:#a83a68; --flap-r:0px; --c-w:#fff6ee;
+  --c-r:#c75b3d; --c-o:#e88a3a; --c-y:#f0b13b; --c-g:#5f8a5a; --c-b:#4a6ab0; --c-v:#9b87c4;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:600; --tile-size:2.9cqw;
+  --wall:#efe6da; --ui:#3a1f2a; --muted:#7a5e66; --line:#e0d4c6; --panel:#f8f3ec; --panel-2:#eee5d9;
+  --accent:#d94f86; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+/* Matyó roses: red and pink petals round a yellow heart, blue buds and green leaves, on black cloth */
+[data-style="matyo"].board,[data-style="matyo"] .board,.minib[data-style="matyo"]{
+  background:radial-gradient(circle,#f2c230 0 2px,#d7263d 2.5px 5px,#f06aa0 5.5px 7.5px,#d7263d 8px 9px,transparent 9.5px) 0 0/34px 30px,
+             radial-gradient(circle,#2f6fd8 0 3px,#8ab4ff 3.5px 4px,transparent 4.5px) 17px 15px/34px 30px,
+             radial-gradient(ellipse 5px 2.2px,#2e8b57 0 85%,transparent 100%) 8px 22px/34px 30px,radial-gradient(ellipse 5px 2.2px,#2e8b57 0 85%,transparent 100%) 26px 8px/34px 30px,#141414}
+/* Hoffmann's checker grid */
+[data-style="werkstatte"].board,[data-style="werkstatte"] .board,.minib[data-style="werkstatte"]{
+  background:conic-gradient(#111 25%,#f7f6f2 0 50%,#111 0 75%,#f7f6f2 0) 0 0/12px 12px}
+/* A night wall of dark brick, lit by the signs */
+[data-style="neon"].board,[data-style="neon"] .board,.minib[data-style="neon"]{
+  background:radial-gradient(ellipse at 50% 50%,#ff4fa31f,transparent 70%),linear-gradient(#0e0b0c 0 2px,transparent 2px) 0 0/100% 12px,
+             linear-gradient(90deg,#0e0b0c 0 2px,transparent 2px) 0 0/26px 24px,linear-gradient(90deg,#0e0b0c 0 2px,transparent 2px) 13px 12px/26px 24px,#1f181a}
+/* Seigaiha: rows of overlapping wave crests in Prussian blue and foam */
+[data-style="wave"].board,[data-style="wave"] .board,.minib[data-style="wave"]{
+  background:radial-gradient(circle at 50% 100%,#f4efe2 0 2px,#1d3a6e 2.5px 4.5px,#f4efe2 5px 6.5px,#1d3a6e 7px 9px,#5d86c0 9.5px 11px,#f4efe2 11.5px 12px,transparent 12.5px) 0 0/24px 12px,
+             radial-gradient(circle at 50% 100%,#f4efe2 0 2px,#1d3a6e 2.5px 4.5px,#f4efe2 5px 6.5px,#1d3a6e 7px 9px,#5d86c0 9.5px 11px,#f4efe2 11.5px 12px,transparent 12.5px) 12px 6px/24px 12px,#1d3a6e}
+/* Kente: narrow woven strips, each with its own blocks of pattern */
+[data-style="kente"].board,[data-style="kente"] .board,.minib[data-style="kente"]{
+  background:repeating-linear-gradient(0deg,transparent 0 14px,#14100888 14px 18px,transparent 18px 22px,#c0272d99 22px 24px),
+             repeating-linear-gradient(90deg,#e8b52c 0 10px,#1f7a3a 10px 13px,#e8b52c 13px 16px,#c0272d 16px 19px,#141008 19px 22px,#e8b52c 22px 30px,#2a4f9a 30px 32px,#141008 32px 34px)}
+/* Bojagi: soft patches of ramie, stitched together */
+[data-style="bojagi"].board,[data-style="bojagi"] .board,.minib[data-style="bojagi"]{
+  background:linear-gradient(90deg,#7a6a5a33 0 1px,transparent 1px) 0 0/37px 100%,linear-gradient(#7a6a5a33 0 1px,transparent 1px) 0 0/100% 23px,
+             conic-gradient(from 90deg,#d98c8c40 0 25%,transparent 0 50%,#8fb8d840 0 75%,transparent 0) 18px 11px/56px 34px,
+             conic-gradient(#e9b8c2 0 25%,#b9d3c2 0 50%,#f1d9a6 0 75%,#c9c2e3 0) 0 0/74px 46px}
+/* Hakka cloth: big peonies and little yellow blossoms on red */
+[data-style="hakka"].board,[data-style="hakka"] .board,.minib[data-style="hakka"]{
+  background:radial-gradient(circle,#fff3e0 0 2px,#f6a5c0 2.5px 7px,#e0457b 7.5px 10px,transparent 10.5px) 0 0/44px 40px,
+             radial-gradient(circle,#fff3e0 0 2.5px,#ffd166 3px 5px,transparent 5.5px) 22px 20px/44px 40px,
+             radial-gradient(ellipse 6px 2.6px,#3fa66a 0 85%,transparent 100%) 12px 30px/44px 40px,radial-gradient(ellipse 6px 2.6px,#2f7fbf 0 85%,transparent 100%) 33px 9px/44px 40px,#c8102e}
+/* The clock's minute marks along the top and bottom of the white face */
+[data-style="sbb"].board,[data-style="sbb"] .board,.minib[data-style="sbb"]{
+  background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 14px) 0 30%/100% 6px no-repeat,repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 14px) 0 70%/100% 6px no-repeat,#f4f4f2}
+.board[data-style="sbb"],[data-style="sbb"] .board{background:repeating-linear-gradient(90deg,#111 0 .25cqw,transparent .25cqw 2cqw) 0 1.4cqw/100% .7cqw no-repeat,repeating-linear-gradient(90deg,#111 0 .25cqw,transparent .25cqw 2cqw) 0 calc(100% - 1.4cqw)/100% .7cqw no-repeat,#f4f4f2}
+/* The second hand: Hilfiker's red disc on a stem */
+.board[data-style="sbb"]::before{content:"";position:absolute;top:.9cqw;right:3.4cqw;width:2.4cqw;height:3.2cqw;background:radial-gradient(circle at 50% 1.2cqw,#eb0000 0 1.15cqw,transparent 1.2cqw),linear-gradient(#eb0000,#eb0000) 50% 100%/.3cqw 60% no-repeat;pointer-events:none;z-index:5}
+/* Barragán: flat planes of colored wall, pink, ochre, lilac and terracotta */
+[data-style="barragan"].board,[data-style="barragan"] .board{
+  background:linear-gradient(#f0b13b,#f0b13b) 0 0/4.6cqw 58% no-repeat,linear-gradient(#9b87c4,#9b87c4) 0 100%/4.6cqw 42% no-repeat,
+             linear-gradient(#c75b3d,#c75b3d) 100% 0/38% 1.8cqw no-repeat,linear-gradient(#e88a3a,#e88a3a) 0 100%/60% 1.8cqw no-repeat,#f3ece2}
+.minib[data-style="barragan"]{padding-left:20%;background:linear-gradient(#f0b13b,#f0b13b) 0 0/14% 58% no-repeat,linear-gradient(#9b87c4,#9b87c4) 0 100%/14% 42% no-repeat,linear-gradient(#c75b3d,#c75b3d) 100% 0/38% 5px no-repeat,#f3ece2}
+[data-style="matyo"] .grid{background:#0a0a0a;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
+[data-style="werkstatte"] .grid{background:#111;padding:.5cqw;box-sizing:border-box}
+[data-style="neon"] .grid{background:#050407;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
+[data-style="wave"] .grid{background:#1d3a6e;padding:.5cqw;box-sizing:border-box}
+[data-style="kente"] .grid{background:#141008;padding:.5cqw;box-sizing:border-box}
+[data-style="bojagi"] .grid{background:#cfc3ac;padding:.5cqw;border-radius:.4cqw;box-sizing:border-box}
+[data-style="hakka"] .grid{background:#7a0d1c;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
+[data-style="sbb"] .grid{background:#d0d0cc;padding:.4cqw;box-sizing:border-box}
+[data-style="barragan"] .grid{background:#a83a68;padding:.4cqw;box-sizing:border-box}
+.minib[data-style="matyo"] .g6{background:#0a0a0a}.minib[data-style="werkstatte"] .g6{background:#111}.minib[data-style="neon"] .g6{background:#050407}.minib[data-style="wave"] .g6{background:#1d3a6e}.minib[data-style="kente"] .g6{background:#141008}
+.minib[data-style="bojagi"] .g6{background:#cfc3ac}.minib[data-style="hakka"] .g6{background:#7a0d1c}.minib[data-style="sbb"] .g6{background:#d0d0cc}.minib[data-style="barragan"] .g6{background:#a83a68}
+.minib[data-style="matyo"] .g6,.minib[data-style="werkstatte"] .g6,.minib[data-style="neon"] .g6,.minib[data-style="wave"] .g6,.minib[data-style="kente"] .g6,.minib[data-style="bojagi"] .g6,.minib[data-style="hakka"] .g6,.minib[data-style="sbb"] .g6,.minib[data-style="barragan"] .g6{padding:2.4cqw;border-radius:1.5cqw}
+[data-style="matyo"] .t,[data-style="werkstatte"] .t,[data-style="neon"] .t,[data-style="wave"] .t,[data-style="kente"] .t,[data-style="bojagi"] .t,[data-style="hakka"] .t,[data-style="sbb"] .t,[data-style="barragan"] .t{font-weight:var(--tile-w,600)}
+[data-style="neon"] .f span,[data-style="neon"] .g span{text-shadow:none}

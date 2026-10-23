@@ -5,7 +5,7 @@ test.describe('style picker',()=>{
   test.beforeEach(async({page})=>{});
   test('try, cancel, use, double-tap, Everyday dots, favorites, filters',async({browser})=>{
     const page=await device(browser,{width:390,height:844,phone:true}); await page.goto('/');
-    await page.click('#styleOpen');
+    await page.click('#tab-look');
     const card=id=>page.locator('#styleTray .swatch[data-id="'+id+'"]:not(#sw-fav *) .sw-main');
 
     await card('oxblood').click();                                   // try
@@ -26,11 +26,11 @@ test.describe('style picker',()=>{
 
     for(const id of ['oxblood','zsolnay','plakat'])await page.locator('#styleTray .swatch[data-id="'+id+'"]:not(#sw-fav *) .sw-fav').click();
     await expect(page.locator('#sw-fav .swatch')).toHaveCount(3);
-    await page.click('#trayDone');
-    const seen=[]; for(let i=0;i<4;i++){await page.click('#styleNext');seen.push(await stored(page,'style'))}
-    expect(seen).toEqual(['oxblood','zsolnay','plakat','oxblood']);    // the arrows step through favorites
+    await page.click('#tab-show'); await page.click('#status');
+    const seen=[]; for(let i=0;i<4;i++){await page.keyboard.press('s');seen.push(await stored(page,'style'))}
+    expect(seen).toEqual(['oxblood','zsolnay','plakat','oxblood']);    // S steps through favorites
 
-    await page.click('#styleOpen'); await page.click('#trayTone button[data-tone="dark"]');
+    await page.click('#tab-look'); await page.click('#trayTone button[data-tone="dark"]');
     await expect(page.locator('#styleTray .swatch[data-id="daylight"]')).toHaveCount(0); // Everyday is one card
     await expect(page.locator('#sw-studio .swatch[data-id="plakat"]')).toBeHidden();     // a light style
     await expect(page.locator('#sw-studio .swatch[data-id="cinetica"]')).toBeVisible();

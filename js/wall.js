@@ -125,7 +125,7 @@ function updateSubs(){
   set('news',newsData&&newsData.sections[news.section]?(newsData.sections[news.section].name==='Top stories'?'BBC top stories':'BBC '+newsData.sections[news.section].name.toLowerCase()):'BBC headlines');
   {const tv=rmTvs().find(l=>!l.pending),n=rmPhones().length;set('remote',tv?'Controlling '+tv.name:n?n+' phone'+(n>1?'s':'')+' paired':'Control your TV')}
   set('friends',frQueue().length?frQueue().length+' waiting':fr.links.some(l=>!l.pending&&!l.kind)?fr.links.filter(l=>!l.pending&&!l.kind).length+' connected':'Message a friend\'s board');
-  set('schedule',schedOn?'Next: '+schedNextLabel():'Tap to run');
+  set('schedule',schedOn?'On · next: '+schedNextLabel():'Off · changes the board through the day');
 }
 setInterval(()=>{try{updateSubs()}catch(e){}},20000);
 

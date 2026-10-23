@@ -51,3 +51,38 @@ test('loads cleanly when the scripts arrive slowly, as on a TV',async({browser})
     noErrors(page);
   }
 });
+
+test('previewing a channel keeps the board until you put it on',async({browser})=>{
+  const page=await device(browser,{width:390,height:844,phone:true}); await page.goto('/');
+  await sendMessage(page,'Hello there');
+  await expect(page.locator('#boardText')).toContainText('HELLO THERE',{timeout:30e3});
+  await page.click('#tab-show'); await page.click('#detailBack');
+  // options don't change the board
+  await page.click('.chan[data-id="clock"] .chan-opts'); await page.selectOption('#clkHours','24');
+  expect(await stored(page,'mode')).toBe('');
+  await page.click('#detailBack');
+  // preview, then keep what was there
+  await page.click('.chan[data-id="clock"] .chan-main');
+  await expect(page.locator('#tryBar')).toBeVisible(); await expect(page.locator('#tryCancel')).toHaveText('Keep message');
+  await expect(page.locator('#status')).toContainText('Previewing');
+  await page.click('#tryCancel');
+  await expect(page.locator('#boardText')).toContainText('HELLO THERE',{timeout:30e3});
+  expect(await stored(page,'mode')).toBe('');
+  // preview, then put it on
+  await page.click('.chan[data-id="clock"] .chan-main'); await page.click('#tryUse');
+  await expect.poll(()=>stored(page,'mode')).toBe('clock');
+  await expect(page.locator('.chan[data-id="clock"]')).toHaveClass(/\bon\b/);
+  noErrors(page);
+});
+
+test('the tabs: Show, Look, Connect and Settings, on a phone and a laptop',async({browser})=>{
+  for(const [w,h,phone] of [[390,844,true],[1440,900,false]]){
+    const page=await device(browser,{width:w,height:h,phone}); await page.goto('/');
+    for(const v of ['look','connect','settings','show']){
+      await page.click('#tab-'+v); await expect(page.locator('#view-'+v)).toBeVisible();
+      expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth),v+' at '+w).toBeLessThanOrEqual(0);
+    }
+    await expect(page.locator('#board')).toBeInViewport();
+    noErrors(page);
+  }
+});

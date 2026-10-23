@@ -8,6 +8,9 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 
 ## What it does
 
+The board sits at the top (or on the left of a wide screen) with four tabs: **Show** (what's on the board: tap a channel to preview it, then **Put on board**; **Options** sets it up), **Look** (styles, tried on the board before you keep one), **Connect** (your TV remote and friends) and **Settings** (motion, wall display, sound).
+
+
 - **Messages** — type up to 6 lines of 22 characters; words wrap and center on their own. Drop in color tiles, preview exactly how it will flip, and save favorites.
 - **Saved** — keep a list of messages and rotate through them.
 - **Clock** — time and date, with 12/24-hour, a second city, borders and accent tiles.
@@ -15,7 +18,7 @@ A split-flap message board for your wall, inspired by the classic Italian statio
 - **Remote** — use your phone as a full-screen remote for the board on your TV: big buttons to send messages, change the style, show the clock, news or art, start or stop the day plan, and control the sound. Pair once by scanning a QR code on the TV.
 - **Friends** — connect with a friend's board (you both have to agree) and send each other messages; the board asks before showing one.
 - **Day plan** — change what the board shows, and its style, at set times through the day.
-- **42 styles** in six groups: Everyday (one card with six colors: Classic, Daylight, Mint, Rail, Harbor, Glow), Machines (Solari, Euro rail, Patapata, Cifra clock, Caslon 101, Card ticket, Ikarus, Weltzeituhr), Wayfinding (Metropolitana, Standard, Double Arrow, Oxblood, Földalatti, Ekimei, Taipei Metro, Metro), Identities (Ulm, Olympia 72, Mexico 68, Jet Age, Dangan), Materials (Butterfly, Moquette, Window Grille, Chandigarh, Marine Drive, Filete, Calçadão, Zsolnay, Prague Metro, Cubist) and Studio (Cinética, Ton Fan, Graphite, Kassák, Plakat). Tap a style to try it on the board before you keep it, filter light or dark styles, and star favorites: the ‹ › arrows, the automatic style change and the Day plan can cycle through just those. **Worn** ages any style with scuffs, faded letters and off-center printing.
+- **42 styles** in six groups: Everyday (one card with six colors: Classic, Daylight, Mint, Rail, Harbor, Glow), Machines (Solari, Euro rail, Patapata, Cifra clock, Caslon 101, Card ticket, Ikarus, Weltzeituhr), Wayfinding (Metropolitana, Standard, Double Arrow, Oxblood, Földalatti, Ekimei, Taipei Metro, Metro), Identities (Ulm, Olympia 72, Mexico 68, Jet Age, Dangan), Materials (Butterfly, Moquette, Window Grille, Chandigarh, Marine Drive, Filete, Calçadão, Zsolnay, Prague Metro, Cubist) and Studio (Cinética, Ton Fan, Graphite, Kassák, Plakat). Tap a style to try it on the board before you keep it, filter light or dark styles, and star favorites: the <kbd>S</kbd> key, the automatic style change and the Day plan can cycle through just those. **Worn** ages any style with scuffs, faded letters and off-center printing.
 - **Accented letters** — Á É Í Ó Ö Ő Ú Ü Ű Ñ Ã Õ Ç Â Ê Ô À have their own flaps, so Spanish, Portuguese and Hungarian messages show correctly. Other accented letters (Ł, Č, Ř…) show as the plain letter.
 - **Animation** — realistic flaps with visible edges that settle with a bounce, seven flip patterns (left to right, row by row, diagonal, center out, edges in, random, all at once), new styles that flip in tile by tile, a power-on spin, the odd idle twitch, raised tiles with optional glass glare, and a choice of frames (brushed metal, walnut, matte black, white).
 - **Art** — pictures made from color tiles (heart, sunset, rainbow, smile, birthday cake, Ciao, Italian and Norwegian flags) and animations (rainbow wave, sparkle, rain, heartbeat), also available in the Day plan.
@@ -48,14 +51,14 @@ BBC's feeds can't be read straight from a web page, so a GitHub Action (`.github
 
 ## Use your phone as a TV remote
 
-1. On the TV, open the board (for example at **is.gd/ciaoboard**). Its start screen shows a big QR code and a 6-digit pairing code. (Past the start screen? Press **OK** for the controls, open **What to show → Remote** and choose **Pair a phone**.)
+1. On the TV, open the board (for example at **is.gd/ciaoboard**). Its start screen shows a big QR code and a 6-digit pairing code. (Past the start screen? Press **OK** for the controls, open **Connect** and choose **Pair a phone**.)
 2. Scan the QR code with your phone's camera. It opens the remote and connects by itself, and the TV's start screen closes when it's done. (Or open **nancy-rink.github.io/Ciao-board/remote** on your phone and type the 6 numbers; it connects as soon as the last one is in.)
 3. Your phone is now a full-screen remote: type a message and tap **Show on TV**, tap big buttons for the clock, news, art, saved messages, the day plan or a clear board, swipe through styles, and mute or turn the volume up and down. **More** has the flap sound, chime and animation quality. The top line shows what the TV is displaying.
 4. Add the remote to your home screen (in Safari, **Share → Add to Home Screen**) so it opens like an app.
 
-The same controls are also on the board itself, under **What to show → Remote**.
+The same controls are also on the board itself, under **Connect**.
 
-If the TV is switched off, the remote says it can't reach it, and reconnects by itself as soon as the board is open on the TV again. Only if the TV's browser data was cleared do you need **Pair again**: scan the code on the TV's start screen and the new pairing replaces the old one. A home-screen remote on iPhone keeps its own storage, separate from Safari, so pair once from the home-screen remote itself by typing the code. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Remote → Paired**. The remote uses the same relay and encryption as Friends, below.
+If the TV is switched off, the remote says it can't reach it, and reconnects by itself as soon as the board is open on the TV again. Only if the TV's browser data was cleared do you need **Pair again**: scan the code on the TV's start screen and the new pairing replaces the old one. A home-screen remote on iPhone keeps its own storage, separate from Safari, so pair once from the home-screen remote itself by typing the code. A paired phone is trusted: the TV acts on its commands straight away. Unpair from either device under **Connect → Paired**. The remote uses the same relay and encryption as Friends, below.
 
 ## How Friends works
 

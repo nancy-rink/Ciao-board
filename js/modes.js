@@ -119,7 +119,7 @@ function renderClock(){
   $('clkDate').value=clk.date; $('clkBorder').value=clk.border; $('clkAccent').value=clk.accent;
   $('clkTz').value=clk.tz; $('clkLabel').value=clk.label; $('clkOrder').value=clk.order;
 }
-function clockChanged(){store.set('fb.clock',clk);renderClock();if(mode==='clock'&&goClock){lastClock='';goClock()}else startClock()}
+function clockChanged(){store.set('fb.clock',clk);renderClock();if(mode==='clock'&&goClock){lastClock='';goClock()}try{renderChannels()}catch(e){}}
 [['clkHours','hours'],['clkDate','date'],['clkBorder','border'],['clkAccent','accent'],['clkTz','tz'],['clkOrder','order']].forEach(([id,k])=>{$(id).onchange=()=>{clk[k]=$(id).value;clockChanged()}});
 $('clkAmpm').onchange=()=>{clk.ampm=$('clkAmpm').checked;clockChanged()};
 $('clkLabel').oninput=()=>{clk.label=$('clkLabel').value.slice(0,22);store.set('fb.clock',clk)};
@@ -557,5 +557,5 @@ function startNews(){
 }
 $('newsBtn').onclick=()=>{if(mode==='news')stopModes();else startNews()};
 $('newsSection').value=news.section; $('newsEvery').value=String(news.every); $('newsCount').value=String(news.count);
-[['newsSection','section'],['newsEvery','every'],['newsCount','count']].forEach(([id,k])=>{$(id).onchange=()=>{news[k]=k==='section'?$(id).value:+$(id).value;saveNews();startNews()}});
+[['newsSection','section'],['newsEvery','every'],['newsCount','count']].forEach(([id,k])=>{$(id).onchange=()=>{news[k]=k==='section'?$(id).value:+$(id).value;saveNews();if(mode==='news')startNews();else try{renderChannels()}catch(e){}}});
 

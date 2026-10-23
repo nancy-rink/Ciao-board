@@ -52,10 +52,10 @@ let favStyles=store.get('fb.favStyles',[]).filter(id=>BOARD_STYLES.some(s=>s.id=
 // Day plan times that used a retired style keep the current style instead
 const schedStyleOk=v=>!v||v==='keep'||v==='fav'||BOARD_STYLES.some(x=>x.id===v);
 if(sched.slots.some(s=>!schedStyleOk(s.style))){sched.slots.forEach(s=>{if(!schedStyleOk(s.style))s.style='keep'});saveSched();renderSlots()}
-// A style dresses the board (and the style button's swatch) only; the controls keep the standard look.
+// A style dresses the board (and the channel previews) only; the controls keep the standard look.
 // In full screen nothing but the board shows, so the whole screen takes the style's frame color.
 function styleScope(){
-  $('board').dataset.style=styleId; $('pv').dataset.style=styleId; document.querySelectorAll('.art-pv').forEach(e=>e.dataset.style=styleId); $('styleOpen').querySelector('.sw').dataset.style=styleId;
+  $('board').dataset.style=styleId; $('pv').dataset.style=styleId; document.querySelectorAll('.art-pv').forEach(e=>e.dataset.style=styleId);
   if(document.body.classList.contains('fs'))document.body.dataset.style=styleId; else delete document.body.dataset.style;
   [$('board'),$('pv')].forEach(e=>{if(aged)e.dataset.aged='';else delete e.dataset.aged});
 }
@@ -66,9 +66,9 @@ function applyStyle(id){
   if(shown!==id)restyleCascade(shown);
   if(alignLeft()!==wasLeft){if(lastSent!=null)send(lastSent);try{updateCount()}catch(e){}}
   const s=BOARD_STYLES.find(x=>x.id===id); $('styleName').textContent=s.name;
-  markSwatches(); trayBar();
+  markSwatches(); trayBar(); try{renderChannels()}catch(e){}
 }
-// ‹ › step through your favorites when you have two or more, otherwise through every style
+// S (and the automatic style change) steps through your favorites when you have two or more, otherwise through every style
 function stepStyle(d){
   const list=favStyles.length>1?favStyles:BOARD_STYLES.map(s=>s.id), i=list.indexOf(styleId);
   applyStyle(list[((i<0?(d>0?-1:0):i)+d+list.length)%list.length]);
@@ -92,6 +92,9 @@ function miniBoard(id){
 const EVERYDAY=BOARD_STYLES.filter(s=>s.group==='everyday').map(s=>s.id);
 const STAR='<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7z" fill="var(--star-fill,none)" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 let trying=null;
+// Hovering previews a style only with a real mouse that actually moved there, not when the page shifts under a still pointer
+const canHover=matchMedia('(hover:hover) and (pointer:fine)');
+const hoverPreview=e=>!trying&&!pv&&canHover.matches&&(e.movementX!==0||e.movementY!==0);
 function styleCard(id,family){
   const s=BOARD_STYLES.find(x=>x.id===id);
   const c=document.createElement('div'); c.className='swatch'+(family?' family':''); c.dataset.id=id; if(family)c.dataset.family='everyday';
@@ -100,14 +103,14 @@ function styleCard(id,family){
   nm.firstChild.textContent=family?'Everyday':s.name;
   main.append(miniBoard(id),nm);
   main.onclick=()=>tryStyle(c.dataset.id);
-  main.onmouseenter=()=>{if(!trying)previewStyle(c.dataset.id)};
+  main.onmouseenter=e=>{if(hoverPreview(e))previewStyle(c.dataset.id)};
   const fav=document.createElement('button'); fav.type='button'; fav.className='sw-fav'; fav.innerHTML=STAR;
   fav.onclick=()=>toggleFav(c.dataset.id);
   c.append(main,fav);
   if(family){
     const dots=document.createElement('div'); dots.className='sw-dots'; dots.setAttribute('role','group'); dots.setAttribute('aria-label','Everyday colors');
     EVERYDAY.forEach(eid=>{const e=BOARD_STYLES.find(x=>x.id===eid),d=document.createElement('button');d.type='button';d.dataset.id=eid;d.dataset.style=eid;d.title=e.name;d.setAttribute('aria-label',e.name);
-      d.onclick=()=>{setFamily(c,eid);tryStyle(eid)};d.onmouseenter=()=>{if(!trying)previewStyle(eid)};dots.appendChild(d)});
+      d.onclick=()=>{setFamily(c,eid);tryStyle(eid)};d.onmouseenter=e=>{if(hoverPreview(e))previewStyle(eid)};dots.appendChild(d)});
     c.appendChild(dots);
   }
   return c;
@@ -147,16 +150,15 @@ function markSwatches(){
     f.classList.toggle('on',fav); f.setAttribute('aria-pressed',String(fav)); f.setAttribute('aria-label',(fav?'Remove ':'Add ')+nm+(fav?' from':' to')+' favorites');
     c.querySelectorAll('.sw-dots button').forEach(d=>d.setAttribute('aria-pressed',String(d.dataset.id===(trying&&EVERYDAY.includes(trying)?trying:styleId))));
   });
-  $('stylePrev').setAttribute('aria-label',favStyles.length>1?'Previous favorite style':'Previous style');
-  $('styleNext').setAttribute('aria-label',favStyles.length>1?'Next favorite style':'Next style');
 }
-// The bar at the top of the picker: what's showing, or what you're trying, with Use and Cancel
+// While a style is being tried, the bar under the board says so, with Use and Keep
 function trayBar(){
-  const id=trying||styleId, s=BOARD_STYLES.find(x=>x.id===id);
-  $('tryName').textContent=(trying?'Trying ':'Showing ')+s.name; $('tryNote').textContent=s.note;
-  $('tryUse').hidden=$('tryCancel').hidden=!trying; $('trayBar').classList.toggle('trying',!!trying);
+  if(!trying){if(!pv)setTry(null);return}
+  const s=BOARD_STYLES.find(x=>x.id===trying), cur=BOARD_STYLES.find(x=>x.id===styleId);
+  setTry({name:'Trying '+s.name,note:s.note,keepLabel:'Keep '+cur.name,useLabel:'Use this style',keep:cancelTry,use:useTried});
 }
 function tryStyle(id){
+  if(pv)endPreview(false);
   if(id===styleId&&!trying)return;
   if(trying===id){useTried();return} // a second tap on the same card picks it
   trying=id===styleId?null:id; previewStyle(trying); markSwatches(); trayBar();
@@ -179,10 +181,8 @@ function filterStyles(){
 document.querySelectorAll('#trayTone button').forEach(b=>b.onclick=()=>{toneFilter=b.dataset.tone;filterStyles()});
 document.querySelectorAll('#trayJump button').forEach(b=>b.onclick=()=>{
   const g=$('grp-'+b.dataset.g); if(!g||g.hidden)return;
-  const body=$('sheetBody'), top=g.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop-$('trayTop').offsetHeight-4;
-  body.scrollTo({top,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  g.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 });
-$('tryUse').onclick=useTried; $('tryCancel').onclick=cancelTry;
 // Worn: scuffs, faded letters and off-center printing, over any style
 $('agedTray').checked=$('setAged').checked=aged;
 function setAged(on){aged=!!on;store.set('fb.aged',aged);$('agedTray').checked=$('setAged').checked=aged;styleScope();scheduleAtlas()}
@@ -191,16 +191,9 @@ buildStyles();
 // Hovering previews on the board only; tapping tries a style, and Use (or a second tap) keeps it
 function previewStyle(id){$('board').dataset.style=id||trying||styleId;requestAnimationFrame(fitFill);scheduleAtlas()}
 function noteFor(){trayBar()}
-function openTray(){const t=$('styleTray');openSheet('style');t.hidden=false;$('styleOpen').setAttribute('aria-expanded','true');trayBar();const cur=t.querySelector('.swatch.on:not([hidden]) .sw-main');if(cur){cur.scrollIntoView({block:'nearest',inline:'nearest'});cur.focus({preventScroll:true})}}
-function closeTray(keepSheet){const t=$('styleTray');if(t.hidden)return;trying=null;t.hidden=true;previewStyle(null);markSwatches();$('styleOpen').setAttribute('aria-expanded','false');if(!keepSheet&&sheetIs('style'))closeSheet()}
-$('styleOpen').onclick=()=>{$('styleTray').hidden?openTray():closeTray()};
-$('trayDone').onclick=()=>{closeTray();$('styleOpen').focus()};
-$('openTrayFromSettings').onclick=()=>openTray();
 $('styleTray').addEventListener('mouseleave',()=>previewStyle(null));
 $('styleTray').addEventListener('focusout',e=>{if(!$('styleTray').contains(e.relatedTarget))previewStyle(null)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('styleTray').hidden){if(trying){cancelTry();return}closeTray();$('styleOpen').focus()}});
-document.addEventListener('pointerdown',e=>{if(!$('styleTray').hidden&&!$('styleTray').contains(e.target)&&!e.target.closest('.stylestep'))closeTray()});
-$('stylePrev').onclick=()=>stepStyle(-1); $('styleNext').onclick=()=>stepStyle(1);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&trying)cancelTry()});
 let styleTimer=null;
 function setStyleAuto(sec){clearInterval(styleTimer);styleTimer=sec?setInterval(()=>stepStyle(1),sec*1000):null;$('styleAuto').value=String(sec);store.set('fb.styleAuto',sec)}
 $('styleAuto').onchange=()=>setStyleAuto(+$('styleAuto').value);

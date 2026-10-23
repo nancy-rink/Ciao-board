@@ -108,10 +108,14 @@ function replay(){
   tiles.forEach(t=>{t.cur=(t.target-3+CHARS.length)%CHARS.length;paint(t.u,t.cur);paint(t.d,t.cur)});
   send(lastSent);
 }
-let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null, boardLabel=null, booted=false, active=[];
+let busy=false, last=0, acc=0, movedThisRun=false, lastSent=null, lastOpts={}, boardLabel=null, booted=false, active=[];
+// While a channel is previewed (ui.js), whatever was running keeps going but its updates wait in heldSend instead of flipping
+let previewHold=false, heldSend=null;
 // opts.cells sends an exact grid (art) instead of laying out text; opts.direct flips each tile straight to its target; opts.label is read to screen readers
 function send(str,opts){
-  opts=opts||{}; lastSent=str; boardLabel=opts.label||null;
+  opts=opts||{};
+  if(previewHold&&!opts.preview){heldSend=[str,opts];return}
+  lastSent=str; lastOpts=opts.preview?{}:opts; boardLabel=opts.label||null;
   const cells=opts.cells||toTargets(str).cells;
   // Power-on: the first time anything is shown, every tile spins up from a random spot
   const boot=!booted&&anim.boot&&!reduce; booted=true;
@@ -170,10 +174,12 @@ function speakBoard(){
 function setStatus(word){
   const st=$('status'), f=word==='Flipping';
   const what=mode===''&&lastSent===''?'a blank board':(MODE_NAME[mode]||'your message');
-  let h='<i class="dot"></i><span>Showing <b>'+what+'</b></span>';
+  const pvName=typeof pv!=='undefined'&&pv?CH[pv.id].name:'';
+  let h=pvName?'<i class="dot"></i><span>Previewing <b>'+pvName+'</b></span>':'<i class="dot"></i><span>Showing <b>'+what+'</b></span>';
   if(schedOn){try{const n=schedNextLabel();if(n)h+='<span class="nxt">Day plan, next: '+n+'</span>'}catch(e){}}
   if(st.dataset.h!==h){st.innerHTML=h;st.dataset.h=h} st.classList.toggle('flipping',f);
-  document.querySelectorAll('.card').forEach(b=>{const t=b.dataset.tab;b.classList.toggle('running',t==='schedule'?schedOn:t==='message'?mode==='':MODE_TAB[mode]===t)});
+  st.classList.toggle('previewing',!!pvName);
   try{updateSubs()}catch(e){}
+  try{renderChannels()}catch(e){}
 }
 

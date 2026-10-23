@@ -2,7 +2,7 @@
 /* TV mode: a start screen sized for reading across a room, operated with the remote's arrows and OK */
 /* Remote mode (?remote): the phone becomes a full-screen remote for a paired TV, with big buttons and nothing else */
 body.remotemode{padding:0}
-body.remotemode .wrap,body.remotemode .sheet,body.remotemode .scrim,body.remotemode #tvStart,body.remotemode #rmPairCard{display:none!important}
+body.remotemode .app,body.remotemode #tvStart,body.remotemode #rmPairCard{display:none!important}
 #remoteApp[hidden],#remoteApp section[hidden]{display:none}
 #raMain,#raPair{display:flex;flex-direction:column;gap:14px;min-width:0}
 #raPair h1,#raPair ol,#raPair .ra-tip{margin:0}
@@ -84,5 +84,5 @@ body.fs.pairing .board{padding-right:calc(min(400px,80vw) + 6vw)}
 .rm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
 .rm-state{margin:0;color:var(--muted);font-size:14px}
 .rm-state:empty{display:none}
-@media (prefers-reduced-motion:reduce){.sheet,.scrim{animation:none}.wrap{transition:none}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}}
 @media (prefers-reduced-motion:reduce){.f.a,.f.b,.g.a,.g.b,body.real .g.land,.t.restyle,.t.twitch .h.u{animation:none;visibility:hidden}.status.flipping .dot{animation:none}body,.board,.deck{transition:none}}

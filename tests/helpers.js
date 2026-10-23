@@ -13,7 +13,18 @@ async function device(browser,{width=1280,height=900,phone=false,relay=RELAY,cf=
 }
 const stored=(page,key)=>page.evaluate(k=>JSON.parse(localStorage.getItem('beta2.fb.'+k)||'null'),key);
 const snd=async page=>(await stored(page,'snd'))||{};
-async function openCard(page,tab){if(await page.isHidden('#sheet'))await page.click('#showOpen');await page.click('.card[data-tab="'+tab+'"]')}
+// Opens a channel's options (or the Connect tab for remote and friends), without changing the board
+async function openCard(page,tab){
+  if(tab==='remote'||tab==='friends'){await page.click('#tab-connect');return}
+  await page.click('#tab-show'); if(await page.isVisible('#detailBack'))await page.click('#detailBack');
+  if(tab==='schedule'){await page.click('#planEdit');return}
+  await page.click('.chan[data-id="'+tab+'"] .chan-opts');
+}
+// Previews a channel, then puts it on the board
+async function putOnBoard(page,id){
+  await page.click('#tab-show'); if(await page.isVisible('#detailBack'))await page.click('#detailBack');
+  await page.click('.chan[data-id="'+id+'"] .chan-main'); await page.click('#tryUse');
+}
 async function sendMessage(page,text){await openCard(page,'message');await page.fill('#msgBox',text);await page.click('#sendBtn')}
 // The TV start screen's pairing code, digits only
 async function tvCode(tv){await tv.waitForSelector('#tvPairBox:not([hidden]) #tvCode');return (await tv.textContent('#tvCode')).replace(/\D/g,'')}
@@ -29,4 +40,4 @@ async function pairedTvAndPhone(browser,opts={}){
   return {tv,phone,code};
 }
 const noErrors=(...pages)=>pages.forEach(p=>expect(p.errors,'page errors').toEqual([]));
-module.exports={device,stored,snd,openCard,sendMessage,tvCode,pairedTvAndPhone,noErrors,RELAY,CF};
+module.exports={device,stored,snd,openCard,putOnBoard,sendMessage,tvCode,pairedTvAndPhone,noErrors,RELAY,CF};

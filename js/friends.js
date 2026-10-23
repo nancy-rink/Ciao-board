@@ -327,9 +327,9 @@ function frBoot(){
 // An invite link (#invite=CODE) opens the Friends tab and asks whether to connect
 function frHash(){
   const p=location.hash.match(/^#pair=([A-Za-z0-9-]+)/);
-  if(p){history.replaceState(null,'',location.pathname+location.search);openTab('remote');openSheet('show');$('rmCodeIn').value=frCodeFmt(frCodeNorm(p[1]));rmLookup(p[1]);return true}
+  if(p){history.replaceState(null,'',location.pathname+location.search);showView('connect');$('rmCodeIn').value=frCodeFmt(frCodeNorm(p[1]));rmLookup(p[1]);return true}
   const m=location.hash.match(/^#invite=([A-Za-z0-9-]+)/); if(!m)return false;
   history.replaceState(null,'',location.pathname+location.search);
-  openTab('friends'); openSheet('show'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frLookup(m[1]);
+  showView('connect'); $('frCodeIn').value=frCodeFmt(frCodeNorm(m[1])); frLookup(m[1]);
   return true;
 }

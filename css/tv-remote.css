@@ -36,9 +36,19 @@ body.remotemode .app,body.remotemode #tvStart,body.remotemode #rmPairCard{displa
 .ra-chips button{min-height:46px!important;font-size:15px!important;border-radius:999px;padding:8px 16px}
 .ra-chips button.on{background:var(--ui);color:var(--wall);border-color:var(--ui)}
 #remoteApp h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 -6px;font-weight:600}
-.ra-styles{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:5px 5px 10px;margin:0 -5px;scroll-padding:0 5px;scrollbar-width:none}
-.ra-styles::-webkit-scrollbar{display:none}
-.ra-styles button{flex:0 0 40%;min-width:0;scroll-snap-align:start;display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:12px;background:var(--panel-2);text-align:left;font-size:14px!important;font-weight:600}
+.ra-stylebar{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.ra-stylebar button{width:58px;font-size:30px!important;line-height:1;padding:0;border-radius:14px}
+.ra-cur{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.ra-cur b{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ra-cur span{font-size:13px;color:var(--muted)}
+.ra-groups{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+.ra-groups::-webkit-scrollbar{display:none}
+.ra-groups button{flex:none;min-height:42px!important;font-size:15px!important;border-radius:999px;padding:6px 14px;white-space:nowrap}
+.ra-groups button.on{background:var(--ui);color:var(--wall);border-color:var(--ui)}
+.ra-styles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ra-styles button{min-width:0;display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:12px;background:var(--panel-2);text-align:left;font-size:14px!important;font-weight:600}
+.ra-styles button[hidden]{display:none}
+.ra-shuffle{align-self:center;border-radius:999px;padding:8px 22px}
 .ra-styles button.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
 .ra-sound{display:grid;grid-template-columns:1.4fr .8fr auto .8fr 1fr;gap:8px;align-items:center}
 .ra-sound #raVolOut{text-align:center;font-weight:600;font-size:17px;min-width:3.5em}

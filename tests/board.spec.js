@@ -20,8 +20,8 @@ test('full screen on a phone is easy to leave: the faded Exit still works, and s
   await page.tap('#fsExit',{force:true}); expect(await fs()).toBe(false);  // and one tap still leaves
   await page.tap('#fsBtn'); expect(await fs()).toBe(true);
   const b=await page.locator('#board').boundingBox(), x=b.x+b.width/2, y=b.y+b.height/2;
-  await page.touchscreen.tap(x,y); await page.touchscreen.tap(x,y);
-  expect(await fs()).toBe(false);
+  await Promise.all([page.touchscreen.tap(x,y),page.touchscreen.tap(x,y)]);  // sent back to back, as a real double-tap is
+  await expect.poll(fs).toBe(false);
   noErrors(page);
 });
 

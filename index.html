@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="css/board.css?v=42c7e34e3e">
 <link rel="stylesheet" href="css/styles.css?v=efe23db0a0">
 <link rel="stylesheet" href="css/app.css?v=7b205af7f9">
-<link rel="stylesheet" href="css/tv-remote.css?v=2e03c710c8">
+<link rel="stylesheet" href="css/tv-remote.css?v=dade14845e">
 </head>
 <body>
 
@@ -690,7 +690,14 @@
     <div class="ra-chips" id="raNewsChips" hidden></div>
     <div class="ra-chips" id="raArtChips" hidden></div>
     <h2>Style</h2>
+    <div class="ra-stylebar">
+      <button type="button" id="raPrev" aria-label="Previous style">‹</button>
+      <div class="ra-cur"><b id="raStyleName">…</b><span id="raStyleSub"></span></div>
+      <button type="button" id="raNext" aria-label="Next style">›</button>
+    </div>
+    <div class="ra-groups" id="raGroups" role="group" aria-label="Style groups"></div>
     <div class="ra-styles" id="raStyles" role="group" aria-label="TV style"></div>
+    <button type="button" id="raShuffle" class="ra-shuffle">Surprise me</button>
     <h2>Sound</h2>
     <div class="ra-sound">
       <button type="button" id="raMute" aria-pressed="false">Sound on</button>
@@ -745,7 +752,7 @@
 <script src="js/sound.js?v=6fe0fdd7dc"></script>
 <script src="js/modes.js?v=f6468f0a1c"></script>
 <script src="js/friends.js?v=e96cce8ab8"></script>
-<script src="js/remote.js?v=cd48e2942d"></script>
+<script src="js/remote.js?v=5dcb180a25"></script>
 <script src="js/art.js?v=9ebef47f0f"></script>
 <script src="js/book.js?v=df70b6ac58"></script>
 <script src="js/wall.js?v=66f7074bee"></script>

@@ -14,7 +14,7 @@ function rmShowing(){
 }
 function rmState(link,again){
   const st=BOARD_STYLES.find(x=>x.id===styleId);
-  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,styleId,mode,art:artCur,section:news.section,plan:schedOn,
+  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,styleId,favs:favStyles,mode,art:artCur,section:news.section,plan:schedOn,
     sound:{on:snd.on,vol:snd.vol,style:snd.style,chime:snd.chime,ambient:snd.ambient,blocked:snd.on&&audioBlocked()},perf:anim.perf,lite:lite()}).catch(e=>{if(e.limit&&!e.daily&&!again)setTimeout(()=>rmState(link,true),6000)});
 }
 // On the TV: carry out a command from a paired phone, then report back
@@ -23,6 +23,7 @@ function rmRun(link,o){
     text:()=>{if(typeof o.text==='string'){stopModes();send(o.text.slice(0,300))}},
     clear:()=>{stopModes();send('')},
     style:()=>{if(BOARD_STYLES.some(s=>s.id===o.id))applyStyle(o.id)},
+    step:()=>stepStyle(o.d<0?-1:1),
     clock:()=>startClock(),
     book:()=>startBook(),
     news:()=>{if(NEWS_HEAD[o.section]){news.section=o.section;saveNews();$('newsSection').value=o.section}startNews()},
@@ -165,7 +166,7 @@ function buildRemote(){
 }
 // Remote mode: the full-screen remote. It reuses the remote's pairing and commands; this is only a bigger, simpler face for them.
 const remoteMode=new URLSearchParams(location.search).has('remote');
-let raOpen=null, raT=null, raRepair=false, raAsked=0, raAskT=null, raVolSet=null, raBlockedSaid=false;
+let raGroup=null, raOpen=null, raT=null, raRepair=false, raAsked=0, raAskT=null, raVolSet=null, raBlockedSaid=false;
 function raNote(t){const n=$('raNote');n.textContent=t;clearTimeout(raT);if(t)raT=setTimeout(()=>{n.textContent=''},4000)}
 async function raCmd(o,done,again){const tv=rmTv();if(!tv){raNote('The TV isn\'t connected yet.');return}
   try{await frSend(tv,Object.assign({type:'cmd'},o));raNote(done||'Sent.');raExpect()}
@@ -203,12 +204,15 @@ function raInit(){
     if(layout(t).length>ROWS||t.length>300){raNote('That won\'t fit on the board. Make it shorter.');return}
     raCmd({action:'text',text:t},'Sent to the TV.');$('raMsg').blur()};
   $('raMsg').addEventListener('input',()=>liveTokens($('raMsg')));
-  // Style thumbnails, copied from the style picker
+  // Styles: step through them with ‹ ›, or open a group and pick one. Only the open group's thumbnails show.
   BOARD_STYLES.forEach(st=>{
-    const b=document.createElement('button'); b.type='button'; b.dataset.id=st.id;
+    const b=document.createElement('button'); b.type='button'; b.dataset.id=st.id; b.dataset.g=st.group; b.hidden=true;
     b.appendChild(miniBoard(st.id));
     b.append(st.name); b.onclick=()=>raCmd({action:'style',id:st.id},st.name+' style on the TV.'); $('raStyles').appendChild(b);
   });
+  $('raPrev').onclick=()=>{raGroup=null;raCmd({action:'step',d:-1},'Previous style on the TV.')};
+  $('raNext').onclick=()=>{raGroup=null;raCmd({action:'step',d:1},'Next style on the TV.')};
+  $('raShuffle').onclick=()=>{const cur=((rmTv()||{}).state||{}).styleId, pool=BOARD_STYLES.filter(s=>s.id!==cur), s=pool[Math.floor(Math.random()*pool.length)];raGroup=s.group;raCmd({action:'style',id:s.id},s.name+' style on the TV.');raRender()};
   // Sound
   // The phone's own last setting wins for a few seconds, until the TV's report has caught up
   const vol=()=>{if(raVolSet&&Date.now()-raVolSet.at<6e3)return raVolSet.v;const so=((rmTv()||{}).state||{}).sound;return so?so.vol:.7};
@@ -273,13 +277,27 @@ function raRender(){
   $('raNewsChips').hidden=raOpen!=='news'; $('raArtChips').hidden=raOpen!=='art';
   if(raOpen==='news')raChips($('raNewsChips'),[...$('newsSection').options].map(o=>[o.value,o.textContent]),mode==='news'?st.section:'',(v,l)=>{raCmd({action:'news',section:v},'BBC '+l.toLowerCase()+' on the TV.');raOpen=null;raRender()});
   if(raOpen==='art')raChips($('raArtChips'),ART.map(a=>[a.id,a.name]),st&&(mode==='art'||/^Art: /.test(st.showing))?st.art:'',(v,l)=>{raCmd({action:'art',id:v},l+' on the TV.');raOpen=null;raRender()});
-  document.querySelectorAll('#raStyles button').forEach(b=>b.classList.toggle('on',!!st&&b.dataset.id===st.styleId));
+  raStyles(st);
   const so=st&&st.sound;
   if(so){$('raMute').setAttribute('aria-pressed',String(!!so.on));$('raMute').textContent=so.on?'Sound on':'Sound off';$('raMute').classList.toggle('on',!!so.on);$('raVolOut').textContent=Math.round((raVolSet&&Date.now()-raVolSet.at<6e3?raVolSet.v:so.vol)*100)+'%';
     if(so.style)$('raSndStyle').value=so.style;if(so.chime)$('raChime').value=so.chime;if(so.ambient)$('raAmb').value=so.ambient}
   if(st)$('raPerf').value=st.perf;
   if(so&&so.blocked&&!raBlockedSaid){raBlockedSaid=true;raNote('The TV is holding its sound back until someone presses OK on the TV remote.')}
   if(so&&!so.blocked)raBlockedSaid=false;
+}
+// The style section: the TV's style in the bar, a chip for each group (Favorites first, when the TV has some), the open group's styles
+const RA_GROUPS=[...document.querySelectorAll('#trayJump button[data-g]')].filter(b=>b.dataset.g!=='fav').map(b=>[b.dataset.g,b.textContent]);
+function raStyles(st){
+  const favs=(st&&Array.isArray(st.favs)?st.favs:[]).filter(id=>BOARD_STYLES.some(s=>s.id===id)), cur=st&&BOARD_STYLES.find(s=>s.id===st.styleId);
+  const groups=(favs.length?[['fav','★ Favorites']]:[]).concat(RA_GROUPS);
+  if(!groups.some(([g])=>g===raGroup))raGroup=null;
+  const open=raGroup||(cur?cur.group:groups[0][0]);
+  $('raStyleName').textContent=cur?cur.name:'…';
+  $('raStyleSub').textContent=cur?(RA_GROUPS.find(([g])=>g===cur.group)||['',''])[1]+(favs.length>1?' · ‹ › step through your favorites':''):'';
+  const box=$('raGroups'), key=groups.map(g=>g[0]).join();
+  if(box.dataset.k!==key){box.dataset.k=key;box.innerHTML='';groups.forEach(([g,label])=>{const b=document.createElement('button');b.type='button';b.dataset.g=g;b.textContent=label;b.onclick=()=>{raGroup=g;raRender();b.scrollIntoView({block:'nearest',inline:'center'})};box.appendChild(b)})}
+  box.querySelectorAll('button').forEach(b=>{const on=b.dataset.g===open;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))});
+  document.querySelectorAll('#raStyles button').forEach(b=>{b.hidden=open==='fav'?!favs.includes(b.dataset.id):b.dataset.g!==open;b.classList.toggle('on',!!st&&b.dataset.id===st.styleId)});
 }
 function rmRender(){
   const tvs=rmTvs(), live=tvs.filter(l=>!l.pending), sel=$('rmTv'), keep=sel.value;

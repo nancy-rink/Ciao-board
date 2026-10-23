@@ -25,6 +25,23 @@ test('full screen on a phone is easy to leave: the faded Exit still works, and s
   noErrors(page);
 });
 
+test('the book channel reads a chapter through the day, and the next one tomorrow',async({browser})=>{
+  const page=await device(browser);
+  await page.clock.install({time:new Date('2026-10-24T08:30:00')});
+  await page.goto('/');
+  await page.click('#tab-show'); await page.click('.chan[data-id="book"] .chan-opts');
+  await page.click('#bookBtn');
+  await expect(page.locator('#bookStatus')).toContainText(/Chapter 1, Loomings · page \d+ of \d+/);
+  const pg=async()=>+(await page.textContent('#bookStatus')).match(/page (\d+)/)[1];
+  const first=await pg();
+  await page.clock.fastForward('04:00:00');
+  await expect.poll(pg,{timeout:30000}).toBeGreaterThan(first);                 // pages turn through the day
+  await page.clock.fastForward('16:00:00');                                     // the next morning, after 8am
+  await expect(page.locator('#bookStatus')).toContainText('Chapter 2',{timeout:30000});
+  expect(await stored(page,'mode')).toBe('book');
+  noErrors(page);
+});
+
 test('no sideways scroll on a phone',async({browser})=>{
   const page=await device(browser,{width:360,height:780,phone:true}); await page.goto('/');
   await page.waitForTimeout(800);

@@ -162,7 +162,7 @@ function loop(ts){
 }
 const MODE_TAB={rotating:'saved',clock:'clock',weather:'weather',surf:'surf',calendar:'calendar',news:'news',art:'art'};
 let schedDriving=false, schedOn=false;
-const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar',news:'BBC headlines',art:'an animation'};
+const MODE_NAME={'':'your message',rotating:'saved messages',clock:'the clock',weather:'the weather',surf:'the surf report',calendar:'your calendar',news:'BBC headlines',book:'Moby-Dick',art:'an animation'};
 const COLOR_WORD={r:'red',o:'orange',y:'yellow',g:'green',b:'blue',v:'violet',w:'white'};
 let lastSpoken='';
 function speakBoard(){

@@ -19,7 +19,7 @@ $('wallShift').onchange=()=>{wall.shift=$('wallShift').checked;saveWall()};
 setInterval(wallTick,30000); setTimeout(wallTick,0);
 
 // Day plan: what the board shows, and its style, by time of day
-const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
+const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],['book','Book: Moby-Dick'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
 const sched=Object.assign({on:false,slots:[
   {t:'06:30',show:'message',text:'{y} DAWN PATROL {y}\nMALIBU 3-4 FT FAIR\nOFFSHORE TILL 10',style:'daylight'},
   {t:'08:00',show:'clock',text:'',style:'keep'},
@@ -56,6 +56,7 @@ function schedApply(){
     else if(s.show==='weather')startWeather();
     else if(s.show==='surf')startSurf();
     else if(s.show==='news'){if(mode!=='news')startNews()}
+    else if(s.show==='book'){if(mode!=='book')startBook()}
     else if(s.show.startsWith('art:'))showArt(s.show.slice(4));
     else if(s.show==='saved'){if(mode!=='rotating'){mode='';$('rotateBtn').click()}}
   }finally{schedDriving=false}
@@ -112,7 +113,7 @@ sortSlots();
 function schedNextLabel(){
   const i=currentSlotIdx(); if(i<0)return '';
   const n=sched.slots[(i+1)%sched.slots.length];
-  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages',news:'News'};
+  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages',news:'News',book:'Book'};
   return (SHORT[n.show]||(SHOW_OPTS.find(o=>o[0]===n.show)||[0,n.show])[1])+' at '+fmtSlotTime(n.t).replace(':00','');
 }
 function updateSubs(){

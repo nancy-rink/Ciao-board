@@ -101,6 +101,9 @@ ul.list li.hint{display:block}
 @media (max-width:760px){.swatches{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.swatch{flex:0 0 148px;scroll-snap-align:start}}
 .swatch{position:relative;display:flex;flex-direction:column;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);min-width:0}
 .swatch[hidden]{display:none}
+.sw-city{grid-column:1/-1;margin:6px 2px -2px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sw-city:first-child{margin-top:0}
+.sw-city[hidden]{display:none}
 .swatch:hover{border-color:var(--muted)}
 .swatch.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .swatch.trying{border-color:var(--ui);border-style:dashed;box-shadow:none}

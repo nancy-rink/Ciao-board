@@ -47,7 +47,8 @@ body.remotemode .app,body.remotemode #tvStart,body.remotemode #rmPairCard{displa
 .ra-groups button.on{background:var(--ui);color:var(--wall);border-color:var(--ui)}
 .ra-styles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .ra-styles button{min-width:0;display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:12px;background:var(--panel-2);text-align:left;font-size:14px!important;font-weight:600}
-.ra-styles button[hidden]{display:none}
+.ra-styles button[hidden],.ra-city[hidden]{display:none}
+.ra-city{grid-column:1/-1;margin:6px 2px -2px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .ra-shuffle{align-self:center;border-radius:999px;padding:8px 22px}
 .ra-styles button.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
 .ra-sound{display:grid;grid-template-columns:1.4fr .8fr auto .8fr 1fr;gap:8px;align-items:center}

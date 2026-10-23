@@ -36,9 +36,13 @@ test('the book channel reads a chapter through the day, and the next one tomorro
   const first=await pg();
   await page.clock.fastForward('04:00:00');
   await expect.poll(pg,{timeout:30000}).toBeGreaterThan(first);                 // pages turn through the day
-  await page.clock.fastForward('16:00:00');                                     // the next morning, after 8am
+  await page.clock.fastForward('21:00:00');                                     // the next morning, 9:30
   await expect(page.locator('#bookStatus')).toContainText('Chapter 2',{timeout:30000});
   expect(await stored(page,'mode')).toBe('book');
+  await page.selectOption('#bookWhich','frank');                                // another book starts at its beginning
+  await expect(page.locator('#bookStatus')).toContainText('Frankenstein · Letter 1',{timeout:30000});
+  await page.selectOption('#bookWhich','moby');                                 // and Moby-Dick picks up where it was
+  await expect(page.locator('#bookStatus')).toContainText('Moby-Dick · Chapter 2',{timeout:30000});
   noErrors(page);
 });
 

@@ -19,7 +19,7 @@ $('wallShift').onchange=()=>{wall.shift=$('wallShift').checked;saveWall()};
 setInterval(wallTick,30000); setTimeout(wallTick,0);
 
 // Day plan: what the board shows, and its style, by time of day
-const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],['book','Book: Moby-Dick'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
+const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],['book','Book: a chapter a day'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
 const sched=Object.assign({on:false,slots:[
   {t:'06:30',show:'message',text:'{y} DAWN PATROL {y}\nMALIBU 3-4 FT FAIR\nOFFSHORE TILL 10',style:'daylight'},
   {t:'08:00',show:'clock',text:'',style:'keep'},
@@ -123,6 +123,7 @@ function updateSubs(){
   set('weather',wx.cities.length?wx.cities[0].name.split(',')[0]+(wx.cities.length>1?' +'+(wx.cities.length-1):''):'Add a city');
   const m=surfData.malibu; set('surf',m&&m.quality?'Malibu, '+String(m.quality).toLowerCase()+(m.height?', '+m.height:''):'Malibu and Venice');
   let c='Google Calendar'; if(calEvents){const now=new Date(),ev=calEvents.find(e=>!e.allDay&&e.end>now);c=ev?'Next: '+ev.title:'Nothing coming up'} set('calendar',c);
+  set('book',bookInfo().title+', a chapter a day');
   set('news',newsData&&newsData.sections[news.section]?(newsData.sections[news.section].name==='Top stories'?'BBC top stories':'BBC '+newsData.sections[news.section].name.toLowerCase()):'BBC headlines');
   {const tv=rmTvs().find(l=>!l.pending),n=rmPhones().length;set('remote',tv?'Controlling '+tv.name:n?n+' phone'+(n>1?'s':'')+' paired':'Control your TV')}
   set('friends',frQueue().length?frQueue().length+' waiting':fr.links.some(l=>!l.pending&&!l.kind)?fr.links.filter(l=>!l.pending&&!l.kind).length+' connected':'Message a friend\'s board');

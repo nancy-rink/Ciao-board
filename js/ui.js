@@ -36,7 +36,7 @@ const CHANNELS=[
   {id:'saved',name:'Saved',sub:'Your saved messages',c:'o',text:()=>saved[0]||'NO SAVED\nMESSAGES YET',on:()=>mode==='rotating',put:()=>{if(saved.length){mode='';$('rotateBtn').click()}},ready:()=>saved.length>0},
   {id:'clock',name:'Clock',sub:'Time and date',c:'w',text:()=>clockText(),on:()=>mode==='clock',put:()=>startClock()},
   {id:'news',name:'News',sub:'BBC headlines',c:'r',text:()=>newsPreview(),on:()=>mode==='news',put:()=>startNews()},
-  {id:'book',name:'Book',sub:'Moby-Dick, a chapter a day',c:'v',cells:()=>bookCells(),on:()=>mode==='book',put:()=>startBook()},
+  {id:'book',name:'Book',sub:'A chapter a day',c:'v',cells:()=>bookCells(),on:()=>mode==='book',put:()=>startBook()},
   {id:'art',name:'Art',sub:'Color-tile pictures',c:'b',cells:()=>{const a=ART_BY[artCur]||ART[0];return artCells(a.frame?a.frame(0):a.rows)},on:()=>mode==='art'||(mode===''&&/^Picture: /.test(boardLabel||'')),put:()=>{const a=ART_BY[artCur]||ART[0];a.frame?startArt(a.id):showArt(a.id)}}
 ];
 const CH=Object.fromEntries(CHANNELS.map(c=>[c.id,c]));

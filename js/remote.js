@@ -9,12 +9,13 @@ function rmShowing(){
   if(mode===''&&boardLabel&&/^Picture: /.test(boardLabel))return 'Art: '+boardLabel.slice(9);
   if(mode==='')return lastSent?lastSent.replace(/\{[roygbvw]\}/gi,'').split('\n').map(l=>l.trim()).filter(Boolean).join(' / ').toUpperCase().slice(0,60)||'color tiles':'a blank board';
   if(mode==='news')return 'BBC headlines';
+  if(mode==='book')return 'Book: '+bookInfo().title;
   if(mode==='art')return 'Art: '+((ART_BY[artCur]||{}).name||'animation');
   return MODE_NAME[mode]||mode;
 }
 function rmState(link,again){
   const st=BOARD_STYLES.find(x=>x.id===styleId);
-  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,styleId,favs:favStyles,mode,art:artCur,section:news.section,plan:schedOn,
+  frSend(link,{type:'state',showing:rmShowing(),style:st?st.name:styleId,styleId,favs:favStyles,book:book.which,mode,art:artCur,section:news.section,plan:schedOn,
     sound:{on:snd.on,vol:snd.vol,style:snd.style,chime:snd.chime,ambient:snd.ambient,blocked:snd.on&&audioBlocked()},perf:anim.perf,lite:lite()}).catch(e=>{if(e.limit&&!e.daily&&!again)setTimeout(()=>rmState(link,true),6000)});
 }
 // On the TV: carry out a command from a paired phone, then report back
@@ -25,7 +26,7 @@ function rmRun(link,o){
     style:()=>{if(BOARD_STYLES.some(s=>s.id===o.id))applyStyle(o.id)},
     step:()=>stepStyle(o.d<0?-1:1),
     clock:()=>startClock(),
-    book:()=>startBook(),
+    book:()=>{if(o.id)setBook(o.id);startBook()},
     news:()=>{if(NEWS_HEAD[o.section]){news.section=o.section;saveNews();$('newsSection').value=o.section}startNews()},
     art:()=>{const a=ART_BY[o.id];if(a)a.frame?startArt(o.id):showArt(o.id)},
     saved:()=>{if(mode!=='rotating'&&saved.length){mode='';$('rotateBtn').click()}},
@@ -191,11 +192,10 @@ function raInit(){
   // Big tiles
   document.querySelectorAll('.ra-grid button').forEach(b=>b.onclick=()=>{
     const k=b.dataset.ra, st=(rmTv()||{}).state||{};
-    if(k==='news'||k==='art'){raOpen=raOpen===k?null:k;raRender();return}
+    if(k==='news'||k==='art'||k==='book'){raOpen=raOpen===k?null:k;raRender();return}
     raOpen=null;
     if(k==='clock')raCmd({action:'clock'},'Showing the clock.');
     else if(k==='saved')raCmd({action:'saved'},'Rotating the TV\'s saved messages.');
-    else if(k==='book')raCmd({action:'book'},'Reading Moby-Dick on the TV.');
     else if(k==='clear')raCmd({action:'clear'},'Cleared.');
     else if(k==='plan')raCmd({action:'plan',on:!st.plan},st.plan?'Day plan stopped.':'Day plan running.');
     raRender();
@@ -274,7 +274,8 @@ function raRender(){
   const mode=st?st.mode:'';
   document.querySelectorAll('.ra-grid button').forEach(b=>{const k=b.dataset.ra;b.classList.toggle('on',k==='plan'?!!(st&&st.plan):k===({clock:'clock',news:'news',art:'art',rotating:'saved',book:'book'}[mode])||raOpen===k)});
   $('raPlanLbl').textContent=st&&st.plan?'Stop day plan':'Day plan';
-  $('raNewsChips').hidden=raOpen!=='news'; $('raArtChips').hidden=raOpen!=='art';
+  $('raNewsChips').hidden=raOpen!=='news'; $('raArtChips').hidden=raOpen!=='art'; $('raBookChips').hidden=raOpen!=='book';
+  if(raOpen==='book')raChips($('raBookChips'),BOOKS.map(b=>[b.id,b.title]),mode==='book'?st.book:'',(v,l)=>{raCmd({action:'book',id:v},'Reading '+l+' on the TV.');raOpen=null;raRender()});
   if(raOpen==='news')raChips($('raNewsChips'),[...$('newsSection').options].map(o=>[o.value,o.textContent]),mode==='news'?st.section:'',(v,l)=>{raCmd({action:'news',section:v},'BBC '+l.toLowerCase()+' on the TV.');raOpen=null;raRender()});
   if(raOpen==='art')raChips($('raArtChips'),ART.map(a=>[a.id,a.name]),st&&(mode==='art'||/^Art: /.test(st.showing))?st.art:'',(v,l)=>{raCmd({action:'art',id:v},l+' on the TV.');raOpen=null;raRender()});
   raStyles(st);

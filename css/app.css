@@ -46,6 +46,7 @@ ul.list .x:hover{color:var(--warn);border-color:transparent}
   .tray-jump button,.seg button{min-height:36px}
   .tray-filter .check{min-height:36px}
   .sw-fav{min-height:0;width:44px;height:44px;right:0;bottom:0}
+  .swatch .sw-dots button{width:44px;height:44px}
 }
 /* On phones the picker's top bar keeps the note to one line */
 

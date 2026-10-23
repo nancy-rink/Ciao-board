@@ -1,5 +1,5 @@
 const {test,expect}=require('@playwright/test');
-const {device,stored,openCard,noErrors,RELAY}=require('./helpers');
+const {device,stored,openCard,putOnBoard,noErrors,RELAY}=require('./helpers');
 
 test('two boards connect, exchange an encrypted message, and ignore a forgery',async({browser})=>{
   const a=await device(browser); await a.goto('/');
@@ -29,7 +29,7 @@ test('two boards connect, exchange an encrypted message, and ignore a forgery',a
     await fetch(relay+l.topic,{method:'POST',body:'ciao1 '+l.id+' '+enc(iv)+'.'+enc(ct)});
   },[l,RELAY]);
 
-  await openCard(b,'clock');
+  await putOnBoard(b,'clock');
   await openCard(a,'friends'); await a.fill('#frMsg','HELLO SAM\nDINNER AT 7?'); await a.dispatchEvent('#frMsg','input'); await a.click('#frSend');
   await expect(b.locator('#fnote')).toBeVisible({timeout:60e3});
   await expect(b.locator('#fnoteMsg')).toContainText('Nancy');

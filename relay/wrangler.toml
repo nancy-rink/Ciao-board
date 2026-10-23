@@ -1,4 +1,4 @@
-# Ciao Board's relay. Deployed by .github/workflows/relay.yml to https://ciao-relay.nancyrink.workers.dev
+# Ciao Board's relay, at https://ciao-relay.nancyrink.workers.dev. Cloudflare deploys it from this folder when it changes on main.
 name = "ciao-relay"
 main = "src/index.js"
 compatibility_date = "2025-09-01"

@@ -267,15 +267,16 @@
       </section>
       <section class="pane" id="pane-book" hidden>
         <div class="pane-head">
-          <div><h2>Book</h2><p class="sub" id="bookStatus">Moby-Dick, one chapter a day: its pages turn evenly through your reading hours.</p></div>
+          <div><h2>Book</h2><p class="sub" id="bookStatus">A classic novel, one chapter a day: its pages turn evenly through your reading hours.</p></div>
           <button class="go primary" id="bookBtn" type="button"><span class="when-off">Read on the board</span><span class="when-on">Stop reading</span></button>
         </div>
         <div class="fields">
+          <label class="field wide" for="bookWhich"><span>Book</span><select id="bookWhich"></select></label>
           <label class="field" for="bookFrom"><span>Reading starts</span><input type="time" id="bookFrom" value="08:00"></label>
           <label class="field" for="bookTo"><span>Reading ends</span><input type="time" id="bookTo" value="22:00"></label>
           <label class="field wide" for="bookDay"><span>Today's reading</span><select id="bookDay"><option>Loading…</option></select></label>
         </div>
-        <p class="hint">The next chapter comes up each morning; very short chapters share a day with the next one, so the whole book takes about three and a half months. Boards that start on the same day show the same page at the same time.</p>
+        <p class="hint">The next chapter comes up each morning; very short chapters share a day with the next one. Each book keeps its place: switch to another and back, and it picks up where you were. Boards that start a book on the same day show the same page at the same time.</p>
       </section>
       <section class="pane" id="pane-news" hidden>
         <div class="pane-head">
@@ -689,6 +690,7 @@
     </div>
     <div class="ra-chips" id="raNewsChips" hidden></div>
     <div class="ra-chips" id="raArtChips" hidden></div>
+    <div class="ra-chips" id="raBookChips" hidden></div>
     <h2>Style</h2>
     <div class="ra-stylebar">
       <button type="button" id="raPrev" aria-label="Previous style">‹</button>
@@ -748,15 +750,15 @@
   <div class="ab-acts"><a class="ab-link" id="abLink" href="#" target="_blank" rel="noopener" hidden>See it on metmuseum.org ↗</a><button type="button" class="primary" id="abTry">Try this style</button></div>
 </dialog>
 <script src="js/core.js?v=5a08526348"></script>
-<script src="js/engine.js?v=1f6722cef8"></script>
+<script src="js/engine.js?v=6c8dbfd421"></script>
 <script src="js/sound.js?v=6fe0fdd7dc"></script>
 <script src="js/modes.js?v=f6468f0a1c"></script>
 <script src="js/friends.js?v=e96cce8ab8"></script>
-<script src="js/remote.js?v=5dcb180a25"></script>
+<script src="js/remote.js?v=a089a5618b"></script>
 <script src="js/art.js?v=9ebef47f0f"></script>
-<script src="js/book.js?v=df70b6ac58"></script>
-<script src="js/wall.js?v=66f7074bee"></script>
-<script src="js/ui.js?v=baaf2b7525"></script>
+<script src="js/book.js?v=cca5957037"></script>
+<script src="js/wall.js?v=d86d3348b4"></script>
+<script src="js/ui.js?v=30214db0f2"></script>
 <script src="js/about.js?v=7e798ccfb0"></script>
 <script src="js/styles.js?v=82f3f6ac7f"></script>
 <script src="js/start.js?v=7bbf2313a2"></script>

@@ -16,6 +16,10 @@ test('the phone remote pairs from the QR link and controls the TV',async({browse
   await expect(phone.locator('#raState')).toContainText('BBC headlines');
   await phone.click('[data-ra="art"]'); await phone.click('#raArtChips button:nth-child(1)');
   await expect(phone.locator('#raState')).toContainText('Art: Heart');
+  await phone.click('[data-ra="book"]');
+  await expect(phone.locator('#raBookChips button')).toHaveCount(3);
+  await phone.click('#raBookChips button:has-text("Pride and Prejudice")');
+  await expect(phone.locator('#raState')).toContainText('Book: Pride and Prejudice');
   await phone.fill('#raMsg','Hola from the couch'); await phone.click('#raSend');
   await expect(phone.locator('#raState')).toContainText('HOLA FROM THE COUCH');
 

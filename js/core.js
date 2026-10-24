@@ -60,10 +60,16 @@ async function cvDrawRow(x,row,pal,w,h,dpr){
     x.fillStyle=pal.seam; x.fillRect(ox,oy+h/2-Math.max(1,dpr)/2,w,Math.max(1,dpr));
   });
 }
+// Display styles aren't split-flap boards: a nixie tube glows, a marquee letter slots in, chalk is drawn. Their letters change
+// in place, straight to the new one, with the style's own animation, and always as page elements so the glow and texture show.
+const DISPLAYS={nixie:1,marquee:1,letterboard:1,chalk:1,letterpress:1,stitch:1};
+const isDisplay=()=>!!DISPLAYS[(document.getElementById('board')||{dataset:{}}).dataset.style];
 async function buildAtlas(){
   const gen=++atlasGen;
-  if(!liteNow||reduce||!tiles.length){
+  if(!liteNow||reduce||!tiles.length||isDisplay()){
     if(cvOn){cvOn=false;grid.classList.remove('canvas');if(cv)cv.hidden=true;tiles.forEach(t=>{t.cvA=null;paint(t.u,t.cur);paint(t.d,t.cur)})}
+    // A flip cut short by the change of style leaves its lower half on the old letter; a display style never flips to cover it
+    else if(isDisplay())tiles.forEach(t=>{paint(t.u,t.cur);paint(t.d,t.cur)});
     return;
   }
   const gr=grid.getBoundingClientRect(); if(gr.width<10)return;
@@ -125,12 +131,13 @@ function paint(face,idx){
 function planPath(t){
   const L=CHARS.length; t.path=[]; t.pi=0;
   if(t.cur===t.target)return;
-  if(t.direct){t.path.push(t.target);return}
+  if(t.direct||isDisplay()){t.path.push(t.target);return}
   for(let c=t.cur;c!==t.target;){const left=(t.target-c+L)%L;c=(c+(liteNow&&left>8?Math.ceil(left/8):1))%L;t.path.push(c)}
 }
 function step(tile){
   const old=tile.cur; tile.cur=tile.path[tile.pi++];
   if(cvOn){tile.cvA={from:old,to:tile.cur,t0:performance.now(),d:TICK*.9};return}
+  if(isDisplay()){paint(tile.u,tile.cur);paint(tile.d,tile.cur);tile.flip=!tile.flip;tile.el.dataset.k=tile.flip?'a':'b';return}
   paint(tile.u,tile.cur);
   if(reduce){paint(tile.d,tile.cur);return}
   paint(tile.d,old); paint(tile.f,old); paint(tile.g,tile.cur);

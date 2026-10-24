@@ -68,6 +68,21 @@ test('the word of the day: every word fits the board, in English and French',asy
   noErrors(page);
 });
 
+test('display styles change letters in place, even in Smooth mode, and leave nothing behind',async({browser})=>{
+  const page=await device(browser); await page.goto('/');
+  await page.evaluate(()=>{anim.perf='smooth';applyAnim();send('CLASSIC FIRST\n{w}{w}{w}')});
+  await page.waitForTimeout(400);                                               // switch partway through the flips
+  for(const id of ['nixie','marquee','letterboard','letterpress','stitch']){
+    await page.evaluate(i=>{applyStyle(i);send('HELLO '+i.toUpperCase())},id);
+    await expect.poll(()=>page.evaluate(()=>!busy)).toBe(true);
+    const r=await page.evaluate(()=>({canvas:document.getElementById('grid').classList.contains('canvas'),
+      flaps:[...document.querySelectorAll('#grid .f,#grid .g')].some(e=>getComputedStyle(e).display!=='none'),
+      stray:tiles.filter(t=>t.u.firstChild.textContent!==t.d.firstChild.textContent||t.u.style.background!==t.d.style.background).length}));
+    expect(r,id).toEqual({canvas:false,flaps:false,stray:0});
+  }
+  noErrors(page);
+});
+
 test('no sideways scroll on a phone',async({browser})=>{
   const page=await device(browser,{width:360,height:780,phone:true}); await page.goto('/');
   await page.waitForTimeout(800);

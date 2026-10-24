@@ -379,11 +379,15 @@
 [data-style="geesbend"] .t,[data-style="starbethlehem"] .t{font-weight:var(--tile-w,600)}
 /* Displays: boards that aren't split-flap. No flaps, no split line; the two halves read as one face, and each style
    brings its own surface, letters and entry animation (the engine sets data-k a/b on a tile each time it changes). */
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) :is(.f,.g){display:none}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .t::after{display:none}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .t::before{background:none}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .h{background:transparent;border-radius:0;box-shadow:none!important}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .t{box-shadow:none!important;font-weight:var(--tile-w,600)}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) :is(.f,.g){display:none}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .t::after{display:none}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .t::before{background:none}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .h{background:transparent;border-radius:0;box-shadow:none!important}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .t{box-shadow:none!important;font-weight:var(--tile-w,600)}
+/* No flip, so each tile is one whole face: the upper half fills the tile and the lower half is hidden */
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .h.u{height:100%}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .h.u span{height:100%}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .h.d{display:none}
 @keyframes dispA{from{opacity:0}to{opacity:1}}
 @keyframes dispB{from{opacity:0}to{opacity:1}}
 @keyframes slotA{from{opacity:0;transform:translateY(-.9em)}to{opacity:1;transform:none}}
@@ -392,7 +396,7 @@
 @keyframes popB{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
 @keyframes stampA{0%{opacity:0;transform:scale(1.35)}60%{opacity:1;transform:scale(.97)}100%{transform:none}}
 @keyframes stampB{0%{opacity:0;transform:scale(1.35)}60%{opacity:1;transform:scale(.97)}100%{transform:none}}
-@media (prefers-reduced-motion:reduce){:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .h span{animation:none!important}}
+@media (prefers-reduced-motion:reduce){:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"],[data-style="flipdot"],[data-style="scrabble"],[data-style="labeltape"]) .h span{animation:none!important}}
 
 /* Nixie tubes: orange neon glowing on shaped wires inside glass, with the fine anode mesh in front */
 [data-style="nixie"]{
@@ -480,3 +484,94 @@ body.lite [data-style="marquee"] .grid{box-shadow:none}
 }
 [data-style="stitch"] .t[data-k="a"] .h span{animation:dispA .3s ease-out}
 [data-style="stitch"] .t[data-k="b"] .h span{animation:dispB .3s ease-out}
+
+/* Flip-dot: a black panel of round discs; the ones that make each letter are flipped to yellow, and they flip over as the letter arrives */
+[data-style="flipdot"]{
+  --frame:#1b1d1f; --frame-edge:#2c2f32; --frame-r:.5cqw; --frame-pad:2.6cqw;
+  --bevel:inset 0 .2cqw 0 #3a3d40,inset 0 -.3cqw 0 #0c0d0e;
+  --tile:#0b0c0d; --ink:#ffe03a; --seam:transparent; --dot:calc(var(--tile-size) / 8);
+  --c-w:#f5cf1c; --c-r:#e8452c; --c-o:#f08a24; --c-y:#f5cf1c; --c-g:#3fb36a; --c-b:#3a8ad8; --c-v:#9a6ad0;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:800; --tile-size:3.7cqw;
+  --wall:#0d0e0f; --ui:#f3efe0; --muted:#a8a690; --line:#262829; --panel:#151617; --panel-2:#1c1e1f;
+  --accent:#f5cf1c; --accent-ink:#1d1700; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="flipdot"].board,[data-style="flipdot"] .board,.minib[data-style="flipdot"]{background:linear-gradient(160deg,#25282a,#141516)}
+[data-style="flipdot"] .grid,.minib[data-style="flipdot"] .g6{background:#070708;padding:.5cqw;box-sizing:border-box}
+[data-style="flipdot"] .t{background:radial-gradient(circle,#26282a 0 34%,transparent 40%) 0 0/var(--dot) var(--dot),#0b0c0d}
+.minib[data-style="flipdot"] .t{background:radial-gradient(circle,#2a2c2e 0 34%,transparent 38%) 0 0/calc(var(--dot) * 3.3) calc(var(--dot) * 3.3),#0b0c0d}
+[data-style="flipdot"] .h.u::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle,transparent 0 46%,#0b0c0d 52%) 0 0/var(--dot) var(--dot)}
+.minib[data-style="flipdot"] .h.u::after{background-size:calc(var(--dot) * 3.3) calc(var(--dot) * 3.3)}
+@keyframes dotA{from{transform:scaleY(.05)}to{transform:none}}
+@keyframes dotB{from{transform:scaleY(.05)}to{transform:none}}
+[data-style="flipdot"] .t[data-k="a"] .h span{animation:dotA .18s ease-out}
+[data-style="flipdot"] .t[data-k="b"] .h span{animation:dotB .18s ease-out}
+
+/* Scrabble: cream wooden tiles, each with its point value, set down on the board's pale squares */
+[data-style="scrabble"]{
+  --frame:#1f6e5c; --frame-edge:#2a8670; --frame-r:.4cqw; --frame-pad:2.8cqw;
+  --bevel:inset 0 0 0 .3cqw #185a4a;
+  --tile:#cfe0d6; --ink:#141414; --seam:transparent;
+  --c-w:#141414; --c-r:#d9544a; --c-o:#e88a3a; --c-y:#f2c94c; --c-g:#3f8a5a; --c-b:#3a7ad8; --c-v:#8a5ab0;
+  --f-tile:"Archivo",Arial,sans-serif; --tile-w:700; --tile-size:3cqw;
+  --wall:#e9efe9; --ui:#123a30; --muted:#4f6a60; --line:#cfdcd4; --panel:#f7faf8; --panel-2:#ebf1ed;
+  --accent:#1f6e5c; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
+}
+[data-style="scrabble"].board,[data-style="scrabble"] .board,.minib[data-style="scrabble"]{background:linear-gradient(135deg,#227a66,#1a5f50)}
+[data-style="scrabble"] .grid,.minib[data-style="scrabble"] .g6{background:#f2f6f2;padding:.4cqw;box-sizing:border-box}
+[data-style="scrabble"] .t{background:#cfe0d6}
+[data-style="scrabble"] .h span:not([data-c=" "]):not([data-c=""]){background:linear-gradient(180deg,#f6e3b8,#ead09a);border-radius:.35cqw;box-shadow:inset 0 .12cqw 0 #fff6dc,inset 0 -.16cqw 0 #c9a96a,0 .12cqw .2cqw #0004;inset:6%;height:auto;position:absolute}
+[data-style="scrabble"] .h span::after{position:absolute;right:10%;bottom:6%;font-size:38%;font-weight:600;line-height:1}
+[data-style="scrabble"] .h span[data-c="A"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="B"]::after{content:"3"}
+[data-style="scrabble"] .h span[data-c="C"]::after{content:"3"}
+[data-style="scrabble"] .h span[data-c="D"]::after{content:"2"}
+[data-style="scrabble"] .h span[data-c="E"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="F"]::after{content:"4"}
+[data-style="scrabble"] .h span[data-c="G"]::after{content:"2"}
+[data-style="scrabble"] .h span[data-c="H"]::after{content:"4"}
+[data-style="scrabble"] .h span[data-c="I"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="J"]::after{content:"8"}
+[data-style="scrabble"] .h span[data-c="K"]::after{content:"5"}
+[data-style="scrabble"] .h span[data-c="L"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="M"]::after{content:"3"}
+[data-style="scrabble"] .h span[data-c="N"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="O"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="P"]::after{content:"3"}
+[data-style="scrabble"] .h span[data-c="Q"]::after{content:"10"}
+[data-style="scrabble"] .h span[data-c="R"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="S"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="T"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="U"]::after{content:"1"}
+[data-style="scrabble"] .h span[data-c="V"]::after{content:"4"}
+[data-style="scrabble"] .h span[data-c="W"]::after{content:"4"}
+[data-style="scrabble"] .h span[data-c="X"]::after{content:"8"}
+[data-style="scrabble"] .h span[data-c="Y"]::after{content:"4"}
+[data-style="scrabble"] .h span[data-c="Z"]::after{content:"10"}
+@keyframes placeA{from{opacity:0;transform:translateY(-.4em) scale(1.08)}to{opacity:1;transform:none}}
+@keyframes placeB{from{opacity:0;transform:translateY(-.4em) scale(1.08)}to{opacity:1;transform:none}}
+[data-style="scrabble"] .t[data-k="a"] .h span{animation:placeA .22s ease-out}
+[data-style="scrabble"] .t[data-k="b"] .h span{animation:placeB .22s ease-out}
+
+/* Label tape: each row is a strip of glossy embossing tape, the letters pressed in raised and white, on a cork board */
+[data-style="labeltape"]{
+  --frame:#b88d5a; --frame-edge:#c99e6a; --frame-r:.3cqw; --frame-pad:2.8cqw;
+  --bevel:inset 0 0 0 .3cqw #8a6638;
+  --tile:#c8202f; --ink:#fbfaf6; --seam:transparent; --glow:0 .1cqw 0 #00000066,0 -.08cqw 0 #ffffff33;
+  --c-w:#fbfaf6; --c-r:#ff6a5a; --c-o:#f7a03a; --c-y:#f6d34a; --c-g:#5fd08a; --c-b:#6aaaf0; --c-v:#c08ae8;
+  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:78%; --tile-size:3.1cqw;
+  --wall:#2a1f14; --ui:#f6efe2; --muted:#c0ae94; --line:#3e2e1e; --panel:#2f2318; --panel-2:#3a2b1d;
+  --accent:#f6d34a; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;
+}
+[data-style="labeltape"].board,[data-style="labeltape"] .board,.minib[data-style="labeltape"]{background:repeating-linear-gradient(90deg,#b88d5a 0 7px,#a87c48 7px 10px),#b88d5a}
+[data-style="labeltape"] .grid,.minib[data-style="labeltape"] .g6{background:radial-gradient(#8a5a2a55 1px,transparent 1.5px) 0 0/6px 6px,radial-gradient(#e8c99a66 1px,transparent 1.5px) 3px 3px/7px 5px,#c9a46e;padding:.6cqw;box-sizing:border-box;column-gap:0}
+[data-style="labeltape"] .t{background:transparent}
+[data-style="labeltape"] .t[data-run]{background:linear-gradient(180deg,#0000 0 12%,#ffffff26 12% 16%,#0000 16% 84%,#00000033 84% 88%,#0000 88%),var(--tape,#c8202f)}
+[data-style="labeltape"] .t:nth-child(n+23):nth-child(-n+44),[data-style="labeltape"] .t:nth-child(n+89):nth-child(-n+110){--tape:#1f4fa8}
+[data-style="labeltape"] .t:nth-child(n+45):nth-child(-n+66),[data-style="labeltape"] .t:nth-child(n+111):nth-child(-n+132){--tape:#1c1c1c}
+[data-style="labeltape"] .t:nth-child(n+67):nth-child(-n+88){--tape:#2e7d4f}
+.minib[data-style="labeltape"] .t{background:linear-gradient(180deg,#0000 0 12%,#ffffff26 12% 16%,#0000 16% 84%,#00000033 84% 88%,#0000 88%),var(--tape,#c8202f)}
+.minib[data-style="labeltape"] .t:nth-child(n+7){--tape:#1f4fa8}
+@keyframes punchA{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes punchB{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+[data-style="labeltape"] .t[data-k="a"] .h span{animation:punchA .16s ease-out}
+[data-style="labeltape"] .t[data-k="b"] .h span{animation:punchB .16s ease-out}

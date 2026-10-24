@@ -117,6 +117,11 @@ function send(str,opts){
   if(previewHold&&!opts.preview){heldSend=[str,opts];return}
   lastSent=str; lastOpts=opts.preview?{}:opts; boardLabel=opts.label||null;
   const cells=opts.cells||toTargets(str).cells;
+  // Where each line's text runs, one tile either side: label tape is cut to fit the words
+  for(let r=0;r<ROWS;r++){
+    let a=COLS,b=-1; for(let c=0;c<COLS;c++)if(cells[r*COLS+c]){if(c<a)a=c;b=c}
+    for(let c=0;c<COLS;c++){const e=tiles[r*COLS+c].el;if(b>=0&&c>=a-1&&c<=b+1)e.dataset.run='';else delete e.dataset.run}
+  }
   // Power-on: the first time anything is shown, every tile spins up from a random spot
   const boot=!booted&&anim.boot&&!reduce; booted=true;
   tiles.forEach((t,i)=>{

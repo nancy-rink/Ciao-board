@@ -50,20 +50,14 @@ const BOARD_STYLES=[
   {id:'kassak',group:'studio',name:'Kassák',note:'After Lajos Kassák and his magazine MA: red and black blocks on paper, heavy letters.'},
   {id:'werkstatte',group:'studio',name:'Wiener Werkstätte',note:'Josef Hoffmann and Koloman Moser’s Vienna workshops, 1903: a black-and-white checker frame and a gold line.'},
   {id:'plakat',group:'studio',name:'Plakat',note:'The Polish Poster School of Tomaszewski and Lenica: hand-drawn letters and painted color on paper.'},
-  {id:'tapestry',group:'museum',name:'Unicorn Tapestry',note:'The Unicorn Tapestries at the Met Cloisters: a millefleur field of tiny flowers, cream wool letters.'},
-  {id:'belles',group:'museum',name:'Belles Heures',note:'The Limbourg brothers’ prayer book for the Duke of Berry: vellum flaps, gothic letters, gold between.'},
-  {id:'boppard',group:'museum',name:'Cloister Glass',note:'The Boppard windows at the Met Cloisters: clear glass flaps in a lead lattice of ruby, blue and gold.'},
   {id:'william',group:'museum',name:'William',note:'The Met’s faience hippo: glazed turquoise flaps, black-painted letters.'},
   {id:'iznik',group:'museum',name:'Iznik',note:'Ottoman tiles from Iznik: white flaps, cobalt letters, a border of rosettes.'},
   {id:'tiffany',group:'museum',name:'Tiffany',note:'Tiffany Studios’ Autumn Landscape window: opalescent flaps and a sunset of leaded glass.'},
-  {id:'wave',group:'museum',name:'Great Wave',note:'Hokusai’s Under the Wave off Kanagawa, at the Met: paper flaps, Prussian blue letters, a frame of wave crests.'},
-  {id:'kente',group:'museum',name:'Kente',note:'Kente cloth from Ghana, at the Met: gold flaps and a frame of woven strips in green, red, black and blue.'},
   {id:'buttoncopy',group:'cities',city:'Los Angeles',name:'Button Copy',note:'Caltrans freeway signs: highway green, white letters set with reflector buttons, a white border and bolts.'},
   {id:'googie',group:'cities',city:'Los Angeles',name:'Googie',note:'Coffee-shop modern and the LAX Theme Building: turquoise, starbursts and boomerangs, rounded cream flaps.'},
   {id:'stahl',group:'cities',city:'Los Angeles',name:'Stahl House',note:'Pierre Koenig’s glass house above the city: night flaps, a thin steel edge, city lights below.'},
   {id:'splash',group:'cities',city:'Los Angeles',name:'A Bigger Splash',note:'After Hockney’s 1967 painting: pool-blue flaps, a pink wall, and a white splash.'},
   {id:'guayasamin',group:'cities',city:'Quito',name:'Guayasamín',note:'After Oswaldo Guayasamín: ochre flaps, heavy black letters, angular strokes of red and brown.'},
-  {id:'rose',group:'museum',name:'Rose Window',note:'A Gothic rose window like Chartres: deep blue glass, glowing gold letters, ruby petals.'},
 ];
 let styleId=store.get('fb.style','classic');
 // Worn used to be a style; it's now a finish that ages any style. A board that was Worn becomes Classic, worn.

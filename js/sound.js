@@ -117,12 +117,12 @@ const MECH={
 const STYLE_MECH={glow:'pixel',neon:'pixel',
   solari:'heavy',pragotron:'heavy',patapata:'heavy',metropolitana:'heavy',standard:'heavy',doublearrow:'heavy',taipei:'heavy',oxblood:'heavy',foldalatti:'heavy',metro:'heavy',
   cifra:'clock',caslon:'clock',sbb:'clock',
-  ticket:'card',graphite:'card',plakat:'card',kassak:'card',mexico68:'card',belles:'card',wave:'card',guayasamin:'card',
+  ticket:'card',graphite:'card',plakat:'card',kassak:'card',mexico68:'card',guayasamin:'card',
   butterfly:'wood',filete:'wood',werkstatte:'wood',
-  zsolnay:'ceramic',marinedrive:'ceramic',ekimei:'ceramic',iznik:'ceramic',william:'ceramic',boppard:'ceramic',tiffany:'ceramic',rose:'ceramic',googie:'ceramic',
+  zsolnay:'ceramic',marinedrive:'ceramic',ekimei:'ceramic',iznik:'ceramic',william:'ceramic',tiffany:'ceramic',googie:'ceramic',
   praguemetro:'tin',weltzeituhr:'tin',grille:'tin',jetage:'tin',buttoncopy:'tin',stahl:'tin',
   chandigarh:'stone',cubist:'stone',calcadao:'stone',barragan:'stone',
-  moquette:'soft',tapestry:'soft',kente:'soft',bojagi:'soft',hakka:'soft',matyo:'soft',splash:'soft',ikarus:'roll'};
+  moquette:'soft',bojagi:'soft',hakka:'soft',matyo:'soft',splash:'soft',ikarus:'roll'};
 const mechNow=()=>{const b=$('board');return MECH[STYLE_MECH[b&&b.dataset.style]]||MECH.flap};
 function mechFlap(t,k,p,M){
   if(M.pixel){tone(t,{wave:'square',freq:r(840,920)*p,to:640*p,gain:.06*k,dur:.025});return}

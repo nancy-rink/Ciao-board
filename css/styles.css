@@ -360,32 +360,6 @@
 @keyframes gB{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 
 /* Museum: medieval pieces and favorites from the Met */
-[data-style="tapestry"]{
-  --frame:#1f3a2e; --frame-edge:#2c4d3c; --frame-r:.4cqw; --frame-pad:3.4cqw;
-  --bevel:inset 0 0 0 .45cqw #8a2a24,inset 0 0 0 .75cqw #d9b45a;
-  --tile:#25402f; --tile-hi:#2c4a37; --ink:#efe3c4; --seam:#13241b; --flap-r:.2cqw; --c-w:#efe3c4;
-  --c-r:#b0352c; --c-o:#c9733a; --c-y:#d9b45a; --c-g:#6a9450; --c-b:#4a6a9a; --c-v:#7a4a6e;
-  --f-tile:"Cinzel",Georgia,serif; --tile-w:700; --tile-size:2.7cqw;
-  --wall:#14211a; --ui:#f1e8d2; --muted:#a9b39c; --line:#26392d; --panel:#182a20; --panel-2:#1f3428;
-  --accent:#d9b45a; --accent-ink:#1d1603; --ok:#8fcf8a; --warn:#ff9a85;
-}
-[data-style="belles"]{
-  --frame:#efe4c9; --frame-edge:#f6eed8; --frame-r:.3cqw; --frame-pad:3.4cqw;
-  --bevel:inset 0 0 0 .35cqw #c9a13a,inset 0 0 0 .6cqw #efe4c9,inset 0 0 0 .8cqw #2b4aa0;
-  --tile:#f3ead2; --tile-hi:#f8f1de; --ink:#2a1d14; --seam:#c9b88f; --flap-r:.15cqw; --c-w:#2a1d14;
-  --c-r:#c23b22; --c-o:#d9772a; --c-y:#c9a13a; --c-g:#4f7a3a; --c-b:#2b4aa0; --c-v:#6a3f8a;
-  --f-tile:"Grenze Gotisch",Georgia,serif; --tile-w:600; --tile-size:3.5cqw;
-  --wall:#e9dfc6; --ui:#2a1d14; --muted:#6a5a44; --line:#d6c9a8; --panel:#f6efdc; --panel-2:#ece2c8;
-  --accent:#c23b22; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
-}
-[data-style="boppard"]{
-  --frame:#2b2b2b; --frame-edge:#2b2b2b; --frame-r:.2cqw; --frame-pad:3.2cqw;
-  --tile:#e3e6d0; --tile-hi:#eef0de; --ink:#2b2118; --seam:#2b2b2b; --flap-r:0px; --gloss:rgba(255,255,255,.22); --c-w:#2b2118;
-  --c-r:#9c1f2a; --c-o:#c9702a; --c-y:#d1a72e; --c-g:#2f6b3e; --c-b:#1e3f8c; --c-v:#5a2f7a;
-  --f-tile:"Uncial Antiqua",Georgia,serif; --tile-w:400; --tile-size:2.75cqw;
-  --wall:#141414; --ui:#efece2; --muted:#a8a69c; --line:#2e2e2c; --panel:#1b1b1a; --panel-2:#242422;
-  --accent:#d1a72e; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;
-}
 [data-style="william"]{
   --frame:#1f8093; --frame-edge:#4fb7c4; --frame-r:2.2cqw; --frame-pad:3cqw;
   --bevel:inset 0 .35cqw 0 #6cc6d1,inset 0 -.45cqw 0 #135a68;
@@ -410,29 +384,12 @@
   --f-tile:"Josefin Sans","Futura",Arial,sans-serif; --tile-w:600; --tile-size:2.9cqw;
   --wall:#1e1610; --ui:#f3eadb; --muted:#bca58e; --line:#3a2b1e; --panel:#261c14; --panel-2:#30241a;
   --accent:#e3b54a; --accent-ink:#231a04; --ok:#8fcf8a; --warn:#ff9a85;
-}
-[data-style="rose"]{
-  --frame:#3a3a40; --frame-edge:#5a5650; --frame-r:.3cqw; --frame-pad:3.4cqw;
-  --bevel:inset 0 0 0 .5cqw #6a655c,inset 0 0 0 .7cqw #2a2a30;
-  --tile:#142a6e; --tile-hi:#1b3584; --ink:#f6e7b0; --seam:#0a0f20; --flap-r:.1cqw; --gloss:rgba(255,255,255,.12); --glow:0 0 .5cqw #ffd77a66;
-  --c-w:#f6e7b0; --c-r:#b3202f; --c-o:#d9702a; --c-y:#e3b54a; --c-g:#2f8a5a; --c-b:#3f6fd8; --c-v:#7a3aa8;
-  --f-tile:"Cinzel",Georgia,serif; --tile-w:700; --tile-size:2.7cqw;
-  --wall:#0b1024; --ui:#eef0f8; --muted:#a0a8c8; --line:#1e2648; --panel:#111836; --panel-2:#172044;
-  --accent:#e3b54a; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;
-}
-/* Millefleur: a dark green field of small flowers */
-[data-style="tapestry"].board,[data-style="tapestry"] .board,.minib[data-style="tapestry"]{
-  background:radial-gradient(circle,#efe3c4 0 1.4px,transparent 1.9px) 0 0/13px 11px,radial-gradient(circle,#c8433a 0 1.6px,transparent 2.1px) 6px 5px/17px 14px,
-             radial-gradient(circle,#d9b45a 0 1.2px,transparent 1.7px) 3px 8px/11px 15px,radial-gradient(circle,#8aa6cf 0 1.2px,transparent 1.7px) 9px 2px/19px 12px,
-             radial-gradient(ellipse 3px 1.3px,#5f8a4a 0 85%,transparent 100%) 2px 3px/9px 10px,#1f3a2e}
+}/* Millefleur: a dark green field of small flowers */
+
 /* A manuscript border: gold dots and blue and red ivy leaves on vellum */
-[data-style="belles"].board,[data-style="belles"] .board,.minib[data-style="belles"]{
-  background:radial-gradient(circle,#c9a13a 0 1.5px,transparent 2px) 0 0/14px 14px,radial-gradient(ellipse 2.6px 1.6px,#2b4aa0 0 85%,transparent 100%) 7px 7px/14px 14px,
-             radial-gradient(ellipse 2.6px 1.6px,#c23b22 0 85%,transparent 100%) 3px 10px/28px 28px,repeating-linear-gradient(45deg,transparent 0 9px,#5f7a3a40 9px 10px),#efe4c9}
+
 /* Pot-metal glass quarries in a lead lattice */
-[data-style="boppard"].board,[data-style="boppard"] .board,.minib[data-style="boppard"]{
-  background:radial-gradient(ellipse at 50% 30%,#ffffff2a,transparent 70%),linear-gradient(90deg,#2b2b2b 0 2px,transparent 2px) 0 0/16px 22px,linear-gradient(#2b2b2b 0 2px,transparent 2px) 0 0/16px 22px,
-             conic-gradient(#9c1f2a 0 25%,#1e3f8c 0 50%,#d1a72e 0 75%,#2f6b3e 0) 0 0/32px 44px}
+
 /* Turquoise faience with black-painted lotus buds, under a glaze shine */
 [data-style="william"].board,[data-style="william"] .board,.minib[data-style="william"]{
   background:linear-gradient(160deg,#ffffff38,transparent 40%),radial-gradient(ellipse 2.5px 5px at 50% 60%,#102020 0 80%,transparent 100%) 0 0/18px 20px,
@@ -448,20 +405,10 @@
              radial-gradient(circle at 22% 62%,#e3b54a 0 8%,transparent 26%),radial-gradient(circle at 78% 40%,#c4566a 0 6%,transparent 22%),
              linear-gradient(180deg,#9fb8d8 0%,#c9b0d8 28%,#e8a860 52%,#c2582a 72%,#5f7a3a 88%,#3f6fa8 100%)}
 /* A rose window: ruby and blue petals radiating from the center, ringed with lead */
-[data-style="rose"].board,[data-style="rose"] .board,.minib[data-style="rose"]{
-  background:radial-gradient(circle at 50% 50%,#ffffff1f,transparent 60%),repeating-radial-gradient(circle at 50% 50%,transparent 0 18px,#2a2a30 18px 20px),
-             repeating-conic-gradient(from 0deg at 50% 50%,#1b2f7a 0 7deg,#2a2a30 7deg 8deg,#9c1c2b 8deg 15deg,#2a2a30 15deg 16deg)}
-[data-style="tapestry"] .grid{background:#13241b;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
-[data-style="belles"] .grid{background:linear-gradient(135deg,#e6c25a,#b8902c 50%,#e9cf7a);padding:.5cqw;box-sizing:border-box}
-[data-style="boppard"] .grid{background:#2b2b2b;padding:.5cqw;box-sizing:border-box}
 [data-style="william"] .grid{background:#16606e;padding:.6cqw;border-radius:1cqw;box-sizing:border-box}
 [data-style="iznik"] .grid{background:#1d3c8f;padding:.5cqw;box-sizing:border-box}
-[data-style="tiffany"] .grid{background:#3a2a1a;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
-[data-style="rose"] .grid{background:#0a0f20;padding:.5cqw;box-sizing:border-box}
-.minib[data-style="tapestry"] .g6{background:#13241b}.minib[data-style="belles"] .g6{background:linear-gradient(135deg,#e6c25a,#b8902c 50%,#e9cf7a)}.minib[data-style="boppard"] .g6{background:#2b2b2b}
-.minib[data-style="william"] .g6{background:#16606e}.minib[data-style="iznik"] .g6{background:#1d3c8f}.minib[data-style="tiffany"] .g6{background:#3a2a1a}.minib[data-style="rose"] .g6{background:#0a0f20}
-.minib[data-style="tapestry"] .g6,.minib[data-style="belles"] .g6,.minib[data-style="boppard"] .g6,.minib[data-style="william"] .g6,.minib[data-style="iznik"] .g6,.minib[data-style="tiffany"] .g6,.minib[data-style="rose"] .g6{padding:2.4cqw;border-radius:1.5cqw}
-[data-style="tapestry"] .t,[data-style="belles"] .t,[data-style="boppard"] .t,[data-style="william"] .t,[data-style="iznik"] .t,[data-style="tiffany"] .t,[data-style="rose"] .t{font-weight:var(--tile-w,600)}
+[data-style="tiffany"] .grid{background:#3a2a1a;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}.minib[data-style="william"] .g6{background:#16606e}.minib[data-style="iznik"] .g6{background:#1d3c8f}.minib[data-style="tiffany"] .g6{background:#3a2a1a}.minib[data-style="william"] .g6,.minib[data-style="iznik"] .g6,.minib[data-style="tiffany"] .g6{padding:2.4cqw;border-radius:1.5cqw}
+[data-style="william"] .t,[data-style="iznik"] .t,[data-style="tiffany"] .t{font-weight:var(--tile-w,600)}
 /* More styles: Hungarian embroidery, Vienna, Warsaw neon, Hokusai, kente, bojagi, Hakka cloth, the Swiss rail clock, Barragán */
 [data-style="matyo"]{
   --frame:#141414; --frame-edge:#262626; --frame-r:.5cqw; --frame-pad:3.4cqw;
@@ -488,24 +435,7 @@
   --f-tile:"Cabin",Arial,sans-serif; --tile-w:600; --tile-size:2.9cqw;
   --wall:#0c0a0d; --ui:#f6e9f2; --muted:#b39aaa; --line:#2a2128; --panel:#151116; --panel-2:#1d171e;
   --accent:#ff5fae; --accent-ink:#1a0010; --ok:#39d98a; --warn:#ff8a7d;
-}
-[data-style="wave"]{
-  --frame:#1d3a6e; --frame-edge:#2c5aa0; --frame-r:.3cqw; --frame-pad:3.2cqw;
-  --tile:#efe9d8; --tile-hi:#f6f1e3; --ink:#1d3a6e; --seam:#cfc6ae; --flap-r:.15cqw; --c-w:#1d3a6e;
-  --c-r:#b8452e; --c-o:#d9883a; --c-y:#d9b25a; --c-g:#5f7a4a; --c-b:#2c5aa0; --c-v:#5a4a7a;
-  --f-tile:"Archivo","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:90%; --tile-size:2.95cqw;
-  --wall:#e9e3d2; --ui:#14284e; --muted:#5a6680; --line:#d7d0bd; --panel:#f6f2e7; --panel-2:#ece6d6;
-  --accent:#1d3a6e; --accent-ink:#ffffff; --ok:#1d6e48; --warn:#a3261e; color-scheme:light;
-}
-[data-style="kente"]{
-  --frame:#141008; --frame-edge:#2a2214; --frame-r:.2cqw; --frame-pad:3.2cqw;
-  --tile:#e8b52c; --tile-hi:#f0c440; --ink:#141008; --seam:#8a6a14; --flap-r:.1cqw; --c-w:#141008;
-  --c-r:#c0272d; --c-o:#d9662a; --c-y:#f2d25a; --c-g:#1f7a3a; --c-b:#2a4f9a; --c-v:#6a3a7a;
-  --f-tile:"Archivo",Arial,sans-serif; --tile-w:800; --tile-size:2.85cqw;
-  --wall:#120e07; --ui:#f6ecd2; --muted:#bfae84; --line:#2e2614; --panel:#1a150b; --panel-2:#231c0f;
-  --accent:#e8b52c; --accent-ink:#141008; --ok:#5fc08a; --warn:#ff8a7d;
-}
-[data-style="bojagi"]{
+}[data-style="bojagi"]{
   --frame:#efe7d6; --frame-edge:#f7f1e4; --frame-r:.4cqw; --frame-pad:3.4cqw;
   --tile:#f4efe3; --tile-hi:#faf6ee; --ink:#4a2f45; --seam:#d9cfba; --flap-r:.3cqw; --gloss:rgba(255,255,255,.3); --c-w:#4a2f45;
   --c-r:#d97a86; --c-o:#e6a46a; --c-y:#e9cf7a; --c-g:#8fbf9f; --c-b:#86aed6; --c-v:#a993cf;
@@ -551,13 +481,9 @@
   background:radial-gradient(ellipse at 50% 50%,#ff4fa31f,transparent 70%),linear-gradient(#0e0b0c 0 2px,transparent 2px) 0 0/100% 12px,
              linear-gradient(90deg,#0e0b0c 0 2px,transparent 2px) 0 0/26px 24px,linear-gradient(90deg,#0e0b0c 0 2px,transparent 2px) 13px 12px/26px 24px,#1f181a}
 /* Seigaiha: rows of overlapping wave crests in Prussian blue and foam */
-[data-style="wave"].board,[data-style="wave"] .board,.minib[data-style="wave"]{
-  background:radial-gradient(circle at 50% 100%,#f4efe2 0 2px,#1d3a6e 2.5px 4.5px,#f4efe2 5px 6.5px,#1d3a6e 7px 9px,#5d86c0 9.5px 11px,#f4efe2 11.5px 12px,transparent 12.5px) 0 0/24px 12px,
-             radial-gradient(circle at 50% 100%,#f4efe2 0 2px,#1d3a6e 2.5px 4.5px,#f4efe2 5px 6.5px,#1d3a6e 7px 9px,#5d86c0 9.5px 11px,#f4efe2 11.5px 12px,transparent 12.5px) 12px 6px/24px 12px,#1d3a6e}
+
 /* Kente: narrow woven strips, each with its own blocks of pattern */
-[data-style="kente"].board,[data-style="kente"] .board,.minib[data-style="kente"]{
-  background:repeating-linear-gradient(0deg,transparent 0 14px,#14100888 14px 18px,transparent 18px 22px,#c0272d99 22px 24px),
-             repeating-linear-gradient(90deg,#e8b52c 0 10px,#1f7a3a 10px 13px,#e8b52c 13px 16px,#c0272d 16px 19px,#141008 19px 22px,#e8b52c 22px 30px,#2a4f9a 30px 32px,#141008 32px 34px)}
+
 /* Bojagi: soft patches of ramie, stitched together */
 [data-style="bojagi"].board,[data-style="bojagi"] .board,.minib[data-style="bojagi"]{
   background:linear-gradient(90deg,#7a6a5a33 0 1px,transparent 1px) 0 0/37px 100%,linear-gradient(#7a6a5a33 0 1px,transparent 1px) 0 0/100% 23px,
@@ -581,17 +507,13 @@
 .minib[data-style="barragan"]{padding-left:20%;background:linear-gradient(#f0b13b,#f0b13b) 0 0/14% 58% no-repeat,linear-gradient(#9b87c4,#9b87c4) 0 100%/14% 42% no-repeat,linear-gradient(#c75b3d,#c75b3d) 100% 0/38% 5px no-repeat,#f3ece2}
 [data-style="matyo"] .grid{background:#0a0a0a;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
 [data-style="werkstatte"] .grid{background:#111;padding:.5cqw;box-sizing:border-box}
-[data-style="neon"] .grid{background:#050407;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
-[data-style="wave"] .grid{background:#1d3a6e;padding:.5cqw;box-sizing:border-box}
-[data-style="kente"] .grid{background:#141008;padding:.5cqw;box-sizing:border-box}
-[data-style="bojagi"] .grid{background:#cfc3ac;padding:.5cqw;border-radius:.4cqw;box-sizing:border-box}
+[data-style="neon"] .grid{background:#050407;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}[data-style="bojagi"] .grid{background:#cfc3ac;padding:.5cqw;border-radius:.4cqw;box-sizing:border-box}
 [data-style="hakka"] .grid{background:#7a0d1c;padding:.5cqw;border-radius:.3cqw;box-sizing:border-box}
 [data-style="sbb"] .grid{background:#d0d0cc;padding:.4cqw;box-sizing:border-box}
 [data-style="barragan"] .grid{background:#a83a68;padding:.4cqw;box-sizing:border-box}
-.minib[data-style="matyo"] .g6{background:#0a0a0a}.minib[data-style="werkstatte"] .g6{background:#111}.minib[data-style="neon"] .g6{background:#050407}.minib[data-style="wave"] .g6{background:#1d3a6e}.minib[data-style="kente"] .g6{background:#141008}
-.minib[data-style="bojagi"] .g6{background:#cfc3ac}.minib[data-style="hakka"] .g6{background:#7a0d1c}.minib[data-style="sbb"] .g6{background:#d0d0cc}.minib[data-style="barragan"] .g6{background:#a83a68}
-.minib[data-style="matyo"] .g6,.minib[data-style="werkstatte"] .g6,.minib[data-style="neon"] .g6,.minib[data-style="wave"] .g6,.minib[data-style="kente"] .g6,.minib[data-style="bojagi"] .g6,.minib[data-style="hakka"] .g6,.minib[data-style="sbb"] .g6,.minib[data-style="barragan"] .g6{padding:2.4cqw;border-radius:1.5cqw}
-[data-style="matyo"] .t,[data-style="werkstatte"] .t,[data-style="neon"] .t,[data-style="wave"] .t,[data-style="kente"] .t,[data-style="bojagi"] .t,[data-style="hakka"] .t,[data-style="sbb"] .t,[data-style="barragan"] .t{font-weight:var(--tile-w,600)}
+.minib[data-style="matyo"] .g6{background:#0a0a0a}.minib[data-style="werkstatte"] .g6{background:#111}.minib[data-style="neon"] .g6{background:#050407}.minib[data-style="bojagi"] .g6{background:#cfc3ac}.minib[data-style="hakka"] .g6{background:#7a0d1c}.minib[data-style="sbb"] .g6{background:#d0d0cc}.minib[data-style="barragan"] .g6{background:#a83a68}
+.minib[data-style="matyo"] .g6,.minib[data-style="werkstatte"] .g6,.minib[data-style="neon"] .g6,.minib[data-style="bojagi"] .g6,.minib[data-style="hakka"] .g6,.minib[data-style="sbb"] .g6,.minib[data-style="barragan"] .g6{padding:2.4cqw;border-radius:1.5cqw}
+[data-style="matyo"] .t,[data-style="werkstatte"] .t,[data-style="neon"] .t,[data-style="bojagi"] .t,[data-style="hakka"] .t,[data-style="sbb"] .t,[data-style="barragan"] .t{font-weight:var(--tile-w,600)}
 [data-style="neon"] .f span,[data-style="neon"] .g span{text-shadow:none}
 /* Cities: Los Angeles and Quito */
 [data-style="buttoncopy"]{--frame:#1f6f4a; --frame-edge:#2b8a5e; --frame-r:.8cqw; --frame-pad:3cqw; --bevel:inset 0 0 0 .6cqw #1f6f4a,inset 0 0 0 .85cqw #f4f4f0; --tile:#1c6a46; --tile-hi:#22774f; --ink:#f4f4f0; --seam:#0f3d28; --flap-r:.2cqw; --glow:0 0 .18cqw #ffffffaa; --c-r:#c8352b; --c-o:#f08a24; --c-y:#f2c230; --c-g:#7fc49a; --c-b:#2d5fa8; --c-v:#6a4a9a; --f-tile:"Overpass","Arial Narrow",Arial,sans-serif; --tile-w:700; --tile-stretch:90%; --tile-size:3cqw; --wall:#0f2a1d; --ui:#eef6f0; --muted:#9fc0ab; --line:#1d3f2c; --panel:#13321f; --panel-2:#1a3d27; --accent:#f2c230; --accent-ink:#1d1600; --ok:#5fc08a; --warn:#ff8a7d;}

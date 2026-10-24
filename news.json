@@ -1,0 +1,146 @@
+{
+ "source": "BBC News",
+ "updated": "2026-10-24T22:08:37+00:00",
+ "sections": {
+  "top": {
+   "name": "Top stories",
+   "items": [
+    "Almost 1,000 arrested as clashes follow another day of mass protests across France",
+    "Watch: BBC in Paris as police charge protesters and use tear gas during unrest",
+    "Storm Boelo amber warnings kick in as parts of UK brace for 80mph gusts",
+    "Met Police says letter with claims about Meghan's father not shared with other law enforcement",
+    "Mum who died trying to save sons swept away in Bahamas was hero, husband says",
+    "Between quick wins and big dreams lies Burnham's biggest test",
+    "Palestinian families displaced as Israeli forces demolish Hebron homes",
+    "Before you crank up the thermostat, try these tips to keep you and your home warmer for longer",
+    "Strictly's new presenters - after mixed reviews have they found their feet?",
+    "California considers imposing 'world's first' tax on billionaires",
+    "The artist dropping her debut album after a billion streams",
+    "How the UK state pension compares with other countries",
+    "Sam Fender calls out ticket prices ahead of tour",
+    "Plan for Northern Olympics to get £7m in Healey's Budget",
+    "Obama attacks Trump as he campaigns for Democrats ahead of midterm elections"
+   ]
+  },
+  "world": {
+   "name": "World",
+   "items": [
+    "Almost 1,000 arrested as clashes follow another day of mass protests across France",
+    "Ukraine says Starlink connection 'now stable' after network limits",
+    "Palestinian families displaced as Israeli forces demolish Hebron homes",
+    "Man arrested after fire at Hitler's mountaintop Eagle's Nest retreat",
+    "Father who killed Oregon school gunman describes anguish over children he couldn't save",
+    "British woman dies after trying to rescue sons swept away at sea in the Bahamas",
+    "Vanessa Trump says she is cancer-free six months after revealing diagnosis",
+    "Three released without charge after fatal arson attack in Ireland",
+    "Woman, 65, becomes second patient to die of Ebola in Kenya",
+    "Australian MP's condition improves after alleged car attack",
+    "Student movement takes Serbia's Vučić to the wire in neck-and-neck election",
+    "White House lifts tariffs on some Canadian goods as midterm elections loom",
+    "Two rescued after Nairobi building collapse with five still missing",
+    "Trump administration sues to block certification of upcoming Alaska election",
+    "Minneapolis withdrawal was 'surrender', Trump's ex-border patrol chief tells BBC"
+   ]
+  },
+  "uk": {
+   "name": "UK",
+   "items": [
+    "Storm Boelo amber warnings kick in as parts of UK brace for 80mph gusts",
+    "Met Police says letter with claims about Meghan's father not shared with other law enforcement",
+    "Plan for Northern Olympics to get £7m in Healey's Budget",
+    "Mum who died trying to save sons was hero, husband says",
+    "Murder charge after body found in wheelie bin",
+    "Sam Fender calls out ticket prices ahead of tour",
+    "Could Somerset pub be the oldest in England?",
+    "Thousands of people gather in support of Drumcree Orangemen",
+    "Habitat destroyed by Cairngorms fire to be restored with government funding",
+    "Reward offered over murder in flat used as brothel",
+    "UK to invest £100m in 'world first' AI Biosecurity Lab",
+    "What a spectre - Bond boys bounce around London",
+    "Tory activist in 'contract killing broker' claim had worked for party HQ",
+    "Prince William on how he once dreamed of becoming 'DJ Xara'",
+    "Watch: Moment part of Brighton's historic West Pier collapses"
+   ]
+  },
+  "business": {
+   "name": "Business",
+   "items": [
+    "How does the UK state pension compare with other countries?",
+    "UK to invest £100m in 'world first' AI Biosecurity Lab",
+    "Civil servant who juggled five jobs says he was 'surprised' to be charged with fraud",
+    "White House lifts tariffs on some Canadian goods as midterm elections loom",
+    "Earnings limit of up to £140K for first-time buyers loan scheme",
+    "The Indian workers filming their work to train AI",
+    "Lights will stay on this winter, grid operator says after concerns",
+    "'I'm 96 and have 15 million followers': The grannies taking over TikTok",
+    "Zuckerberg wins Meta deal to help him foot bill for possible California billionaire tax",
+    "L'Oreal says weight loss drugs are impacting beauty and skincare sales",
+    "'I wasn't thinking straight' says five jobs civil servant",
+    "Barclays cutting 5,000 jobs as it increases reliance on AI",
+    "The 'trillion pound' oil fund the government believes Britain could have built",
+    "Tank barrel production returns to UK after 20 years",
+    "What is PHP and why did it spark a global cyber-security scramble?"
+   ]
+  },
+  "technology": {
+   "name": "Technology",
+   "items": [
+    "UK to invest £100m in 'world first' AI Biosecurity Lab",
+    "What is PHP and why did it spark a global cyber-security scramble?",
+    "'It's been relentless' say IT workers on frontline of PHP cyber-security scramble",
+    "The Indian workers filming their work to train AI",
+    "Zuckerberg wins Meta deal to help him foot bill for possible California billionaire tax",
+    "Race to update services' computer systems after cyber-security flaw found",
+    "Zoe Kleinman: PHP is the cyber equivalent of an unexploded bomb",
+    "'500 new vulnerabilities' found in government, says AI minister",
+    "UK working to identify exposure after global cyber-security warning",
+    "Trump's green card curbs test Indian tech workers' American dream",
+    "Why is Elon Musk plotting a mega-merger of SpaceX and Tesla?",
+    "Websites taken down worldwide as critical cyber-security update issued",
+    "Just Eat apologises for AI food mistakes after social media ridicule",
+    "Tech Life",
+    "Tech Now"
+   ]
+  },
+  "science": {
+   "name": "Science",
+   "items": [
+    "Trains cancelled and road warnings as Storm Boelo sweeps into Scotland",
+    "Amber weather warning as Storm Boelo hits Scotland",
+    "Storm Boelo to bring severe gales and heavy rain into Sunday",
+    "Wales plans to ban steel pylons as government launches consultation",
+    "Weather warnings in place ahead of Storm Boelo",
+    "The people on standby when a storm strikes",
+    "Storm Austen brings power cuts and travel disruption as more wind and rain forecast",
+    "Scotland to be hit with 80mph wind gusts as Storm Boelo warning upgraded to amber",
+    "Oil spill washes up on UAE beaches after tanker strike",
+    "Why should I stockpile and what will I need?",
+    "October's full Hunter's Moon to light up night sky this weekend",
+    "Storm Austen hits UK as yellow wind warnings in effect",
+    "BBC presenter battles strong winds as Storm Austen hits Newquay",
+    "Project to restore rare native trees with DNA testing",
+    "Historic swimming pond to be restored"
+   ]
+  },
+  "sport": {
+   "name": "Sport",
+   "items": [
+    "Watch: Match of the Day",
+    "The candid meeting that 'changed' Spurs - are they finally on way back?",
+    "Man Utd not an unmanageable club - Carrick",
+    "Smith retains title with split-decision win over Puello",
+    "'A massive storage of images': Arteta has technical area receipts",
+    "Spurs clinch rare Stamford Bridge win as Palmer sent off",
+    "Arsenal beat Everton to go level on points with leaders Man City",
+    "Jackson scores twice as Aston Villa end Man City's perfect start",
+    "Bobb's late strike secures Fulham win at Coventry",
+    "Forest left frustrated as winless run goes on after draw at Ipswich",
+    "Man City's leaky defence highlights Donnarumma & Guehi struggles",
+    "68-point swing and a Tonga win - how England avoid World Cup exit",
+    "Arsenal relieve pressure with Spurs win - can they kick on now?",
+    "From Chelsea reject to Watkins 'upgrade' - Jackson makes fast Villa start",
+    "Strikers finding form as Rangers bounce back"
+   ]
+  }
+ }
+}

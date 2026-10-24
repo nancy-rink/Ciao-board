@@ -74,6 +74,8 @@ const STYLE_ART={
     text:'Big letters for posters were cut from end-grain wood, set by hand and printed on a press, leaving a slight bite in the paper and ink that is never quite even.'},
   stitch:{work:'Sampler',by:'Evelina Hull',when:'1806',where:'Charlestown, Massachusetts',tag:'The Met, 1806',met:14058,img:'ad/web-large/119436.jpg',
     text:'Girls learned to sew by stitching samplers: rows of letters and numbers in silk cross-stitch on linen, often signed and dated. Evelina Hull made this one at about ten.'},
+  flipdot:{work:'Flip-dot displays',by:'Ferranti-Packard and others',when:'1960s onward',tag:'Flip-dot signs',
+    text:'Each dot is a small disc, yellow on one side and black on the other, turned by a tiny electromagnet. They were developed in the 1960s for stock exchange boards and still show destinations on buses and trains around the world, with a soft clatter when they change.'},
   geesbend:{work:'Blocks and Strips work-clothes quilt',by:'Emma Lee Pettway Campbell',when:'ca. 1950',where:'Gee’s Bend (Boykin), Alabama',tag:'The Met, ca. 1950',met:654093,nopic:'The Met’s photo of this quilt isn’t in the public domain; see it on the Met’s site.',
     text:'The women of Gee’s Bend made quilts from worn work clothes and feed sacks, improvising bold bars and blocks. Their quilts were shown in museums from 2002 on and changed how people see American art.'},
   starbethlehem:{work:'Star of Bethlehem Quilt',when:'ca. 1835',where:'Maryland',tag:'The Met, ca. 1835',met:13897,img:'ad/web-large/DP332326.jpg',

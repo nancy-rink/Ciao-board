@@ -114,7 +114,7 @@ const MECH={
   roll:{snap:2200,snapQ:1.2,snapG:.9,snapD:.008,air:.3,ring:[],body:200,bodyG:.5,bodyD:.03,flutter:3,bounce:0,bounceF:0,rushF:700,rushG:.22},
   pixel:{pixel:true,rushF:5000,rushG:.03}
 };
-const STYLE_MECH={glow:'pixel',neon:'pixel',nixie:'pixel',
+const STYLE_MECH={glow:'pixel',neon:'pixel',nixie:'pixel',flipdot:'card',
   solari:'heavy',patapata:'heavy',standard:'heavy',doublearrow:'heavy',oxblood:'heavy',metro:'heavy',
   cifra:'clock',marquee:'card',sbb:'clock',
   graphite:'card',kassak:'card',mexico68:'card',guayasamin:'card',

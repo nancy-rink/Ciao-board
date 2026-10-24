@@ -43,6 +43,7 @@ const BOARD_STYLES=[
   {id:'letterboard',group:'displays',name:'Letter board',note:'A felt letter board: white push-in letters, each a little crooked, on black ribbed felt in a slim black frame.'},
   {id:'letterpress',group:'displays',name:'Letterpress',note:'Wood type stamped into cream paper, set by hand a little unevenly. Letters stamp down.'},
   {id:'stitch',group:'displays',name:'Cross-stitch',note:'Letters stitched in tiny red Xs on linen, like an alphabet sampler.'},
+  {id:'flipdot',group:'displays',name:'Flip-dot',note:'A bus or train destination sign: letters made of round discs flipped to yellow on a black panel. The dots flip over as each letter arrives.'},
   {id:'geesbend',group:'quilts',name:'Gee’s Bend',note:'After the quilters of Gee’s Bend, Alabama: improvised bars of worn denim, khaki and red, denim flaps.'},
   {id:'starbethlehem',group:'quilts',name:'Star of Bethlehem',note:'Eight-pointed stars pieced from small diamonds in rings of blue, red, gold and green, on cream.'},
   {id:'buttoncopy',group:'cities',city:'Los Angeles',name:'Button Copy',note:'Caltrans freeway signs: highway green, white letters set with reflector buttons, a white border and bolts.'},

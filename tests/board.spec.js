@@ -99,6 +99,14 @@ test('a board on the old Worn style becomes Classic with Worn on',async({browser
   noErrors(page);
 });
 
+test('a board on a retired style becomes Classic, and retired favorites drop out',async({browser})=>{
+  const page=await device(browser,{storage:{'beta2.fb.style':'"hagia"','beta2.fb.favStyles':'["hagia","googie","jantar"]'}}); await page.goto('/');
+  expect(await stored(page,'style')).toBe('classic');
+  await expect(page.locator('#board')).toHaveAttribute('data-style','classic');
+  expect(await page.evaluate(()=>favStyles)).toEqual(['googie']);
+  noErrors(page);
+});
+
 test('loads cleanly when the scripts arrive slowly, as on a TV',async({browser})=>{
   for(const q of ['','?tv','?remote']){
     const page=await device(browser,{width:1920,height:1080});

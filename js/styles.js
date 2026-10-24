@@ -38,6 +38,8 @@ const BOARD_STYLES=[
   {id:'william',group:'museum',name:'William',note:'The Met’s faience hippo: glazed turquoise flaps, black-painted letters.'},
   {id:'iznik',group:'museum',name:'Iznik',note:'Ottoman tiles from Iznik: white flaps, cobalt letters, a border of rosettes.'},
   {id:'tiffany',group:'museum',name:'Tiffany',note:'Tiffany Studios’ Autumn Landscape window: opalescent flaps and a sunset of leaded glass.'},
+  {id:'geesbend',group:'quilts',name:'Gee’s Bend',note:'After the quilters of Gee’s Bend, Alabama: improvised bars of worn denim, khaki and red, denim flaps.'},
+  {id:'starbethlehem',group:'quilts',name:'Star of Bethlehem',note:'Eight-pointed stars pieced from small diamonds in rings of blue, red, gold and green, on cream.'},
   {id:'buttoncopy',group:'cities',city:'Los Angeles',name:'Button Copy',note:'Caltrans freeway signs: highway green, white letters set with reflector buttons, a white border and bolts.'},
   {id:'googie',group:'cities',city:'Los Angeles',name:'Googie',note:'Coffee-shop modern and the LAX Theme Building: turquoise, starbursts and boomerangs, rounded cream flaps.'},
   {id:'stahl',group:'cities',city:'Los Angeles',name:'Stahl House',note:'Pierre Koenig’s glass house above the city: night flaps, a thin steel edge, city lights below.'},

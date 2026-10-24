@@ -122,7 +122,7 @@ const STYLE_MECH={glow:'pixel',neon:'pixel',nixie:'pixel',
   marinedrive:'ceramic',ekimei:'ceramic',iznik:'ceramic',william:'ceramic',tiffany:'ceramic',googie:'ceramic',
   jetage:'tin',buttoncopy:'tin',stahl:'tin',
   calcadao:'stone',barragan:'stone',letterpress:'wood',
-  bojagi:'soft',hakka:'soft',geesbend:'soft',letterboard:'soft',stitch:'soft',chalk:'soft',starbethlehem:'soft',matyo:'soft',splash:'soft',ikarus:'roll'};
+  bojagi:'soft',hakka:'soft',geesbend:'soft',letterboard:'soft',stitch:'soft',starbethlehem:'soft',matyo:'soft',splash:'soft',ikarus:'roll'};
 const mechNow=()=>{const b=$('board');return MECH[STYLE_MECH[b&&b.dataset.style]]||MECH.flap};
 function mechFlap(t,k,p,M){
   if(M.pixel){tone(t,{wave:'square',freq:r(840,920)*p,to:640*p,gain:.06*k,dur:.025});return}

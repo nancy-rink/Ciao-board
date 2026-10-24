@@ -70,8 +70,6 @@ const STYLE_ART={
     text:'Theater staff climbed ladders to slide plastic letters onto rails in front of a lit panel, spelling out the week’s films under a ring of bulbs.'},
   letterboard:{work:'Felt letter boards',when:'mid-20th century onward',tag:'Felt letter boards',
     text:'Boards of ribbed felt with push-in plastic letters listed diner menus, office directories and hymn numbers. They have come back as signs for kitchens and front halls.'},
-  chalk:{work:'Slate chalkboards',when:'19th century onward',tag:'Chalkboards',
-    text:'Schoolrooms took up slate blackboards in the 1800s, and cafés still chalk the day’s menu by hand, smudges and all.'},
   letterpress:{work:'Wood type',when:'19th century',where:'United States and Britain',tag:'Wood type',see:'Hamilton Wood Type & Printing Museum, Two Rivers, Wisconsin.',
     text:'Big letters for posters were cut from end-grain wood, set by hand and printed on a press, leaving a slight bite in the paper and ink that is never quite even.'},
   stitch:{work:'Sampler',by:'Evelina Hull',when:'1806',where:'Charlestown, Massachusetts',tag:'The Met, 1806',met:14058,img:'ad/web-large/119436.jpg',

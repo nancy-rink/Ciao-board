@@ -60,9 +60,9 @@ async function cvDrawRow(x,row,pal,w,h,dpr){
     x.fillStyle=pal.seam; x.fillRect(ox,oy+h/2-Math.max(1,dpr)/2,w,Math.max(1,dpr));
   });
 }
-// Display styles aren't split-flap boards: a nixie tube glows, a marquee letter slots in, chalk is drawn. Their letters change
+// Display styles aren't split-flap boards: a nixie tube glows, a marquee letter slots in, wood type stamps down. Their letters change
 // in place, straight to the new one, with the style's own animation, and always as page elements so the glow and texture show.
-const DISPLAYS={nixie:1,marquee:1,letterboard:1,chalk:1,letterpress:1,stitch:1};
+const DISPLAYS={nixie:1,marquee:1,letterboard:1,letterpress:1,stitch:1};
 const isDisplay=()=>!!DISPLAYS[(document.getElementById('board')||{dataset:{}}).dataset.style];
 async function buildAtlas(){
   const gen=++atlasGen;

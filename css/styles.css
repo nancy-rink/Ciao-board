@@ -379,22 +379,20 @@
 [data-style="geesbend"] .t,[data-style="starbethlehem"] .t{font-weight:var(--tile-w,600)}
 /* Displays: boards that aren't split-flap. No flaps, no split line; the two halves read as one face, and each style
    brings its own surface, letters and entry animation (the engine sets data-k a/b on a tile each time it changes). */
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="chalk"],[data-style="letterpress"],[data-style="stitch"]) :is(.f,.g){display:none}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="chalk"],[data-style="letterpress"],[data-style="stitch"]) .t::after{display:none}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="chalk"],[data-style="letterpress"],[data-style="stitch"]) .t::before{background:none}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="chalk"],[data-style="letterpress"],[data-style="stitch"]) .h{background:transparent;border-radius:0;box-shadow:none!important}
-:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="chalk"],[data-style="letterpress"],[data-style="stitch"]) .t{box-shadow:none!important;font-weight:var(--tile-w,600)}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) :is(.f,.g){display:none}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .t::after{display:none}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .t::before{background:none}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .h{background:transparent;border-radius:0;box-shadow:none!important}
+:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .t{box-shadow:none!important;font-weight:var(--tile-w,600)}
 @keyframes dispA{from{opacity:0}to{opacity:1}}
 @keyframes dispB{from{opacity:0}to{opacity:1}}
 @keyframes slotA{from{opacity:0;transform:translateY(-.9em)}to{opacity:1;transform:none}}
 @keyframes slotB{from{opacity:0;transform:translateY(-.9em)}to{opacity:1;transform:none}}
 @keyframes popA{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
 @keyframes popB{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
-@keyframes drawA{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
-@keyframes drawB{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 @keyframes stampA{0%{opacity:0;transform:scale(1.35)}60%{opacity:1;transform:scale(.97)}100%{transform:none}}
 @keyframes stampB{0%{opacity:0;transform:scale(1.35)}60%{opacity:1;transform:scale(.97)}100%{transform:none}}
-@media (prefers-reduced-motion:reduce){:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="chalk"],[data-style="letterpress"],[data-style="stitch"]) .h span{animation:none!important}}
+@media (prefers-reduced-motion:reduce){:is([data-style="nixie"],[data-style="marquee"],[data-style="letterboard"],[data-style="letterpress"],[data-style="stitch"]) .h span{animation:none!important}}
 
 /* Nixie tubes: orange neon glowing on shaped wires inside glass, with the fine anode mesh in front */
 [data-style="nixie"]{
@@ -430,37 +428,22 @@
 [data-style="marquee"] .t[data-k="b"] .h span{animation:slotB .26s ease-out}
 body.lite [data-style="marquee"] .grid{box-shadow:none}
 
-/* Felt letter board: white push-in letters on black ribbed felt, each set a little crooked, in an oak frame */
+/* Felt letter board: white push-in letters on black ribbed felt, each set a little crooked, in a slim matte-black frame */
 [data-style="letterboard"]{
-  --frame:#b88a52; --frame-edge:#cfa36a; --frame-r:.3cqw; --frame-pad:3cqw;
-  --bevel:inset 0 0 0 .3cqw #9a6f3c;
+  --frame:#1c1c1c; --frame-edge:#3a3a3a; --frame-r:.4cqw; --frame-pad:1.6cqw;
+  --bevel:inset 0 .12cqw 0 #4a4a4a,inset 0 -.15cqw 0 #0a0a0a;
   --tile:#141414; --ink:#f3f3ee; --seam:transparent; --glow:0 .1cqw .15cqw #000c;
   --c-w:#f3f3ee; --c-r:#e0523a; --c-o:#f08a3a; --c-y:#f2c94c; --c-g:#5fb07a; --c-b:#5a8ad8; --c-v:#a07ad0;
   --f-tile:"Archivo",Arial,sans-serif; --tile-w:600; --tile-stretch:92%; --tile-size:3.1cqw;
   --wall:#151311; --ui:#f3efe8; --muted:#aaa296; --line:#2a2622; --panel:#1b1916; --panel-2:#23201c;
-  --accent:#e9c38a; --accent-ink:#231a08; --ok:#5fc08a; --warn:#ff8a7d;
+  --accent:#e9e6de; --accent-ink:#141414; --ok:#5fc08a; --warn:#ff8a7d;
 }
-[data-style="letterboard"].board,[data-style="letterboard"] .board,.minib[data-style="letterboard"]{background:repeating-linear-gradient(92deg,#b88a52 0 6px,#ad7f48 6px 9px,#c29660 9px 15px),#b88a52}
+[data-style="letterboard"].board,[data-style="letterboard"] .board,.minib[data-style="letterboard"]{background:linear-gradient(160deg,#2c2c2c,#161616 45%,#232323)}
 [data-style="letterboard"] .grid,.minib[data-style="letterboard"] .g6{background:repeating-linear-gradient(0deg,#191919 0 .32cqw,#0c0c0c .32cqw .64cqw);padding:.6cqw;box-sizing:border-box}
 .minib[data-style="letterboard"] .g6{background:repeating-linear-gradient(0deg,#191919 0 3px,#0c0c0c 3px 6px)}
 [data-style="letterboard"] .t span{rotate:calc(var(--jx,0) * 7deg);translate:0 calc(var(--jy,0) * .35cqw)}
 [data-style="letterboard"] .t[data-k="a"] .h span{animation:popA .22s ease-out}
 [data-style="letterboard"] .t[data-k="b"] .h span{animation:popB .22s ease-out}
-
-/* Chalkboard: hand-chalked letters on slate, drawn in left to right, with old smudges, in a wooden frame */
-[data-style="chalk"]{
-  --frame:#8a5a32; --frame-edge:#a06c40; --frame-r:.3cqw; --frame-pad:2.8cqw 2.8cqw 4cqw;
-  --bevel:inset 0 -1.4cqw 0 #8a5a32,inset 0 -1.7cqw 0 #6e4626;
-  --tile:#2f3836; --ink:#f2f2ea; --seam:transparent; --glow:0 0 .12cqw #ffffff55;
-  --c-w:#f2f2ea; --c-r:#f08a8a; --c-o:#f4b07a; --c-y:#f6e08a; --c-g:#9ad8a8; --c-b:#9ac0f0; --c-v:#c8a8e8;
-  --f-tile:"Patrick Hand","Comic Sans MS",cursive; --tile-w:400; --tile-size:3.6cqw;
-  --wall:#141917; --ui:#eef0ea; --muted:#a6b0aa; --line:#27302d; --panel:#1a201e; --panel-2:#212826;
-  --accent:#f6e08a; --accent-ink:#1d1600; --ok:#9ad8a8; --warn:#f08a8a;
-}
-[data-style="chalk"].board,[data-style="chalk"] .board,.minib[data-style="chalk"]{background:linear-gradient(#e8e4d8,#e8e4d8) 30% calc(100% - .6cqw)/12% .5cqw no-repeat,repeating-linear-gradient(90deg,#8a5a32 0 7px,#7e5229 7px 10px,#94643a 10px 16px)}
-[data-style="chalk"] .grid,.minib[data-style="chalk"] .g6{background:radial-gradient(ellipse 30% 40% at 20% 30%,#ffffff12,transparent),radial-gradient(ellipse 35% 30% at 75% 70%,#ffffff0e,transparent),#2f3836;padding:.6cqw;box-sizing:border-box}
-[data-style="chalk"] .t[data-k="a"] .h span{animation:drawA .32s linear}
-[data-style="chalk"] .t[data-k="b"] .h span{animation:drawB .32s linear}
 
 /* Letterpress: wood type stamped into cream paper, set by hand a little unevenly */
 [data-style="letterpress"]{

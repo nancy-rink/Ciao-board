@@ -72,7 +72,7 @@ test('display styles change letters in place, even in Smooth mode, and leave not
   const page=await device(browser); await page.goto('/');
   await page.evaluate(()=>{anim.perf='smooth';applyAnim();send('CLASSIC FIRST\n{w}{w}{w}')});
   await page.waitForTimeout(400);                                               // switch partway through the flips
-  for(const id of ['nixie','marquee','letterboard','chalk','letterpress','stitch']){
+  for(const id of ['nixie','marquee','letterboard','letterpress','stitch']){
     await page.evaluate(i=>{applyStyle(i);send('HELLO '+i.toUpperCase())},id);
     await expect.poll(()=>page.evaluate(()=>!busy)).toBe(true);
     const r=await page.evaluate(()=>({canvas:document.getElementById('grid').classList.contains('canvas'),

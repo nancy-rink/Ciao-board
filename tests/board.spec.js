@@ -46,6 +46,28 @@ test('the book channel reads a chapter through the day, and the next one tomorro
   noErrors(page);
 });
 
+test('the word of the day: every word fits the board, in English and French',async({browser})=>{
+  const page=await device(browser);
+  await page.clock.install({time:new Date('2026-10-24T09:00:00')});
+  await page.goto('/');
+  await page.click('#tab-show'); await page.click('.chan[data-id="word"] .chan-opts');
+  for(const lang of ['en','fr']){
+    await page.selectOption('#wordLang',lang);
+    const bad=await page.evaluate(async()=>{const l=await wordLoad();const out=[];
+      l.forEach(e=>{const pages=[WORD_LANG[word.lang].head+'\n\n'+e.w+'\n'+e.pos,e.def,'"'+e.ex+'"'].concat(e.tr?['IN ENGLISH:\n"'+e.tr+'"']:[]);
+        pages.forEach(p=>{const s=p.replace(/\{[a-z]\}/g,'').replace(/\n/g,' ').normalize('NFC'),t=tokenize(s);if(layout(p).length>ROWS||t.some((c,i)=>c===' '&&s[i]!==' '))out.push(e.w+': '+p)})});return out});
+    expect(bad).toEqual([]);                                                    // nothing too long, no letter the board lacks
+  }
+  await page.click('#wordBtn');
+  await expect(page.locator('#wordStatus')).toContainText('Today’s French word:');
+  const w=await page.evaluate(()=>wordEntry().w);
+  await page.clock.fastForward('24:00:00');                                     // a new word the next day
+  await page.selectOption('#wordLang','fr');
+  await expect.poll(()=>page.evaluate(()=>wordEntry().w)).not.toBe(w);
+  expect(await stored(page,'mode')).toBe('word');
+  noErrors(page);
+});
+
 test('no sideways scroll on a phone',async({browser})=>{
   const page=await device(browser,{width:360,height:780,phone:true}); await page.goto('/');
   await page.waitForTimeout(800);
@@ -74,6 +96,14 @@ test('a board on the old Worn style becomes Classic with Worn on',async({browser
   expect(await stored(page,'style')).toBe('classic');
   expect(await stored(page,'aged')).toBe(true);
   await expect(page.locator('#board')).toHaveAttribute('data-aged','');
+  noErrors(page);
+});
+
+test('a board on a retired style becomes Classic, and retired favorites drop out',async({browser})=>{
+  const page=await device(browser,{storage:{'beta2.fb.style':'"hagia"','beta2.fb.favStyles':'["hagia","googie","jantar"]'}}); await page.goto('/');
+  expect(await stored(page,'style')).toBe('classic');
+  await expect(page.locator('#board')).toHaveAttribute('data-style','classic');
+  expect(await page.evaluate(()=>favStyles)).toEqual(['googie']);
   noErrors(page);
 });
 

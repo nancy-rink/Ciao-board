@@ -1,7 +1,7 @@
 // Shared basics (constants, storage, $), the tiles, the canvas renderer for Smooth mode, and flap paths.
 const COLS=22, ROWS=6; let TICK=110;
 const COLORS={r:'--c-r',o:'--c-o',y:'--c-y',g:'--c-g',b:'--c-b',v:'--c-v',w:'--c-w'};
-const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°',...'ÁÉÍÓÚÑÃÕÇÂÊÔÀÜÖŐŰ','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
+const CHARS=[' ',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',...'1234567890',...'!@#$()-+&=;:\'"%,./?°',...'ÁÉÍÓÚÑÃÕÇÂÊÔÀÜÖŐŰÈÎÏÛÙËŒ','{r}','{o}','{y}','{g}','{b}','{v}','{w}'];
 const IDX=new Map(CHARS.map((c,i)=>[c,i]));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);

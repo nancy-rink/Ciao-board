@@ -186,7 +186,7 @@ function frShow(m){
 // After the hold, go back to whatever the board was doing
 function frResume(p){
   if(p.sched&&schedOn){schedKey='';schedApply();return}
-  const go={clock:startClock,weather:startWeather,surf:startSurf,calendar:startCalendar,news:startNews,book:startBook,art:()=>startArt(artCur),rotating:()=>{mode='';$('rotateBtn').click()}}[p.mode];
+  const go={clock:startClock,weather:startWeather,surf:startSurf,calendar:startCalendar,news:startNews,book:startBook,word:startWord,art:()=>startArt(artCur),rotating:()=>{mode='';$('rotateBtn').click()}}[p.mode];
   if(go)go(); else send(p.text||'');
 }
 function frRender(){

@@ -278,6 +278,19 @@
         </div>
         <p class="hint">The next chapter comes up each morning; very short chapters share a day with the next one. Each book keeps its place: switch to another and back, and it picks up where you were. Boards that start a book on the same day show the same page at the same time.</p>
       </section>
+      <section class="pane" id="pane-word" hidden>
+        <div class="pane-head">
+          <div><h2>Word of the day</h2><p class="sub" id="wordStatus">A new word every day, the same on every board. It changes at midnight.</p></div>
+          <button class="go primary" id="wordBtn" type="button"><span class="when-off">Show the word</span><span class="when-on">Stop</span></button>
+        </div>
+        <div class="fields">
+          <label class="field" for="wordLang"><span>Language</span><select id="wordLang"></select></label>
+          <label class="field" for="wordEvery"><span>Turn the page every</span>
+            <select id="wordEvery"><option value="10">10 sec</option><option value="20">20 sec</option><option value="30">30 sec</option><option value="60">1 min</option></select>
+          </label>
+        </div>
+        <p class="hint">The board shows the word, what it means, and an example. French words also show the example in English.</p>
+      </section>
       <section class="pane" id="pane-news" hidden>
         <div class="pane-head">
           <div><h2>News</h2><p class="sub" id="newsStatus">Headlines from BBC News, refreshed every 20 minutes.</p></div>
@@ -681,6 +694,7 @@
       <button type="button" data-ra="news"><i style="--fc:var(--c-r)"></i>News</button>
       <button type="button" data-ra="art"><i style="--fc:var(--c-b)"></i>Art</button>
       <button type="button" data-ra="saved"><i style="--fc:var(--c-o)"></i>Saved</button>
+      <button type="button" data-ra="word"><i style="--fc:var(--c-g)"></i>Word</button>
       <button type="button" data-ra="book"><i style="--fc:var(--c-y)"></i>Book</button>
       <button type="button" data-ra="plan"><i style="--fc:var(--c-v)"></i><span id="raPlanLbl">Day plan</span></button>
       <button type="button" data-ra="clear"><i style="--fc:var(--c-g)"></i>Clear</button>
@@ -688,6 +702,7 @@
     <div class="ra-chips" id="raNewsChips" hidden></div>
     <div class="ra-chips" id="raArtChips" hidden></div>
     <div class="ra-chips" id="raBookChips" hidden></div>
+    <div class="ra-chips" id="raWordChips" hidden></div>
     <h2>Style</h2>
     <div class="ra-stylebar">
       <button type="button" id="raPrev" aria-label="Previous style">‹</button>
@@ -746,19 +761,20 @@
   <p class="ab-style" id="abNote"></p>
   <div class="ab-acts"><a class="ab-link" id="abLink" href="#" target="_blank" rel="noopener" hidden>See it on metmuseum.org ↗</a><button type="button" class="primary" id="abTry">Try this style</button></div>
 </dialog>
-<script src="js/core.js?v=5a08526348"></script>
-<script src="js/engine.js?v=6c8dbfd421"></script>
+<script src="js/core.js?v=b4109b5420"></script>
+<script src="js/engine.js?v=52f6512b37"></script>
 <script src="js/sound.js?v=6fe0fdd7dc"></script>
-<script src="js/modes.js?v=f6468f0a1c"></script>
-<script src="js/friends.js?v=e96cce8ab8"></script>
-<script src="js/remote.js?v=7af9f4e43f"></script>
+<script src="js/modes.js?v=c228a83f15"></script>
+<script src="js/friends.js?v=2a244f411c"></script>
+<script src="js/remote.js?v=87fa777480"></script>
 <script src="js/art.js?v=9ebef47f0f"></script>
+<script src="js/word.js?v=4896dbbaba"></script>
 <script src="js/book.js?v=cca5957037"></script>
-<script src="js/wall.js?v=d86d3348b4"></script>
-<script src="js/ui.js?v=30214db0f2"></script>
+<script src="js/wall.js?v=9d5196d509"></script>
+<script src="js/ui.js?v=20130c83a3"></script>
 <script src="js/about.js?v=7e798ccfb0"></script>
 <script src="js/styles.js?v=33661d9a52"></script>
-<script src="js/start.js?v=7bbf2313a2"></script>
+<script src="js/start.js?v=fa3c41119a"></script>
 
 </body>
 

@@ -36,6 +36,7 @@ const CHANNELS=[
   {id:'saved',name:'Saved',sub:'Your saved messages',c:'o',text:()=>saved[0]||'NO SAVED\nMESSAGES YET',on:()=>mode==='rotating',put:()=>{if(saved.length){mode='';$('rotateBtn').click()}},ready:()=>saved.length>0},
   {id:'clock',name:'Clock',sub:'Time and date',c:'w',text:()=>clockText(),on:()=>mode==='clock',put:()=>startClock()},
   {id:'news',name:'News',sub:'BBC headlines',c:'r',text:()=>newsPreview(),on:()=>mode==='news',put:()=>startNews()},
+  {id:'word',name:'Word',sub:'Word of the day',c:'g',text:()=>wordText(),on:()=>mode==='word',put:()=>startWord()},
   {id:'book',name:'Book',sub:'A chapter a day',c:'v',cells:()=>bookCells(),on:()=>mode==='book',put:()=>startBook()},
   {id:'art',name:'Art',sub:'Color-tile pictures',c:'b',cells:()=>{const a=ART_BY[artCur]||ART[0];return artCells(a.frame?a.frame(0):a.rows)},on:()=>mode==='art'||(mode===''&&/^Picture: /.test(boardLabel||'')),put:()=>{const a=ART_BY[artCur]||ART[0];a.frame?startArt(a.id):showArt(a.id)}}
 ];
@@ -96,7 +97,7 @@ function endPreview(commit){
   renderChannels(); setStatus(busy?'Flipping':'Showing');
 }
 // Options: a channel's settings, in its existing panel; changing them doesn't put the channel on the board
-const DETAIL=['message','saved','clock','weather','surf','calendar','news','book','art','schedule'];
+const DETAIL=['message','saved','clock','weather','surf','calendar','news','word','book','art','schedule'];
 function openDetail(id){
   if(view!=='show')showView('show');
   endPreview(false);

@@ -1,0 +1,842 @@
+[
+{
+"w": "la flânerie",
+"pos": "nom féminin",
+"def": "Strolling with no aim, just to take in the city.",
+"ex": "J'adore la flânerie le dimanche.",
+"tr": "I love an aimless stroll on Sundays."
+},
+{
+"w": "flâner",
+"pos": "verbe",
+"def": "To stroll, to wander about.",
+"ex": "On a flâné le long de la Seine.",
+"tr": "We strolled along the Seine."
+},
+{
+"w": "le dépaysement",
+"pos": "nom masculin",
+"def": "The feeling of being somewhere new and unfamiliar.",
+"ex": "Ce voyage nous a offert un vrai dépaysement.",
+"tr": "This trip gave us a real change of scene."
+},
+{
+"w": "les retrouvailles",
+"pos": "nom féminin pluriel",
+"def": "A reunion with someone after a long time.",
+"ex": "Les retrouvailles à la gare étaient émouvantes.",
+"tr": "The reunion at the station was moving."
+},
+{
+"w": "le coup de foudre",
+"pos": "expression",
+"def": "Love at first sight (literally, a lightning strike).",
+"ex": "Pour eux, c'était le coup de foudre.",
+"tr": "For them, it was love at first sight."
+},
+{
+"w": "la joie de vivre",
+"pos": "nom féminin",
+"def": "Cheerful enjoyment of life.",
+"ex": "Elle déborde de joie de vivre.",
+"tr": "She's bursting with joie de vivre."
+},
+{
+"w": "chuchoter",
+"pos": "verbe",
+"def": "To whisper.",
+"ex": "Ils chuchotaient au fond de la classe.",
+"tr": "They were whispering at the back of the class."
+},
+{
+"w": "le crépuscule",
+"pos": "nom masculin",
+"def": "Dusk, twilight.",
+"ex": "Les réverbères s'allument au crépuscule.",
+"tr": "The streetlamps come on at dusk."
+},
+{
+"w": "l'aube",
+"pos": "nom féminin",
+"def": "Dawn.",
+"ex": "Nous sommes partis à l'aube.",
+"tr": "We left at dawn."
+},
+{
+"w": "la rêverie",
+"pos": "nom féminin",
+"def": "A daydream.",
+"ex": "Il était perdu dans sa rêverie.",
+"tr": "He was lost in his daydream."
+},
+{
+"w": "le papillon",
+"pos": "nom masculin",
+"def": "Butterfly.",
+"ex": "Un papillon s'est posé sur la fleur.",
+"tr": "A butterfly landed on the flower."
+},
+{
+"w": "la luciole",
+"pos": "nom féminin",
+"def": "Firefly.",
+"ex": "Les lucioles brillent dans le jardin.",
+"tr": "Fireflies are glowing in the garden."
+},
+{
+"w": "le pamplemousse",
+"pos": "nom masculin",
+"def": "Grapefruit.",
+"ex": "Je prends un jus de pamplemousse.",
+"tr": "I'll have a grapefruit juice."
+},
+{
+"w": "émerveiller",
+"pos": "verbe",
+"def": "To fill with wonder.",
+"ex": "Le spectacle a émerveillé les enfants.",
+"tr": "The show filled the children with wonder."
+},
+{
+"w": "la douceur",
+"pos": "nom féminin",
+"def": "Softness, gentleness, sweetness.",
+"ex": "La douceur du soir nous a surpris.",
+"tr": "The mildness of the evening surprised us."
+},
+{
+"w": "le bonheur",
+"pos": "nom masculin",
+"def": "Happiness.",
+"ex": "Le bonheur se trouve dans les petites choses.",
+"tr": "Happiness is found in the little things."
+},
+{
+"w": "épanoui",
+"pos": "adjectif",
+"def": "Blossoming; happy and fulfilled.",
+"ex": "Elle semble épanouie dans son travail.",
+"tr": "She seems happy and fulfilled in her work."
+},
+{
+"w": "la gourmandise",
+"pos": "nom féminin",
+"def": "A love of good food; a sweet treat.",
+"ex": "Ce gâteau est une vraie gourmandise.",
+"tr": "This cake is a real treat."
+},
+{
+"w": "le goûter",
+"pos": "nom masculin",
+"def": "An afternoon snack.",
+"ex": "Les enfants prennent leur goûter à quatre heures.",
+"tr": "The children have their snack at four."
+},
+{
+"w": "la grasse matinée",
+"pos": "expression",
+"def": "A lie-in; sleeping late.",
+"ex": "Dimanche, je fais la grasse matinée.",
+"tr": "On Sunday I'm sleeping in."
+},
+{
+"w": "le lèche-vitrines",
+"pos": "nom masculin",
+"def": "Window shopping (literally, window licking).",
+"ex": "On fait du lèche-vitrines rue de Rivoli.",
+"tr": "We're window shopping on the Rue de Rivoli."
+},
+{
+"w": "la boulangerie",
+"pos": "nom féminin",
+"def": "Bakery.",
+"ex": "La boulangerie ouvre à sept heures.",
+"tr": "The bakery opens at seven."
+},
+{
+"w": "le quotidien",
+"pos": "nom masculin",
+"def": "Daily life; also a daily newspaper.",
+"ex": "Le vélo fait partie de mon quotidien.",
+"tr": "Cycling is part of my daily life."
+},
+{
+"w": "la pagaille",
+"pos": "nom féminin",
+"def": "A mess, chaos.",
+"ex": "Quelle pagaille dans ta chambre!",
+"tr": "What a mess your room is!"
+},
+{
+"w": "pétillant",
+"pos": "adjectif",
+"def": "Sparkling, fizzy; lively.",
+"ex": "Une eau pétillante, s'il vous plaît.",
+"tr": "A sparkling water, please."
+},
+{
+"w": "dorénavant",
+"pos": "adverbe",
+"def": "From now on.",
+"ex": "Dorénavant, je me lève tôt.",
+"tr": "From now on, I'm getting up early."
+},
+{
+"w": "d'ailleurs",
+"pos": "adverbe",
+"def": "Besides; by the way.",
+"ex": "D'ailleurs, il commence à pleuvoir.",
+"tr": "Besides, it's starting to rain."
+},
+{
+"w": "quand même",
+"pos": "expression",
+"def": "Even so; all the same.",
+"ex": "C'est cher, mais je le prends quand même.",
+"tr": "It's expensive, but I'll take it anyway."
+},
+{
+"w": "bref",
+"pos": "adverbe",
+"def": "In short; anyway.",
+"ex": "Bref, on est rentrés tard.",
+"tr": "Anyway, we got home late."
+},
+{
+"w": "la bise",
+"pos": "nom féminin",
+"def": "A kiss on the cheek; also a cold north wind.",
+"ex": "On se fait la bise pour se dire bonjour.",
+"tr": "We greet each other with a kiss on the cheek."
+},
+{
+"w": "se débrouiller",
+"pos": "verbe",
+"def": "To manage, to get by.",
+"ex": "Je me débrouille en français.",
+"tr": "I get by in French."
+},
+{
+"w": "rigoler",
+"pos": "verbe",
+"def": "To laugh, to have fun (informal).",
+"ex": "On a bien rigolé hier soir.",
+"tr": "We had a good laugh last night."
+},
+{
+"w": "le copain",
+"pos": "nom masculin",
+"def": "A friend, a pal; also a boyfriend.",
+"ex": "Je sors avec des copains ce soir.",
+"tr": "I'm going out with friends tonight."
+},
+{
+"w": "chouette",
+"pos": "adjectif",
+"def": "Great, nice (informal); as a noun, an owl.",
+"ex": "C'est chouette, ton appartement!",
+"tr": "Your apartment is great!"
+},
+{
+"w": "le truc",
+"pos": "nom masculin",
+"def": "A thing, a whatsit; also a trick.",
+"ex": "Passe-moi le truc sur la table.",
+"tr": "Pass me the thing on the table."
+},
+{
+"w": "la flemme",
+"pos": "nom féminin",
+"def": "Can't-be-bothered laziness (informal).",
+"ex": "J'ai la flemme de cuisiner ce soir.",
+"tr": "I can't be bothered to cook tonight."
+},
+{
+"w": "le bouquin",
+"pos": "nom masculin",
+"def": "A book (informal).",
+"ex": "Tu as lu ce bouquin?",
+"tr": "Have you read this book?"
+},
+{
+"w": "la vitrine",
+"pos": "nom féminin",
+"def": "A shop window.",
+"ex": "Il y a une robe magnifique dans la vitrine.",
+"tr": "There's a gorgeous dress in the window."
+},
+{
+"w": "le parapluie",
+"pos": "nom masculin",
+"def": "Umbrella.",
+"ex": "N'oublie pas ton parapluie!",
+"tr": "Don't forget your umbrella!"
+},
+{
+"w": "l'éclaircie",
+"pos": "nom féminin",
+"def": "A sunny spell between showers.",
+"ex": "On attend une éclaircie pour sortir.",
+"tr": "We're waiting for a sunny spell to go out."
+},
+{
+"w": "la canicule",
+"pos": "nom féminin",
+"def": "A heatwave.",
+"ex": "Paris est en pleine canicule.",
+"tr": "Paris is in the middle of a heatwave."
+},
+{
+"w": "la brise",
+"pos": "nom féminin",
+"def": "A breeze.",
+"ex": "Une légère brise souffle de la mer.",
+"tr": "A light breeze is blowing in from the sea."
+},
+{
+"w": "le coucher de soleil",
+"pos": "nom masculin",
+"def": "Sunset.",
+"ex": "Le coucher de soleil sur la plage était superbe.",
+"tr": "The sunset over the beach was gorgeous."
+},
+{
+"w": "le paysage",
+"pos": "nom masculin",
+"def": "Landscape, scenery.",
+"ex": "Le paysage change à chaque saison.",
+"tr": "The landscape changes with every season."
+},
+{
+"w": "la falaise",
+"pos": "nom féminin",
+"def": "A cliff.",
+"ex": "Les falaises d'Étretat sont célèbres.",
+"tr": "The cliffs of Étretat are famous."
+},
+{
+"w": "le phare",
+"pos": "nom masculin",
+"def": "A lighthouse; also a car headlight.",
+"ex": "Le phare guide les bateaux la nuit.",
+"tr": "The lighthouse guides the boats at night."
+},
+{
+"w": "la marée",
+"pos": "nom féminin",
+"def": "The tide.",
+"ex": "À marée basse, on peut marcher jusqu'à l'île.",
+"tr": "At low tide, you can walk to the island."
+},
+{
+"w": "le coquillage",
+"pos": "nom masculin",
+"def": "A seashell.",
+"ex": "Les enfants ramassent des coquillages.",
+"tr": "The children are collecting seashells."
+},
+{
+"w": "la vague",
+"pos": "nom féminin",
+"def": "A wave.",
+"ex": "Les vagues sont énormes aujourd'hui.",
+"tr": "The waves are huge today."
+},
+{
+"w": "le quai",
+"pos": "nom masculin",
+"def": "A railway platform; a quay.",
+"ex": "Le train part du quai numéro trois.",
+"tr": "The train leaves from platform three."
+},
+{
+"w": "la gare",
+"pos": "nom féminin",
+"def": "A train station.",
+"ex": "Rendez-vous devant la gare à midi.",
+"tr": "Meet in front of the station at noon."
+},
+{
+"w": "le billet",
+"pos": "nom masculin",
+"def": "A ticket; also a banknote.",
+"ex": "J'ai acheté un billet aller-retour.",
+"tr": "I bought a round-trip ticket."
+},
+{
+"w": "composter",
+"pos": "verbe",
+"def": "To stamp a ticket before boarding.",
+"ex": "N'oubliez pas de composter votre billet.",
+"tr": "Don't forget to stamp your ticket."
+},
+{
+"w": "la correspondance",
+"pos": "nom féminin",
+"def": "A connecting train; also letters.",
+"ex": "J'ai raté ma correspondance à Lyon.",
+"tr": "I missed my connection in Lyon."
+},
+{
+"w": "le tableau des départs",
+"pos": "nom masculin",
+"def": "The departures board.",
+"ex": "Regarde le tableau des départs!",
+"tr": "Look at the departures board!"
+},
+{
+"w": "en retard",
+"pos": "expression",
+"def": "Late.",
+"ex": "Le train est en retard de dix minutes.",
+"tr": "The train is ten minutes late."
+},
+{
+"w": "l'horloge",
+"pos": "nom féminin",
+"def": "A clock.",
+"ex": "L'horloge de la gare indique midi.",
+"tr": "The station clock says noon."
+},
+{
+"w": "le carnet",
+"pos": "nom masculin",
+"def": "A notebook; also a book of tickets.",
+"ex": "J'écris tout dans mon carnet.",
+"tr": "I write everything in my notebook."
+},
+{
+"w": "la plume",
+"pos": "nom féminin",
+"def": "A feather; also a pen nib.",
+"ex": "Il écrit encore avec une plume.",
+"tr": "He still writes with a nib pen."
+},
+{
+"w": "le brouillon",
+"pos": "nom masculin",
+"def": "A rough draft.",
+"ex": "J'ai écrit un brouillon de ma lettre.",
+"tr": "I wrote a rough draft of my letter."
+},
+{
+"w": "l'esquisse",
+"pos": "nom féminin",
+"def": "A sketch.",
+"ex": "Le peintre a fait une esquisse au crayon.",
+"tr": "The painter made a pencil sketch."
+},
+{
+"w": "le chef-d'œuvre",
+"pos": "nom masculin",
+"def": "A masterpiece.",
+"ex": "La Joconde est un chef-d'œuvre.",
+"tr": "The Mona Lisa is a masterpiece."
+},
+{
+"w": "le vernissage",
+"pos": "nom masculin",
+"def": "The opening night of an art show.",
+"ex": "On est invités au vernissage vendredi.",
+"tr": "We're invited to the opening on Friday."
+},
+{
+"w": "la toile",
+"pos": "nom féminin",
+"def": "A canvas, a painting; also the web.",
+"ex": "Cette toile date de 1890.",
+"tr": "This painting dates from 1890."
+},
+{
+"w": "éblouir",
+"pos": "verbe",
+"def": "To dazzle.",
+"ex": "Le soleil m'éblouit.",
+"tr": "The sun is dazzling me."
+},
+{
+"w": "étincelant",
+"pos": "adjectif",
+"def": "Sparkling, glittering.",
+"ex": "La mer était étincelante ce matin.",
+"tr": "The sea was sparkling this morning."
+},
+{
+"w": "le clin d'œil",
+"pos": "nom masculin",
+"def": "A wink; a playful nod to something.",
+"ex": "Ce titre est un clin d'œil à Proust.",
+"tr": "This title is a nod to Proust."
+},
+{
+"w": "avoir le cafard",
+"pos": "expression",
+"def": "To feel down (literally, to have the cockroach).",
+"ex": "J'ai le cafard quand il pleut.",
+"tr": "I feel down when it rains."
+},
+{
+"w": "poser un lapin",
+"pos": "expression",
+"def": "To stand someone up (literally, to put down a rabbit).",
+"ex": "Il m'a posé un lapin hier soir.",
+"tr": "He stood me up last night."
+},
+{
+"w": "avoir la pêche",
+"pos": "expression",
+"def": "To feel great (literally, to have the peach).",
+"ex": "Ce matin, j'ai la pêche!",
+"tr": "I feel great this morning!"
+},
+{
+"w": "coûter les yeux de la tête",
+"pos": "expression",
+"def": "To cost an arm and a leg (literally, the eyes in your head).",
+"ex": "Ce sac coûte les yeux de la tête.",
+"tr": "This bag costs an arm and a leg."
+},
+{
+"w": "tomber dans les pommes",
+"pos": "expression",
+"def": "To faint (literally, to fall into the apples).",
+"ex": "Il a failli tomber dans les pommes.",
+"tr": "He nearly fainted."
+},
+{
+"w": "avoir un chat dans la gorge",
+"pos": "expression",
+"def": "To have a frog in your throat (literally, a cat).",
+"ex": "Pardon, j'ai un chat dans la gorge.",
+"tr": "Sorry, I have a frog in my throat."
+},
+{
+"w": "il pleut des cordes",
+"pos": "expression",
+"def": "It's pouring (literally, it's raining ropes).",
+"ex": "Prends ton parapluie, il pleut des cordes.",
+"tr": "Take your umbrella, it's pouring."
+},
+{
+"w": "mettre son grain de sel",
+"pos": "expression",
+"def": "To put in your two cents (literally, your grain of salt).",
+"ex": "Il faut toujours qu'il mette son grain de sel.",
+"tr": "He always has to put in his two cents."
+},
+{
+"w": "être dans la lune",
+"pos": "expression",
+"def": "To have your head in the clouds (literally, to be in the moon).",
+"ex": "Désolé, j'étais dans la lune.",
+"tr": "Sorry, I was miles away."
+},
+{
+"w": "raconter des salades",
+"pos": "expression",
+"def": "To tell tall tales (literally, to tell salads).",
+"ex": "Arrête de raconter des salades!",
+"tr": "Stop telling tall tales!"
+},
+{
+"w": "avoir d'autres chats à fouetter",
+"pos": "expression",
+"def": "To have bigger fish to fry (literally, other cats to whip).",
+"ex": "Désolé, j'ai d'autres chats à fouetter.",
+"tr": "Sorry, I have bigger fish to fry."
+},
+{
+"w": "la cerise sur le gâteau",
+"pos": "expression",
+"def": "The icing on the cake (literally, the cherry).",
+"ex": "Et le soleil, c'était la cerise sur le gâteau.",
+"tr": "And the sunshine was the icing on the cake."
+},
+{
+"w": "l'esprit de l'escalier",
+"pos": "expression",
+"def": "Thinking of the perfect reply too late (literally, staircase wit).",
+"ex": "J'ai trouvé la réponse ce soir: l'esprit de l'escalier!",
+"tr": "I thought of the answer tonight: too late!"
+},
+{
+"w": "le savoir-vivre",
+"pos": "nom masculin",
+"def": "Good manners, social graces.",
+"ex": "Il manque un peu de savoir-vivre.",
+"tr": "He's a bit lacking in manners."
+},
+{
+"w": "la bienveillance",
+"pos": "nom féminin",
+"def": "Kindness, goodwill.",
+"ex": "Elle parle aux élèves avec bienveillance.",
+"tr": "She speaks to the students with kindness."
+},
+{
+"w": "la tendresse",
+"pos": "nom féminin",
+"def": "Tenderness, affection.",
+"ex": "Il regarde sa fille avec tendresse.",
+"tr": "He looks at his daughter tenderly."
+},
+{
+"w": "l'amitié",
+"pos": "nom féminin",
+"def": "Friendship.",
+"ex": "Notre amitié dure depuis vingt ans.",
+"tr": "Our friendship has lasted twenty years."
+},
+{
+"w": "le câlin",
+"pos": "nom masculin",
+"def": "A cuddle, a hug.",
+"ex": "Viens, fais-moi un câlin.",
+"tr": "Come here, give me a hug."
+},
+{
+"w": "la nostalgie",
+"pos": "nom féminin",
+"def": "Nostalgia; homesickness.",
+"ex": "Cette chanson me remplit de nostalgie.",
+"tr": "This song fills me with nostalgia."
+},
+{
+"w": "le souvenir",
+"pos": "nom masculin",
+"def": "A memory; also a keepsake.",
+"ex": "J'ai de beaux souvenirs de cet été.",
+"tr": "I have lovely memories of that summer."
+},
+{
+"w": "dorloter",
+"pos": "verbe",
+"def": "To pamper.",
+"ex": "Ce week-end, je me dorlote.",
+"tr": "This weekend, I'm pampering myself."
+},
+{
+"w": "grignoter",
+"pos": "verbe",
+"def": "To nibble, to snack.",
+"ex": "J'aime grignoter des amandes.",
+"tr": "I like to nibble on almonds."
+},
+{
+"w": "savourer",
+"pos": "verbe",
+"def": "To savor.",
+"ex": "Savourez chaque bouchée.",
+"tr": "Savor every bite."
+},
+{
+"w": "la tartine",
+"pos": "nom féminin",
+"def": "A slice of bread with butter or jam.",
+"ex": "Une tartine et un café, s'il vous plaît.",
+"tr": "Bread and butter and a coffee, please."
+},
+{
+"w": "le croque-monsieur",
+"pos": "nom masculin",
+"def": "A toasted ham and cheese sandwich.",
+"ex": "Je prends un croque-monsieur.",
+"tr": "I'll have a croque-monsieur."
+},
+{
+"w": "le marché",
+"pos": "nom masculin",
+"def": "A market.",
+"ex": "On achète nos légumes au marché.",
+"tr": "We buy our vegetables at the market."
+},
+{
+"w": "le terroir",
+"pos": "nom masculin",
+"def": "The land and local character a food or wine comes from.",
+"ex": "Ce fromage a le goût du terroir.",
+"tr": "This cheese tastes of where it comes from."
+},
+{
+"w": "trinquer",
+"pos": "verbe",
+"def": "To clink glasses.",
+"ex": "Trinquons à notre amitié!",
+"tr": "Let's drink to our friendship!"
+},
+{
+"w": "santé!",
+"pos": "interjection",
+"def": "Cheers! (literally, health)",
+"ex": "Santé! À nous!",
+"tr": "Cheers! To us!"
+},
+{
+"w": "la terrasse",
+"pos": "nom féminin",
+"def": "A café's outdoor seating.",
+"ex": "On boit un verre en terrasse?",
+"tr": "Shall we have a drink outside?"
+},
+{
+"w": "le rendez-vous",
+"pos": "nom masculin",
+"def": "An appointment, a date, a meeting.",
+"ex": "J'ai rendez-vous chez le dentiste.",
+"tr": "I have a dentist appointment."
+},
+{
+"w": "le quartier",
+"pos": "nom masculin",
+"def": "A neighborhood.",
+"ex": "J'adore ce quartier.",
+"tr": "I love this neighborhood."
+},
+{
+"w": "la ruelle",
+"pos": "nom féminin",
+"def": "An alley, a lane.",
+"ex": "On s'est perdus dans les ruelles du Marais.",
+"tr": "We got lost in the lanes of the Marais."
+},
+{
+"w": "le réverbère",
+"pos": "nom masculin",
+"def": "A streetlamp.",
+"ex": "Les réverbères s'allument un à un.",
+"tr": "The streetlamps come on one by one."
+},
+{
+"w": "le pavé",
+"pos": "nom masculin",
+"def": "A paving stone, a cobblestone.",
+"ex": "Les pavés de Montmartre sont glissants.",
+"tr": "The cobblestones in Montmartre are slippery."
+},
+{
+"w": "l'ivresse",
+"pos": "nom féminin",
+"def": "Drunkenness; a heady thrill.",
+"ex": "Il a connu l'ivresse des sommets.",
+"tr": "He knew the thrill of the summits."
+},
+{
+"w": "la sérénité",
+"pos": "nom féminin",
+"def": "Serenity, calm.",
+"ex": "Elle a passé l'examen avec sérénité.",
+"tr": "She took the exam calmly."
+},
+{
+"w": "paisible",
+"pos": "adjectif",
+"def": "Peaceful.",
+"ex": "Le village est très paisible.",
+"tr": "The village is very peaceful."
+},
+{
+"w": "la lueur",
+"pos": "nom féminin",
+"def": "A glimmer, a faint light.",
+"ex": "Il reste une lueur d'espoir.",
+"tr": "There's still a glimmer of hope."
+},
+{
+"w": "scintiller",
+"pos": "verbe",
+"def": "To twinkle, to sparkle.",
+"ex": "Les étoiles scintillent.",
+"tr": "The stars are twinkling."
+},
+{
+"w": "la nuit blanche",
+"pos": "expression",
+"def": "A sleepless night (literally, a white night).",
+"ex": "J'ai passé une nuit blanche à lire.",
+"tr": "I stayed up all night reading."
+},
+{
+"w": "la sieste",
+"pos": "nom féminin",
+"def": "A nap.",
+"ex": "Une petite sieste après le déjeuner?",
+"tr": "A little nap after lunch?"
+},
+{
+"w": "bavarder",
+"pos": "verbe",
+"def": "To chat.",
+"ex": "On a bavardé pendant des heures.",
+"tr": "We chatted for hours."
+},
+{
+"w": "la veille",
+"pos": "nom féminin",
+"def": "The day or evening before.",
+"ex": "La veille du départ, on a fait les valises.",
+"tr": "The day before leaving, we packed."
+},
+{
+"w": "le lendemain",
+"pos": "nom masculin",
+"def": "The next day.",
+"ex": "Le lendemain, il faisait beau.",
+"tr": "The next day, the weather was lovely."
+},
+{
+"w": "autrefois",
+"pos": "adverbe",
+"def": "In the past, once upon a time.",
+"ex": "Autrefois, ce café était une gare.",
+"tr": "This café used to be a station."
+},
+{
+"w": "à bientôt",
+"pos": "expression",
+"def": "See you soon.",
+"ex": "Merci pour tout, et à bientôt!",
+"tr": "Thanks for everything, and see you soon!"
+},
+{
+"w": "le bout du monde",
+"pos": "expression",
+"def": "The ends of the earth; somewhere very remote.",
+"ex": "Ce village, c'est le bout du monde.",
+"tr": "This village is the back of beyond."
+},
+{
+"w": "la madeleine",
+"pos": "nom féminin",
+"def": "A small shell-shaped sponge cake.",
+"ex": "Une madeleine et un thé, comme chez Proust.",
+"tr": "A madeleine and tea, as in Proust."
+},
+{
+"w": "la valise",
+"pos": "nom féminin",
+"def": "A suitcase.",
+"ex": "Ma valise est trop lourde!",
+"tr": "My suitcase is too heavy!"
+},
+{
+"w": "la boussole",
+"pos": "nom féminin",
+"def": "A compass.",
+"ex": "Sans boussole, on s'est un peu perdus.",
+"tr": "Without a compass, we got a bit lost."
+},
+{
+"w": "rêvasser",
+"pos": "verbe",
+"def": "To daydream.",
+"ex": "Il rêvasse en regardant la pluie.",
+"tr": "He daydreams while watching the rain."
+},
+{
+"w": "le pique-nique",
+"pos": "nom masculin",
+"def": "A picnic.",
+"ex": "On fait un pique-nique au parc?",
+"tr": "Shall we have a picnic in the park?"
+}
+]

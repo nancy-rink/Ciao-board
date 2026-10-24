@@ -19,7 +19,7 @@ $('wallShift').onchange=()=>{wall.shift=$('wallShift').checked;saveWall()};
 setInterval(wallTick,30000); setTimeout(wallTick,0);
 
 // Day plan: what the board shows, and its style, by time of day
-const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],['book','Book: a chapter a day'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
+const SHOW_OPTS=[['message','A message'],['clock','Clock'],['saved','Rotate saved messages'],['news','BBC headlines'],['word','Word of the day'],['book','Book: a chapter a day'],...ART.map(a=>['art:'+a.id,'Art: '+a.name])];
 const sched=Object.assign({on:false,slots:[
   {t:'06:30',show:'message',text:'{y} DAWN PATROL {y}\nMALIBU 3-4 FT FAIR\nOFFSHORE TILL 10',style:'daylight'},
   {t:'08:00',show:'clock',text:'',style:'keep'},
@@ -57,6 +57,7 @@ function schedApply(){
     else if(s.show==='surf')startSurf();
     else if(s.show==='news'){if(mode!=='news')startNews()}
     else if(s.show==='book'){if(mode!=='book')startBook()}
+    else if(s.show==='word'){if(mode!=='word')startWord()}
     else if(s.show.startsWith('art:'))showArt(s.show.slice(4));
     else if(s.show==='saved'){if(mode!=='rotating'){mode='';$('rotateBtn').click()}}
   }finally{schedDriving=false}
@@ -113,7 +114,7 @@ sortSlots();
 function schedNextLabel(){
   const i=currentSlotIdx(); if(i<0)return '';
   const n=sched.slots[(i+1)%sched.slots.length];
-  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages',news:'News',book:'Book'};
+  const SHORT={message:'Message',calendar:'Calendar',clock:'Clock',weather:'Weather',surf:'Surf',saved:'Saved messages',news:'News',book:'Book',word:'Word'};
   return (SHORT[n.show]||(SHOW_OPTS.find(o=>o[0]===n.show)||[0,n.show])[1])+' at '+fmtSlotTime(n.t).replace(':00','');
 }
 function updateSubs(){
@@ -123,6 +124,7 @@ function updateSubs(){
   set('weather',wx.cities.length?wx.cities[0].name.split(',')[0]+(wx.cities.length>1?' +'+(wx.cities.length-1):''):'Add a city');
   const m=surfData.malibu; set('surf',m&&m.quality?'Malibu, '+String(m.quality).toLowerCase()+(m.height?', '+m.height:''):'Malibu and Venice');
   let c='Google Calendar'; if(calEvents){const now=new Date(),ev=calEvents.find(e=>!e.allDay&&e.end>now);c=ev?'Next: '+ev.title:'Nothing coming up'} set('calendar',c);
+  set('word',WORD_LANG[word.lang].name+' word of the day');
   set('book',bookInfo().title+', a chapter a day');
   set('news',newsData&&newsData.sections[news.section]?(newsData.sections[news.section].name==='Top stories'?'BBC top stories':'BBC '+newsData.sections[news.section].name.toLowerCase()):'BBC headlines');
   {const tv=rmTvs().find(l=>!l.pending),n=rmPhones().length;set('remote',tv?'Controlling '+tv.name:n?n+' phone'+(n>1?'s':'')+' paired':'Control your TV')}

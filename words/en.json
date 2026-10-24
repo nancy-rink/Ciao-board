@@ -1,0 +1,722 @@
+[
+{
+"w": "serendipity",
+"pos": "noun",
+"def": "Finding something good without looking for it.",
+"ex": "Meeting her on that train was pure serendipity."
+},
+{
+"w": "petrichor",
+"pos": "noun",
+"def": "The earthy smell that rises when rain falls on dry ground.",
+"ex": "After the storm, the whole garden smelled of petrichor."
+},
+{
+"w": "ephemeral",
+"pos": "adjective",
+"def": "Lasting only a very short time.",
+"ex": "The cherry blossoms are lovely but ephemeral."
+},
+{
+"w": "halcyon",
+"pos": "adjective",
+"def": "Calm, happy and peaceful, often of a time gone by.",
+"ex": "We still talk about the halcyon summers at the lake."
+},
+{
+"w": "mellifluous",
+"pos": "adjective",
+"def": "Sweet and smooth to listen to.",
+"ex": "The radio host had a warm, mellifluous voice."
+},
+{
+"w": "sanguine",
+"pos": "adjective",
+"def": "Cheerfully hopeful, even when things look hard.",
+"ex": "She stayed sanguine about the long delay."
+},
+{
+"w": "ebullient",
+"pos": "adjective",
+"def": "Overflowing with cheerful energy.",
+"ex": "He was ebullient after the good news."
+},
+{
+"w": "limerence",
+"pos": "noun",
+"def": "The giddy, all-consuming early stage of falling in love.",
+"ex": "They were deep in limerence, texting all night."
+},
+{
+"w": "sobriquet",
+"pos": "noun",
+"def": "A nickname.",
+"ex": "The Big Apple is a sobriquet for New York."
+},
+{
+"w": "quixotic",
+"pos": "adjective",
+"def": "Hopelessly idealistic and impractical.",
+"ex": "Fixing every clock in town was a quixotic plan."
+},
+{
+"w": "apricity",
+"pos": "noun",
+"def": "The warmth of the sun on a winter day.",
+"ex": "We sat on the steps and soaked up the apricity."
+},
+{
+"w": "flâneur",
+"pos": "noun",
+"def": "Someone who strolls a city just to watch it.",
+"ex": "He spent Sundays as a flâneur in the old town."
+},
+{
+"w": "wanderlust",
+"pos": "noun",
+"def": "A strong desire to travel.",
+"ex": "The departure board filled her with wanderlust."
+},
+{
+"w": "susurrus",
+"pos": "noun",
+"def": "A soft whispering or rustling sound.",
+"ex": "The susurrus of leaves lulled us to sleep."
+},
+{
+"w": "luminous",
+"pos": "adjective",
+"def": "Full of or giving off light.",
+"ex": "The sea was luminous under the full moon."
+},
+{
+"w": "gossamer",
+"pos": "noun",
+"def": "Something very light, thin and delicate.",
+"ex": "The curtains were made of white gossamer."
+},
+{
+"w": "effervescent",
+"pos": "adjective",
+"def": "Bubbly; lively and enthusiastic.",
+"ex": "Her effervescent laugh filled the room."
+},
+{
+"w": "nostalgia",
+"pos": "noun",
+"def": "A wistful longing for the past.",
+"ex": "Old train tickets fill me with nostalgia."
+},
+{
+"w": "cacophony",
+"pos": "noun",
+"def": "A harsh, jarring mix of sounds.",
+"ex": "The station was a cacophony of horns and voices."
+},
+{
+"w": "lagniappe",
+"pos": "noun",
+"def": "A small extra gift given with a purchase.",
+"ex": "The baker added a cookie as lagniappe."
+},
+{
+"w": "hygge",
+"pos": "noun",
+"def": "A cozy mood of comfort and togetherness.",
+"ex": "Candles, soup and friends: pure hygge."
+},
+{
+"w": "epiphany",
+"pos": "noun",
+"def": "A sudden, striking realization.",
+"ex": "Halfway up the hill, I had an epiphany."
+},
+{
+"w": "idyllic",
+"pos": "adjective",
+"def": "Peaceful and picturesque.",
+"ex": "They found an idyllic cottage by the river."
+},
+{
+"w": "resplendent",
+"pos": "adjective",
+"def": "Dazzling and splendid to look at.",
+"ex": "The hall was resplendent in gold and red."
+},
+{
+"w": "ineffable",
+"pos": "adjective",
+"def": "Too great to be put into words.",
+"ex": "The view from the summit was ineffable."
+},
+{
+"w": "penumbra",
+"pos": "noun",
+"def": "The partly shaded edge of a shadow.",
+"ex": "We stood in the penumbra of the old oak."
+},
+{
+"w": "crepuscular",
+"pos": "adjective",
+"def": "Of twilight, or active at dusk.",
+"ex": "Deer are crepuscular, so look for them at dusk."
+},
+{
+"w": "vespertine",
+"pos": "adjective",
+"def": "Of, in, or active in the evening.",
+"ex": "The garden is full of vespertine flowers."
+},
+{
+"w": "zephyr",
+"pos": "noun",
+"def": "A soft, gentle breeze.",
+"ex": "A warm zephyr drifted in from the sea."
+},
+{
+"w": "bucolic",
+"pos": "adjective",
+"def": "Of the pleasant, peaceful countryside.",
+"ex": "The train passed through bucolic farmland."
+},
+{
+"w": "verdant",
+"pos": "adjective",
+"def": "Green with grass or plants.",
+"ex": "Spring turned the valley verdant again."
+},
+{
+"w": "labyrinthine",
+"pos": "adjective",
+"def": "Twisting and complicated, like a maze.",
+"ex": "We got lost in the labyrinthine old streets."
+},
+{
+"w": "palimpsest",
+"pos": "noun",
+"def": "Something reused or changed that still shows traces of its past.",
+"ex": "The city is a palimpsest of old and new."
+},
+{
+"w": "ennui",
+"pos": "noun",
+"def": "Listless boredom.",
+"ex": "A rainy Sunday brought on a mild ennui."
+},
+{
+"w": "insouciant",
+"pos": "adjective",
+"def": "Casually unconcerned.",
+"ex": "He gave an insouciant shrug and walked on."
+},
+{
+"w": "raconteur",
+"pos": "noun",
+"def": "Someone who tells stories with skill and wit.",
+"ex": "Her grandfather was a born raconteur."
+},
+{
+"w": "bon vivant",
+"pos": "noun",
+"def": "Someone who enjoys good food, drink and company.",
+"ex": "A true bon vivant, he never skipped dessert."
+},
+{
+"w": "panache",
+"pos": "noun",
+"def": "Flamboyant confidence and style.",
+"ex": "She wore the red hat with panache."
+},
+{
+"w": "felicity",
+"pos": "noun",
+"def": "Great happiness; or an apt choice of words.",
+"ex": "They lived in quiet felicity by the sea."
+},
+{
+"w": "alacrity",
+"pos": "noun",
+"def": "Brisk and cheerful readiness.",
+"ex": "He accepted the invitation with alacrity."
+},
+{
+"w": "perspicacious",
+"pos": "adjective",
+"def": "Quick to notice and understand things.",
+"ex": "A perspicacious reader spots the clue early."
+},
+{
+"w": "sagacious",
+"pos": "adjective",
+"def": "Wise; showing sound judgment.",
+"ex": "Her sagacious advice saved the day."
+},
+{
+"w": "loquacious",
+"pos": "adjective",
+"def": "Very talkative.",
+"ex": "The loquacious driver chatted the whole way."
+},
+{
+"w": "taciturn",
+"pos": "adjective",
+"def": "Saying very little; reserved.",
+"ex": "The taciturn captain answered with a nod."
+},
+{
+"w": "garrulous",
+"pos": "adjective",
+"def": "Talking too much, especially about little things.",
+"ex": "A garrulous neighbor kept us at the gate."
+},
+{
+"w": "cogent",
+"pos": "adjective",
+"def": "Clear, logical and convincing.",
+"ex": "She made a cogent case for a later start."
+},
+{
+"w": "ubiquitous",
+"pos": "adjective",
+"def": "Seeming to be everywhere at once.",
+"ex": "Scooters are now ubiquitous in the city."
+},
+{
+"w": "juxtapose",
+"pos": "verb",
+"def": "To place side by side to show a contrast.",
+"ex": "The gallery juxtaposes old and new art."
+},
+{
+"w": "meander",
+"pos": "verb",
+"def": "To wander slowly, with no fixed course.",
+"ex": "The river meanders through the valley."
+},
+{
+"w": "peripatetic",
+"pos": "adjective",
+"def": "Traveling from place to place.",
+"ex": "He led a peripatetic life as a musician."
+},
+{
+"w": "sojourn",
+"pos": "noun",
+"def": "A short stay somewhere.",
+"ex": "After a brief sojourn in Lisbon, we flew home."
+},
+{
+"w": "vagabond",
+"pos": "noun",
+"def": "Someone who wanders without a settled home.",
+"ex": "He lived like a vagabond for a year."
+},
+{
+"w": "odyssey",
+"pos": "noun",
+"def": "A long, eventful journey.",
+"ex": "Getting home in the snow was an odyssey."
+},
+{
+"w": "itinerant",
+"pos": "adjective",
+"def": "Traveling from place to place, often for work.",
+"ex": "Itinerant painters once decorated these churches."
+},
+{
+"w": "respite",
+"pos": "noun",
+"def": "A short break from something hard.",
+"ex": "The shade gave a welcome respite from the heat."
+},
+{
+"w": "reverie",
+"pos": "noun",
+"def": "A pleasant daydream.",
+"ex": "The whistle broke her reverie."
+},
+{
+"w": "solace",
+"pos": "noun",
+"def": "Comfort in a time of sadness.",
+"ex": "She found solace in long walks."
+},
+{
+"w": "tranquil",
+"pos": "adjective",
+"def": "Calm and undisturbed.",
+"ex": "The lake was tranquil at dawn."
+},
+{
+"w": "serene",
+"pos": "adjective",
+"def": "Calm, peaceful and untroubled.",
+"ex": "Her face was serene as she slept."
+},
+{
+"w": "vivacious",
+"pos": "adjective",
+"def": "Lively and spirited.",
+"ex": "Our vivacious host greeted everyone by name."
+},
+{
+"w": "exuberant",
+"pos": "adjective",
+"def": "Full of energy and excitement.",
+"ex": "The exuberant crowd sang all the way home."
+},
+{
+"w": "jubilant",
+"pos": "adjective",
+"def": "Joyful, especially after a success.",
+"ex": "The team was jubilant after the win."
+},
+{
+"w": "felicitous",
+"pos": "adjective",
+"def": "Well suited; apt.",
+"ex": "It was a felicitous choice of words."
+},
+{
+"w": "dulcet",
+"pos": "adjective",
+"def": "Sweet and soothing to hear.",
+"ex": "The dulcet tones of a cello drifted down."
+},
+{
+"w": "lilt",
+"pos": "noun",
+"def": "A gentle rise and fall in the voice.",
+"ex": "She spoke with a soft Irish lilt."
+},
+{
+"w": "cadence",
+"pos": "noun",
+"def": "The rhythm or flow of sounds.",
+"ex": "I love the cadence of her poetry."
+},
+{
+"w": "crescendo",
+"pos": "noun",
+"def": "A gradual rise in loudness or intensity.",
+"ex": "The applause built to a crescendo."
+},
+{
+"w": "denouement",
+"pos": "noun",
+"def": "The final part of a story, where things are resolved.",
+"ex": "The denouement surprised everyone."
+},
+{
+"w": "soliloquy",
+"pos": "noun",
+"def": "A speech to oneself, often on stage.",
+"ex": "Hamlet's soliloquy is the most famous in English."
+},
+{
+"w": "epistolary",
+"pos": "adjective",
+"def": "Told through letters.",
+"ex": "Frankenstein opens as an epistolary novel."
+},
+{
+"w": "bibliophile",
+"pos": "noun",
+"def": "A lover of books.",
+"ex": "Every bibliophile needs a reading chair."
+},
+{
+"w": "lexicon",
+"pos": "noun",
+"def": "The vocabulary of a language or a person.",
+"ex": "Surfers have a lexicon all their own."
+},
+{
+"w": "etymology",
+"pos": "noun",
+"def": "The origin and history of a word.",
+"ex": "The etymology of salary goes back to salt."
+},
+{
+"w": "palindrome",
+"pos": "noun",
+"def": "A word that reads the same backward, like level.",
+"ex": "Racecar is a palindrome."
+},
+{
+"w": "onomatopoeia",
+"pos": "noun",
+"def": "A word that imitates a sound, like buzz.",
+"ex": "Clack and flap are onomatopoeia."
+},
+{
+"w": "oxymoron",
+"pos": "noun",
+"def": "Contradictory words put together, like deafening silence.",
+"ex": "Jumbo shrimp is an oxymoron."
+},
+{
+"w": "mnemonic",
+"pos": "noun",
+"def": "Something that helps you remember.",
+"ex": "A rhyme is a handy mnemonic."
+},
+{
+"w": "anachronism",
+"pos": "noun",
+"def": "Something out of its proper time.",
+"ex": "A wristwatch in a Roman film is an anachronism."
+},
+{
+"w": "zeitgeist",
+"pos": "noun",
+"def": "The spirit or mood of an era.",
+"ex": "Her songs captured the zeitgeist."
+},
+{
+"w": "ambrosial",
+"pos": "adjective",
+"def": "Exceptionally delicious or fragrant.",
+"ex": "The ambrosial smell of fresh bread filled the street."
+},
+{
+"w": "umami",
+"pos": "noun",
+"def": "A savory taste, one of the five basic tastes.",
+"ex": "Parmesan is rich in umami."
+},
+{
+"w": "gourmand",
+"pos": "noun",
+"def": "Someone who loves to eat well, sometimes too much.",
+"ex": "As a gourmand, he planned trips around restaurants."
+},
+{
+"w": "epicurean",
+"pos": "adjective",
+"def": "Devoted to refined pleasure, especially food.",
+"ex": "They planned an epicurean tour of Lyon."
+},
+{
+"w": "effulgent",
+"pos": "adjective",
+"def": "Shining brightly; radiant.",
+"ex": "An effulgent sunset lit the bay."
+},
+{
+"w": "incandescent",
+"pos": "adjective",
+"def": "Glowing with heat, or brilliantly passionate.",
+"ex": "The old bulbs gave an incandescent glow."
+},
+{
+"w": "iridescent",
+"pos": "adjective",
+"def": "Shimmering with changing colors.",
+"ex": "The beetle's wings were iridescent green."
+},
+{
+"w": "opalescent",
+"pos": "adjective",
+"def": "Showing milky, shifting colors, like an opal.",
+"ex": "Tiffany windows are made of opalescent glass."
+},
+{
+"w": "chiaroscuro",
+"pos": "noun",
+"def": "Strong contrast of light and dark in art.",
+"ex": "Caravaggio was a master of chiaroscuro."
+},
+{
+"w": "trompe l'oeil",
+"pos": "noun",
+"def": "Art that tricks the eye into seeing real objects.",
+"ex": "The painted window is a trompe l'oeil."
+},
+{
+"w": "vignette",
+"pos": "noun",
+"def": "A brief, vivid scene or description.",
+"ex": "The book is a series of small vignettes."
+},
+{
+"w": "sanctuary",
+"pos": "noun",
+"def": "A place of refuge or safety.",
+"ex": "The library was her sanctuary."
+},
+{
+"w": "nadir",
+"pos": "noun",
+"def": "The lowest point.",
+"ex": "Losing the keys was the nadir of the trip."
+},
+{
+"w": "zenith",
+"pos": "noun",
+"def": "The highest point; the sky straight overhead.",
+"ex": "At noon the sun is near its zenith."
+},
+{
+"w": "apogee",
+"pos": "noun",
+"def": "The highest point; a climax.",
+"ex": "The empire reached its apogee in the 1500s."
+},
+{
+"w": "equinox",
+"pos": "noun",
+"def": "When day and night are about the same length.",
+"ex": "The autumn equinox falls in late September."
+},
+{
+"w": "solstice",
+"pos": "noun",
+"def": "The longest or shortest day of the year.",
+"ex": "We watched the sunrise on the summer solstice."
+},
+{
+"w": "gloaming",
+"pos": "noun",
+"def": "Twilight; dusk.",
+"ex": "We walked home in the gloaming."
+},
+{
+"w": "sylvan",
+"pos": "adjective",
+"def": "Of the woods; full of trees.",
+"ex": "The path led to a sylvan glade."
+},
+{
+"w": "riparian",
+"pos": "adjective",
+"def": "On or by the bank of a river.",
+"ex": "Riparian trees keep the water cool."
+},
+{
+"w": "littoral",
+"pos": "adjective",
+"def": "Of the shore of a sea or lake.",
+"ex": "Crabs thrive in the littoral zone."
+},
+{
+"w": "archipelago",
+"pos": "noun",
+"def": "A group of islands.",
+"ex": "The ferry tours the archipelago in summer."
+},
+{
+"w": "estuary",
+"pos": "noun",
+"def": "Where a river widens to meet the sea.",
+"ex": "Herons fish in the estuary at low tide."
+},
+{
+"w": "mercurial",
+"pos": "adjective",
+"def": "Changing mood quickly and unpredictably.",
+"ex": "The mercurial weather kept us guessing."
+},
+{
+"w": "indefatigable",
+"pos": "adjective",
+"def": "Never tiring.",
+"ex": "The indefatigable guide walked us for hours."
+},
+{
+"w": "tenacious",
+"pos": "adjective",
+"def": "Holding on firmly; persistent.",
+"ex": "A tenacious vine climbed the old wall."
+},
+{
+"w": "intrepid",
+"pos": "adjective",
+"def": "Fearless and adventurous.",
+"ex": "Intrepid travelers crossed the pass on foot."
+},
+{
+"w": "audacious",
+"pos": "adjective",
+"def": "Boldly daring.",
+"ex": "It was an audacious plan, and it worked."
+},
+{
+"w": "magnanimous",
+"pos": "adjective",
+"def": "Generous and forgiving.",
+"ex": "She was magnanimous in victory."
+},
+{
+"w": "benevolent",
+"pos": "adjective",
+"def": "Kind and well-meaning.",
+"ex": "A benevolent stranger paid for our coffee."
+},
+{
+"w": "altruism",
+"pos": "noun",
+"def": "Selfless concern for others.",
+"ex": "Volunteering is altruism in action."
+},
+{
+"w": "camaraderie",
+"pos": "noun",
+"def": "Trust and friendship within a group.",
+"ex": "The crew shared a warm camaraderie."
+},
+{
+"w": "conviviality",
+"pos": "noun",
+"def": "Friendly, lively good cheer.",
+"ex": "The dinner was full of conviviality."
+},
+{
+"w": "kaleidoscope",
+"pos": "noun",
+"def": "A constantly changing pattern or mix.",
+"ex": "The market was a kaleidoscope of color."
+},
+{
+"w": "eloquent",
+"pos": "adjective",
+"def": "Fluent and moving in speech or writing.",
+"ex": "He gave an eloquent toast to the couple."
+},
+{
+"w": "joie de vivre",
+"pos": "noun",
+"def": "Cheerful enjoyment of life.",
+"ex": "Her joie de vivre was catching."
+},
+{
+"w": "savoir-faire",
+"pos": "noun",
+"def": "The knack of acting well in any situation.",
+"ex": "He handled the mix-up with savoir-faire."
+},
+{
+"w": "idiosyncrasy",
+"pos": "noun",
+"def": "A habit or quirk peculiar to one person.",
+"ex": "Humming while reading is her idiosyncrasy."
+},
+{
+"w": "sonorous",
+"pos": "adjective",
+"def": "Deep, full and rich in sound.",
+"ex": "The church bells were slow and sonorous."
+},
+{
+"w": "ethereal",
+"pos": "adjective",
+"def": "Delicate and light, as if not of this world.",
+"ex": "The choir had an ethereal sound."
+},
+{
+"w": "wistful",
+"pos": "adjective",
+"def": "Gently sad and longing.",
+"ex": "He gave a wistful look at the old station."
+}
+]

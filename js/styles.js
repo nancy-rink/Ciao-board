@@ -8,22 +8,15 @@ const BOARD_STYLES=[
   {id:'harbor',group:'everyday',name:'Harbor',note:'Navy flaps, sand letters.'},
   {id:'glow',group:'everyday',name:'Glow',note:'Glowing amber pixels.'},
   {id:'solari',group:'machines',name:'Solari',note:'Station board: matte black, hinge pins, crisp white letters.'},
-  {id:'pragotron',group:'machines',name:'Euro rail',note:'Gray-black flaps with a red route stripe.'},
   {id:'patapata',group:'machines',name:'Patapata',note:'Platform board from Japanese stations: rows set flush left, black flaps.'},
   {id:'cifra',group:'machines',name:'Cifra clock',note:'Rounded off-white flaps in a brown bakelite frame.'},
-  {id:'caslon',group:'machines',name:'Caslon 101',note:'Copal’s 1970s flip clock: serif letters, beige case, orange lamp.'},
-  {id:'ticket',group:'machines',name:'Card ticket',note:'Edmondson card tickets, used by railways from Britain to India and Taiwan: green pasteboard in a wooden rack.'},
   {id:'ikarus',group:'machines',name:'Ikarus',note:'Budapest’s blue Ikarus buses, 1970s and 80s: a black roll-sign with white letters, set in the blue body.'},
   {id:'sbb',group:'machines',name:'SBB clock',note:'Hans Hilfiker’s Swiss railway clock, 1944: a white face, black letters and the red disc of the second hand.'},
-  {id:'weltzeituhr',group:'machines',name:'Weltzeituhr',note:'East Berlin’s 1969 World Time Clock at Alexanderplatz: brushed aluminium and a ring of time-zone colors.'},
-  {id:'metropolitana',group:'wayfinding',name:'Metropolitana',note:'Milan Metro by Albini and Noorda, 1964: matte black, ivory letters, a red band on top.'},
   {id:'standard',group:'wayfinding',name:'Standard',note:'New York subway standards: white flaps, black letters, line colors.'},
   {id:'doublearrow',group:'wayfinding',name:'Double Arrow',note:'British Rail: light flaps above, dark below, a red strip.'},
   {id:'oxblood',group:'wayfinding',name:'Oxblood',note:'Leslie Green’s 1906 tube stations: an oxblood glazed frame, cream tiles, green letters.'},
-  {id:'foldalatti',group:'wayfinding',name:'Földalatti',note:'Budapest’s 1896 Millennium Underground, the first on the continent: white glazed tiles, oxblood letters, a dark timber frame.'},
   {id:'neon',group:'wayfinding',name:'Warsaw Neon',note:'The hand-bent neon signs of 1960s Warsaw: glowing pink tubes on a dark brick wall.'},
   {id:'ekimei',group:'wayfinding',name:'Ekimei',note:'Station name signs: rounded gothic letters, white flaps.'},
-  {id:'taipei',group:'wayfinding',name:'Taipei Metro',note:'Taipei Metro signs, 1996: graphite flaps, white letters, the line colors along the foot.'},
   {id:'metro',group:'wayfinding',name:'Metro',note:'Mexico City Metro, 1969: line-pink flaps, white letters, soft corners.'},
   {id:'ulm',group:'identity',name:'Ulm',note:'Otl Aicher’s airline grid: signal yellow on navy, square corners.'},
   {id:'olympia',group:'identity',name:'Olympia 72',note:'Munich 1972: white flaps, blue letters, a silver frame.'},
@@ -31,15 +24,8 @@ const BOARD_STYLES=[
   {id:'jetage',group:'identity',name:'Jet Age',note:'1962 jet terminal: oyster flaps, red letters, a swooping frame.'},
   {id:'dangan',group:'identity',name:'Dangan',note:'The 1964 bullet train: ivory flaps, blue letters, a rounded nose.'},
   {id:'butterfly',group:'material',name:'Butterfly',note:'Sori Yanagi’s stool: plywood flaps, rosewood frame, brass.'},
-  {id:'moquette',group:'material',name:'Moquette',note:'Enid Marx’s 1930s seat fabric for London Transport: a woven frame, dark flaps, straw letters.'},
-  {id:'grille',group:'material',name:'Window Grille',note:'Iron window grilles from 1970s Taiwanese homes: a painted lattice on terrazzo, cream flaps.'},
-  {id:'chandigarh',group:'material',name:'Chandigarh',note:'Le Corbusier and Pierre Jeanneret’s city: board-marked concrete, stencil letters, enamel color blocks.'},
   {id:'marinedrive',group:'material',name:'Marine Drive',note:'Bombay’s 1930s seafront Art Deco: cream plaster, teal letters, a sunburst frame.'},
-  {id:'filete',group:'material',name:'Filete',note:'Buenos Aires filete porteño: gold serif letters, red, gold and green borders.'},
   {id:'calcadao',group:'material',name:'Calçadão',note:'Copacabana promenade: a black-and-white wave frame, sand-white flaps.'},
-  {id:'zsolnay',group:'material',name:'Zsolnay',note:'Zsolnay ceramics from Pécs, on Ödön Lechner’s roofs: green and gold tiles with an iridescent eosin sheen.'},
-  {id:'praguemetro',group:'material',name:'Prague Metro',note:'Prague Metro’s Line A, 1978: dimpled anodized-aluminium walls in gold, dark flaps, the line colors.'},
-  {id:'cubist',group:'material',name:'Cubist',note:'Prague Cubism of the 1910s, like Gočár’s House of the Black Madonna: a faceted ochre frame, tall narrow letters.'},
   {id:'matyo',group:'material',name:'Matyó',note:'Matyó embroidery from Mezőkövesd, Hungary: black cloth, a border of red, pink and blue roses.'},
   {id:'bojagi',group:'material',name:'Bojagi',note:'Korean patchwork wrapping cloth: soft ramie patches, stitched seams, plum letters.'},
   {id:'hakka',group:'material',name:'Hakka Floral',note:'Taiwan’s Hakka flower cloth: big peonies on red, cream letters on red flaps.'},
@@ -49,7 +35,6 @@ const BOARD_STYLES=[
   {id:'graphite',group:'studio',name:'Graphite',note:'After Nasreen Mohamedi’s ink and graphite grids: paper-white flaps, hairline letters, one long diagonal.'},
   {id:'kassak',group:'studio',name:'Kassák',note:'After Lajos Kassák and his magazine MA: red and black blocks on paper, heavy letters.'},
   {id:'werkstatte',group:'studio',name:'Wiener Werkstätte',note:'Josef Hoffmann and Koloman Moser’s Vienna workshops, 1903: a black-and-white checker frame and a gold line.'},
-  {id:'plakat',group:'studio',name:'Plakat',note:'The Polish Poster School of Tomaszewski and Lenica: hand-drawn letters and painted color on paper.'},
   {id:'william',group:'museum',name:'William',note:'The Met’s faience hippo: glazed turquoise flaps, black-painted letters.'},
   {id:'iznik',group:'museum',name:'Iznik',note:'Ottoman tiles from Iznik: white flaps, cobalt letters, a border of rosettes.'},
   {id:'tiffany',group:'museum',name:'Tiffany',note:'Tiffany Studios’ Autumn Landscape window: opalescent flaps and a sunset of leaded glass.'},
@@ -100,7 +85,7 @@ function miniTile(c){
 // A miniature board in a style: the same tiles and tokens as the real one, scaled down
 function miniBoard(id){
   const mb=document.createElement('span'); mb.className='minib'; mb.dataset.style=id; mb.setAttribute('aria-hidden','true');
-  const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(id==='pragotron'&&i===0)t.classList.add('edge');if(i>=6)t.classList.add('lo');g.appendChild(t)}); mb.appendChild(g);
+  const g=document.createElement('span'); g.className='g6'; SW_CELLS.forEach((c,i)=>{const t=miniTile(c);if(i>=6)t.classList.add('lo');g.appendChild(t)}); mb.appendChild(g);
   return mb;
 }
 // The six Everyday colorways share one card, with a dot for each

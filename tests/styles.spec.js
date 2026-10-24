@@ -19,8 +19,8 @@ test.describe('style picker',()=>{
     await page.click('#tryCancel');                                  // cancel
     await expect(page.locator('#board')).toHaveAttribute('data-style','classic');
 
-    await card('taipei').click(); await page.click('#tryUse');       // use
-    expect(await stored(page,'style')).toBe('taipei');
+    await card('standard').click(); await page.click('#tryUse');     // use
+    expect(await stored(page,'style')).toBe('standard');
     await card('graphite').click(); await card('graphite').click();  // a second tap keeps it
     expect(await stored(page,'style')).toBe('graphite');
 
@@ -28,15 +28,15 @@ test.describe('style picker',()=>{
     expect(await stored(page,'style')).toBe('harbor');
     await expect(page.locator('.swatch.family .nm2 span')).toHaveText('Everyday · Harbor');
 
-    for(const id of ['oxblood','zsolnay','plakat'])await page.locator('#styleTray .swatch[data-id="'+id+'"]:not(#sw-fav *) .sw-fav').click();
+    for(const id of ['oxblood','butterfly','kassak'])await page.locator('#styleTray .swatch[data-id="'+id+'"]:not(#sw-fav *) .sw-fav').click();
     await expect(page.locator('#sw-fav .swatch')).toHaveCount(3);
     await page.click('#tab-show'); await page.click('#status');
     const seen=[]; for(let i=0;i<4;i++){await page.keyboard.press('s');seen.push(await stored(page,'style'))}
-    expect(seen).toEqual(['oxblood','zsolnay','plakat','oxblood']);    // S steps through favorites
+    expect(seen).toEqual(['oxblood','butterfly','kassak','oxblood']);    // S steps through favorites
 
     await page.click('#tab-look'); await page.click('#trayTone button[data-tone="dark"]');
     await expect(page.locator('#styleTray .swatch[data-id="daylight"]')).toHaveCount(0); // Everyday is one card
-    await expect(page.locator('#sw-studio .swatch[data-id="plakat"]')).toBeHidden();     // a light style
+    await expect(page.locator('#sw-studio .swatch[data-id="kassak"]')).toBeHidden();     // a light style
     await expect(page.locator('#sw-studio .swatch[data-id="cinetica"]')).toBeVisible();
 
     await page.click('#agedTray');

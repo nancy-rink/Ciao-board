@@ -60,14 +60,6 @@
 }
 /* Worn: any style, aged. Scuffs take a little of the letter color so they read on light and dark flaps alike. */
 .board[data-aged],[data-aged] .board,.pv[data-aged]{--wear:1; --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23n)'/%3E%3C/svg%3E"); --scuff-c:color-mix(in srgb,var(--ink) 13%,transparent)}
-[data-style="pragotron"]{
-  --wall:#181b1e; --frame:#0c0e10; --frame-edge:#262b30;
-  --tile:#2a2e33; --tile-hi:#33383e; --ink:#e8ebee; --seam:#0a0b0c;
-  --ui:#e6e9ec; --muted:#9aa3ad; --line:#2d3238; --panel:#1a1e22; --panel-2:#22272c;
-  --accent:#ff6a5c; --accent-ink:#1a0705; --ok:#4fb67a; --warn:#ff8a7d;
-  --f-tile:"Oswald","Arial Narrow",Arial,sans-serif; --tile-w:500; --tile-size:2.8cqw; --tile-k:.92;
-  --route:#c23b2a; --pin-c:#6b737c; --pin-s:.24;
-}
 [data-style="mint"]{
   --wall:#dfeee8; --frame:#f6fbf9; --frame-edge:#ffffff;
   --tile:#cfe9df; --tile-hi:#dcf1e9; --ink:#10443a; --seam:#a7cfc1;
@@ -155,7 +147,7 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
 .f,.g{will-change:auto}
 [data-style="glow"] .f span,[data-style="glow"] .g span{text-shadow:none}
 .t{font-stretch:var(--tile-stretch,100%)}
-[data-style="solari"] .t,[data-style="cifra"] .t,[data-style="pragotron"] .t{font-weight:var(--tile-w,600)}
+[data-style="solari"] .t,[data-style="cifra"] .t{font-weight:var(--tile-w,600)}
 /* Off-center silkscreen printing and faded letters, scaled by the style's --wear */
 .t span{translate:calc(var(--jx,0) * var(--wear,0) * var(--u,1) * 1cqw) calc(var(--jy,0) * var(--wear,0) * var(--u,1) * 1cqw);opacity:calc(1 - var(--fd,0) * var(--wear,0))}
 /* Hinge pins, a scuff and grain, sitting over the resting flaps and under the moving ones */
@@ -165,4 +157,3 @@ body.glare .board::after{content:"";position:absolute;inset:0;border-radius:inhe
     radial-gradient(circle at 100% 50%,var(--pin-c,transparent) 0 calc(var(--pin-s,0) * var(--u,1) * 1cqw),transparent calc(var(--pin-s,0) * var(--u,1) * 1cqw + .15cqw)),
     radial-gradient(calc(var(--sw,1) * var(--u,1) * 1cqw) calc(var(--sh,1) * var(--u,1) * 1cqw) at var(--sx,50%) var(--sy,50%),var(--scuff-c,transparent),transparent 70%),
     var(--grain,none)}
-[data-style="pragotron"] .t.edge .h{box-shadow:inset .32cqw 0 0 var(--route)}

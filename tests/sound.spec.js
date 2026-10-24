@@ -19,7 +19,7 @@ test('flaps, chimes and backgrounds all make sound',async({browser})=>{
   const level=()=>page.evaluate(()=>{const l=window.__level;window.__level=0;return l});
   const pick=(id,v)=>page.evaluate(([i,v])=>{const s=document.getElementById(i);s.value=v;s.dispatchEvent(new Event('change'))},[id,v]);
   await pick('chimeStyle','none'); await level();
-  for(const style of ['solari','cifra','ikarus','zsolnay']){
+  for(const style of ['solari','cifra','ikarus','marinedrive']){
     await page.evaluate(i=>{const b=document.querySelector('.swatch[data-id="'+i+'"] .sw-main');b.click();b.click()},style);
     await sendMessage(page,'SOUND CHECK '+style); await page.waitForTimeout(2500);
     expect(await level(),style+' flaps').toBeGreaterThan(0.01);

@@ -62,7 +62,7 @@ async function cvDrawRow(x,row,pal,w,h,dpr){
 }
 // Display styles aren't split-flap boards: a nixie tube glows, a marquee letter slots in, wood type stamps down. Their letters change
 // in place, straight to the new one, with the style's own animation, and always as page elements so the glow and texture show.
-const DISPLAYS={nixie:1,marquee:1,letterboard:1,letterpress:1,stitch:1,flipdot:1,scrabble:1,labeltape:1};
+const DISPLAYS={nixie:1,marquee:1,letterboard:1,letterpress:1,stitch:1,flipdot:1};
 const isDisplay=()=>!!DISPLAYS[(document.getElementById('board')||{dataset:{}}).dataset.style];
 async function buildAtlas(){
   const gen=++atlasGen;
@@ -124,7 +124,6 @@ function paint(face,idx){
   const c=CHARS[idx], span=face.firstChild;
   if(c.length===3){face.style.background='var('+COLORS[c[1]]+')';span.textContent=''}
   else{face.style.background='';span.textContent=c}
-  span.dataset.c=c.length===1?c:''; // lets a style mark particular letters (Scrabble's point values)
 }
 // Every flap a tile will make is worked out when the message arrives (planPath), so the animation only steps through a list.
 // Direct tiles (art animations) go straight to their target in one flap; everything else steps through the alphabet like a real board.

@@ -501,7 +501,8 @@ $('cdAdd').onclick=()=>{
 };
 renderCal();
 
-// News: BBC headlines. BBC feeds block browser requests, so a GitHub Action (.github/workflows/news.yml) copies them to news.json on the news-data branch every 20 minutes
+// News: BBC headlines. BBC feeds block browser requests, so our relay reads them (fresh every 10 minutes). If it can't, a GitHub
+// Action (.github/workflows/news.yml) also copies them to news.json on the news-data branch, though GitHub runs it only every few hours.
 const NEWS_URL='https://raw.githubusercontent.com/nancy-rink/Ciao-board/news-data/news.json';
 const NEWS_HEAD={top:'BBC NEWS',world:'BBC WORLD',uk:'BBC UK',business:'BBC BUSINESS',technology:'BBC TECH',science:'BBC SCIENCE',sport:'BBC SPORT'};
 const news=Object.assign({section:'top',every:30,count:10},store.get('fb.news',{}));
@@ -511,8 +512,10 @@ function saveNews(){store.set('fb.news',news)}
 function newsClean(t){return [...t.normalize('NFC')].map(ch=>IDX.has(ch.toUpperCase())?ch:ch.normalize('NFD').replace(/[\u0300-\u036f]/g,'')).join('').replace(/[\u2013\u2014]/g,'-').replace(/\u2026/g,'...').replace(/£/g,'GBP ').replace(/€/g,'EUR ')}
 async function newsLoad(force){
   if(!force&&newsData&&Date.now()-newsAt<600000)return newsData;
-  const r=await fetch(NEWS_URL,{cache:'no-cache'}); if(!r.ok)throw new Error('HTTP '+r.status);
-  newsData=await r.json(); newsAt=Date.now(); return newsData;
+  let d=null;
+  if(CF)try{const r=await fetch(CF+'news');if(r.ok){const j=await r.json();if(j.sections&&j.sections.top)d=j}}catch(e){}
+  if(!d){const r=await fetch(NEWS_URL,{cache:'no-cache'}); if(!r.ok)throw new Error('HTTP '+r.status); d=await r.json()}
+  newsData=d; newsAt=Date.now(); return newsData;
 }
 // One page per headline; a headline too long for five rows runs over several pages
 function newsBuild(){

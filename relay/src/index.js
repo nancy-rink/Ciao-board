@@ -2,6 +2,7 @@
 //   POST /<topic>                        store a message and pass it to anyone listening
 //   GET  /<topic>/json?poll=1&since=…    the messages since an id, one JSON object per line
 //   GET  /<topic>/ws?since=…             a WebSocket: the messages since an id, then each new one as it arrives
+//   GET  /news                           BBC headlines, the same shape as news.json on the news-data branch, kept for 10 minutes
 // Messages look like ntfy's ({id,time,event:'message',topic,message}) and are kept for 12 hours. The relay never sees
 // what boards say to each other: everything a board sends is already encrypted.
 // Each topic is a Durable Object. Listeners use hibernating WebSockets, so an idle connection (a TV left on all day)
@@ -18,6 +19,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, {headers: CORS});
     const url = new URL(req.url), [topic, action] = url.pathname.split('/').filter(Boolean);
     if (topic === 'health' && !action) return new Response('ok', {headers: CORS});
+    if (topic === 'news' && !action && req.method === 'GET') return news(req.url);
     if (!topic || !TOPIC.test(topic)) return json({error: 'not found'}, 404);
     if (req.method === 'POST' && !action) {
       const len = +(req.headers.get('Content-Length') || 0);
@@ -26,6 +28,51 @@ export default {
     return env.TOPIC.get(env.TOPIC.idFromName(topic)).fetch(req);
   }
 };
+
+// News: BBC's feeds can't be read from a web page, so the relay reads them and passes the headlines on.
+// One copy is kept in Cloudflare's cache for 10 minutes, so however many boards ask, the BBC sees a few requests an hour.
+const FEEDS = {
+  top: ['Top stories', 'https://feeds.bbci.co.uk/news/rss.xml'],
+  world: ['World', 'https://feeds.bbci.co.uk/news/world/rss.xml'],
+  uk: ['UK', 'https://feeds.bbci.co.uk/news/uk/rss.xml'],
+  business: ['Business', 'https://feeds.bbci.co.uk/news/business/rss.xml'],
+  technology: ['Technology', 'https://feeds.bbci.co.uk/news/technology/rss.xml'],
+  science: ['Science', 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml'],
+  sport: ['Sport', 'https://feeds.bbci.co.uk/sport/rss.xml'],
+};
+const NEWS_KEEP = 600, PER_SECTION = 15;
+const ENTITIES = {amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' '};
+const unescape = t => t.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+  .replace(/&(#x[0-9a-f]+|#\d+|\w+);/gi, (m, e) => e[0] === '#' ? String.fromCodePoint(e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : +e.slice(1)) : ENTITIES[e.toLowerCase()] ?? m);
+function headlines(xml) {
+  const seen = new Set(), out = [];
+  for (const [, item] of xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/g)) {
+    const m = item.match(/<title\b[^>]*>([\s\S]*?)<\/title>/), title = m ? unescape(m[1]).replace(/\s+/g, ' ').trim() : '';
+    if (title && !seen.has(title.toLowerCase())) { seen.add(title.toLowerCase()); out.push(title); }
+    if (out.length >= PER_SECTION) break;
+  }
+  return out;
+}
+async function news(url) {
+  const cache = caches.default, key = new Request(new URL('/news', url).href);
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const sections = {};
+  await Promise.all(Object.entries(FEEDS).map(async ([id, [name, feed]]) => {
+    try {
+      const r = await fetch(feed, {headers: {'User-Agent': 'CiaoBoard/1.0 (+https://github.com/nancy-rink/Ciao-board)'}});
+      if (!r.ok) return;
+      const items = headlines(await r.text());
+      if (items.length) sections[id] = {name, items};
+    } catch (e) {}   // keep the other sections if one feed fails
+  }));
+  if (!sections.top) return json({error: 'the BBC feeds could not be read'}, 502);
+  const ordered = Object.fromEntries(Object.keys(FEEDS).filter(id => sections[id]).map(id => [id, sections[id]]));
+  const res = new Response(JSON.stringify({source: 'BBC News', updated: new Date().toISOString().replace(/\.\d+Z$/, '+00:00'), sections: ordered}),
+    {headers: {...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=' + NEWS_KEEP}});
+  await cache.put(key, res.clone());
+  return res;
+}
 
 export class Topic extends DurableObject {
   constructor(ctx, env) {

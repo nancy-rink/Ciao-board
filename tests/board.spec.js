@@ -166,3 +166,18 @@ test('the tabs: Show, Look, Connect and Settings, on a phone and a laptop',async
     noErrors(page);
   }
 });
+
+test('news comes from our relay, and from the news-data branch when the relay can\'t read the BBC',async({browser})=>{
+  const feed=h=>JSON.stringify({source:'BBC News',updated:new Date().toISOString(),sections:{top:{name:'Top stories',items:[h]}}});
+  const page=await device(browser);
+  let relayUp=true;
+  await page.context().route('http://127.0.0.1:8792/news',r=>relayUp?r.fulfill({contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:feed('Relay headline')}):r.fulfill({status:502,headers:{'Access-Control-Allow-Origin':'*'},body:'{}'}));
+  await page.context().route(/raw\.githubusercontent\.com\/.*news\.json/,r=>r.fulfill({contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:feed('Branch headline')}));
+  await page.goto('/');
+  await page.evaluate(()=>startNews());
+  await expect(page.locator('#boardText')).toContainText('RELAY HEADLINE',{timeout:30e3});
+  relayUp=false;
+  await page.evaluate(()=>{newsData=null;startNews()});
+  await expect(page.locator('#boardText')).toContainText('BRANCH HEADLINE',{timeout:30e3});
+  noErrors(page);
+});

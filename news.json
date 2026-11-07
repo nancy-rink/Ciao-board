@@ -1,0 +1,146 @@
+{
+ "source": "BBC News",
+ "updated": "2026-11-07T16:41:17+00:00",
+ "sections": {
+  "top": {
+   "name": "Top stories",
+   "items": [
+    "UK cannot 'cherry pick' EU single market deal, Barnier tells BBC",
+    "Victims in rape cases must not feel like they are on trial, Burnham says",
+    "Tens of thousands of tents flooded after heavy rains in Gaza",
+    "Two men arrested after boy injured in sword attack",
+    "No clear winner after tight New Zealand general election",
+    "What happens if all the lights go out? This is the plan for a 'Black Sky' event",
+    "Relief, tears and sadness: Married at First Sight UK cast react to show being axed",
+    "This man refused life-saving treatment because of his religion - days later the rules changed",
+    "Monty Don bids 'final goodbye' to Gardeners' World after two decades",
+    "Russian strikes wound nine and damage Ukraine's power network ahead of talks",
+    "'My mortgage is going up £200 a month': How rising interest rates are hitting people's pockets",
+    "One of the year's most prolific meteor showers to light up the night sky this weekend",
+    "Baxters fish soup cans recalled over fears they could 'swell and potentially rupture'",
+    "Evacuations in Liverpool city centre after car crash causes gas leak",
+    "Secondary school teacher to crofter - life on the UK's most remote island"
+   ]
+  },
+  "world": {
+   "name": "World",
+   "items": [
+    "No clear winner after tight New Zealand general election",
+    "With Stephen Miller pick, Trump readies for a battle",
+    "Paraguay's president impeached and under house arrest after bank collapse",
+    "Russian strikes wound nine and damage Ukraine's power network ahead of talks",
+    "Pope in 'pretty good health' as he starts Latin America tour",
+    "Meghan's father Thomas Markle under house arrest after child sex abuse material charge",
+    "Texas mayor instructs police to limit co-operation with ICE",
+    "AI stocks climb after trillions wiped from market values",
+    "New wave of bomb threats hit European airlines",
+    "Spain's rail authorities face European fraud probe after Urda rail disaster",
+    "Kenyan doomsday cult leader given life sentence for murdering 191 people",
+    "Two dead after bus crashes in France, officials say",
+    "Judge blocks construction of Trump's massive arch after federal agency approval",
+    "Cornell faculty pass no-confidence vote over leadership's handling of Jane Doe allegations",
+    "Russian extremist group denies sending hoax bomb threats"
+   ]
+  },
+  "uk": {
+   "name": "UK",
+   "items": [
+    "UK cannot 'cherry pick' EU single market deal, Barnier tells BBC",
+    "Victims in rape cases must not feel like they are on trial, Burnham says",
+    "Two men arrested after boy injured in sword attack",
+    "Relief, tears and sadness: Married at First Sight UK cast react to show being axed",
+    "We thought mum abandoned us - then we discovered she'd been murdered",
+    "Evacuations in Liverpool city centre after car crash causes gas leak",
+    "Gladiator II stuntman sues over injuries from on-set explosion",
+    "Man, 41, and boy, 16, arrested after car damaged by gunshots",
+    "Baxters fish soup cans recalled over fears they could 'swell and rupture'",
+    "Beach homes face demolition months after being sold",
+    "AI in property listings is false advertising, house-hunters say",
+    "Skepta: 'I'm what it looks like if you give an immigrant child a chance'",
+    "Man, 35, charged with murder of Carrie Mullane",
+    "Parliament restoration delays 'frustrating', says Commons Speaker",
+    "One of the year's most prolific meteor showers to light up the night sky this weekend"
+   ]
+  },
+  "business": {
+   "name": "Business",
+   "items": [
+    "AI stocks climb after trillions wiped from market values",
+    "Why the US midterms sparked an AI stock selloff",
+    "How does it affect me if share prices fall?",
+    "Why smoky bacon crisps threaten to reignite rows over EU rules",
+    "Elon Musk appears to signal the end of the road for Cybertruck",
+    "The engine parts that 'fight the laws of the universe'",
+    "PM tells firms to publish salaries in job adverts ahead of new law",
+    "'I was asked if I was a crier': Your worst job interviews revealed",
+    "Interest rates hiked to 4% in first increase in over three years",
+    "Faisal Islam: How high will interest rates go?",
+    "Three ways the interest rate rise could affect you",
+    "Drunk and dangerous e-bike riders face on-the-spot fines under crackdown",
+    "Second buyer makes rescue bid for Poundland as retailer faces collapse",
+    "Pound rises to its highest level since the Brexit referendum",
+    "Welsh aviation firm AerFin bought in £475m deal"
+   ]
+  },
+  "technology": {
+   "name": "Technology",
+   "items": [
+    "Elon Musk appears to signal the end of the road for Cybertruck",
+    "AI stocks climb after trillions wiped from market values",
+    "Why the US midterms sparked an AI stock selloff",
+    "Global stocks plunge as fears over US AI slowdown spread to Asia and Europe",
+    "The engine parts that 'fight the laws of the universe'",
+    "Elon Musk's millions failed to deliver Republican wins in fierce midterms",
+    "French blood storage impacted by freezer hacks as theories swirl about culprits",
+    "Graduates are managing AI - but are they learning much else?",
+    "Binance says fake job interviews used as part of $6.3bn crypto hack",
+    "UK meat industry hit by cyber-attack which targeted European supermarket freezers",
+    "Apple unsure when it will get more foldable iPhones ahead of Christmas",
+    "North Korea denies being behind record $6.3bn Binance hack",
+    "If hackers can take control of a supermarket freezer, how vulnerable is other tech?",
+    "Tech Life",
+    "Tech Now"
+   ]
+  },
+  "science": {
+   "name": "Science",
+   "items": [
+    "One of the year's most prolific meteor showers to light up the night sky this weekend",
+    "How climate change worsens heatwaves, droughts, wildfires and floods",
+    "A really simple guide to climate change",
+    "What is the Paris Agreement and why does 1.5C matter?",
+    "What is net zero and is the UK on track to achieve it?",
+    "Could the earliest weakening of the polar vortex on record bring UK snow?",
+    "Delhi's toxic winter air is back - is the Indian capital prepared for pollution?",
+    "Investigation into 'major fish kill' after pollution incident",
+    "Typhoons batter East Asia as El Niño makes Pacific 'burn with fever'",
+    "William meets firefighters who tackled summer blazes",
+    "Delhi air quality worsens ahead of Diwali as firework restrictions enter force",
+    "Prince William says UK faces terrifying risk of more wildfires due to climate change",
+    "New Forest wildfire restoration work begins",
+    "Could you live on a remote island as a job?",
+    "'Extra special' tamarin twins born at zoo"
+   ]
+  },
+  "sport": {
+   "name": "Sport",
+   "items": [
+    "Ruthless All Blacks blow Scotland away in second half",
+    "Hamilton, Leclerc and Verstappen to have penalties",
+    "Tongue ruled out of Australia tour as Rashid stars in warm-up",
+    "Okafor the difference despite Van Hecke defiance - Leeds v Spurs ratings",
+    "Truro game abandoned after player collapses in warm-up",
+    "Kiwis reap rewards of gamble on 'freak of nature' Ponga",
+    "My dream is to win Ballon d'Or - Gabriel",
+    "Ireland going from strength to strength - Murray",
+    "Rahm edges ahead of Hatton & McIlroy in Abu Dhabi",
+    "Barry scores twice as Everton fight back to beat Coventry",
+    "Leicester hold nerve to knock out sixth-tier Oxford City",
+    "Bristol Rovers shock Cambridge United to reach round two",
+    "New Zealand beat Tonga to reach World Cup final",
+    "'Big decisions' affected the game - Lampard",
+    "I left Man City for my mental wellbeing - Trafford"
+   ]
+  }
+ }
+}

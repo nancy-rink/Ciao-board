@@ -1,0 +1,146 @@
+{
+ "source": "BBC News",
+ "updated": "2026-11-14T08:20:55+00:00",
+ "sections": {
+  "top": {
+   "name": "Top stories",
+   "items": [
+    "What we know about the US ground stop and what to do if you're affected",
+    "Young people should have legal guarantee to job or training, review author tells BBC",
+    "Trump, Putin and Xi plan historic joint meeting in China next week, White House says",
+    "'Miracle on Mississippi' - All passengers rescued after New Orleans cruise ship collision",
+    "Watch: Cruise ship seen sinking after collision with cargo ship in New Orleans",
+    "Widespread frost and freezing fog forecast as cold health alerts continue",
+    "Brand, Walliams and MAFS: Is this a reckoning for the entertainment industry?",
+    "Jojo the gorilla has spent his life alone. Can he finally find a companion?",
+    "Rosenberg: Uncompromising Putin ups demands for peace with Ukraine",
+    "Even Grand Theft Auto's original creators haven't been able to play GTA 6",
+    "When to put up a real Christmas tree - according to an expert",
+    "Family's two-year fight to bring killer driver back from Latvia",
+    "'Police launch investigation' into Walliams and Piddington asylum 'betrayal'",
+    "US Air Force says it responded to 'suspected drones' over RAF Lakenheath",
+    "Goalkeeper involved in fatal collision gets 12-game ban"
+   ]
+  },
+  "world": {
+   "name": "World",
+   "items": [
+    "What we know about the longest ground stop since 9/11",
+    "'Miracle on Mississippi' - All passengers rescued after New Orleans cruise ship collision",
+    "Trump, Putin and Xi plan historic joint meeting in China next week, White House says",
+    "Microsoft says services fully restored after day-long global outage",
+    "Setback for SpaceX Starship rocket's double-catch test",
+    "Rosenberg: Uncompromising Putin ups demands for peace with Ukraine",
+    "Nvidia scandal fallout widens as Trump's treasury secretary blames cabinet colleague",
+    "The Peruvian city that has embraced Pope Leo as one of its own",
+    "German spies handed new powers to tackle 'hybrid threats' from abroad",
+    "Democratic Senate leader Schumer set to face leadership challenge",
+    "Aide to fugitive Ukrainian ex-PM wounded in latest Moscow car bombing",
+    "Rosalía scoops historic third best album award at Latin Grammys",
+    "African Miss Universe beauty queens in limbo as US visa restrictions bite",
+    "At least 24 killed after bus collides with truck in north-east India",
+    "'We'll get home one day' - US travellers impacted by nationwide ground stop"
+   ]
+  },
+  "uk": {
+   "name": "UK",
+   "items": [
+    "Young people should have legal guarantee to job or training, review author tells BBC",
+    "Family's two-year fight to bring killer driver back from Latvia",
+    "US Air Force says it responded to 'suspected drones' over RAF Lakenheath",
+    "Probation officers to take industrial action over pay and early release scheme",
+    "Former Hamas bodyguard guilty of UK knife attack",
+    "Police investigating David Walliams over reports alleging serious sexual offences",
+    "'Hardest challenge of my life' - Owain Wyn Evans completes Children in Need ride",
+    "Reform and Tory spokesmen in angry clash over immigration at Piddington",
+    "NHS, schools and police forces hit by Microsoft outage",
+    "Man jailed for grooming at least 70 girls online",
+    "Eleanor Donaldson given supervision order and placed on sex offenders' register",
+    "Tories pay artist for Burnham images after legal threat",
+    "Dept Q crew member dies after being injured at Edinburgh film studio",
+    "Mother whose newborn died after failed hospital checks was 'terrified and alone'",
+    "Man who transported Omagh bomb was an MI5 and Garda agent, inquiry told"
+   ]
+  },
+  "business": {
+   "name": "Business",
+   "items": [
+    "Microsoft says services fully restored after day-long global outage",
+    "Why is Microsoft's outage lasting so long and will emails be lost?",
+    "How a sex scandal at Nvidia is putting pressure on the White House",
+    "Pressure grows on Trump's Commerce Secretary Lutnick in fallout from Nvidia scandal",
+    "The rise of 'housefishing' - when does using AI go from enhancing to misleading?",
+    "Heat pumps: How much heat does your home really need?",
+    "Ex-Nvidia CEO Jensen Huang summoned to testify before Congress about affair with alleged Chinese spy",
+    "Burnham says 'win-win' deal can be agreed between UK and EU",
+    "Who is Nvidia's interim CEO Colette Kress - and who could take over permanently?",
+    "Faisal Islam: Why the UK economy is surprisingly resilient",
+    "UK economy grows at fastest rate for more than two years",
+    "Poundland gets more time to secure a rescue deal as emergency talks continue",
+    "Some under-25s should get fewer benefits, Milburn review to say",
+    "Christmas toy rush being driven by squishies and building sets",
+    "Nvidia hires major US law firm to investigate alleged Chinese spy affair"
+   ]
+  },
+  "technology": {
+   "name": "Technology",
+   "items": [
+    "Microsoft says services fully restored after day-long global outage",
+    "Even Grand Theft Auto's original creators haven't been able to play GTA 6",
+    "How the Jensen Huang scandal created a headache for business-friendly Singapore",
+    "Microsoft outage 'stark reminder' of how much we rely on tech",
+    "Pressure grows on Trump's Commerce Secretary Lutnick in fallout from Nvidia scandal",
+    "Why is Microsoft's outage lasting so long and will emails be lost?",
+    "Courts, spies and MPs: How the Microsoft outage has been felt around the world",
+    "NHS, schools and police forces hit by Microsoft outage",
+    "How a sex scandal at Nvidia is putting pressure on the White House",
+    "What we know so far about the Microsoft outage",
+    "Heat pumps: How much heat does your home really need?",
+    "What happened overnight with the Microsoft global outage?",
+    "Ex-Nvidia CEO Jensen Huang summoned to testify before Congress about affair with alleged Chinese spy",
+    "Tech Life",
+    "Tech Now"
+   ]
+  },
+  "science": {
+   "name": "Science",
+   "items": [
+    "Bluetongue virus confirmed on County Down farm",
+    "Setback for SpaceX Starship rocket's double-catch test",
+    "What could El Niño mean for winter weather in the US and Canada?",
+    "Summer heatwave put bin crews lives at risk, says council worker",
+    "How many sewage spills have happened in your part of Scotland?",
+    "Flood victim, 95, lived in Wetherspoons until she died after her home was destroyed",
+    "Burnham says climate consensus 'gone' but pledges 'new era of leadership'",
+    "'Summer was a wake-up call, winter could be dire' warning over food supplies",
+    "Significant drop in levels of toxic 'forever' chemicals in England's rivers",
+    "Four grizzly bears killed in Canada after fatal attack on mother and daughter",
+    "Duchy tenants may have to buy farms or leave as Prince William plans sell-off",
+    "'It can kill us': Kenyans fear impact of El Niño with floods predicted",
+    "Sales of tinned food and bottled water jump after 'Be Ready' campaign launch",
+    "Extreme weather leaves gardeners hedging their bets",
+    "Jojo the gorilla has spent his life alone. Can he finally find a companion?"
+   ]
+  },
+  "sport": {
+   "name": "Sport",
+   "items": [
+    "Fitness obsessed & 'control freak' - what can Man Utd expect from Pochettino?",
+    "Warner accuses Cricket Australia of 'cover-up'",
+    "England boxer missed Worlds over sex-test mix-up",
+    "Six goals to go - will McGinn catch Dalglish & Law?",
+    "France hold nerve to edge past South Africa in thriller",
+    "How a reunion with scout Bompastor solved Chelsea's striker issue",
+    "Goalkeeper involved in fatal collision gets 12-game ban",
+    "The challenge that brought Nunes out of retirement",
+    "Tearful Pochettino on 'difficult' decision to leave USA for Man Utd",
+    "Sabalenka's season ended by Svitolina at WTA Finals",
+    "Who am I? Plus today's other quizzes",
+    "Cast your vote for BBC Women's Footballer of the Year 2026",
+    "Sharks, ladders and a four-year plan - how England won World Cup",
+    "Eight sentenced to jail over Nurmagomedov-Dvalishvili brawl",
+    "Salah scores twice as Egypt and Nigeria win Afcon 2027 qualifiers"
+   ]
+  }
+ }
+}

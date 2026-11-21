@@ -1,0 +1,146 @@
+{
+ "source": "BBC News",
+ "updated": "2026-11-21T10:28:40+00:00",
+ "sections": {
+  "top": {
+   "name": "Top stories",
+   "items": [
+    "Deal with EU not dependent on tuition fees agreement, Miliband says",
+    "Zelensky says Putin is a 'killer' after Trump calls Russian leader a friend",
+    "Tech stock sell-off drags markets down as Anthropic shares slide",
+    "Man convicted of starting Palisades fire in Los Angeles",
+    "Fight over fossil fuels leaves COP31 climate talks in deadlock",
+    "Trump threatens ban on US firms building AI data centres overseas",
+    "Who will be Robert Pattinson's 'Bond girl' - and does the role need to change?",
+    "Phoebe Bridgers banned phones at her gigs, so fans are using art to remember them",
+    "Can AI really help spot Black Friday deals? We put it to the test",
+    "These dead pets were meant to be cremated - then their bodies appeared on a livestream",
+    "What is the EU-UK youth experience scheme and when will it start?",
+    "They were fined $811m for conning detained migrants, but the scams didn't stop",
+    "FBI reportedly investigating apparent hack of its criminal database",
+    "In a year of AI solving maths problems, Anthropic may have just solved the biggest",
+    "Cold alerts in force as UK sees lowest overnight temperatures of autumn"
+   ]
+  },
+  "world": {
+   "name": "World",
+   "items": [
+    "Tech stock sell-off drags markets down as Anthropic shares slide",
+    "Zelensky says Putin is a 'killer' after Trump calls Russian leader a friend",
+    "Fight over fossil fuels leaves COP31 climate talks in deadlock",
+    "FBI reportedly investigating apparent hack of its criminal database",
+    "French police officers sentenced for beating of music producer Michel Zecler",
+    "Man convicted of starting Palisades fire in Los Angeles",
+    "Deal with EU not dependent on tuition fees agreement, Miliband says",
+    "In a year of AI solving maths problems, Anthropic may have just solved the biggest",
+    "Mamdani announces plan to close New York's Rikers Island jail by 2032",
+    "Trafalgar Square Christmas tree felled in Norway",
+    "Denmark accuses Russia of plotting to assassinate US-Ukrainian rapper",
+    "Trump threatens ban on US firms building AI data centres overseas",
+    "Indian man sentenced to 19-plus years in plot to assassinate US-based Sikh separatist leader",
+    "Nearly 600 women killed in South Africa within three months",
+    "US declassifies more UFO footage filmed in the Middle East"
+   ]
+  },
+  "uk": {
+   "name": "UK",
+   "items": [
+    "Deal with EU not dependent on tuition fees agreement, Miliband says",
+    "Staff gagging clauses lifted ahead of probe into culture at data watchdog",
+    "Man charged with attempted murder after Bradford councillor stabbed",
+    "Sales of baby sleeping bag halted by Next after new mum raises alarm",
+    "PM to meet pub bombings families in new year",
+    "Cold alerts in force as UK sees lowest overnight temperatures of autumn",
+    "Villagers to vote on 'leaving UK' over plans to house migrants at RAF base",
+    "Plans unveiled for one of UK's biggest solar farms",
+    "Burnham rejects calls for devolution of powers in letter to Welsh FM",
+    "Two men die after glider crashes into Loch Leven",
+    "No sign of missing men after fishing boat Kilda recovered near Orkney",
+    "Price beats Kotaskova to become undisputed champion",
+    "Pontins fined £1m after grandmother's death",
+    "Cost of Man Utd hiring and firing managers nears £100m",
+    "'Dishonest' police officers sacked for lying over fatal crash searches"
+   ]
+  },
+  "business": {
+   "name": "Business",
+   "items": [
+    "Tech stock sell-off drags markets down as Anthropic shares slide",
+    "UK to explore even closer ties with EU after agreeing deal, says Burnham",
+    "Faisal Islam: This cost-cutting UK-EU deal doesn't mean lower prices will follow",
+    "Trump threatens ban on US firms building AI data centres overseas",
+    "GTA 6 sales hit $3.8bn in a single day - the biggest entertainment launch in history",
+    "Should AI be judging our credit worthiness?",
+    "Tinned food and long-life milk boost retail sales after 'Be Ready' campaign launch",
+    "Fish and eggs al desko? The dos and don'ts of lunch at work",
+    "Airbnb's divisive new house rules come into force",
+    "Mouldy, infested housing for vulnerable people sold as ethical investments abroad",
+    "Tens of thousands of UK fridges secured from hackers in secret nationwide operation",
+    "Anthropic becomes one of world's most valuable public companies in stock market debut",
+    "California targets Nvidia in China AI chip probe",
+    "Simon Jack: Can Anthropic's record-breaking IPO stop the AI bubble bursting?",
+    "McDonald's sex abuse: 'They were waiting for the younger girls to turn 18'"
+   ]
+  },
+  "technology": {
+   "name": "Technology",
+   "items": [
+    "Can AI really help spot Black Friday deals? We put it to the test",
+    "In a year of AI solving maths problems, Anthropic may have just solved the biggest",
+    "GTA 6 sales hit $3.8bn in a single day - the biggest entertainment launch in history",
+    "Tech stock sell-off drags markets down as Anthropic shares slide",
+    "Trump threatens ban on US firms building AI data centres overseas",
+    "White House removes cyber-security chief after series of tech outages",
+    "Should AI be judging our credit worthiness?",
+    "Tens of thousands of UK fridges secured from hackers in secret nationwide operation",
+    "Anthropic becomes one of world's most valuable public companies in stock market debut",
+    "Dutch watchdog tells people not to buy AI smart glasses",
+    "Anthropic raises $81bn in record-breaking stock market debut",
+    "UK joins in GTA 6 frenzy as game becomes available worldwide",
+    "Elon Musk says record $446m spending on US midterms was 'pretty foolish'",
+    "Tech Life",
+    "Tech Now"
+   ]
+  },
+  "science": {
+   "name": "Science",
+   "items": [
+    "Fight over fossil fuels leaves COP31 climate talks in deadlock",
+    "Birds killed in blaze at one of the largest foie gras farms in the US",
+    "What are heat pumps and how much do they cost?",
+    "Mysterious Mercury is about to get a visitor - after spacecraft's eight-year epic voyage",
+    "More climate money for Africa? Europe says use what's already pledged",
+    "Wading bird called Phil tracked in epic migration to Siberia and back",
+    "Survivors of Uganda's deadly landslide seek justice at the UN",
+    "The seven Anthropic founders who are about to become multi-billionaires",
+    "Torrential rain causes widespread flooding in South Florida",
+    "Stormont department failing to protect wild birds, investigation finds",
+    "I want to know if toxic lagoon fire caused my husband's rare deadly cancer",
+    "What's gone wrong at Britain's worst bathing site?",
+    "Government risks missing climate targets if EV rules weakened, adviser warns",
+    "Wildlife conservation cash targets ex-colliery sites",
+    "Oil firm fined for breaking environmental rules hundreds of times"
+   ]
+  },
+  "sport": {
+   "name": "Sport",
+   "items": [
+    "'Somebody has to stand up to that guy' - and Russell has his chance in Vegas",
+    "Shevchenko lying about drugs test claims - Mudryk",
+    "Price beats Kotaskova to become undisputed champion",
+    "Athlete who lost hand saving friends in attack 'would do it again'",
+    "Harden passes Bryant for 50-point games",
+    "Cummins' integrity not compromised - Cricket Australia",
+    "Jeers, injuries and doubters - White's journey back to the top",
+    "Stacked England aim to pile on style and add to All Black misery",
+    "Wales hungry to show they are not one-hit wonders",
+    "Cost of Man Utd hiring and firing managers nears £100m",
+    "Osimhen keen on Man Utd move - Saturday's gossip",
+    "Antonelli fastest but penalty leaves Verstappen on pole",
+    "Price survives match darts to reach Grand Slam semis",
+    "A men's netball World Cup - not a question of if, but when?",
+    "Who am I? Plus today's other quizzes"
+   ]
+  }
+ }
+}

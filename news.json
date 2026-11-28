@@ -1,0 +1,146 @@
+{
+ "source": "BBC News",
+ "updated": "2026-11-28T08:35:14+00:00",
+ "sections": {
+  "top": {
+   "name": "Top stories",
+   "items": [
+    "Pensions and benefits services still down after 'cyber incident'",
+    "Catherine's emotional cancer documentary strips away the stiff upper lip",
+    "Two staff killed in Israeli strike on Gaza medical clinic, MSF says",
+    "Pharmacies get new powers to swap prescriptions during shortages",
+    "Set time aside for children to read for pleasure, schools to be told",
+    "Charity founded in Captain Tom's name bids to be struck off",
+    "Australian wrestler Bronson Reed dies aged 38, WWE says",
+    "'I don't know what I'd do without it': Why shoppers and staff fear losing Poundland",
+    "A clinic is reassessing people with ADHD and autism diagnoses - but critics fear it could deepen stigma",
+    "How gamers are using AI and leaked files to clone Grand Theft Auto 6",
+    "Carly Rae Jepsen's viral hit proves what fans knew all along",
+    "Should I get a flu vaccine now?",
+    "UK set for break from harsh cold as temperatures climb into next week",
+    "New satellite data shows how fast some African cities are sinking",
+    "Spanish PM and rivals rally supporters in final pitch for votes"
+   ]
+  },
+  "world": {
+   "name": "World",
+   "items": [
+    "Spanish PM and rivals rally supporters in final pitch for votes",
+    "Turkish officials 'destroyed' pro-opposition TV channel, owner tells BBC",
+    "Eight killed in Peruvian military helicopter crash",
+    "'Poison seller' Kenneth Law apologises in court to the families of his victims",
+    "Australian wrestler Bronson Reed dies aged 38, WWE says",
+    "Zelensky criticises 'strange' Trump-Putin friendship in BBC interview",
+    "'We couldn't give up that easily': Marching bands scramble to cover costs after Thanksgiving parade rearranged",
+    "Canada's top court largely upholds Quebec ban on religious symbols for public servants",
+    "Kenyan doomsday cult leader convicted over further 123 deaths",
+    "Millions of wives in South Asia unprotected from marital rape - study",
+    "Italy's former police chief rejected mafia inquiry allegations before death",
+    "Rare turtles found inside baggage at Amsterdam airport",
+    "Severe Thanksgiving storms leave roads flooded and trees fallen",
+    "'It's impossible': Spain's young people on housing ahead of Sunday's election",
+    "Zelensky questions 'strange' Trump-Putin friendship in BBC interview"
+   ]
+  },
+  "uk": {
+   "name": "UK",
+   "items": [
+    "Millions lose access to benefits and pensions services after 'cyber incident'",
+    "'I wouldn't be here today without you': Student's praise for man who stopped train attacker",
+    "Police look for more than 100 gig-goers to help Co-op Live probe",
+    "NHS boss warns of 'horrible spike' in flu as hospital admissions surge",
+    "'We have no interest in hearing from Huw Edwards', Downing Street says",
+    "'Cowardly monster' blackmailed girls to self-harm",
+    "Body found in woodland confirmed as missing Kelsey Hunter",
+    "Dec Donnelly says I'm a Celebrity tension 'became much bigger deal than it should have'",
+    "NHS Grampian publishes leaked report at centre of hospital scandal",
+    "Ex-council leader jailed for fraud and tax evasion",
+    "Fury cleared to fight Joshua after wife retracts schizophrenia claim",
+    "Tory candidates must sign pledge to scrap net-zero targets, says Badenoch",
+    "Police officers discovered Chloe Mitchell's remains in bins, court hears",
+    "Watch: What has happened to online pension and benefits services?",
+    "'A lonely road': Catherine joins cancer support group in new documentary"
+   ]
+  },
+  "business": {
+   "name": "Business",
+   "items": [
+    "Faisal Islam: Why Trump's new tariffs are less of a threat",
+    "From £250 job to £9,000 bill: Inside the rogue trader networks scamming customers at scale",
+    "UK to pay 'participation' fee to deliver EU deals",
+    "Asia made a big AI bet on Nvidia. What happens now?",
+    "My self-care ritual is a meal at a fancy restaurant - on my own",
+    "Why is there a shortage of 'wizard' elevator mechanics?",
+    "Simon Jack: Is Poundland's US owner to blame for its collapse?",
+    "Millions of people to see average monthly mortgage payments rise by £100",
+    "New boss appointed to lead Travelodge",
+    "When will Poundland shops close? Five key questions answered",
+    "Norse Atlantic suspends all flights as it faces potential collapse",
+    "Drivers over 70 face eye tests every three years under new plans",
+    "New UK-EU treaty has 10-year termination clause",
+    "Car finance compensation payments explained",
+    "Poundland collapses putting 11,000 jobs at risk"
+   ]
+  },
+  "technology": {
+   "name": "Technology",
+   "items": [
+    "Pensions and benefits services still down after 'cyber incident'",
+    "How gamers are using AI and leaked files to clone Grand Theft Auto 6",
+    "Why is there a shortage of 'wizard' elevator mechanics?",
+    "Asia made a big AI bet on Nvidia. What happens now?",
+    "Musk's plan to send a million SpaceX data satellites into space approved",
+    "Huawei found guilty of stealing US trade secrets but acquitted of racketeering",
+    "EA adds AI-generated John Motson to FC 27 video game",
+    "Zoe Kleinman: Nobody is irreplaceable - unless you're Jensen Huang",
+    "US attorney general dodges questions about Nvidia investigation",
+    "Why tiny cars are taking off across Europe",
+    "Faisal Islam: Fears over the AI boom haven't gone away",
+    "Helpful but awkward: My week with Meta's Muse ahead of its UK launch",
+    "US to blacklist Asian AI firm Megaspeed after Nvidia scandal",
+    "Tech Life",
+    "Tech Now"
+   ]
+  },
+  "science": {
+   "name": "Science",
+   "items": [
+    "Hundreds of thousands still without power a day after US slammed with Thanksgiving storms",
+    "Capsized tanker carrying 7,000 tonnes of diesel to be towed away from Ibiza",
+    "New satellite data shows how fast some African cities are sinking",
+    "Severe Thanksgiving storms leave roads flooded and trees fallen",
+    "'Can't control the weather': Sadness as Macy's Thanksgiving parade postponed",
+    "Rare turtles found inside baggage at Amsterdam airport",
+    "Floating nature islands installed in parks as Glasgow Games legacy",
+    "Major Thanksgiving storm brings flooding, flight delays across US",
+    "Watch: Truck hangs in the balance after losing control in wet conditions",
+    "Inside the control room feeding your weather app",
+    "Watch: Man and dog narrowly escape powerful king tide in Oregon",
+    "Watch: Roofs torn off and streets under water as severe weather hits US",
+    "Second court defeat for Trump's deep-sea mining ambitions",
+    "First hippo born at safari park in more than 40 years",
+    "Tribute to farmer who 'saved rare cattle breed'"
+   ]
+  },
+  "sport": {
+   "name": "Sport",
+   "items": [
+    "'You're not welcome here' - fans turn on Fofana as Chelsea lose again",
+    "How a football team rebuilt after 19 players died in plane crash",
+    "Are these three brothers British skiing's next family dynasty?",
+    "'It doesn't come from me' - Eckert irked by Southampton jibes at Boro",
+    "Decline of deities - the long game the All Blacks cannot afford to lose",
+    "Ranking the Premier League's ultimate free-kick specialists",
+    "Farrell senses 'shift' as Ireland end year strongly with Wallabies win",
+    "Wilshere v Ramsey - Arsenal legends treading similar managerial paths",
+    "How dad's embarrassment was making of Gross at Brighton",
+    "Mercedes set pace in eventful Qatar second practice",
+    "Who am I? Plus today's other quizzes",
+    "Why snooker could be the most mentally challenging sport",
+    "Champions League to be a factor in Paz move - Saturday's gossip",
+    "Gibbs-White stars, Fofana struggles - player ratings for Forest v Chelsea",
+    "Cricket Australia may not like sandpaper forum findings - Vaughan"
+   ]
+  }
+ }
+}
